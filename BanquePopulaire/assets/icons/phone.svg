@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="26"
+   height="26"
+   viewBox="0 0 6.8791665 6.8791669"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="phone.svg"
+   inkscape:export-filename="/home/yann/Documents/Application/BanquePopulaireReact/assets/icons/phone.png"
+   inkscape:export-xdpi="738"
+   inkscape:export-ydpi="738">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.4"
+     inkscape:cx="-4.768762"
+     inkscape:cy="13.130493"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1021"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showguides="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-290.12082)">
+    <path
+       style="fill:#ffffff;fill-opacity:0;stroke:#000000;stroke-width:0.27484524;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 1.4043368,291.78518 0.8034647,-0.74055 c 0.1034079,-0.0953 0.3618493,-0.0632 0.5116253,0.11017 l 0.3731066,0.82464 -0.4425758,0.65793 c 0,0 0.3483093,0.67519 0.5669299,0.98713 0.2096557,0.29915 0.8104122,1.04637 0.8104122,1.04637 l 0.9216693,-0.11048 0.4745179,0.47985 c 0.1610442,0.16285 0.1510544,0.41539 0.028452,0.48432 l -1.032281,0.58035 c -0.1226191,0.0689 -0.3137218,-0.006 -0.4448138,-0.19369 0,0 -1.1017626,-1.03113 -1.5303146,-1.64544 -0.4268313,-0.61185 -1.0117464,-1.99631 -1.0117464,-1.99631 -0.1132389,-0.19802 -0.1355712,-0.39316 -0.028446,-0.48431 z"
+       id="rect1067"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cssccsccssssassc" />
+    <rect
+       style="fill:#ffffff;fill-opacity:0;stroke:none;stroke-width:0.2610814;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1400"
+       width="6.8791666"
+       height="6.8791666"
+       x="0"
+       y="290.12082"
+       rx="0"
+       ry="0" />
+  </g>
+</svg>

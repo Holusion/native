@@ -1,0 +1,57 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/objects/ANT2796.yaml",
+      "sha1": "b2720e0dadbc54b108bb497ec1ca974faf22fc7a"
+    },
+    {
+      "path": "assets/objects/E25618.yaml",
+      "sha1": "a17613f76d5dfc6c24022ee613ccca2f2467b20c"
+    },
+    {
+      "path": "assets/objects/E25654.yaml",
+      "sha1": "97bec0ec4d9dacffcd96e97104bb2b5be0afbdac"
+    },
+    {
+      "path": "assets/objects/L0625.yaml",
+      "sha1": "898245f08d5eda6bf732a4c0f805bf588da977b2"
+    },
+    {
+      "path": "assets/objects/L112.yaml",
+      "sha1": "eb3589c7cafa9d3e90e7813c1fdb67435e314788"
+    },
+    {
+      "path": "assets/objects/L2473.yaml",
+      "sha1": "9f492714f4920818b3cbca776bd6d47de7c7aba8"
+    },
+    {
+      "path": "assets/objects/L2490.yaml",
+      "sha1": "bb0eb1a3d996b4e0261afa9f834e84e33f4f06b7"
+    },
+    {
+      "path": "assets/objects/L2491.yaml",
+      "sha1": "bb0eb1a3d996b4e0261afa9f834e84e33f4f06b7"
+    },
+    {
+      "path": "assets/objects/ME354.yaml",
+      "sha1": "eb10c08465c0225932a27e1ac0ac9454e27b1896"
+    },
+    {
+      "path": "assets/objects/ME409.yaml",
+      "sha1": "7d39eaa9bb9c823abf3b4033a9c393d211fb756b"
+    },
+    {
+      "path": "assets/objects/SPBANT33.yaml",
+      "sha1": "3e0ef89199b21a52c7dbf2c7b4d585a18143da7a"
+    },
+    {
+      "path": "assets/objects/SPBANT48.yaml",
+      "sha1": "40de4e24ab8ed4e1d25c589414552605cad25fc3"
+    },
+    {
+      "path": "assets/objects/SPBANT55.yaml",
+      "sha1": "ad410442976951a3d57faea3a1e4f24e051f6cad"
+    }
+  ]
+}
