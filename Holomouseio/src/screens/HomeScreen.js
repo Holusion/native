@@ -29,19 +29,19 @@ class DefaultComponent extends React.Component {
     }
 
     spring() {
-        this.springValue.setValue(0,3);
+        this.springValue.setValue(0.95);
         Animated.loop(
 
             Animated.spring(this.springValue, {
                 toValue: 1,
-                friction: 2
+                friction: 2,
             })
         ).start()
     }
 
     constructor(props, context) {
         super(props, context);
-        this.springValue = new Animated.Value(0,3);
+        this.springValue = new Animated.Value(0.95);
     }
 }
 
