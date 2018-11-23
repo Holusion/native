@@ -20,7 +20,7 @@ const findAllYamlFile = () => {
     .then(files => {
         let yamlFiles = files.filter(f => f.name.endsWith('.yaml'));
         let allFiles = Promise.all(yamlFiles.map(f => RNFS.readFile(f.path)))
-        
+
         return allFiles.then(result => {
             let res = {};
             for(let i = 0; i < result.length; i++) {
@@ -39,7 +39,7 @@ const findAll = (type) => {
     for(obj of Object.keys(yamlCache)) {
         if(uniq.indexOf(yamlCache[obj][type]) == -1) {
             uniq.push(yamlCache[obj][type]);
-        } 
+        }
     }
     return uniq;
 }
