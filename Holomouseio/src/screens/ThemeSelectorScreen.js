@@ -2,12 +2,12 @@ import React from 'react';
 import { Content } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { network, ListItem, assetManager } from 'react-native-holusion'
+import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
 
 export default class ThemeSelectorScreen extends React.Component {
 
     componentDidMount() {
-        network.desactiveAll(this.props.navigation.getParam('url'));
+        network.activeAll(this.props.navigation.getParam('url'));
     }
 
     render() {

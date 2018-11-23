@@ -2,7 +2,7 @@ import React from 'react'
 import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row } from 'native-base';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
-import { assetManager, network } from 'react-native-holusion'
+import { assetManager, network } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView } from 'react-native';
 
 import RNFS from 'react-native-fs';

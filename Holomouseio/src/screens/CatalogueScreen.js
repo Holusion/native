@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container } from 'native-base';
-import { network, Playlist } from 'react-native-holusion';
+import { network, Playlist } from '@holusion/react-native-holusion';
 
 export default class CatalogueScreen extends React.Component {
 

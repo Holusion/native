@@ -3,7 +3,7 @@ import React from 'react';
 import { Content, Container } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
 import Zeroconf from 'react-native-zeroconf';
-import {network, IconCard, assetManager} from 'react-native-holusion'
+import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
