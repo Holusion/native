@@ -62,7 +62,7 @@ export default class HomeScreen extends React.Component {
     render() {
         let display = this.state.url ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
         if(this.state.url) {
-            network.desactiveAll(this.state.url);
+            network.activeAll(this.state.url);
         }
 
         return (

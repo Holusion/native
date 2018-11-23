@@ -48,7 +48,7 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            network.desactiveAll(this.props.navigation.getParam('url'));
+            network.activeAll(this.props.navigation.getParam('url'));
         })
 
         this._onSelection = this._onSelection.bind(this);

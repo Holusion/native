@@ -6,7 +6,7 @@ import { network, Playlist } from 'react-native-holusion';
 export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
-        network.desactiveAll(this.props.navigation.getParam('url'));
+        network.activeAll(this.props.navigation.getParam('url'));
     }
 
     _onPlayslistItem(id) {
