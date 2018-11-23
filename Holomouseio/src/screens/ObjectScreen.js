@@ -1,5 +1,6 @@
 import React from 'react'
-import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row } from 'native-base';
+import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row, StyleProvider } from 'native-base';
+import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
@@ -66,14 +67,14 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.activeModal(0)} style={{'NativeBase.Text': {fontSize: 32}}}>
+                <Button onPress={() => this.activeModal(0)}>
                     <Text>Référence de l'objet</Text>
                 </Button>
                 {
                     compls.map((element, index) => {
                         const elemSplit = element.split(' ');
                         let number = parseInt(elemSplit[elemSplit.length - 1]);
-                        return <Button key={index} onPress={() => this.activeModal(number)} style={{'NativeBase.Text': {fontSize: 32}}}>
+                        return <Button key={index} onPress={() => this.activeModal(number)}>
                             <Text>Info compl {number}</Text>
                         </Button>
                     })
@@ -123,9 +124,11 @@ export default class ObjectScreen extends React.Component {
                         <Text style={styles.rightContent}>Objet suivant</Text>
                     </Col>
                 </Grid>
-                <Footer style={styles.footer}>
-                    {this.generateFooter()}
-                </Footer>
+                <StyleProvider style={getTheme()}>
+                    <Footer style={styles.footer}>
+                        {this.generateFooter()}
+                    </Footer>
+                </StyleProvider>
             </Container>
         )
     }
@@ -232,9 +235,6 @@ const styles = StyleSheet.create({
         textAlign: 'left'
     },
     footer: {
-        height: 100
-    },
-    footerContent: {
-        
+
     }
 })
