@@ -1,10 +1,9 @@
 import React from 'react';
 
-import IconCard from '../components/IconCard';
 import { Content, Container } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
 import Zeroconf from 'react-native-zeroconf';
-import { desactivateAll } from '../utils/Network'
+import {network, IconCard, assetManager} from 'react-native-holusion'
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
@@ -51,7 +50,7 @@ class SearchProductComponent extends React.Component {
             <Content>
                 <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
                     <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: "#ae2573ff", fontSize: 32}}>Recherche du produit,,,</Text>
+                    <Text style={{textAlign: 'center', color: "#ae2573ff", fontSize: 32}}>Recherche du produit...</Text>
                 </View>
             </Content>
         )
@@ -63,7 +62,7 @@ export default class HomeScreen extends React.Component {
     render() {
         let display = this.state.url ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
         if(this.state.url) {
-            desactivateAll(this.state.url);
+            network.desactiveAll(this.state.url);
         }
 
         return (
@@ -81,6 +80,8 @@ export default class HomeScreen extends React.Component {
         this.state = {
             url: null
         }
+
+        assetManager.manage();
 
         try {
             zeroconf.scan('workstation', 'tcp', 'local.');

@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Text, StyleSheet } from 'react-native'
 import { Container } from 'native-base'
-import { desactivateAll } from '../utils/Network'
 
 export default class EndScreen extends React.Component {
 

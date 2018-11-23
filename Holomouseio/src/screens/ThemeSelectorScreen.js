@@ -2,20 +2,17 @@ import React from 'react';
 import { Content } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { allTheme, allCatalogue, getObjectFromType } from '../utils/AssetManager';
-import ListItem from '../components/ListItem';
-
-import { desactivateAll } from '../utils/Network'
+import { network, ListItem, assetManager } from 'react-native-holusion'
 
 export default class ThemeSelectorScreen extends React.Component {
 
     componentDidMount() {
-        desactivateAll(this.props.navigation.getParam('url'));
+        network.desactiveAll(this.props.navigation.getParam('url'));
     }
 
     render() {
         let allList = [];
-        let actualSelection = this.props.navigation.getParam('type') === 'catalogue' ? allCatalogue : allTheme;
+        let actualSelection = this.props.navigation.getParam('type') === 'catalogue' ? assetManager.allCatalogue : assetManager.allTheme;
         let title = this.props.navigation.getParam('type') === 'catalogue' ? 'Collection : ' : 'Thème : ';
         let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
 
@@ -51,7 +48,7 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            desactivateAll(this.props.navigation.getParam('url'));
+            network.desactiveAll(this.props.navigation.getParam('url'));
         })
 
         this._onSelection = this._onSelection.bind(this);
@@ -59,7 +56,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
     _onSelection(name) {
         let realType = this.props.navigation.getParam('type') === "catalogue" ? 'Collections' : 'Theme'
-        let objs = getObjectFromType(realType, name);
+        let objs = assetManager.getObjectFromType(realType, name);
 
         if(realType === "Theme") {
             this.props.navigation.push('Object', {

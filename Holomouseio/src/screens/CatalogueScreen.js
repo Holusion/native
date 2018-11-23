@@ -1,13 +1,12 @@
 import React from 'react'
 
-import Playlist from '../components/Playlist'
 import { Container } from 'native-base';
-import { desactivateAll } from '../utils/Network';
+import { network, Playlist } from 'react-native-holusion';
 
 export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
-        desactivateAll(this.props.navigation.getParam('url'));
+        network.desactiveAll(this.props.navigation.getParam('url'));
     }
 
     _onPlayslistItem(id) {

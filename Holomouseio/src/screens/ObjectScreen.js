@@ -2,10 +2,9 @@ import React from 'react'
 import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row } from 'native-base';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
-import { yamlCache } from '../utils/AssetManager'
+import { assetManager, network } from 'react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView } from 'react-native';
 
-import { desactivateAll, active, play } from '../utils/Network';
 import RNFS from 'react-native-fs';
 
 export default class ObjectScreen extends React.Component {
@@ -16,10 +15,10 @@ export default class ObjectScreen extends React.Component {
     launchVideo(videoName) {
         let productUrl = this.props.navigation.getParam('url');
 
-        desactivateAll(productUrl).then(elem => {
-            active(productUrl, `${videoName}.mp4`)
+        network.desactiveAll(productUrl).then(elem => {
+            network.active(productUrl, `${videoName}.mp4`)
         }).then(_ => {
-            play(productUrl, `${videoName}.mp4`)
+            network.play(productUrl, `${videoName}.mp4`)
         }).catch(err => {
             console.error(err);
         })
@@ -67,14 +66,14 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.activeModal(0)}>
+                <Button onPress={() => this.activeModal(0)} style={{'NativeBase.Text': {fontSize: 32}}}>
                     <Text>Référence de l'objet</Text>
                 </Button>
                 {
                     compls.map((element, index) => {
                         const elemSplit = element.split(' ');
                         let number = parseInt(elemSplit[elemSplit.length - 1]);
-                        return <Button key={index} onPress={() => this.activeModal(number)}>
+                        return <Button key={index} onPress={() => this.activeModal(number)} style={{'NativeBase.Text': {fontSize: 32}}}>
                             <Text>Info compl {number}</Text>
                         </Button>
                     })
@@ -124,7 +123,7 @@ export default class ObjectScreen extends React.Component {
                         <Text style={styles.rightContent}>Objet suivant</Text>
                     </Col>
                 </Grid>
-                <Footer>
+                <Footer style={styles.footer}>
                     {this.generateFooter()}
                 </Footer>
             </Container>
@@ -133,11 +132,11 @@ export default class ObjectScreen extends React.Component {
 
     _onNext() {
         if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
-            desactivateAll(this.props.navigation.getParam('url'));
+            network.desactiveAll(this.props.navigation.getParam('url'));
             this.props.navigation.push('End');
         } else {
             let nextVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex + 1];
-            this.obj = yamlCache[nextVideo];
+            this.obj = assetManager.yamlCache[nextVideo];
             this.launchVideo(nextVideo);
             this.setState({currentVideoIndex: this.state.currentVideoIndex + 1});
         }
@@ -148,7 +147,7 @@ export default class ObjectScreen extends React.Component {
             return;
         } else {
             let previousVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex - 1];
-            this.obj = yamlCache[previousVideo];
+            this.obj = assetManager.yamlCache[previousVideo];
             this.launchVideo(previousVideo);
             this.setState({currentVideoIndex: this.state.currentVideoIndex - 1});
         }
@@ -157,8 +156,7 @@ export default class ObjectScreen extends React.Component {
     constructor(props, context) {
         super(props, context);
         let currentObj = this.props.navigation.getParam('objList')[this.props.navigation.getParam('objId')];
-        
-        this.obj = yamlCache[currentObj]
+        this.obj = assetManager.yamlCache[currentObj]
 
         this.state = {
             modalVisible: -1,
@@ -233,4 +231,10 @@ const styles = StyleSheet.create({
         margin: 24,
         textAlign: 'left'
     },
+    footer: {
+        height: 100
+    },
+    footerContent: {
+        
+    }
 })
