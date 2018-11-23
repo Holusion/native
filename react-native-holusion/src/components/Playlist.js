@@ -14,7 +14,7 @@ export default class Playlist extends React.Component {
             let current = this.props.content[i];
             let imageUri = `file://${RNFS.DocumentDirectoryPath}/${current}.jpg`;
             items.push(
-                <TouchableOpacity key={i} onPress={() => this._onPlayslistItem(i)}>
+                <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
                     <IconCard style={styles.card} source={{uri: imageUri, scale: 1}} content={current}/>
                 </TouchableOpacity>
             )
@@ -30,7 +30,7 @@ export default class Playlist extends React.Component {
 
         if(items.length > 0) {
             rows.push(
-                <Row>
+                <Row key={this.props.content.length + 1}>
                     {items}
                 </Row>
             )
@@ -52,17 +52,8 @@ export default class Playlist extends React.Component {
         )
     }
 
-    _onPlayslistItem(id) {
-        this.props.navigation.push('Object', {
-            objList: this.props.content,
-            objId: id,
-            url: this.props.url
-        });
-    }
-
     constructor(props, context) {
         super(props, context);
-        this._onPlayslistItem = this._onPlayslistItem.bind(this)
     }
 }
 
