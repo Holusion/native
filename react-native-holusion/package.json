@@ -1,6 +1,6 @@
 {
-  "name": "react-native-holusion",
-  "version": "1.0.0",
+  "name": "@holusion/react-native-holusion",
+  "version": "0.0.1",
   "description": "react native api for holusion app",
   "main": "index.js",
   "scripts": {
