@@ -24,24 +24,30 @@ export default class ThemeSelectorScreen extends React.Component {
             }
         }
 
+        let selectionSort = actualSelection.slice();
+        selectionSort.sort((a, b) => {
+            if(collectionToColor[a].localeCompare(collectionToColor[b]) == 0) {
+                return a.localeCompare(b);
+            }
+        });
 
-        for(let i = 0; i < actualSelection.length; i++) {
+        for(let i = 0; i < selectionSort.length; i++) {
             let isPurple = (i % 2 == 0);
             let backgroundColor = isPurple ? "#005797ff" : null;
             let color = isPurple ? "white" : "#00334cff";
 
             for(let collections in collectionToColor) {
-                if(collections === actualSelection[i]) {
+                if(collections === selectionSort[i]) {
                     backgroundColor = collectionToColor[collections];
                     color = 'white'
                 }
             }
 
             allList.push(
-                <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
-                    <View>
-                        <Text style={[{color: color}, styles.selectionText]}>{title}</Text>
-                        <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
+                <ListItem key={i} style={[{backgroundColor: backgroundColor, borderBottomColor: 'white', borderBottomWidth: 1}, styles.listItem]} onPress={() => this._onSelection(selectionSort[i])}>
+                    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+                        {/* <Text style={[{color: color}, styles.selectionText]}>{title}</Text> */}
+                        <Text style={[{color: color}, styles.selectionText]}>{selectionSort[i].replace('Thème : ', '')}</Text>
                     </View>
                 </ListItem>
             );

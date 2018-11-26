@@ -29,12 +29,15 @@ export default class ObjectScreen extends React.Component {
     renderModal(number) {
         let display = null;
         if(number === 0) {
-            display = refs.map((s, index) => {
+            display = Object.keys(this.obj).filter(elem => elem.indexOf('Texte') != 0 && elem != 'color' && elem != 'Theme' && elem != "Collections").map((s, index) => {
                 if(this.obj && this.obj[s]) {
                     return <Text style={styles.modalText} key={index}>{s}: {this.obj[s]}</Text>
                 }
                 return null;
             })
+            if(display.length == 0) {
+                display = <Text style={styles.modalText}>Aucune référence pour cet objet</Text>
+            }
         } else if(number > 0) {
             let text = "";
             if(this.obj) {
@@ -173,7 +176,6 @@ export default class ObjectScreen extends React.Component {
     }
 }
 
-const refs = ['Titre', 'Collections', 'Theme', "Numéro d'inventaire", 'Propriétaire', 'Unité', 'Collection', 'Dépositaire', 'Discipline', 'Date ou Période', 'Artiste', 'Fabricant', 'Matériau', 'Type'];
 const styles = StyleSheet.create({
     modal: {
         margin: 16,
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         textAlign: "left",
-        color: '#3c0c27ff',
+        color: '#00334cff',
         marginLeft: 32,
         fontSize: 24
     },
@@ -231,8 +233,5 @@ const styles = StyleSheet.create({
         fontSize: 28,
         margin: 12,
         textAlign: 'left'
-    },
-    footer: {
-
     }
 })
