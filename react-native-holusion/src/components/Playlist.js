@@ -44,7 +44,6 @@ export class Playlist extends React.Component {
 
         return (
             <ScrollView>
-                <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <Grid>
                     <StyleProvider style={customTheme}>
                         <Col style={styles.col}>
@@ -62,12 +61,6 @@ export class Playlist extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    catchPhrase: {
-        color: "#ae2573ff",
-        fontSize: 32,
-        margin: 24,
-        textAlign: 'left'
-    },
     col: {
         display: 'flex',
         flexDirection: 'column',
