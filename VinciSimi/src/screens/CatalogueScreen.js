@@ -3,6 +3,8 @@ import React from 'react'
 import { Container, StyleProvider } from 'native-base';
 import { network, Playlist } from '@holusion/react-native-holusion';
 
+import { StyleSheet, Text } from 'react-native';
+
 export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
@@ -20,6 +22,7 @@ export default class CatalogueScreen extends React.Component {
     render() {
         return(
             <Container>
+                <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
                     <Playlist content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
@@ -33,11 +36,20 @@ export default class CatalogueScreen extends React.Component {
     }
 }
 
+const styles = StyleSheet.create({
+    catchPhrase: {
+        color: "#005797ff",
+        fontSize: 32,
+        margin: 24,
+        textAlign: 'left'
+    },
+})
+
 const customTheme = {
     'holusion.Playlist': {
         'holusion.IconCard': {
             container: {
-                backgroundColor: "#005797ff",
+                backgroundColor: "#00334cff",
                 margin: 4
             }
         }

@@ -16,10 +16,26 @@ export default class ThemeSelectorScreen extends React.Component {
         let title = this.props.navigation.getParam('type') === 'catalogue' ? 'Collection : ' : 'Thème : ';
         let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
 
+        let collectionToColor = {};
+
+        for(let obj in assetManager.yamlCache) {
+            if(assetManager.yamlCache[obj].color) {
+                collectionToColor[assetManager.yamlCache[obj].Collections] = assetManager.yamlCache[obj].color;
+            }
+        }
+
+
         for(let i = 0; i < actualSelection.length; i++) {
             let isPurple = (i % 2 == 0);
             let backgroundColor = isPurple ? "#005797ff" : null;
             let color = isPurple ? "white" : "#00334cff";
+
+            for(let collections in collectionToColor) {
+                if(collections === actualSelection[i]) {
+                    backgroundColor = collectionToColor[collections];
+                    color = 'white'
+                }
+            }
 
             allList.push(
                 <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
