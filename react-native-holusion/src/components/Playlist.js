@@ -1,11 +1,11 @@
 import React from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Grid, Col, Row } from 'native-base';
+import { Grid, Col, Row, StyleProvider, connectStyle } from 'native-base';
 import RNFS from 'react-native-fs';
 
 import IconCard from './IconCard';
 
-export default class Playlist extends React.Component {
+export class Playlist extends React.Component {
 
     renderContent() {
         let rows = [];
@@ -15,7 +15,7 @@ export default class Playlist extends React.Component {
             let imageUri = `file://${RNFS.DocumentDirectoryPath}/${current}.jpg`;
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCard style={styles.card} source={{uri: imageUri, scale: 1}} content={current}/>
+                    <IconCard source={{uri: imageUri, scale: 1}} content={current}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {
@@ -40,13 +40,17 @@ export default class Playlist extends React.Component {
     }
 
     render() {
+        const styles = this.props.style;
+
         return (
             <ScrollView>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <Grid>
-                    <Col style={styles.col}>
-                        {this.renderContent()}
-                    </Col>
+                    <StyleProvider style={customTheme}>
+                        <Col style={styles.col}>
+                            {this.renderContent()}
+                        </Col>
+                    </StyleProvider>
                 </Grid>
             </ScrollView>
         )
@@ -58,11 +62,6 @@ export default class Playlist extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#ae2573ff",
-        width: 250,
-        height: 250
-    },
     catchPhrase: {
         color: "#ae2573ff",
         fontSize: 32,
@@ -75,3 +74,18 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+const customTheme = {
+    'holusion.IconCard': {
+        container: {
+            width: 250,
+            height: 250
+        },
+        icon: {
+            width: 250 * 0.6,
+            height: 250 * 0.6
+        }
+    },
+}
+
+export default connectStyle('holusion.Playlist', styles)(Playlist)

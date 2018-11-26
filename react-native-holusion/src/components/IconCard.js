@@ -1,29 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text } from "react-native";
+import { connectStyle } from 'native-base'
 
-export default class IconCard extends React.Component {
+export class IconCard extends React.Component {
   render() {
-    let imageStyle = {};
-    let textStyle = {};
-    let style = {...styles.container, ...this.props.style} || styles.container;
-
-    if(this.props.source) {
-      imageStyle = {alignSelf: 'center', width: style.width * 0.6 || 0, height: style.height * 0.6 || 0, marginTop: 16};
-    } else {
-      imageStyle = {alignSelf: 'center', width: 0, height: 0, marginTop: 16};
-    }
-
-    if(this.props.style) {
-      textStyle = {color: 'white', fontSize: style.titleSize || 26, textAlign: style.titleAlign || 'center'};
-    } else {
-      textStyle = {color: 'white', fontSize: 26, textAlign: 'center'};
-    }
-
+    const styles = this.props.style
     return (
-        <View style={{...styles.container, ...this.props.style}}>
-            <Image style={imageStyle} source={this.props.source}/>
-            <View style={styles.title}>
-                <Text style={textStyle}>{this.props.content}</Text>
+        <View style={styles.container}>
+            <Image style={styles.icon} source={this.props.source}/>
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{this.props.content}</Text>
             </View>
         </View>
     );
@@ -40,12 +26,28 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 8,
         width: 200,
-        height: 200
+        height: 200,
+        backgroundColor: "#0092dbff"
     },
 
-    title: {
+    titleContainer: {
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
+    },
+
+    icon: {
+      alignSelf: 'center', 
+      width: 120, 
+      height: 120, 
+      marginTop: 16
+    },
+
+    titleText: {
+      color: 'white',
+      textAlign: 'center',
+      fontSize: 26
     }
 })
+
+export default connectStyle('holusion.IconCard', styles)(IconCard);
