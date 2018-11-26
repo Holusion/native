@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container } from 'native-base';
+import { Container, StyleProvider } from 'native-base';
 import { network, Playlist } from '@holusion/react-native-holusion';
 
 export default class CatalogueScreen extends React.Component {
@@ -20,7 +20,9 @@ export default class CatalogueScreen extends React.Component {
     render() {
         return(
             <Container>
-                <Playlist content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                <StyleProvider style={customTheme}>
+                    <Playlist content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                </StyleProvider>
             </Container>
         )
     }
@@ -28,5 +30,16 @@ export default class CatalogueScreen extends React.Component {
     constructor(props, context) {
       super(props, context);
       this._onPlayslistItem = this._onPlayslistItem.bind(this);
+    }
+}
+
+const customTheme = {
+    'holusion.Playlist': {
+        'holusion.IconCard': {
+            container: {
+                backgroundColor: "#ae2573ff",
+                margin: 4
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Content, Container } from 'native-base';
+import { Content, Container, StyleProvider } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
 import Zeroconf from 'react-native-zeroconf';
 import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
@@ -20,7 +20,7 @@ class DefaultComponent extends React.Component {
                         <IconCard source={require("../../assets/icons/musee.png")} content="Visite" style={styles.card} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.catalogue}>
-                        <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue" style={styles.card}/>
+                        <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
                     </TouchableOpacity>
                 </View>
             </Content>
@@ -67,7 +67,9 @@ export default class HomeScreen extends React.Component {
 
         return (
             <Container>
-                {display}
+                <StyleProvider style={customTheme}>
+                    {display}
+                </StyleProvider>
             </Container>
         )
     }
@@ -88,7 +90,7 @@ export default class HomeScreen extends React.Component {
             zeroconf.on('resolved', (service) => {
                 let url = service.addresses[0];
                 this.setState(() => {
-                    return {url: url}
+                    return {url: "192.168.1.127"}
                 });
             });
         } catch(e) {
@@ -123,10 +125,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 50,
         marginBottom: 100
-    },
-    card: {
-        backgroundColor: "#ae2573ff",
-        width: 300,
-        height: 300
     }
 });
+
+const customTheme = {
+    'holusion.IconCard': {
+        container: {
+            backgroundColor: "#ae2573ff",
+            width: 300,
+            height: 300
+        },
+        icon: {
+            width: 300 * 0.6,
+            height: 300 * 0.6
+        }
+    }
+}

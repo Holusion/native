@@ -110,11 +110,9 @@ export default class ObjectScreen extends React.Component {
                         <Row size={1}>
                             <Text style={styles.title}>{this.obj['Titre']}</Text>
                         </Row>
-                        <Row size={1} style={styles.mainPanel}>
-                            <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:125, height:125, marginTop: 8}}/>
-                        </Row>
-                        <Row size={4} style={styles.mainPanel}>
+                        <Row size={5} style={styles.mainPanel}>
                             <ScrollView style= {{marginTop: 16}}>
+                                <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
                                 <YAMLObjectComponent style={styles.content} data={this.obj}/>
                             </ScrollView>
                         </Row>
@@ -230,8 +228,8 @@ const styles = StyleSheet.create({
     }, 
     title: {
         color: "#ae2573ff",
-        fontSize: 32,
-        margin: 24,
+        fontSize: 28,
+        margin: 12,
         textAlign: 'left'
     },
     footer: {
