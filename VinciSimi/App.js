@@ -9,32 +9,32 @@ export default createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Accueil",
+      title: "Vinci Simi - Accueil",
       headerLeft: null
     })
   },
   Selection: {
     screen: ThemeSelectorScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Sélection"
+      title: "Vinci Simi - Sélection"
     })
   },
   Catalogue: {
     screen: CatalogueScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Catalogue"
+      title: "Vinci Simi - Catalogue"
     })
   },
   Object: {
     screen: ObjectScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Contenus"
+      title: "Vinci Simi - Contenus"
     })
   },
   End: {
     screen: EndScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Fin",
+      title: "Vinci Simi - Fin",
       headerLeft: null
     })
   }
