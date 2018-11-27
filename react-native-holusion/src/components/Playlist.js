@@ -12,10 +12,14 @@ export class Playlist extends React.Component {
         let items = []
         for(let i = 0; i < this.props.content.length; i++) {
             let current = this.props.content[i];
+            let title = this.props.content[i];
+            if(this.props.titles) {
+                title = this.props.titles[i];
+            }
             let imageUri = `file://${RNFS.DocumentDirectoryPath}/${current}.jpg`;
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCard source={{uri: imageUri, scale: 1}} content={current}/>
+                    <IconCard source={{uri: imageUri, scale: 1}} content={title}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {

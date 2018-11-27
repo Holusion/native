@@ -7,7 +7,10 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ]
   },
   "author": "Yann DUBOIS <y.dubois@holusion.com>",
   "license": "ISC",
@@ -20,6 +23,7 @@
   },
   "dependencies": {
     "js-yaml": "^3.12.0",
+    "native-base": "^2.8.1",
     "react-native-fs": "^2.12.1",
     "react-native-zeroconf": "^0.9.0"
   },

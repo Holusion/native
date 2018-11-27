@@ -19,10 +19,3 @@ test('renders content and image IconCard', () => {
   expect(tree.children[0].props.style.height).toBe(0.6 * tree.props.style.height);
   expect(tree).toMatchSnapshot();
 })
-
-test('renders content and image with style IconCard', () => {
-  tree = renderer.create(<IconCard content="title" source={require("./test.jpg")} style={{width: 300, height: 300}} />).toJSON();
-  expect(tree.children[0].props.style.width).toBe(0.6 * tree.props.style.width);
-  expect(tree.children[0].props.style.height).toBe(0.6 * tree.props.style.height);
-  expect(tree).toMatchSnapshot();
-})
