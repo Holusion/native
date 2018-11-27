@@ -4,10 +4,14 @@ import { Text, StyleSheet, View } from 'react-native';
 
 import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
 
+import * as zeroconfManager from '../utils/zeroconfManager';
+
 export default class ThemeSelectorScreen extends React.Component {
 
     componentDidMount() {
-        network.activeAll(this.props.navigation.getParam('url'));
+        if(zeroconfManager.getUrl()) {
+            network.activeAll(this.props.navigation.getParam('url'));
+        }
     }
 
     render() {
@@ -70,7 +74,9 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            network.activeAll(this.props.navigation.getParam('url'));
+            if(zeroconfManager.getUrl()) {
+                network.activeAll(this.props.navigation.getParam('url'));
+            }
         })
 
         this._onSelection = this._onSelection.bind(this);

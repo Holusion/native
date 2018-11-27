@@ -2,13 +2,16 @@ import React from 'react'
 
 import { Container, StyleProvider } from 'native-base';
 import { network, assetManager, Playlist } from '@holusion/react-native-holusion';
+import * as zeroconManager from '../utils/zeroconfManager';
 
 import { StyleSheet, Text } from 'react-native';
 
 export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
-        network.activeAll(this.props.navigation.getParam('url'));
+        if(zeroconManager.getUrl()) {
+            network.activeAll(this.props.navigation.getParam('url'));
+        }
     }
 
     _onPlayslistItem(id) {

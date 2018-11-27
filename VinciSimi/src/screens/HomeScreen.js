@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Content, Container, StyleProvider } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
-import Zeroconf from 'react-native-zeroconf';
 import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
+
+import * as zeroconfManager from "../utils/zeroconfManager";
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
@@ -81,18 +82,9 @@ export default class HomeScreen extends React.Component {
         }
 
         assetManager.manage();
-
-        try {
-            zeroconf.scan('workstation', 'tcp', 'local.');
-            zeroconf.on('resolved', (service) => {
-                let url = service.addresses[0];
-                this.setState(() => {
-                    return {url: "192.168.1.127"}
-                });
-            });
-        } catch(e) {
-
-        }
+        zeroconfManager.manage(() => {
+            this.setState({url: zeroconfManager.getUrl()})
+        });
     }
 
     _onVisite() {
@@ -104,7 +96,6 @@ export default class HomeScreen extends React.Component {
     }
 }
 
-const zeroconf = new Zeroconf();
 const {height: screenHeight} = Dimensions.get("window");
 
 const styles = StyleSheet.create({
