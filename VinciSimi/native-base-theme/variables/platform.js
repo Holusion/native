@@ -38,7 +38,7 @@ export default {
   btnDisabledBg: "#b5b5b5",
   buttonPadding: 6,
   get btnPrimaryBg() {
-    return this.brandPrimary;
+    return '#005797ff';
   },
   get btnPrimaryColor() {
     return this.inverseTextColor;

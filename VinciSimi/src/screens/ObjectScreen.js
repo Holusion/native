@@ -4,7 +4,7 @@ import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions } from 'react-native';
 
 import RNFS from 'react-native-fs';
 
@@ -97,6 +97,15 @@ export default class ObjectScreen extends React.Component {
         return modals;
     }
 
+    scrollToText = () => {
+        let scrollYPos = this.screenHeight * 1;
+        this.scroller.scrollTo({x: 0, y: scrollYPos})
+    }
+
+    scrollToImage = () => {
+        this.scroller.scrollTo({x: 0, y: 0});
+    }
+
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
@@ -114,10 +123,22 @@ export default class ObjectScreen extends React.Component {
                             <Text style={styles.title}>{this.obj['Titre']}</Text>
                         </Row>
                         <Row size={5} style={styles.mainPanel}>
-                            <ScrollView style= {{marginTop: 16}}>
-                                <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
-                                <YAMLObjectComponent style={styles.content} data={this.obj}/>
-                            </ScrollView>
+                            <StyleProvider style={getTheme()}>
+                                <ScrollView style= {{marginTop: 16, flex: 1}} ref={(scroller) => this.scroller = scroller}>
+                                    <View style={{height: this.screenHeight}}>
+                                        <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
+                                        <Button onPress={this.scrollToText} style={{alignSelf: 'center', borderRadius: 90}} large>
+                                            <Icon name='ios-arrow-down' style={{fontSize: 50}}/>
+                                        </Button>
+                                    </View>
+                                    <View>
+                                        <Button onPress={this.scrollToImage} style={{alignSelf: 'center', borderRadius: 90}} large>
+                                            <Icon name='ios-arrow-up' style={{fontSize: 50}} />        
+                                        </Button>
+                                        <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                                    </View>
+                                </ScrollView>
+                            </StyleProvider>
                         </Row>
                     </Col>
                     <Col style={styles.rightPanel} onPress={this._onNext}>
@@ -170,6 +191,8 @@ export default class ObjectScreen extends React.Component {
         this.complLength = Object.keys(this.obj).filter(elem => elem.indexOf('compl') == 6).length;
 
         this.launchVideo(currentObj);
+
+        this.screenHeight = Dimensions.get('window').height * 4/5;
 
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
