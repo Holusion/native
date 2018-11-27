@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, StyleProvider } from 'native-base';
-import { network, Playlist } from '@holusion/react-native-holusion';
+import { network, assetManager, Playlist } from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native';
 
@@ -20,11 +20,13 @@ export default class CatalogueScreen extends React.Component {
     }
 
     render() {
+        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
+
         return(
             <Container>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
-                    <Playlist content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <Playlist content={titles} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
@@ -50,7 +52,14 @@ const customTheme = {
         'holusion.IconCard': {
             container: {
                 backgroundColor: "#00334cff",
-                margin: 4
+                margin: 4,
+                width: 300,
+                height: 300
+            },
+            icon: {
+                width: 300 * 0.6,
+                height: 300 * 0.6,
+                resizeMode: 'contain'
             }
         }
     }

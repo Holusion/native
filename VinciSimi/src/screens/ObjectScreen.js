@@ -115,7 +115,7 @@ export default class ObjectScreen extends React.Component {
                         </Row>
                         <Row size={5} style={styles.mainPanel}>
                             <ScrollView style= {{marginTop: 16}}>
-                                <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
+                                <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
                                 <YAMLObjectComponent style={styles.content} data={this.obj}/>
                             </ScrollView>
                         </Row>
