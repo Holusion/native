@@ -151,6 +151,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
+        this.scrollToImage()
+
         if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
             network.desactiveAll(this.props.navigation.getParam('url'));
             this.props.navigation.push('End');
@@ -163,6 +165,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onPrevious() {
+        this.scrollToImage();
+
         if(this.state.currentVideoIndex <= 0) {
             return;
         } else {
