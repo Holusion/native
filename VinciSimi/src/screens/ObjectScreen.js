@@ -4,7 +4,7 @@ import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView, Dimensions } from 'react-native';
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import RNFS from 'react-native-fs';
 
@@ -127,14 +127,14 @@ export default class ObjectScreen extends React.Component {
                                 <ScrollView style= {{marginTop: 16, flex: 1}} ref={(scroller) => this.scroller = scroller}>
                                     <View style={{height: this.screenHeight}}>
                                         <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
-                                        <Button onPress={this.scrollToText} style={{alignSelf: 'center', borderRadius: 90}} large>
-                                            <Icon name='ios-arrow-down' style={{fontSize: 50}}/>
-                                        </Button>
+                                        <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
+                                            <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#005797ff'}} onPress={this.scrollToText} />
+                                        </TouchableOpacity>
                                     </View>
                                     <View>
-                                        <Button onPress={this.scrollToImage} style={{alignSelf: 'center', borderRadius: 90}} large>
-                                            <Icon name='ios-arrow-up' style={{fontSize: 50}} />        
-                                        </Button>
+                                        <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
+                                            <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#005797ff'}} onPress={this.scrollToImage} />        
+                                        </TouchableOpacity>
                                         <YAMLObjectComponent style={styles.content} data={this.obj}/>
                                     </View>
                                 </ScrollView>
