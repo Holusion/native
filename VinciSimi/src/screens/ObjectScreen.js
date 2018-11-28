@@ -33,7 +33,7 @@ export default class ObjectScreen extends React.Component {
     renderModal(number) {
         let display = null;
         if(number === 0) {
-            display = Object.keys(this.obj).filter(elem => elem.indexOf('Texte') != 0 && elem != 'color' && elem != 'Theme' && elem != "Collections").map((s, index) => {
+            display = Object.keys(this.obj).filter(elem => elem.indexOf('Texte') != 0 && elem != 'color' && elem != 'Theme' && elem != "Collections" && elem != "loop").map((s, index) => {
                 if(this.obj && this.obj[s]) {
                     return <Text style={styles.modalText} key={index}>{s}: {this.obj[s]}</Text>
                 }
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: "#00334cff",
-        fontSize: 18,
+        fontSize: 24,
         padding: 24
     },
     mainPanel: {

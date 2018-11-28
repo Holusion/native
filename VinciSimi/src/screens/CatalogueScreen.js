@@ -3,6 +3,7 @@ import React from 'react'
 import { Container, StyleProvider } from 'native-base';
 import { network, assetManager, Playlist } from '@holusion/react-native-holusion';
 import * as zeroconManager from '../utils/zeroconfManager';
+import * as networkExtension from '../utils/networkExtention';
 
 import { StyleSheet, Text } from 'react-native';
 
@@ -10,7 +11,7 @@ export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
         if(zeroconManager.getUrl()) {
-            network.activeAll(this.props.navigation.getParam('url'));
+            networkExtension.activeOnlyLoop(this.props.navigation.getParam('url'));
         }
     }
 
