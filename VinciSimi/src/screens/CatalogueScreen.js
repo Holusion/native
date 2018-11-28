@@ -58,7 +58,11 @@ const customTheme = {
                 backgroundColor: "#00334cff",
                 margin: 4,
                 width: 300,
-                height: 300
+                height: 300,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
             },
             icon: {
                 width: 300 * 0.6,
