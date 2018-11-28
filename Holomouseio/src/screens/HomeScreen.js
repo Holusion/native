@@ -133,7 +133,11 @@ const customTheme = {
         container: {
             backgroundColor: "#ae2573ff",
             width: 300,
-            height: 300
+            height: 300,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.8,
+            shadowRadius: 10,
         },
         icon: {
             width: 300 * 0.6,

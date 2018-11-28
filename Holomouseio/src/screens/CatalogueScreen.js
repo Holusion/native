@@ -43,7 +43,11 @@ const customTheme = {
                 borderWidth: 2,
                 borderColor: "#ae2573ff",
                 margin: 4,
-                padding: 0
+                padding: 0,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
             },
             icon: {
                 width: 200 * 0.8,
