@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: "#3c0c27ff",
-        fontSize: 18,
+        fontSize: 24,
         padding: 24
     },
     mainPanel: {
