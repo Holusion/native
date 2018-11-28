@@ -13,11 +13,15 @@ export const manage = (callbackAdd, callbackRemove) => {
                 url: service.addresses
             }
             allProducts.push(obj);
-            callbackAdd();
+            if(callbackAdd) {
+                callbackAdd();
+            }
         });
         zeroconf.on('remove', (name) => {
             allProducts = allProducts.filter(elem => elem.name != name);
-            callbackRemove();
+            if(callbackRemove) {
+                callbackRemove();
+            }
         });
     } catch(e) {
     
