@@ -5,6 +5,7 @@ import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dim
 import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
 
 import * as zeroconfManager from "../utils/zeroconfManager";
+import * as networkExtension from '../utils/networkExtention';
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
@@ -60,7 +61,7 @@ export default class HomeScreen extends React.Component {
     render() {
         let display = this.state.url ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
         if(this.state.url) {
-            network.activeAll(this.state.url);
+            networkExtension.activeOnlyLoop(this.state.url);
         }
 
         return (
@@ -83,7 +84,8 @@ export default class HomeScreen extends React.Component {
 
         assetManager.manage();
         zeroconfManager.manage(() => {
-            this.setState({url: zeroconfManager.getUrl()})
+            // this.setState({url: zeroconfManager.getUrl()})
+            this.setState({url: '192.168.1.127'});
         });
     }
 
@@ -121,7 +123,11 @@ const customTheme = {
         container: {
             width: 300,
             height: 300,
-            backgroundColor: '#00334cff'
+            backgroundColor: '#00334cff',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.8,
+            shadowRadius: 10,
         },
         icon: {
             width: 300 * 0.6,

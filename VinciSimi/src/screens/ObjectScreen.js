@@ -33,7 +33,7 @@ export default class ObjectScreen extends React.Component {
     renderModal(number) {
         let display = null;
         if(number === 0) {
-            display = Object.keys(this.obj).filter(elem => elem.indexOf('Texte') != 0 && elem != 'color' && elem != 'Theme' && elem != "Collections").map((s, index) => {
+            display = Object.keys(this.obj).filter(elem => elem.indexOf('Texte') != 0 && elem != 'color' && elem != 'Theme' && elem != "Collections" && elem != "loop").map((s, index) => {
                 if(this.obj && this.obj[s]) {
                     return <Text style={styles.modalText} key={index}>{s}: {this.obj[s]}</Text>
                 }
@@ -132,12 +132,12 @@ export default class ObjectScreen extends React.Component {
                                     <View style={{height: this.screenHeight}}>
                                         <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
                                         <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
-                                            <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#005797ff'}} onPress={this.scrollToText} />
+                                            <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#005797ff'}} />
                                         </TouchableOpacity>
                                     </View>
                                     <View>
                                         <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
-                                            <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#005797ff'}} onPress={this.scrollToImage} />        
+                                            <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#005797ff'}} />        
                                         </TouchableOpacity>
                                         <YAMLObjectComponent style={styles.content} data={this.obj}/>
                                     </View>
@@ -160,6 +160,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
+        this.scrollToImage();
+
         if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length && zeroconfManager.getUrl()) {
             network.desactiveAll(this.props.navigation.getParam('url'));
             this.props.navigation.push('End');
@@ -172,6 +174,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onPrevious() {
+        this.scrollToImage();
+
         if(this.state.currentVideoIndex <= 0) {
             return;
         } else {
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: "#00334cff",
-        fontSize: 18,
+        fontSize: 24,
         padding: 24
     },
     mainPanel: {

@@ -4,7 +4,7 @@ import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import RNFS from 'react-native-fs';
 
@@ -94,6 +94,15 @@ export default class ObjectScreen extends React.Component {
         return modals;
     }
 
+    scrollToText = () => {
+        let scrollYPos = this.screenHeight * 1;
+        this.scroller.scrollTo({x: 0, y: scrollYPos})
+    }
+
+    scrollToImage = () => {
+        this.scroller.scrollTo({x: 0, y: 0});
+    }
+
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
@@ -111,9 +120,19 @@ export default class ObjectScreen extends React.Component {
                             <Text style={styles.title}>{this.obj['Titre']}</Text>
                         </Row>
                         <Row size={5} style={styles.mainPanel}>
-                            <ScrollView style= {{marginTop: 16}}>
-                                <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
-                                <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                            <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
+                                <View style={{height: this.screenHeight}}>
+                                    <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+                                    <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
+                                        <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#ae2573ff'}} />
+                                    </TouchableOpacity>
+                                </View>
+                                <View>
+                                    <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
+                                        <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#ae2573ff'}}/>
+                                    </TouchableOpacity>
+                                    <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                                </View>
                             </ScrollView>
                         </Row>
                     </Col>
@@ -132,6 +151,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
+        this.scrollToImage()
+
         if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
             network.desactiveAll(this.props.navigation.getParam('url'));
             this.props.navigation.push('End');
@@ -144,6 +165,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onPrevious() {
+        this.scrollToImage();
+
         if(this.state.currentVideoIndex <= 0) {
             return;
         } else {
@@ -167,6 +190,8 @@ export default class ObjectScreen extends React.Component {
         this.complLength = Object.keys(this.obj).filter(elem => elem.indexOf('compl') == 6).length;
 
         this.launchVideo(currentObj);
+
+        this.screenHeight = Dimensions.get('window').height * (4/5);
 
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
