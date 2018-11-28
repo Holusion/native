@@ -24,13 +24,14 @@ export default class CatalogueScreen extends React.Component {
     }
 
     render() {
+        let content = this.props.navigation.getParam("objList"); 
         let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
 
         return(
             <Container>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
-                    <Playlist content={titles} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <Playlist titles={titles} content={content} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
