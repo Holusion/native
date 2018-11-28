@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, StyleProvider } from 'native-base';
-import { network, Playlist } from '@holusion/react-native-holusion';
+import { network, Playlist, assetManager } from '@holusion/react-native-holusion';
 
 export default class CatalogueScreen extends React.Component {
 
@@ -18,10 +18,12 @@ export default class CatalogueScreen extends React.Component {
     }
 
     render() {
+        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
+
         return(
             <Container>
                 <StyleProvider style={customTheme}>
-                    <Playlist content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <Playlist titles={titles} content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
@@ -37,8 +39,26 @@ const customTheme = {
     'holusion.Playlist': {
         'holusion.IconCard': {
             container: {
+                backgroundColor: "#fff",
+                borderWidth: 2,
+                borderColor: "#ae2573ff",
+                margin: 4,
+                padding: 0
+            },
+            icon: {
+                width: 200 * 0.8,
+                height: 200 * 0.8,
+                resizeMode: 'contain'
+            },
+            titleContainer: {
                 backgroundColor: "#ae2573ff",
-                margin: 4
+                width: '100%',
+                height: '25%',
+                flex: 1,
+                justifyContent: 'center',
+                marginLeft: 0,
+                paddingLeft: 4,
+                paddingRight: 4
             }
         }
     }
