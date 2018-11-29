@@ -3,6 +3,8 @@ import React from 'react'
 import { Container, StyleProvider } from 'native-base';
 import { network, Playlist, assetManager, zeroconfManager } from '@holusion/react-native-holusion';
 
+import { StyleSheet, Text } from 'react-native'
+
 export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
@@ -24,6 +26,7 @@ export default class CatalogueScreen extends React.Component {
 
         return(
             <Container>
+                <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
                     <Playlist titles={titles} content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
@@ -36,6 +39,15 @@ export default class CatalogueScreen extends React.Component {
       this._onPlayslistItem = this._onPlayslistItem.bind(this);
     }
 }
+
+const styles = StyleSheet.create({
+    catchPhrase: {
+        color: "#ae2573ff",
+        fontSize: 32,
+        margin: 24,
+        textAlign: 'left'
+    }
+})
 
 const customTheme = {
     'holusion.Playlist': {
