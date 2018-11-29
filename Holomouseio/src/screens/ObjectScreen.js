@@ -115,20 +115,6 @@ export default class ObjectScreen extends React.Component {
         return (
             <Container>
                 {allModals}
-                <FlingGestureHandler
-                direction={Directions.RIGHT}
-                onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === State.ACTIVE) {
-                        this._onPrevious();
-                    }
-                }}>
-                    <FlingGestureHandler 
-                    direction={Directions.LEFT}
-                    onHandlerStateChange={({ nativeEvent }) => {
-                        if (nativeEvent.state === State.ACTIVE) {
-                            this._onNext();
-                        }
-                    }}>
 
                         <Grid>
                             <Col style={styles.rightPanel} onPress={this._onPrevious}>
@@ -140,6 +126,20 @@ export default class ObjectScreen extends React.Component {
                                     <Text style={styles.title}>{this.obj['Titre']}</Text>
                                 </Row>
                                 <Row size={5} style={styles.mainPanel}>
+                                <FlingGestureHandler
+                                direction={Directions.RIGHT}
+                                onHandlerStateChange={({ nativeEvent }) => {
+                                    if (nativeEvent.state === State.ACTIVE) {
+                                        this._onPrevious();
+                                    }
+                                }}>
+                                    <FlingGestureHandler 
+                                    direction={Directions.LEFT}
+                                    onHandlerStateChange={({ nativeEvent }) => {
+                                        if (nativeEvent.state === State.ACTIVE) {
+                                            this._onNext();
+                                        }
+                                    }}>
                                     <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
                                         <View style={{height: this.screenHeight}}>
                                             <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
@@ -154,6 +154,8 @@ export default class ObjectScreen extends React.Component {
                                             <YAMLObjectComponent style={styles.content} data={this.obj}/>
                                         </View>
                                     </ScrollView>
+                                    </FlingGestureHandler>
+                                </FlingGestureHandler>
                                 </Row>
                             </Col>
                             <Col style={styles.rightPanel} onPress={this._onNext}>
@@ -161,8 +163,6 @@ export default class ObjectScreen extends React.Component {
                                 <Text style={styles.rightContent}>Objet suivant</Text>
                             </Col>
                         </Grid>
-                    </FlingGestureHandler>
-                </FlingGestureHandler>
                 <StyleProvider style={getTheme()}>
                     <Footer style={styles.footer}>
                         {this.generateFooter()}
