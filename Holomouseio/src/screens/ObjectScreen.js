@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
         color: '#3c0c27ff',
         marginLeft: 32,
+        marginRight: 32,
         fontSize: 24
     },
     modalFooter: {
