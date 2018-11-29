@@ -3,7 +3,7 @@ import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, 
 import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
-import { assetManager, network } from '@holusion/react-native-holusion'
+import { assetManager, network, zeroconfManager } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import RNFS from 'react-native-fs';
@@ -14,15 +14,17 @@ export default class ObjectScreen extends React.Component {
     }
 
     launchVideo(videoName) {
-        let productUrl = this.props.navigation.getParam('url');
-
-        network.desactiveAll(productUrl).then(elem => {
-            network.active(productUrl, `${videoName}.mp4`)
-        }).then(_ => {
-            network.play(productUrl, `${videoName}.mp4`)
-        }).catch(err => {
-            console.error(err);
-        })
+        if(zeroconfManager.getUrl()) {
+            let productUrl = zeroconfManager.getUrl();
+    
+            network.desactiveAll(productUrl).then(elem => {
+                network.active(productUrl, `${videoName}.mp4`)
+            }).then(_ => {
+                network.play(productUrl, `${videoName}.mp4`)
+            }).catch(err => {
+                console.error(err);
+            })
+        }
 
     }
 
@@ -154,7 +156,9 @@ export default class ObjectScreen extends React.Component {
         this.scrollToImage()
 
         if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
-            network.desactiveAll(this.props.navigation.getParam('url'));
+            if(zeroconfManager.getUrl()) {
+                network.desactiveAll(this.props.navigation.getParam('url'));
+            }
             this.props.navigation.push('End');
         } else {
             let nextVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex + 1];

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Content, Container, StyleProvider } from 'native-base';
+import { Content, Container, StyleProvider, Button, Grid, Col } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
-import Zeroconf from 'react-native-zeroconf';
-import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
+import {network, IconCard, assetManager, zeroconfManager} from '@holusion/react-native-holusion'
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
@@ -11,17 +10,24 @@ class DefaultComponent extends React.Component {
     }
 
     render() {
+        let display = []
+        if(this.props.offlineMode) {
+            display = <Text style={{color: '#ae2573ff', fontSize:24}}>Mode hors ligne</Text>
+        }
         return (
             <Content>
-                <Image style={styles.images} source={require("../../assets/images/logo.png")} />
-                <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
-                <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={this.props.visite}>
-                        <IconCard source={require("../../assets/icons/musee.png")} content="Visite" style={styles.card} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.props.catalogue}>
-                        <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
-                    </TouchableOpacity>
+                <View>
+                    {display}
+                    <Image style={styles.images} source={require("../../assets/images/logo.png")} />
+                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
+                    <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={this.props.visite}>
+                            <IconCard source={require("../../assets/icons/musee.png")} content="Visite" style={styles.card} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.props.catalogue}>
+                            <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Content>
         )
@@ -45,7 +51,9 @@ class DefaultComponent extends React.Component {
 }
 
 class SearchProductComponent extends React.Component {
+
     render() {
+
         return (
             <Content>
                 <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
@@ -60,7 +68,8 @@ class SearchProductComponent extends React.Component {
 export default class HomeScreen extends React.Component {
 
     render() {
-        let display = this.state.url ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
+        let display = this.state.url || this.state.offlineMode ? <DefaultComponent offlineMode={this.state.offlineMode} url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
+        
         if(this.state.url) {
             network.activeAll(this.state.url);
         }
@@ -68,7 +77,7 @@ export default class HomeScreen extends React.Component {
         return (
             <Container>
                 <StyleProvider style={customTheme}>
-                    {display}
+                    {display}     
                 </StyleProvider>
             </Container>
         )
@@ -80,22 +89,26 @@ export default class HomeScreen extends React.Component {
         this._onVisite = this._onVisite.bind(this);
 
         this.state = {
-            url: null
+            url: null,
+            offlineMode: false
         }
+
+        const launchOfflineMode = setTimeout(() => {
+            this.setState(() => {
+                return {offlineMode: true};
+            })
+        }, 5000);
 
         assetManager.manage();
-
-        try {
-            zeroconf.scan('workstation', 'tcp', 'local.');
-            zeroconf.on('resolved', (service) => {
-                let url = service.addresses[0];
-                this.setState(() => {
-                    return {url: "192.168.1.127"}
-                });
+        zeroconfManager.manage(() => {
+            clearTimeout(launchOfflineMode);
+            let url = zeroconfManager.getUrl();
+            this.setState(() => {
+                return {url: url, offlineMode: false}
             });
-        } catch(e) {
-
-        }
+        }, () => {
+            
+        })
     }
 
     _onVisite() {
@@ -106,8 +119,6 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.push('Selection', {type: 'catalogue', url: this.state.url})
     }
 }
-
-const zeroconf = new Zeroconf();
 const {height: screenHeight} = Dimensions.get("window");
 
 const styles = StyleSheet.create({
