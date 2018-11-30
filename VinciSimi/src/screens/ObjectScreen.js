@@ -130,36 +130,36 @@ export default class ObjectScreen extends React.Component {
                         </Row>
                         <Row size={5} style={styles.mainPanel}>
                             <StyleProvider style={getTheme()}>
-                        <FlingGestureHandler
-                                direction={Directions.RIGHT}
-                                onHandlerStateChange={({ nativeEvent }) => {
-                                    if (nativeEvent.state === State.ACTIVE) {
-                                        this._onPrevious();
-                                    }
-                                }}>
-                                    <FlingGestureHandler 
-                                    direction={Directions.LEFT}
+                            <FlingGestureHandler
+                                    direction={Directions.RIGHT}
                                     onHandlerStateChange={({ nativeEvent }) => {
                                         if (nativeEvent.state === State.ACTIVE) {
-                                            this._onNext();
+                                            this._onPrevious();
                                         }
                                     }}>
-                                <ScrollView style= {{marginTop: 16, flex: 1}} ref={(scroller) => this.scroller = scroller}>
-                                    <View style={{height: this.screenHeight}}>
-                                        <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
-                                        <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
-                                            <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#005797ff'}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
-                                            <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#005797ff'}} />        
-                                        </TouchableOpacity>
-                                        <YAMLObjectComponent style={styles.content} data={this.obj}/>
-                                    </View>
-                                </ScrollView>
-                            </FlingGestureHandler>
-                            </FlingGestureHandler>
+                                        <FlingGestureHandler 
+                                        direction={Directions.LEFT}
+                                        onHandlerStateChange={({ nativeEvent }) => {
+                                            if (nativeEvent.state === State.ACTIVE) {
+                                                this._onNext();
+                                            }
+                                        }}>
+                                            <ScrollView style= {{marginTop: 16, flex: 1}} ref={(scroller) => this.scroller = scroller}>
+                                                <View style={{height: this.screenHeight}}>
+                                                    <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
+                                                    <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
+                                                        <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#005797ff'}} />
+                                                    </TouchableOpacity>
+                                                </View>
+                                                <View>
+                                                    <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
+                                                        <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#005797ff'}} />        
+                                                    </TouchableOpacity>
+                                                    <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                                                </View>
+                                            </ScrollView>
+                                    </FlingGestureHandler>
+                                </FlingGestureHandler>
                             </StyleProvider>
                         </Row>
                     </Col>
