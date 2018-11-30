@@ -31,9 +31,10 @@ export default class ThemeSelectorScreen extends React.Component {
 
         let selectionSort = actualSelection.slice();
         selectionSort.sort((a, b) => {
-            if(collectionToColor[a].localeCompare(collectionToColor[b]) == 0) {
-                return a.localeCompare(b);
+            if(collectionToColor[a].localeCompare(collectionToColor[b]) != 0) {
+                return collectionToColor[a].localeCompare(collectionToColor[b]);
             }
+            return a.localeCompare(b);
         });
 
         for(let i = 0; i < selectionSort.length; i++) {

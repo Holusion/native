@@ -9,6 +9,8 @@ import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacit
 
 import RNFS from 'react-native-fs';
 
+import { FlingGestureHandler, State, Directions } from "react-native-gesture-handler";
+
 export default class ObjectScreen extends React.Component {
     activeModal(number) {
         this.setState({modalVisible: number})
@@ -128,6 +130,20 @@ export default class ObjectScreen extends React.Component {
                         </Row>
                         <Row size={5} style={styles.mainPanel}>
                             <StyleProvider style={getTheme()}>
+                        <FlingGestureHandler
+                                direction={Directions.RIGHT}
+                                onHandlerStateChange={({ nativeEvent }) => {
+                                    if (nativeEvent.state === State.ACTIVE) {
+                                        this._onPrevious();
+                                    }
+                                }}>
+                                    <FlingGestureHandler 
+                                    direction={Directions.LEFT}
+                                    onHandlerStateChange={({ nativeEvent }) => {
+                                        if (nativeEvent.state === State.ACTIVE) {
+                                            this._onNext();
+                                        }
+                                    }}>
                                 <ScrollView style= {{marginTop: 16, flex: 1}} ref={(scroller) => this.scroller = scroller}>
                                     <View style={{height: this.screenHeight}}>
                                         <Image source={{uri: `${imageUri}`, scale: 1}} style={{resizeMode: 'contain', width:400, height:400, marginTop: 8, marginBottom: 8, alignSelf: "center"}}/>
@@ -142,6 +158,8 @@ export default class ObjectScreen extends React.Component {
                                         <YAMLObjectComponent style={styles.content} data={this.obj}/>
                                     </View>
                                 </ScrollView>
+                            </FlingGestureHandler>
+                            </FlingGestureHandler>
                             </StyleProvider>
                         </Row>
                     </Col>

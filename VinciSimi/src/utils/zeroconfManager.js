@@ -29,5 +29,8 @@ export const manage = (callbackAdd, callbackRemove) => {
 }
 
 export const getUrl = () => {
-    return allProducts[0].url[0];
+    if(allProducts) {
+        return allProducts[0].url[0];
+    }
+    return null;
 }

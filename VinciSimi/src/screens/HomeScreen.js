@@ -84,8 +84,8 @@ export default class HomeScreen extends React.Component {
 
         assetManager.manage();
         zeroconfManager.manage(() => {
-            // this.setState({url: zeroconfManager.getUrl()})
-            this.setState({url: '192.168.1.127'});
+            this.setState({url: zeroconfManager.getUrl()})
+            // this.setState({url: '192.168.1.127'});
         });
     }
 
