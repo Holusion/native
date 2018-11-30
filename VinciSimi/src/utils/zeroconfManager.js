@@ -29,7 +29,7 @@ export const manage = (callbackAdd, callbackRemove) => {
 }
 
 export const getUrl = () => {
-    if(allProducts) {
+    if(allProducts[0]) {
         return allProducts[0].url[0];
     }
     return null;

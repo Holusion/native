@@ -59,7 +59,7 @@ class SearchProductComponent extends React.Component {
 export default class HomeScreen extends React.Component {
 
     render() {
-        let display = this.state.url ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
+        let display = this.state.url || this.state.offlineMode ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
         if(this.state.url) {
             networkExtension.activeOnlyLoop(this.state.url);
         }
@@ -79,11 +79,19 @@ export default class HomeScreen extends React.Component {
         this._onVisite = this._onVisite.bind(this);
 
         this.state = {
-            url: null
+            url: null,
+            offlineMode: false
         }
+
+        const offline = setTimeout(() => {
+            this.setState(() => {
+                return {offlineMode: true}
+            })
+        }, 5000);
 
         assetManager.manage();
         zeroconfManager.manage(() => {
+            clearTimeout(offline);
             this.setState({url: zeroconfManager.getUrl()})
             // this.setState({url: '192.168.1.127'});
         });
