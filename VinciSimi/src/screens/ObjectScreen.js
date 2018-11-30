@@ -180,8 +180,8 @@ export default class ObjectScreen extends React.Component {
     _onNext() {
         this.scrollToImage();
 
-        if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length && zeroconfManager.getUrl()) {
-            network.desactiveAll(this.props.navigation.getParam('url'));
+        if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
+            if(zeroconfManager.getUrl()) network.desactiveAll(this.props.navigation.getParam('url'));
             this.props.navigation.push('End');
         } else {
             let nextVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex + 1];
