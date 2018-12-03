@@ -37,6 +37,24 @@ fetch = (url, obj) => {
   }
 }
 
+jest.mock("react-native-zeroconf", () => {
+  return class Zeroconf {
+    status = "";
+
+    scan = (service, protocol, locale) => {
+      this.status = 'resolved';
+    }
+    on = (event, callback) => {
+      if(this.status == 'resolved' && event == "resolved") {
+        callback({name: 'foo', addresses: ["192.168.0.1"]})
+      }
+      if(event == 'remove' && this.status == 'remove') {
+        callback("foo")
+      }
+    }
+  }
+})
+
 const init = () => {
   playlist = [
     {name: "foo.mp4", rank: 0, path: '/', active: true},
@@ -86,6 +104,13 @@ test('.play', async () => {
   expect(currentPlay).toEqual('baz.mp4');
 })
 
-test('.getUrl when no url found', async () => {
+test('.getUrl when no url found', () => {
   expect(network.getUrl()).toBe(null);
+})
+
+test('.getUrl when resolved', () => {
+  let callbackCalled = false;
+  network.connect(() => callbackCalled = true);
+  expect(network.getUrl()).toEqual("192.168.0.1");
+  expect(callbackCalled).toEqual(true);
 })
