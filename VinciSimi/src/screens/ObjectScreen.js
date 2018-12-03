@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     },
     content: {
         color: "#00334cff",
-        fontSize: 24,
+        fontSize: 32,
         padding: 24
     },
     mainPanel: {

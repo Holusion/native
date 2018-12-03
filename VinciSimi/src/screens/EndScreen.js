@@ -17,7 +17,7 @@ export default class EndScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            setTimeout(() => this.props.navigation.push("Home"), 5000);
+            setTimeout(() => this.props.navigation.push("Home"), 1000);
         })
     }
 }

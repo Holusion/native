@@ -22,7 +22,7 @@ export default class ThemeSelectorScreen extends React.Component {
         let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
 
         let collectionToColor = {};
-
+        
         for(let obj in assetManager.yamlCache) {
             if(assetManager.yamlCache[obj].color) {
                 collectionToColor[assetManager.yamlCache[obj].Collections] = assetManager.yamlCache[obj].color;
@@ -30,12 +30,6 @@ export default class ThemeSelectorScreen extends React.Component {
         }
 
         let selectionSort = actualSelection.slice();
-        selectionSort.sort((a, b) => {
-            if(collectionToColor[a].localeCompare(collectionToColor[b]) != 0) {
-                return collectionToColor[a].localeCompare(collectionToColor[b]);
-            }
-            return a.localeCompare(b);
-        });
 
         for(let i = 0; i < selectionSort.length; i++) {
             let isPurple = (i % 2 == 0);
@@ -90,7 +84,6 @@ export default class ThemeSelectorScreen extends React.Component {
         objs.sort((a,b) => {
             return a.localeCompare(b);
         })
-        console.error(objs)
 
         if(realType === "Theme") {
             this.props.navigation.push('Object', {
