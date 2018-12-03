@@ -85,3 +85,7 @@ test('.play', async () => {
   await network.play("localhost", 'baz.mp4');
   expect(currentPlay).toEqual('baz.mp4');
 })
+
+test('.getUrl when no url found', async () => {
+  expect(network.getUrl()).toBe(null);
+})
