@@ -34,6 +34,21 @@ export const getUrl = () => {
     return null;
 }
 
+const playlistPutActive = (url, elem, active) => {
+    fetch(`http://${url}:3000/playlist`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: elem.name,
+            rank: elem.rank,
+            path: elem.path,
+            active: active
+        })
+    });
+}
+
 export const getPlaylist = async (url) => {
     try {
         let res = await fetch(`http://${url}:3000/playlist`);
@@ -44,68 +59,31 @@ export const getPlaylist = async (url) => {
 }
 
 export const desactiveAll = async (url) => {
-    let playlist = await getPlaylist(url);
-    playlist.filter(o => o.active == true).forEach(elem => {
-        try {
-            fetch(`http://${url}:3000/playlist`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: elem.name,
-                    rank: elem.rank,
-                    path: elem.path,
-                    active: false
-                })
-            });
-        } catch(error) {
-            console.error("Something wrong when deactivate all at " + url);
-        }
-    })
+    await activeWithPredicate(url, elem => elem.active, false);
+}
+
+export const desactive = async (url, name) => {
+    await activeWithPredicate(url, elem => elem.name == name, false);
 }
 
 export const activeAll = async (url) => {
-    let playlist = await getPlaylist(url);
-    playlist.filter(o => o.active == false).forEach(elem => {
-        try {
-            fetch(`http://${url}:3000/playlist`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: elem.name,
-                    rank: elem.rank,
-                    path: elem.path,
-                    active: true
-                })
-            });
-        } catch(error) {
-            console.error("Something wrong when deactivate all at " + url);
-        }
-    })
+    await activeWithPredicate(url, elem => !elem.active, true);
 }
 
 export const active = async (url, name) => {
+    await activeWithPredicate(url, (elem) => elem.name == name, true);
+}
+
+export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
-    playlist = playlist.filter(o => o.name == name)
-    try {
-        fetch(`http://${url}:3000/playlist`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: playlist[0].name,
-                rank: playlist[0].rank,
-                path: playlist[0].path,
-                active: true
-            })
-        });
-    } catch(error) {
-        console.error("Something wrong when activation at " + url);
-    }
+    playlist.filter(elem => predicate(elem)).forEach(async elem => {
+        console.log(elem)
+        try {
+            playlistPutActive(url, elem, active);
+        } catch(error) {
+            console.error("Something wrong when activation at " + url);
+        }
+    });
 }
 
 export const play = async (url, name) => {
