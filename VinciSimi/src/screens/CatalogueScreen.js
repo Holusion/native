@@ -56,8 +56,11 @@ const customTheme = {
     'holusion.Playlist': {
         'holusion.IconCard': {
             container: {
-                backgroundColor: "#00334cff",
+                backgroundColor: "#fff",
+                borderColor: "#00334cff",
+                borderWidth: 2,
                 margin: 4,
+                padding: 0,
                 width: 300,
                 height: 300,
                 shadowColor: '#000',
@@ -69,6 +72,16 @@ const customTheme = {
                 width: 300 * 0.6,
                 height: 300 * 0.6,
                 resizeMode: 'contain'
+            },
+            titleContainer: {
+                backgroundColor: "#00334cff",
+                width: '100%',
+                height: '25%',
+                flex: 1,
+                justifyContent: 'center',
+                marginLeft: 0,
+                paddingLeft: 4,
+                paddingRight: 4
             }
         }
     }
