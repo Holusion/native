@@ -24,8 +24,8 @@ export default class CatalogueScreen extends React.Component {
     }
 
     render() {
-        let content = this.props.navigation.getParam("objList"); 
-        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
+        let content = this.props.navigation.getParam("objList");
+        let titles = content.map(e => assetManager.yamlCache[e].Titre);
 
         return(
             <Container>

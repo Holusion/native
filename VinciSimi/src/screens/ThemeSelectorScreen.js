@@ -87,6 +87,10 @@ export default class ThemeSelectorScreen extends React.Component {
     _onSelection(name) {
         let realType = this.props.navigation.getParam('type') === "catalogue" ? 'Collections' : 'Theme'
         let objs = assetManager.getObjectFromType(realType, name);
+        objs.sort((a,b) => {
+            return a.localeCompare(b);
+        })
+        console.error(objs)
 
         if(realType === "Theme") {
             this.props.navigation.push('Object', {
