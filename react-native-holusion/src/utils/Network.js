@@ -13,13 +13,13 @@ export const connect = (callbackAdd, callbackRemove) => {
             }
             allProducts.push(obj);
             if(callbackAdd) {
-                callbackAdd();
+                callbackAdd(service);
             }
         });
         zeroconf.on('remove', (name) => {
             allProducts = allProducts.filter(elem => elem.name != name);
             if(callbackRemove) {
-                callbackRemove();
+                callbackRemove(name);
             }
         });
     } catch(e) {
