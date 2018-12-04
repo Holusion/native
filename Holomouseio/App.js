@@ -4,8 +4,10 @@ import HomeScreen from './src/screens/HomeScreen';
 import ThemeSelectorScreen from './src/screens/ThemeSelectorScreen';
 import EndScreen from './src/screens/EndScreen';
 import CatalogueScreen from './src/screens/CatalogueScreen';
+import { Root } from 'native-base';
+import React, { Component } from 'react';
 
-export default createStackNavigator({
+const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: () => ({
@@ -39,3 +41,8 @@ export default createStackNavigator({
     })
   }
 })
+
+export default () => 
+  <Root>
+    <AppNavigator />
+  </Root>

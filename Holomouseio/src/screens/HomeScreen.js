@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Content, Container, StyleProvider, Button, Grid, Col } from 'native-base';
+import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
 import {network, IconCard, assetManager, zeroconfManager} from '@holusion/react-native-holusion'
 
@@ -10,14 +10,9 @@ class DefaultComponent extends React.Component {
     }
 
     render() {
-        let display = []
-        if(this.props.offlineMode) {
-            display = <Text style={{color: '#ae2573ff', fontSize:24}}>Mode hors ligne</Text>
-        }
         return (
             <Content>
                 <View>
-                    {display}
                     <Image style={styles.images} source={require("../../assets/images/logo.png")} />
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
                     <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
@@ -67,8 +62,18 @@ class SearchProductComponent extends React.Component {
 
 export default class HomeScreen extends React.Component {
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+        }
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({color: 'red'})
+    }
+
     render() {
-        let display = this.state.url || this.state.offlineMode ? <DefaultComponent offlineMode={this.state.offlineMode} url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
+        let display = this.state.url || this.state.offlineMode ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
         
         if(this.state.url) {
             network.activeAll(this.state.url);
@@ -97,17 +102,28 @@ export default class HomeScreen extends React.Component {
             this.setState(() => {
                 return {offlineMode: true};
             })
+            Toast.show({
+                text: "Aucun produit trouvé",
+                buttonText: "Ok",
+                position: 'top'
+            })
         }, 5000);
-
+        
         assetManager.manage();
         zeroconfManager.manage(() => {
             clearTimeout(launchOfflineMode);
             let url = zeroconfManager.getUrl();
+            this.props.navigation.setParams({color: 'green'})
             this.setState(() => {
                 return {url: url, offlineMode: false}
             });
         }, () => {
-            
+            Toast.show({
+                text: "Produit déconnecté",
+                buttonText: "Ok",
+                position: 'top'
+            })
+            this.props.navigation.push('HomeScreen');
         })
     }
 
