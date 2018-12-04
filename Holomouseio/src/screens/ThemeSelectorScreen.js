@@ -1,10 +1,16 @@
 import React from 'react';
-import { Content } from 'native-base';
+import { Content, Icon } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
 import { network, ListItem, assetManager, zeroconfManager } from '@holusion/react-native-holusion'
 
 export default class ThemeSelectorScreen extends React.Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+        }
+    }
 
     componentDidMount() {
         if(zeroconfManager.getUrl()) {
@@ -56,6 +62,10 @@ export default class ThemeSelectorScreen extends React.Component {
         })
 
         this._onSelection = this._onSelection.bind(this);
+
+        if(zeroconfManager.getUrl()) {
+            this.props.navigation.setParams({'color': 'green'});
+        }
     }
 
     _onSelection(name) {

@@ -1,11 +1,17 @@
 import React from 'react'
 
-import { Container, StyleProvider } from 'native-base';
+import { Container, StyleProvider, Icon } from 'native-base';
 import { network, Playlist, assetManager, zeroconfManager } from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
 export default class CatalogueScreen extends React.Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+        }
+    }
 
     componentDidMount() {
         if(zeroconfManager.getUrl()) {
@@ -37,6 +43,9 @@ export default class CatalogueScreen extends React.Component {
     constructor(props, context) {
       super(props, context);
       this._onPlayslistItem = this._onPlayslistItem.bind(this);
+      if(zeroconfManager.getUrl()) {
+        this.props.navigation.setParams({'color': 'green'});
+      }
     }
 }
 

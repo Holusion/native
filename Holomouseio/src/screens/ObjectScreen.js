@@ -12,6 +12,13 @@ import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handl
 import RNFS from 'react-native-fs';
 
 export default class ObjectScreen extends React.Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+        }
+    }
+
     activeModal(number) {
         this.setState({modalVisible: number})
     }
@@ -219,6 +226,10 @@ export default class ObjectScreen extends React.Component {
 
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
+
+        if(zeroconfManager.getUrl()) {
+            this.props.navigation.setParams({'color': 'green'})
+        }
     }
 }
 
