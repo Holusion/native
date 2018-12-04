@@ -16,7 +16,10 @@ export class Playlist extends React.Component {
             if(this.props.titles) {
                 title = this.props.titles[i];
             }
-            let imageUri = `file://${RNFS.DocumentDirectoryPath}/${current}.jpg`;
+            let imageUri = `http://${this.props.url}:3000/medias/${current}?thumb=true`
+            if(this.props.localImage) {
+                imageUri = `file://${RNFS.DocumentDirectoryPath}/${current}.jpg`;
+            }
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
                     <IconCard source={{uri: imageUri, scale: 1}} content={title}/>
