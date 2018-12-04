@@ -19,6 +19,7 @@ const findAllYamlFile = () => {
     return RNFS.readDir(RNFS.DocumentDirectoryPath)
     .then(files => {
         let yamlFiles = files.filter(f => f.name.endsWith('.yaml'));
+        yamlFiles.sort((a, b) => a.name.localeCompare(b.name));
         let allFiles = Promise.all(yamlFiles.map(f => RNFS.readFile(f.path)))
         
         return allFiles.then(result => {
