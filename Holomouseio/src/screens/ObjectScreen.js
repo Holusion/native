@@ -41,6 +41,9 @@ export default class ObjectScreen extends React.Component {
     renderModal(number) {
         let display = null;
         if(number === 0) {
+            let refs = Object.keys(this.obj).filter(elem => {
+                return !elem.includes("Texte", 0) && elem != "logo" && this.obj[elem];
+            })
             display = refs.map((s, index) => {
                 if(this.obj && this.obj[s]) {
                     return <Text style={styles.modalText} key={index}>{s}: {this.obj[s]}</Text>
@@ -106,6 +109,19 @@ export default class ObjectScreen extends React.Component {
         return modals;
     }
 
+    renderLogo() {
+        let logos = this.obj['logo'];
+        let images =  logos.map((elem, index) => {
+            return <Col>
+                <Image jey={index} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${elem}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+            </Col>
+        })
+
+        return <Grid style={{margin: 8}}>
+            {images}
+        </Grid>
+    }
+
     scrollToText = () => {
         let scrollYPos = this.screenHeight * 1;
         this.scroller.scrollTo({x: 0, y: scrollYPos})
@@ -159,6 +175,7 @@ export default class ObjectScreen extends React.Component {
                                                 <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#ae2573ff'}}/>
                                             </TouchableOpacity>
                                             <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                                            {this.renderLogo()}
                                         </View>
                                     </ScrollView>
                                     </FlingGestureHandler>
@@ -210,6 +227,7 @@ export default class ObjectScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+
         let currentObj = this.props.navigation.getParam('objList')[this.props.navigation.getParam('objId')];
         this.obj = assetManager.yamlCache[currentObj]
 
@@ -233,7 +251,7 @@ export default class ObjectScreen extends React.Component {
     }
 }
 
-const refs = ['Titre', 'Collections', 'Theme', "Numéro d'inventaire", 'Propriétaire', 'Unité', 'Collection', 'Dépositaire', 'Discipline', 'Date ou Période', 'Artiste', 'Fabricant', 'Matériau', 'Type'];
+// const refs = ['Titre', 'Collections', 'Theme', "Numéro d'inventaire", 'Propriétaire', 'Unité', 'Collection', 'Dépositaire', 'Discipline', 'Date ou Période', 'Artiste', 'Fabricant', 'Matériau', 'Type'];
 const styles = StyleSheet.create({
     modal: {
         margin: 16,
