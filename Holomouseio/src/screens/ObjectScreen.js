@@ -110,36 +110,38 @@ export default class ObjectScreen extends React.Component {
     }
 
     renderLogo() {
-        let logos = this.obj['logo'];
-        let display = [];
-        let row = [];
-        for(let i = 0; i < logos.length; i++) {
-            row.push(
-                <Col>
-                    <Image jey={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
-                </Col>
-            )
-            if(i % 3 == 0 && i != 0) {
+        if(this.obj['logo']) {
+            let logos = this.obj['logo'];
+            let display = [];
+            let row = [];
+            for(let i = 0; i < logos.length; i++) {
+                row.push(
+                    <Col>
+                        <Image jey={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+                    </Col>
+                )
+                if(i % 3 == 0 && i != 0) {
+                    display.push(
+                        <Row>
+                            {row}
+                        </Row>
+                    )
+                    row = [];
+                }
+            }
+
+            if(row.length > 0) {
                 display.push(
                     <Row>
                         {row}
                     </Row>
                 )
-                row = [];
             }
-        }
 
-        if(row.length > 0) {
-            display.push(
-                <Row>
-                    {row}
-                </Row>
-            )
+            return <Grid style={{margin: 8}}>
+                {display}
+            </Grid>
         }
-
-        return <Grid style={{margin: 8}}>
-            {display}
-        </Grid>
     }
 
     scrollToText = () => {
