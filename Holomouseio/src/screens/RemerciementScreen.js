@@ -37,14 +37,14 @@ export default class RemerciementScreen extends React.Component {
             }
 
             row.push(
-                <Col>
+                <Col key={i}>
                     <Image key={i} source={{uri: uri, scale: 1}} style={{width: width, height: height, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
                 </Col>
             )
 
             if(i % 3 == 0) {
                 display.push(
-                    <Row>
+                    <Row key={i}>
                         {row}
                     </Row>
                 )
@@ -54,7 +54,7 @@ export default class RemerciementScreen extends React.Component {
 
         if(row.length > 0) {
             display.push(
-                <Row>
+                <Row key={logo.length}>
                     {row}
                 </Row>
             )
