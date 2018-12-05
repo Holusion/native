@@ -17,12 +17,17 @@ class DefaultComponent extends React.Component {
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
                     <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
                         <TouchableOpacity onPress={this.props.visite}>
-                            <IconCard source={require("../../assets/icons/musee.png")} content="Visite" style={styles.card} />
+                            <IconCard source={require("../../assets/icons/musee.png")} content="Visite" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.props.catalogue}>
                             <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
                         </TouchableOpacity>
                     </View>
+                    <TouchableOpacity onPress={this.props.remerciement}>
+                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 32, backgroundColor: '#ae2573ff', borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
+                            <Text style={{color: 'white', fontSize: 28}}>Remerciement</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </Content>
         )
@@ -73,7 +78,7 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        let display = this.state.url || this.state.offlineMode ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue}/> : <SearchProductComponent />
+        let display = this.state.url || this.state.offlineMode ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent />
         
         if(this.state.url) {
             network.activeAll(this.state.url);
@@ -92,6 +97,7 @@ export default class HomeScreen extends React.Component {
         super(props, context);
         this._onCatalogue = this._onCatalogue.bind(this);
         this._onVisite = this._onVisite.bind(this);
+        this._onRemerciement = this._onRemerciement.bind(this);
 
         this.state = {
             url: null,
@@ -134,6 +140,10 @@ export default class HomeScreen extends React.Component {
     _onCatalogue() {
         this.props.navigation.push('Selection', {type: 'catalogue', url: this.state.url})
     }
+
+    _onRemerciement() {
+        this.props.navigation.push('Remerciement');
+    }
 }
 const {height: screenHeight} = Dimensions.get("window");
 
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,
-        marginBottom: 100
+        marginBottom: 50
     }
 });
 

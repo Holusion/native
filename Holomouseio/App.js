@@ -6,6 +6,7 @@ import EndScreen from './src/screens/EndScreen';
 import CatalogueScreen from './src/screens/CatalogueScreen';
 import { Root } from 'native-base';
 import React, { Component } from 'react';
+import RemerciementScreen from './src/screens/RemerciementScreen';
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -13,6 +14,12 @@ const AppNavigator = createStackNavigator({
     navigationOptions: () => ({
       title: "Holomouseio - Accueil",
       headerLeft: null
+    })
+  },
+  Remerciement: {
+    screen: RemerciementScreen,
+    navigationOptions: () => ({
+      title: "Holomouseio - Remerciement"
     })
   },
   Selection: {

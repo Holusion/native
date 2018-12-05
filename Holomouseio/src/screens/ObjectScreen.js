@@ -117,7 +117,7 @@ export default class ObjectScreen extends React.Component {
             for(let i = 0; i < logos.length; i++) {
                 row.push(
                     <Col>
-                        <Image jey={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+                        <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
                     </Col>
                 )
                 if(i % 3 == 0 && i != 0) {
