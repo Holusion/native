@@ -15,7 +15,7 @@ export default class RemerciementScreen extends React.Component {
 
     renderLogo() {
         let allLogosFromYaml = Object.keys(assetManager.yamlCache).map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);
-        let logo = ['holusion.png'];
+        let logo = ['holusion.png', 'comue.png'];
         for(let i = 0; i < allLogosFromYaml.length; i++) {
             for(let j = 0; j < allLogosFromYaml[i].length; j++) {
                 let elem = allLogosFromYaml[i][j]
