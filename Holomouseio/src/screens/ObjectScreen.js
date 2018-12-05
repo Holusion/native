@@ -225,7 +225,7 @@ export default class ObjectScreen extends React.Component {
             if(zeroconfManager.getUrl()) {
                 network.desactiveAll(this.props.navigation.getParam('url'));
             }
-            this.props.navigation.push('End');
+            this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')});
         } else {
             let nextVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex + 1];
             this.obj = assetManager.yamlCache[nextVideo];

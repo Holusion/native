@@ -1,11 +1,17 @@
 import React from 'react'
-import { Container, Content, Grid, Col, Row } from 'native-base';
+import { Container, Content, Grid, Col, Row, Icon } from 'native-base';
 import { Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { assetManager } from '@holusion/react-native-holusion';
+import { assetManager, zeroconfManager } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs';
 
 export default class RemerciementScreen extends React.Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+        }
+    }
 
     renderLogo() {
         let allLogosFromYaml = Object.keys(assetManager.yamlCache).map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);
@@ -63,7 +69,7 @@ export default class RemerciementScreen extends React.Component {
         return (
             <Container>
                 <Content>
-                    <Text style={styles.catchphrase}>Remerciement</Text>
+                    <Text style={styles.catchphrase}>Remerciements</Text>
                     <ScrollView style={{marginLeft: 32, marginRight: 32}}>
                         <Text style={styles.content}>
                             <Text style={{fontWeight: 'bold'}}>Université de Lille{"\n"}</Text>
@@ -95,6 +101,13 @@ export default class RemerciementScreen extends React.Component {
                 </Content>
             </Container>
         )
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        if(zeroconfManager.getUrl()) {
+            this.props.navigation.setParams({'color': 'green'})
+        }
     }
 }
 
