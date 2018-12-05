@@ -113,7 +113,8 @@ export default class RemerciementScreen extends React.Component {
 
 const styles = StyleSheet.create({
     content: {
-        fontSize: 24
+        fontSize: 32,
+        color: "#3c0c27ff"
     },
     catchphrase: {
         color: '#ae2573ff',
