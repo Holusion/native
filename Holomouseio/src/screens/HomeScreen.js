@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
-import {network, IconCard, assetManager, zeroconfManager} from '@holusion/react-native-holusion'
-
-import firebase from 'react-native-firebase';
+import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
+import {network, IconCard, zeroconfManager, assetManager} from '@holusion/react-native-holusion'
+import FirebaseController from '../utils/FirebaseController'
 
 class DefaultComponent extends React.Component {
     componentDidMount() {
@@ -56,11 +55,16 @@ class SearchProductComponent extends React.Component {
 
     render() {
 
+        let mainContent = "Recherche du produit...";
+        if(this.props.loading) {
+            mainContent = "Téléchargement des fichiers..."
+        }
+
         return (
             <Content>
                 <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
                     <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: "#ae2573ff", fontSize: 32}}>Recherche du produit...</Text>
+                    <Text style={{textAlign: 'center', color: "#ae2573ff", fontSize: 32}}>{mainContent}</Text>
                 </View>
             </Content>
         )
@@ -75,12 +79,24 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.props.navigation.setParams({color: 'red'})
+    async componentDidMount() {
+        this.props.navigation.setParams({color: 'red'});
+        let netInfo = await NetInfo.getConnectionInfo();
+        if(netInfo.type && netInfo.type != 'none') {
+            let firebaseController = new FirebaseController("Holomouseio");
+            await firebaseController.getFiles([
+                {name: 'projects', properties: ['uri', 'thumb']},
+                {name: 'logos', properties: ['logo']}
+            ]);
+        }
+        assetManager.manage();
+        this.setState(() => {
+            return {loading: false}
+        })
     }
 
     render() {
-        let display = this.state.url || this.state.offlineMode ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent />
+        let display = !this.state.loading && (this.state.url || this.state.offlineMode) ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent loading={this.state.loading} />
         
         if(this.state.url) {
             network.activeAll(this.state.url);
@@ -103,7 +119,8 @@ export default class HomeScreen extends React.Component {
 
         this.state = {
             url: null,
-            offlineMode: false
+            offlineMode: false,
+            loading: true
         }
 
         const launchOfflineMode = setTimeout(() => {
@@ -117,7 +134,6 @@ export default class HomeScreen extends React.Component {
             })
         }, 5000);
         
-        assetManager.manage();
         zeroconfManager.manage(() => {
             clearTimeout(launchOfflineMode);
             let url = zeroconfManager.getUrl();
@@ -133,6 +149,7 @@ export default class HomeScreen extends React.Component {
             })
             this.props.navigation.push('HomeScreen');
         })
+
     }
 
     _onVisite() {
