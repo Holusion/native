@@ -4,6 +4,8 @@ import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Ic
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated } from 'react-native';
 import {network, IconCard, assetManager, zeroconfManager} from '@holusion/react-native-holusion'
 
+import firebase from 'react-native-firebase';
+
 class DefaultComponent extends React.Component {
     componentDidMount() {
         this.spring();

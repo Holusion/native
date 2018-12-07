@@ -7,6 +7,7 @@ import CatalogueScreen from './src/screens/CatalogueScreen';
 import { Root } from 'native-base';
 import React, { Component } from 'react';
 import RemerciementScreen from './src/screens/RemerciementScreen';
+import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -48,6 +49,10 @@ const AppNavigator = createStackNavigator({
     })
   }
 })
+
+const ref = firebase.storage().ref();
+const dirRef = ref.child('Holomouseio');
+
 
 export default () => 
   <Root>
