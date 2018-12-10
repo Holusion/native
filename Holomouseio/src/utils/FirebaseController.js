@@ -26,7 +26,7 @@ export default class FirebaseController {
         for(let collect of collections) {
             try {
                 let value = await this.collection.collection(collect['name']).get();
-
+                             
                 value.forEach((document) => {
                     let documentData = document.data();
         
@@ -40,10 +40,9 @@ export default class FirebaseController {
         
                 });
             } catch(err) {
-
+                console.error(err);
             }
         }
-
         return Promise.all(files);
     }
 }
