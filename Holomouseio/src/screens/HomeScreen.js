@@ -139,8 +139,9 @@ export default class HomeScreen extends React.Component {
             let url = zeroconfManager.getUrl();
             this.props.navigation.setParams({color: 'green'})
             this.setState(() => {
-                return {url: url, offlineMode: false}
+                return {url: url, offlineMode: false, loading: false}
             });
+            assetManager.manage();
         }, () => {
             Toast.show({
                 text: "Produit déconnecté",

@@ -8,12 +8,13 @@ export default class FirebaseController {
         this.collection = firebase.firestore().collection('applications').doc(projectName);
         this.unsubscribe = null;
     }
-
+    
     downloadFile(ref, name) {
         return new Promise((resolve, reject) => {
             ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`).then(() => {
                 resolve();
             }).catch(err => {
+                console.error(err);
                 resolve();
             })
         })
@@ -23,6 +24,7 @@ export default class FirebaseController {
         let storage = firebase.storage();
         let files = [];
 
+        
         for(let collect of collections) {
             try {
                 let value = await this.collection.collection(collect['name']).get();
