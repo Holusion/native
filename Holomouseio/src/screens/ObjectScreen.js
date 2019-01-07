@@ -81,7 +81,10 @@ export default class ObjectScreen extends React.Component {
         }
 
         return (
-            <View style={{display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
+            <View style={{display: 'flex', flexDirection: "column", justifyContent: 'center'}}>
+                <Button key={0} onPress={() => this.activeModal(0)} style={{backgroundColor: '#ae2573ff', margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Référence de l'objet</Text>
+                </Button>
             {
                 compls.map((element, index) => {
                     const elemSplit = element.split(' ');

@@ -5,6 +5,7 @@ import { Container, Content, Icon, Grid, Col, Row, Button } from 'native-base'
 import { zeroconfManager, assetManager } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs'
+import Markdown from 'react-native-markdown-renderer';
 
 export default class EndScreen extends React.Component {
 
@@ -68,7 +69,8 @@ export default class EndScreen extends React.Component {
 
     renderText() {
         let txt = this.props.navigation.getParam('objList').map(elem => assetManager.yamlCache[elem]['Texte remerciement']).filter(elem => elem != null)[0];
-        return <Text style={styles.content}>{txt}</Text>
+        return <Markdown>{txt}</Markdown>
+        // <Text style={styles.content}>{txt}</Text>
     }
 
     render() {
