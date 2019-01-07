@@ -11,6 +11,7 @@ export default class FirebaseController {
     
     downloadFile(ref, name) {
         return new Promise((resolve, reject) => {
+            
             ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`).then(() => {
                 resolve();
             }).catch(err => {
@@ -23,7 +24,7 @@ export default class FirebaseController {
     async getFiles(collections) {
         let storage = firebase.storage();
         let files = [];
-
+        console.error(RNFS.DocumentDirectoryPath);
         
         for(let collect of collections) {
             try {

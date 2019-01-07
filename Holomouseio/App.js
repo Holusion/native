@@ -43,8 +43,7 @@ const AppNavigator = createStackNavigator({
   End: {
     screen: EndScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Fin",
-      headerLeft: null
+      title: "Holomouseio - Remerciement",
     })
   }
 })

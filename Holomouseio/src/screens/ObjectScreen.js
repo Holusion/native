@@ -82,10 +82,10 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.activeModal(0)}>
-                    <Text>Référence de l'objet</Text>
+                <Button onPress={() => this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')})}>
+                    <Text>Remerciement</Text>
                 </Button>
-                {
+                {/* {
                     compls.map((element, index) => {
                         const elemSplit = element.split(' ');
                         let number = parseInt(elemSplit[elemSplit.length - 1]);
@@ -93,7 +93,7 @@ export default class ObjectScreen extends React.Component {
                             <Text>Info compl {number}</Text>
                         </Button>
                     })
-                }
+                } */}
             </FooterTab>
         );
     }
@@ -220,31 +220,21 @@ export default class ObjectScreen extends React.Component {
 
     _onNext() {
         this.scrollToImage()
-
-        if(this.state.currentVideoIndex + 1 >= this.props.navigation.getParam('objList').length) {
-            if(zeroconfManager.getUrl()) {
-                network.desactiveAll(this.props.navigation.getParam('url'));
-            }
-            this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')});
-        } else {
-            let nextVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex + 1];
-            this.obj = assetManager.yamlCache[nextVideo];
-            this.launchVideo(nextVideo);
-            this.setState({currentVideoIndex: this.state.currentVideoIndex + 1});
-        }
+        let index = (this.state.currentVideoIndex + 1) % this.props.navigation.getParam('objList').length
+        let nextVideo = this.props.navigation.getParam('objList')[index];
+        this.obj = assetManager.yamlCache[nextVideo];
+        this.launchVideo(nextVideo);
+        this.setState({currentVideoIndex: index});
     }
 
     _onPrevious() {
         this.scrollToImage();
+        let index = this.state.currentVideoIndex <= 0 ? this.props.navigation.getParam('objList').length - 1 : this.state.currentVideoIndex - 1;
 
-        if(this.state.currentVideoIndex <= 0) {
-            return;
-        } else {
-            let previousVideo = this.props.navigation.getParam('objList')[this.state.currentVideoIndex - 1];
-            this.obj = assetManager.yamlCache[previousVideo];
-            this.launchVideo(previousVideo);
-            this.setState({currentVideoIndex: this.state.currentVideoIndex - 1});
-        }
+        let previousVideo = this.props.navigation.getParam('objList')[index];
+        this.obj = assetManager.yamlCache[previousVideo];
+        this.launchVideo(previousVideo);
+        this.setState({currentVideoIndex: index});
     }
 
     constructor(props, context) {
@@ -273,7 +263,6 @@ export default class ObjectScreen extends React.Component {
     }
 }
 
-// const refs = ['Titre', 'Collections', 'Theme', "Numéro d'inventaire", 'Propriétaire', 'Unité', 'Collection', 'Dépositaire', 'Discipline', 'Date ou Période', 'Artiste', 'Fabricant', 'Matériau', 'Type'];
 const styles = StyleSheet.create({
     modal: {
         margin: 16,
