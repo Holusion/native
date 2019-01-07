@@ -78,9 +78,6 @@ export default class EndScreen extends React.Component {
                     <Text style={styles.catchphrase}>Remerciements</Text>
                     <ScrollView style={{marginLeft: 32, marginRight: 32, marginBottom: 32}}>
                         {this.renderText()}
-                        <Button large style={{backgroundColor: '#ae2573ff', alignSelf: 'center', width: 250, justifyContent: 'center'}} onPress={this._onAccueil}>
-                            <Text style={{color: 'white', fontSize: 24, fontWeight: 'bold', textAlign: 'center'}}>Revenir à l'accueil</Text>
-                        </Button>
                         {this.renderLogo()}
                     </ScrollView>
                 </Content>

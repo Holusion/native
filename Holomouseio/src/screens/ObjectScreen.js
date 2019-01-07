@@ -86,8 +86,8 @@ export default class ObjectScreen extends React.Component {
                 compls.map((element, index) => {
                     const elemSplit = element.split(' ');
                     let number = parseInt(elemSplit[elemSplit.length - 1]);
-                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: '#ae2573ff', margin: 4, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
-                        <Text style={{fontSize: 20}}>Info complémentaire {number}</Text>
+                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: '#ae2573ff', margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Info complémentaire {number}</Text>
                     </Button>
                 })
             }
@@ -133,13 +133,13 @@ export default class ObjectScreen extends React.Component {
             let row = [];
             for(let i = 0; i < logos.length; i++) {
                 row.push(
-                    <Col>
+                    <Col key={i}>
                         <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:150, height:150, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
                     </Col>
                 )
                 if(i % 3 == 0 && i != 0) {
                     display.push(
-                        <Row>
+                        <Row key={display.length}>
                             {row}
                         </Row>
                     )
@@ -149,7 +149,7 @@ export default class ObjectScreen extends React.Component {
 
             if(row.length > 0) {
                 display.push(
-                    <Row>
+                    <Row key={display.length}>
                         {row}
                     </Row>
                 )
