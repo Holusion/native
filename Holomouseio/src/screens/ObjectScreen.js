@@ -74,11 +74,28 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
-    generateFooter() {
+    generateComplButton() {
         let compls = [];
         if(this.obj) {
             compls = Object.keys(this.obj).filter(elem => elem.indexOf('compl') == 6); //#startsWith made something strange :/
         }
+
+        return (
+            <View style={{display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
+            {
+                compls.map((element, index) => {
+                    const elemSplit = element.split(' ');
+                    let number = parseInt(elemSplit[elemSplit.length - 1]);
+                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: '#ae2573ff', margin: 4, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
+                        <Text style={{fontSize: 20}}>Info complémentaire {number}</Text>
+                    </Button>
+                })
+            }
+            </View>
+        )
+    }
+
+    generateFooter() {
 
         return (
             <FooterTab>
@@ -197,6 +214,7 @@ export default class ObjectScreen extends React.Component {
                                                 <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#ae2573ff'}}/>
                                             </TouchableOpacity>
                                             <YAMLObjectComponent style={styles.content} data={this.obj}/>
+                                            {this.generateComplButton()}
                                             {this.renderLogo()}
                                         </View>
                                     </ScrollView>

@@ -24,7 +24,6 @@ export default class FirebaseController {
     async getFiles(collections) {
         let storage = firebase.storage();
         let files = [];
-        console.error(RNFS.DocumentDirectoryPath);
         
         for(let collect of collections) {
             try {
