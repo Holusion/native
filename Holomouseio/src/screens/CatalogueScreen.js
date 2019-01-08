@@ -34,7 +34,7 @@ export default class CatalogueScreen extends React.Component {
             <Container>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
-                    <Playlist titles={titles} content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <Playlist titles={titles} localImage content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
