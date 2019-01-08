@@ -135,13 +135,13 @@ export default {
   },
 
   // Footer
-  footerHeight: 100,
+  footerHeight: 55,
   footerDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
   footerPaddingBottom: 0,
 
   // FooterTab
   tabBarTextColor: platform === "ios" ? "#6b6b6b" : "#b3c7f9",
-  tabBarTextSize: platform === "ios" ? 24 : 24,
+  tabBarTextSize: platform === "ios" ? 20 : 20,
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
   tabBarActiveTextColor: platform === "ios" ? "#007aff" : "#fff",
