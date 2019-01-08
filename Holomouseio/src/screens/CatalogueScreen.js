@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, StyleProvider, Icon } from 'native-base';
-import { network, Playlist, assetManager, zeroconfManager } from '@holusion/react-native-holusion';
+import { network, Playlist, assetManager } from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
@@ -14,7 +14,7 @@ export default class CatalogueScreen extends React.Component {
     }
 
     componentDidMount() {
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             network.activeAll(this.props.navigation.getParam('url'));
         }
     }
@@ -43,7 +43,7 @@ export default class CatalogueScreen extends React.Component {
     constructor(props, context) {
       super(props, context);
       this._onPlayslistItem = this._onPlayslistItem.bind(this);
-      if(zeroconfManager.getUrl()) {
+      if(network.getUrl()) {
         this.props.navigation.setParams({'color': 'green'});
       }
     }

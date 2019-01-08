@@ -2,7 +2,7 @@ import React from 'react';
 import { Content, Icon } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { network, ListItem, assetManager, zeroconfManager } from '@holusion/react-native-holusion'
+import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
 
 export default class ThemeSelectorScreen extends React.Component {
 
@@ -13,7 +13,7 @@ export default class ThemeSelectorScreen extends React.Component {
     }
 
     componentDidMount() {
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             network.activeAll(this.props.navigation.getParam('url'));
         }
     }
@@ -55,14 +55,14 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            if(zeroconfManager.getUrl()) {
+            if(network.getUrl()) {
                 network.activeAll(this.props.navigation.getParam('url'));
             }
         })
 
         this._onSelection = this._onSelection.bind(this);
 
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             this.props.navigation.setParams({'color': 'green'});
         }
     }

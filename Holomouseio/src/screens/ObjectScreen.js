@@ -3,7 +3,7 @@ import { Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row,
 import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
-import { assetManager, network, zeroconfManager } from '@holusion/react-native-holusion'
+import { assetManager, network } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
@@ -24,8 +24,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     launchVideo(videoName) {
-        if(zeroconfManager.getUrl()) {
-            let productUrl = zeroconfManager.getUrl();
+        if(network.getUrl()) {
+            let productUrl = network.getUrl();
     
             network.desactiveAll(productUrl).then(elem => {
                 network.active(productUrl, `${videoName}.mp4`)
@@ -278,7 +278,7 @@ export default class ObjectScreen extends React.Component {
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
 
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

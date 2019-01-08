@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Content, Grid, Col, Row, Icon } from 'native-base';
 import { Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { assetManager, zeroconfManager } from '@holusion/react-native-holusion';
+import { assetManager, network } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs';
 
@@ -105,7 +105,7 @@ export default class RemerciementScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

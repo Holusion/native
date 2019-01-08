@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
-import {network, IconCard, zeroconfManager, assetManager} from '@holusion/react-native-holusion'
+import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
 import FirebaseController from '../utils/FirebaseController'
 
 class DefaultComponent extends React.Component {
@@ -134,9 +134,9 @@ export default class HomeScreen extends React.Component {
             })
         }, 5000);
         
-        zeroconfManager.manage(() => {
+        network.connect(() => {
             clearTimeout(launchOfflineMode);
-            let url = zeroconfManager.getUrl();
+            let url = network.getUrl();
             this.props.navigation.setParams({color: 'green'})
             this.setState(() => {
                 return {url: url, offlineMode: false, loading: false}

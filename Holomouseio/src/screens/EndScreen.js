@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Container, Content, Icon, Grid, Col, Row, Button } from 'native-base'
-import { zeroconfManager, assetManager } from '@holusion/react-native-holusion';
+import { assetManager, network } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs'
 
@@ -94,7 +94,7 @@ export default class EndScreen extends React.Component {
 
         this._onAccueil = this._onAccueil.bind(this);
 
-        if(zeroconfManager.getUrl()) {
+        if(network.getUrl()) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }
