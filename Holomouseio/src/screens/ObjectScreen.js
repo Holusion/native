@@ -1,5 +1,5 @@
 import React from 'react'
-import { Content, Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row, StyleProvider } from 'native-base';
+import { Footer, FooterTab, Text, Button, Container, Body, Icon, Grid, Col, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
@@ -103,7 +103,7 @@ export default class ObjectScreen extends React.Component {
         return (
             <FooterTab>
                 <Button onPress={() => this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')})}>
-                    <Text>Remerciement</Text>
+                    <Text>Remerciements</Text>
                 </Button>
                 {/* {
                     compls.map((element, index) => {
@@ -240,22 +240,22 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
-        this.scrollToImage()
         let index = (this.state.currentVideoIndex + 1) % this.props.navigation.getParam('objList').length
         let nextVideo = this.props.navigation.getParam('objList')[index];
         this.obj = assetManager.yamlCache[nextVideo];
         this.launchVideo(nextVideo);
         this.setState({currentVideoIndex: index});
+        this.scrollToImage()
     }
 
     _onPrevious() {
-        this.scrollToImage();
         let index = this.state.currentVideoIndex <= 0 ? this.props.navigation.getParam('objList').length - 1 : this.state.currentVideoIndex - 1;
-
+        
         let previousVideo = this.props.navigation.getParam('objList')[index];
         this.obj = assetManager.yamlCache[previousVideo];
         this.launchVideo(previousVideo);
         this.setState({currentVideoIndex: index});
+        this.scrollToImage();
     }
 
     constructor(props, context) {

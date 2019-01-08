@@ -50,6 +50,7 @@
 		839080FC809049549E7120B6 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE5C9C3B8D6457A908FCDD2 /* MaterialIcons.ttf */; };
 		886A4F285F33410B9D0773AB /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BC68757D4741C2A186700C /* libRNGestureHandler.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B6E51205C1374C6586C7247A /* libRNZeroconf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CC4E73FA04401399EBD075 /* libRNZeroconf.a */; };
 		D25537FD5A984BBAA05BC520 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FA24756C0A34CD58590A6FB /* Zocial.ttf */; };
 		D507D78DBAE244AF8695F8F4 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E91FFB1D73045C98CD928A0 /* Octicons.ttf */; };
 		D7F60DDDC39240B087786865 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC6C106255EC4ED99E37E370 /* SimpleLineIcons.ttf */; };
@@ -219,6 +220,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFirebase;
+		};
+		3A18657A21E4955800C30FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E295845E5996481D8CA23CA2 /* RNZeroconf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DE485BD1BDD49E400020698;
+			remoteInfo = RNZeroconf;
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -401,6 +409,8 @@
 		CD9F91751774441CBE255624 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		D857A0A9E9F942FFAF47511A /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		DACFBC2F44CD2771E21D87B6 /* libPods-Holomouseio-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E295845E5996481D8CA23CA2 /* RNZeroconf.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNZeroconf.xcodeproj; path = "../node_modules/react-native-zeroconf/ios/RNZeroconf.xcodeproj"; sourceTree = "<group>"; };
+		E3CC4E73FA04401399EBD075 /* libRNZeroconf.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNZeroconf.a; sourceTree = "<group>"; };
 		F05398AEDD5B4E67B68281F5 /* libPods-HolomouseioTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolomouseioTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C106255EC4ED99E37E370 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -434,6 +444,7 @@
 				05F79BAB0506CA25349B5472 /* libPods-Holomouseio.a in Frameworks */,
 				886A4F285F33410B9D0773AB /* libRNGestureHandler.a in Frameworks */,
 				F9C36CEDBD814683B9123B15 /* libRNFirebase.a in Frameworks */,
+				B6E51205C1374C6586C7247A /* libRNZeroconf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +609,7 @@
 			children = (
 				32BC68757D4741C2A186700C /* libRNGestureHandler.a */,
 				09591C2220284D94BA376BF0 /* libRNFirebase.a */,
+				E3CC4E73FA04401399EBD075 /* libRNZeroconf.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -614,6 +626,14 @@
 			isa = PBXGroup;
 			children = (
 				3A0CE73421E355E800A3F753 /* libRNFirebase.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A18657721E4955700C30FF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3A18657B21E4955800C30FF2 /* libRNZeroconf.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -653,6 +673,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				80BED0A46DFE42A7A3CAC8F3 /* RNGestureHandler.xcodeproj */,
 				1CBA52CE4CEB4ADCA220F8B0 /* RNFirebase.xcodeproj */,
+				E295845E5996481D8CA23CA2 /* RNZeroconf.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -913,6 +934,10 @@
 					ProductGroup = 3A0CE6EB21E3550500A3F753 /* Products */;
 					ProjectRef = 80BED0A46DFE42A7A3CAC8F3 /* RNGestureHandler.xcodeproj */;
 				},
+				{
+					ProductGroup = 3A18657721E4955700C30FF2 /* Products */;
+					ProjectRef = E295845E5996481D8CA23CA2 /* RNZeroconf.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1070,6 +1095,13 @@
 			fileType = archive.ar;
 			path = libRNFirebase.a;
 			remoteRef = 3A0CE73321E355E800A3F753 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3A18657B21E4955800C30FF2 /* libRNZeroconf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNZeroconf.a;
+			remoteRef = 3A18657A21E4955800C30FF2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1486,12 +1518,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = HolomouseioTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1516,12 +1550,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = HolomouseioTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1547,6 +1583,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = Holomouseio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1573,6 +1610,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = Holomouseio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1605,11 +1643,13 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = "Holomouseio-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1642,11 +1682,13 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = "Holomouseio-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1678,11 +1720,13 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = "Holomouseio-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1714,11 +1758,13 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-zeroconf/ios/RNZeroconf",
 				);
 				INFOPLIST_FILE = "Holomouseio-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

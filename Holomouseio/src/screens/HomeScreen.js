@@ -25,8 +25,8 @@ class DefaultComponent extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>
-                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 32, backgroundColor: '#ae2573ff', borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
-                            <Text style={{color: 'white', fontSize: 28}}>Remerciement</Text>
+                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: '#ae2573ff', borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
+                            <Text style={{color: 'white', fontSize: 28}}>Remerciements</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -103,11 +103,11 @@ export default class HomeScreen extends React.Component {
         }
 
         return (
-            <Container>
+            <Content enableResetScrollToCoords={false} disableKBDismissScroll={true}>
                 <StyleProvider style={customTheme}>
                     {display}     
                 </StyleProvider>
-            </Container>
+            </Content>
         )
     }
 
