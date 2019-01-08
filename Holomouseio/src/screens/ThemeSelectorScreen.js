@@ -31,8 +31,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
             allList.push(
                 <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
-                    <View>
-                        <Text style={[{color: color}, styles.selectionText]}>{title}</Text>
+                    <View style={{display: 'flex', flexDirection: 'column', justifyContent:'center'}}>
                         <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
                     </View>
                 </ListItem>
