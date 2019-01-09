@@ -7,6 +7,7 @@ import { assetManager, network } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
+import Markdown from 'react-native-markdown-renderer'
 
 
 import RNFS from 'react-native-fs';
@@ -189,7 +190,8 @@ export default class ObjectScreen extends React.Component {
                         return !elem.includes("Texte", 0) && elem != "logo" && this.obj[elem];
                     }).map((s, index) => {
                         if(this.obj && this.obj[s]) {
-                            return <Text style={styles.modalText} key={index}><Text style={{fontWeight: 'bold', color: '#3c0c27ff', fontSize: 24}}>{s}</Text>: {this.obj[s]}</Text>
+                            let txt = `__${s}__: ${this.obj[s]}`
+                            return <Markdown style={markdownText}>{txt}</Markdown>
                         }
                         return null;
                     })
@@ -208,7 +210,8 @@ export default class ObjectScreen extends React.Component {
                             </Col>
                             <Col>
                                 <Row size={1}>
-                                    <Text style={styles.title}>{this.obj['Titre']}</Text>
+                                    <Markdown style={markdownTitle}>{this.obj['Titre']}</Markdown>
+                                    {/* <Text style={styles.title}>{this.obj['Titre']}</Text> */}
                                 </Row>
                                 <Row size={5} style={styles.mainPanel}>
                                 <FlingGestureHandler
@@ -364,5 +367,24 @@ const styles = StyleSheet.create({
     },
     footer: {
 
+    }
+})
+
+const markdownTitle = StyleSheet.create({
+    text: {
+        color: "#ae2573ff",
+        fontSize: 28,
+        margin: 12,
+        textAlign: 'left'
+    }
+})
+
+const markdownText = StyleSheet.create({
+    text: {
+        textAlign: 'left',
+        color: '#3c0c27ff',
+        marginLeft: 32,
+        marginRight: 32,
+        fontSize: 24
     }
 })
