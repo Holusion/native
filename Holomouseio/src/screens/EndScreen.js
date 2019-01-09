@@ -28,9 +28,22 @@ export default class EndScreen extends React.Component {
             }
         }
 
+        let holusionUri = `file://${RNFS.DocumentDirectoryPath}/${logo[0]}`;
+        let lille1Uri = `file://${RNFS.DocumentDirectoryPath}/${logo[1]}`;
+        let headerSize = 250;
+        let header = <Row>
+            <Col>
+                <Image source={{uri: lille1Uri, scale: 1}} style={{width: headerSize, height: headerSize, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+            </Col>
+            <Col>
+                <Image source={{uri: holusionUri, scale: 1}} style={{width: headerSize, height: headerSize, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+            </Col>
+        </Row>
+
         let display = [];
+        display.push(header);
         let row = []
-        for(let i = 0; i < logo.length; i++) {
+        for(let i = 2; i < logo.length; i++) {
             let uri = `file://${RNFS.DocumentDirectoryPath}/${logo[i]}`;
             let width = 150;
             let height = 150;
@@ -45,7 +58,7 @@ export default class EndScreen extends React.Component {
                 </Col>
             )
 
-            if(i % 3 == 0) {
+            if((i - 2) % 3 == 0 && (i-2) != 0) {
                 display.push(
                     <Row>
                         {row}

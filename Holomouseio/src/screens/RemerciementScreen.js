@@ -25,9 +25,24 @@ export default class RemerciementScreen extends React.Component {
             }
         }
 
+        let holusionUri = `file://${RNFS.DocumentDirectoryPath}/${logo[0]}`;
+        let lille1Uri = `file://${RNFS.DocumentDirectoryPath}/${logo[2]}`;
+        let headerSize = 250;
+        let header = <Row>
+            <Col>
+                <Image source={{uri: lille1Uri, scale: 1}} style={{width: headerSize, height: headerSize, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+            </Col>
+            <Col>
+                <Image source={{uri: holusionUri, scale: 1}} style={{width: headerSize, height: headerSize, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+            </Col>
+        </Row>
+
         let display = [];
+        display.push(header)
         let row = []
-        for(let i = 0; i < logo.length; i++) {
+        for(let i = 1; i < logo.length; i++) {
+            if(logo[i] == "logo.png") continue;
+
             let uri = `file://${RNFS.DocumentDirectoryPath}/${logo[i]}`;
             let width = 150;
             let height = 150;
@@ -42,7 +57,7 @@ export default class RemerciementScreen extends React.Component {
                 </Col>
             )
 
-            if(i % 3 == 0) {
+            if((i - 1) % 3 == 0 && (i - 1) != 0) {
                 display.push(
                     <Row key={i}>
                         {row}
