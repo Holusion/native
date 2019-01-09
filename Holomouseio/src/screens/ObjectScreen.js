@@ -46,7 +46,7 @@ export default class ObjectScreen extends React.Component {
             })
             display = refs.map((s, index) => {
                 if(this.obj && this.obj[s]) {
-                    return <Text style={styles.modalText} key={index}>{s}: {this.obj[s]}</Text>
+                    return <Text style={styles.modalText} key={index}><Text style={{fontWeight: 'bold', color: '#3c0c27ff', fontSize: 24}}>{s}</Text>: {this.obj[s]}</Text>
                 }
                 return null;
             })
@@ -177,6 +177,26 @@ export default class ObjectScreen extends React.Component {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
 
+        let txt = <View>
+            <YAMLObjectComponent style={styles.content} data={this.obj}/>
+            {this.generateComplButton()}
+        </View>
+
+        if(this.props.navigation.getParam('type') == "catalogue") {
+            txt = <View>
+                {
+                    Object.keys(this.obj).filter(elem => {
+                        return !elem.includes("Texte", 0) && elem != "logo" && this.obj[elem];
+                    }).map((s, index) => {
+                        if(this.obj && this.obj[s]) {
+                            return <Text style={styles.modalText} key={index}><Text style={{fontWeight: 'bold', color: '#3c0c27ff', fontSize: 24}}>{s}</Text>: {this.obj[s]}</Text>
+                        }
+                        return null;
+                    })
+                }
+            </View>
+        }
+
         return (
             <Container>
                 {allModals}
@@ -216,8 +236,7 @@ export default class ObjectScreen extends React.Component {
                                             <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
                                                 <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#ae2573ff'}}/>
                                             </TouchableOpacity>
-                                            <YAMLObjectComponent style={styles.content} data={this.obj}/>
-                                            {this.generateComplButton()}
+                                            {txt}
                                             {this.renderLogo()}
                                         </View>
                                     </ScrollView>

@@ -77,12 +77,14 @@ export default class ThemeSelectorScreen extends React.Component {
             this.props.navigation.push('Object', {
                 objList: objs,
                 objId: 0,
-                url: this.props.navigation.getParam('url')
+                url: this.props.navigation.getParam('url'),
+                type: this.props.navigation.getParam('type')
             });
         } else {
             this.props.navigation.push("Catalogue", {
                 objList: objs,
-                url: this.props.navigation.getParam('url')
+                url: this.props.navigation.getParam('url'),
+                type: this.props.navigation.getParam('type')
             })
         }
     }

@@ -25,7 +25,8 @@ export default class CatalogueScreen extends React.Component {
         this.props.navigation.push('Object', {
             objList: this.props.navigation.getParam("objList"),
             objId: id,
-            url: this.props.navigation.getParam('url')
+            url: this.props.navigation.getParam('url'),
+            type: this.props.navigation.getParam('type')
         });
     }
 
