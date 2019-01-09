@@ -47,7 +47,8 @@ export default class ObjectScreen extends React.Component {
             })
             display = refs.map((s, index) => {
                 if(this.obj && this.obj[s]) {
-                    return <Text style={styles.modalText} key={index}><Text style={{fontWeight: 'bold', color: '#3c0c27ff', fontSize: 24}}>{s}</Text>: {this.obj[s]}</Text>
+                    let txt = `__${s}__: ${this.obj[s]}`
+                    return <Markdown style={markdownText} key={index}>{txt}</Markdown>
                 }
                 return null;
             })
@@ -170,7 +171,7 @@ export default class ObjectScreen extends React.Component {
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
 
         let txt = <View>
-            <YAMLObjectComponent style={styles.content} data={this.obj}/>
+            <YAMLObjectComponent style={markdownContent} data={this.obj}/>
             {this.generateComplButton()}
         </View>
 
@@ -358,6 +359,14 @@ const styles = StyleSheet.create({
     },
     footer: {
 
+    }
+})
+
+const markdownContent = StyleSheet.create({
+    text: {
+        color: "#3c0c27ff",
+        fontSize: 24,
+        padding: 24
     }
 })
 
