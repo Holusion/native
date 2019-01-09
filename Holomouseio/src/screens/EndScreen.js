@@ -70,7 +70,7 @@ export default class EndScreen extends React.Component {
 
     renderText() {
         let txt = this.props.navigation.getParam('objList').map(elem => assetManager.yamlCache[elem]['Texte remerciement']).filter(elem => elem != null)[0];
-        return <Markdown style={markdownText}>{txt}</Markdown>
+        return <Markdown style={markdown}>{txt}</Markdown>
     }
 
     render() {
@@ -116,7 +116,12 @@ const styles = StyleSheet.create({
     }
 });
 
-const markdownText = StyleSheet.create({
+const markdown = StyleSheet.create({
+    em: {
+        fontSize: 38,
+        fontStyle: 'bold',
+        color: '#ae2573ff',
+    },
     text: {
         fontSize: 32, 
         color: '#3c0c27ff'
