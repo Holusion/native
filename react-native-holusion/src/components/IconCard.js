@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Image, Text } from "react-native";
 import { connectStyle } from 'native-base'
 
+import Markdown from 'react-native-mardown-renderer'
+
 export class IconCard extends React.Component {
   render() {
     const styles = this.props.style
@@ -9,7 +11,7 @@ export class IconCard extends React.Component {
         <View style={styles.container}>
             <Image style={styles.icon} source={this.props.source}/>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>{this.props.content}</Text>
+                <Markdown style={markdownTitle}>{this.props.content}</Markdown>
             </View>
         </View>
     );
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginRight: 16,
         marginTop: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
 
     icon: {
@@ -46,8 +51,13 @@ const styles = StyleSheet.create({
     titleText: {
       color: 'white',
       textAlign: 'center',
-      fontSize: 26
+      fontSize: 26,
+      alignSelf: 'center'
     }
+})
+
+const markdownTitle = StyleSheet.create({
+    text: styles.titleText
 })
 
 export default connectStyle('holusion.IconCard', styles)(IconCard);
