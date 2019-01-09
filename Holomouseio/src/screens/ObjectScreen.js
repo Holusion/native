@@ -106,15 +106,6 @@ export default class ObjectScreen extends React.Component {
                 <Button onPress={() => this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')})}>
                     <Text>Remerciements</Text>
                 </Button>
-                {/* {
-                    compls.map((element, index) => {
-                        const elemSplit = element.split(' ');
-                        let number = parseInt(elemSplit[elemSplit.length - 1]);
-                        return <Button key={index} onPress={() => this.activeModal(number)}>
-                            <Text>Info compl {number}</Text>
-                        </Button>
-                    })
-                } */}
             </FooterTab>
         );
     }
@@ -373,9 +364,9 @@ const styles = StyleSheet.create({
 const markdownTitle = StyleSheet.create({
     text: {
         color: "#ae2573ff",
-        fontSize: 28,
+        fontSize: 26,
         margin: 12,
-        textAlign: 'left'
+        textAlign: 'left',
     }
 })
 
