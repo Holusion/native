@@ -4,6 +4,8 @@ import { Text, StyleSheet, View } from 'react-native';
 
 import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
 
+import * as networkExtension from '../utils/networkExtension'
+
 export default class ThemeSelectorScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -14,7 +16,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
     componentDidMount() {
         if(network.getUrl()) {
-            network.activeAll(this.props.navigation.getParam('url'));
+            networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
 
@@ -56,7 +58,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
         this.props.navigation.addListener('willFocus', payload => {
             if(network.getUrl()) {
-                network.activeAll(this.props.navigation.getParam('url'));
+                networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
             }
         })
 

@@ -5,6 +5,8 @@ import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dim
 import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
 import FirebaseController from '../utils/FirebaseController'
 
+import * as networkExtension from '../utils/networkExtension';
+
 class DefaultComponent extends React.Component {
     componentDidMount() {
         this.spring();
@@ -99,7 +101,7 @@ export default class HomeScreen extends React.Component {
         let display = !this.state.loading && (this.state.url || this.state.offlineMode) ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent loading={this.state.loading} />
         
         if(this.state.url) {
-            network.activeAll(this.state.url);
+            networkExtension.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
         }
 
         return (

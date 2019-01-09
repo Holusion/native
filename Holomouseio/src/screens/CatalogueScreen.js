@@ -5,6 +5,8 @@ import { network, Playlist, assetManager } from '@holusion/react-native-holusion
 
 import { StyleSheet, Text } from 'react-native'
 
+import * as networkExtension from '../utils/networkExtension'
+
 export default class CatalogueScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -15,7 +17,7 @@ export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
         if(network.getUrl()) {
-            network.activeAll(this.props.navigation.getParam('url'));
+            networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
 
