@@ -57,7 +57,7 @@ export default class ObjectScreen extends React.Component {
             if(this.obj) {
                 text = this.obj[`Texte complémentaire ${number}`];
             }
-            display = <Text style={styles.modalText}>{text}</Text>
+            display = <Markdown style={markdownText}>{text}</Markdown>
         }
 
         return (

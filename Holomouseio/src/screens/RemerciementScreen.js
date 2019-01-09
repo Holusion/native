@@ -73,28 +73,28 @@ export default class RemerciementScreen extends React.Component {
                     <ScrollView style={{marginLeft: 32, marginRight: 32}}>
                         <Text style={styles.content}>
                             <Text style={{fontWeight: 'bold'}}>Université de Lille{"\n"}</Text>
-                            Sophie Braun, Chargée du patrimoine scientifique, Direction Culture{"\n"}
-                            Bernard Mikolajczyk, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
-                            Bernard Deleplanque, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
-                            Didier Devauchelle, Professeur d&#39;égyptologie, UMR 8164 HALMA{"\n"}
-                            Ghislaine Widmer, Maître de conférences en égyptologie, UMR 8164 HALMA{"\n"}
-                            Thomas Gamelin, Égyptologue, chargé de cours, UMR 8164 HALMA{"\n"}
-                            Jessie Cuvelier, Ingénieur d’études CNRS, UMR 8198 Évo-Éco-Paléo,{"\n"}
-                            Camille De Visscher, Chargée de médiation scientifique, Direction de la Valorisation de la Recherche{"\n"}{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Sophie Braun</Text>, Chargée du patrimoine scientifique, Direction Culture{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Bernard Mikolajczyk</Text>, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Bernard Deleplanque</Text>, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Didier Devauchelle</Text>, Professeur d&#39;égyptologie, UMR 8164 HALMA{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Ghislaine Widmer</Text>, Maître de conférences en égyptologie, UMR 8164 HALMA{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Thomas Gamelin</Text>, Égyptologue, chargé de cours, UMR 8164 HALMA{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Jessie Cuvelier</Text>, Ingénieur d’études CNRS, UMR 8198 Évo-Éco-Paléo,{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Camille De Visscher</Text>, Chargée de médiation scientifique, Direction de la Valorisation de la Recherche{"\n"}{"\n"}
 
                             <Text style={{fontWeight: 'bold'}}>Palais des Beaux-Arts de Lille{"\n"}</Text>
-                            Fleur Morfoisse, égyptologue, conservateur en chef, Antiquités / Arts décoratifs, Palais des Beaux-Arts de Lille{"\n"}
-                            Karine Dautel, titre{"\n"}{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Fleur Morfoisse</Text>, égyptologue, conservateur en chef, Antiquités / Arts décoratifs, Palais des Beaux-Arts de Lille{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Karine Dautel</Text>, titre{"\n"}{"\n"}
 
                             <Text style={{fontWeight: 'bold'}}>Centre historique minier de Lewarde{"\n"}</Text>
-                            Amy Benadiba, directrice-conservatrice{"\n"}{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Amy Benadiba</Text>, directrice-conservatrice{"\n"}{"\n"}
 
                             <Text style={{fontWeight: 'bold'}}>Holusion{"\n"}</Text>
-                            Thibault Guillaumont, Co-fondateur{"\n"}
-                            Yann Dubois, Chef de projet informatique et technique{"\n"}{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Thibault Guillaumont</Text>, Co-fondateur{"\n"}
+                            <Text style={{fontWeight: 'bold'}}>Yann Dubois</Text>, Chef de projet informatique et technique{"\n"}{"\n"}
 
                             <Text style={{fontWeight: 'bold'}}>ComUE Lille Nord de France / &amp; / Muséomix Nord{"\n"}</Text>
-                            Antoine Matrion, Chargé du patrimoine scientifique, Service Culture
+                            <Text style={{fontWeight: 'bold'}}>Antoine Matrion</Text>, Chargé du patrimoine scientifique, Service Culture
                         </Text>
                         {this.renderLogo()}
                     </ScrollView>

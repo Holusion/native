@@ -4,6 +4,8 @@ import { Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Container, Content, Icon, Grid, Col, Row, Button } from 'native-base'
 import { assetManager, network } from '@holusion/react-native-holusion';
 
+import Markdown from 'react-native-markdown-renderer'
+
 import RNFS from 'react-native-fs'
 
 export default class EndScreen extends React.Component {
@@ -68,7 +70,7 @@ export default class EndScreen extends React.Component {
 
     renderText() {
         let txt = this.props.navigation.getParam('objList').map(elem => assetManager.yamlCache[elem]['Texte remerciement']).filter(elem => elem != null)[0];
-        return <Text style={styles.content}>{txt}</Text>
+        return <Markdown style={markdownText}>{txt}</Markdown>
     }
 
     render() {
@@ -113,3 +115,10 @@ const styles = StyleSheet.create({
         marginBottom: 50
     }
 });
+
+const markdownText = StyleSheet.create({
+    text: {
+        fontSize: 32, 
+        color: '#3c0c27ff'
+    }
+})
