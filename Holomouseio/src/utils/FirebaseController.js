@@ -31,15 +31,18 @@ export default class FirebaseController {
                              
                 value.forEach((document) => {
                     let documentData = document.data();
-        
-                    for(let prop of collect['properties']) {
-                        let uri = documentData[prop];
-                        let uriRef = storage.refFromURL(uri);
-                        let uriSplit = uri.split('/');
-                        let name = uriSplit[uriSplit.length - 1];
-                        files.push(this.downloadFile(uriRef, name));
+                    let hide = documentData['hide'];
+                    if(!hide) {
+                        for(let prop of collect['properties']) {
+                            if(prop != "hide") {
+                                let uri = documentData[prop];
+                                let uriRef = storage.refFromURL(uri);
+                                let uriSplit = uri.split('/');
+                                let name = uriSplit[uriSplit.length - 1];
+                                files.push(this.downloadFile(uriRef, name));
+                            }
+                        }
                     }
-        
                 });
             } catch(err) {
                 console.error(err);
