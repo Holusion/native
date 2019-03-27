@@ -6,6 +6,7 @@ import { network, Playlist, assetManager } from '@holusion/react-native-holusion
 import { StyleSheet, Text } from 'react-native'
 
 import * as networkExtension from '../utils/networkExtension'
+import * as Config from '../utils/Config'
 
 export default class CatalogueScreen extends React.Component {
 
@@ -54,7 +55,7 @@ export default class CatalogueScreen extends React.Component {
 
 const styles = StyleSheet.create({
     catchPhrase: {
-        color: "#ae2573ff",
+        color: Config.primaryColor,
         fontSize: 32,
         margin: 24,
         textAlign: 'left'
@@ -67,7 +68,7 @@ const customTheme = {
             container: {
                 backgroundColor: "#fff",
                 borderWidth: 2,
-                borderColor: "#ae2573ff",
+                borderColor: Config.primaryColor,
                 margin: 4,
                 padding: 0,
                 shadowColor: '#000',
@@ -81,7 +82,7 @@ const customTheme = {
                 resizeMode: 'contain'
             },
             titleContainer: {
-                backgroundColor: "#ae2573ff",
+                backgroundColor: Config.primaryColor,
                 width: '100%',
                 height: '25%',
                 flex: 1,

@@ -9,6 +9,7 @@ import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacit
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
 
+import * as Config from '../utils/Config'
 
 import RNFS from 'react-native-fs';
 
@@ -84,14 +85,14 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <View style={{display: 'flex', flexDirection: "column", justifyContent: 'center'}}>
-                <Button key={0} onPress={() => this.activeModal(0)} style={{backgroundColor: '#ae2573ff', margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
+                <Button key={0} onPress={() => this.activeModal(0)} style={{backgroundColor: Config.primaryColor, margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
                     <Text style={{fontSize: 18, fontWeight: 'bold'}}>Référence de l'objet</Text>
                 </Button>
             {
                 compls.map((element, index) => {
                     const elemSplit = element.split(' ');
                     let number = parseInt(elemSplit[elemSplit.length - 1]);
-                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: '#ae2573ff', margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
+                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: Config.primaryColor, margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
                         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Info complémentaire {number}</Text>
                     </Button>
                 })
@@ -224,12 +225,12 @@ export default class ObjectScreen extends React.Component {
                                         <View style={{height: this.screenHeight}}>
                                             <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
                                             <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
-                                                <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: '#ae2573ff'}} />
+                                                <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: Config.primaryColor}} />
                                             </TouchableOpacity>
                                         </View>
                                         <View>
                                             <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
-                                                <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: '#ae2573ff'}}/>
+                                                <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: Config.primaryColor}}/>
                                             </TouchableOpacity>
                                             {txt}
                                             {this.renderLogo()}
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         textAlign: "left",
-        color: '#3c0c27ff',
+        color: Config.secondaryColor,
         marginLeft: 32,
         marginRight: 32,
         fontSize: 24
@@ -326,7 +327,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     content: {
-        color: "#3c0c27ff",
+        color: Config.secondaryColor,
         fontSize: 24,
         padding: 24
     },
@@ -345,14 +346,14 @@ const styles = StyleSheet.create({
     },
     rightIcon: {
         fontSize: 100,
-        color: '#ae2573ff'
+        color: Config.primaryColor
     },
     rightContent: {
-        color: '#3c0c27ff',
+        color: Config.secondaryColor,
         fontSize: 16
     }, 
     title: {
-        color: "#ae2573ff",
+        color: Config.primaryColor,
         fontSize: 28,
         margin: 12,
         textAlign: 'left'
@@ -364,7 +365,7 @@ const styles = StyleSheet.create({
 
 const markdownContent = StyleSheet.create({
     text: {
-        color: "#3c0c27ff",
+        color: Config.secondaryColor,
         fontSize: 24,
         padding: 24
     }
@@ -372,7 +373,7 @@ const markdownContent = StyleSheet.create({
 
 const markdownTitle = StyleSheet.create({
     text: {
-        color: "#ae2573ff",
+        color: Config.primaryColor,
         fontSize: 26,
         margin: 12,
         textAlign: 'left',
@@ -382,7 +383,7 @@ const markdownTitle = StyleSheet.create({
 const markdownText = StyleSheet.create({
     text: {
         textAlign: 'left',
-        color: '#3c0c27ff',
+        color: Config.secondaryColor,
         marginLeft: 32,
         marginRight: 32,
         fontSize: 24

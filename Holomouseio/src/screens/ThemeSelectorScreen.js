@@ -5,6 +5,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
 
 import * as networkExtension from '../utils/networkExtension'
+import * as Config from '../utils/Config'
 
 export default class ThemeSelectorScreen extends React.Component {
 
@@ -28,8 +29,8 @@ export default class ThemeSelectorScreen extends React.Component {
 
         for(let i = 0; i < actualSelection.length; i++) {
             let isPurple = (i % 2 == 0);
-            let backgroundColor = isPurple ? "#ae2573ff" : null;
-            let color = isPurple ? "white" : "#3c0c27ff";
+            let backgroundColor = isPurple ? Config.primaryColor : null;
+            let color = isPurple ? "white" : Config.secondaryColor;
 
             allList.push(
                 <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
@@ -92,7 +93,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
 const styles = StyleSheet.create({
     catchPhrase: {
-        color: "#ae2573ff",
+        color: Config.primaryColor,
         fontSize: 32,
         margin: 24,
         textAlign: 'left'

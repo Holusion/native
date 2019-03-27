@@ -5,6 +5,8 @@ import { assetManager, network } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs';
 
+import * as Config from '../utils/Config'
+
 export default class RemerciementScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -129,10 +131,10 @@ export default class RemerciementScreen extends React.Component {
 const styles = StyleSheet.create({
     content: {
         fontSize: 32,
-        color: "#3c0c27ff"
+        color: Config.secondaryColor
     },
     catchphrase: {
-        color: '#ae2573ff',
+        color: Config.primaryColor,
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,

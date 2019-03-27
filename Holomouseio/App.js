@@ -8,42 +8,44 @@ import { Root } from 'native-base';
 import React, { Component } from 'react';
 import RemerciementScreen from './src/screens/RemerciementScreen';
 
+import * as Config from './src/utils/Config';
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Accueil",
+      title: Config.projectName + " - Accueil",
       headerLeft: null
     })
   },
   Remerciement: {
     screen: RemerciementScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Remerciement"
+      title: Config.projectName + " - Remerciement"
     })
   },
   Selection: {
     screen: ThemeSelectorScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Sélection"
+      title: Config.projectName + " - Sélection"
     })
   },
   Catalogue: {
     screen: CatalogueScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Catalogue"
+      title: Config.projectName + " - Catalogue"
     })
   },
   Object: {
     screen: ObjectScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Contenus"
+      title: Config.projectName + " - Contenus"
     })
   },
   End: {
     screen: EndScreen,
     navigationOptions: () => ({
-      title: "Holomouseio - Remerciement",
+      title: Config.projectName + " - Remerciement",
     })
   }
 })

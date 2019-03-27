@@ -4,6 +4,7 @@ import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Ic
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
 import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
 import FirebaseController from '../utils/FirebaseController'
+import * as Config from '../utils/Config'
 
 import * as networkExtension from '../utils/networkExtension';
 
@@ -27,7 +28,7 @@ class DefaultComponent extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>
-                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: '#ae2573ff', borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
+                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
                             <Text style={{color: 'white', fontSize: 28}}>Remerciements</Text>
                         </View>
                     </TouchableOpacity>
@@ -66,7 +67,7 @@ class SearchProductComponent extends React.Component {
             <Content>
                 <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
                     <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: "#ae2573ff", fontSize: 32}}>{mainContent}</Text>
+                    <Text style={{textAlign: 'center', color: Config.primaryColor, fontSize: 32}}>{mainContent}</Text>
                 </View>
             </Content>
         )
@@ -85,7 +86,7 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.setParams({color: 'red'});
         let netInfo = await NetInfo.getConnectionInfo();
         if(netInfo.type && netInfo.type != 'none') {
-            let firebaseController = new FirebaseController("Holomouseio");
+            let firebaseController = new FirebaseController(Config.projectName);
             await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
         marginRight: 16
     },
     catchphrase: {
-        color: '#ae2573ff',
+        color: Config.primaryColor,
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
 const customTheme = {
     'holusion.IconCard': {
         container: {
-            backgroundColor: "#ae2573ff",
+            backgroundColor: Config.primaryColor,
             width: 300,
             height: 300,
             shadowColor: '#000',

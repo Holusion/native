@@ -8,6 +8,8 @@ import Markdown from 'react-native-markdown-renderer'
 
 import RNFS from 'react-native-fs'
 
+import * as Config from '../utils/Config'
+
 export default class EndScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -118,10 +120,10 @@ export default class EndScreen extends React.Component {
 const styles = StyleSheet.create({
     content: {
         fontSize: 32, 
-        color: '#3c0c27ff'
+        color: Config.secondaryColor
     },
     catchphrase: {
-        color: '#ae2573ff',
+        color: Config.primaryColor,
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,
@@ -133,10 +135,10 @@ const markdown = StyleSheet.create({
     em: {
         fontSize: 38,
         fontStyle: 'bold',
-        color: '#ae2573ff',
+        color: Config.primaryColor,
     },
     text: {
         fontSize: 32, 
-        color: '#3c0c27ff'
+        color: Config.secondaryColor
     }
 })
