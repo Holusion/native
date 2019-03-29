@@ -31,7 +31,7 @@ export default class ThemeSelectorScreen extends React.Component {
         
         for(let obj in assetManager.yamlCache) {
             if(assetManager.yamlCache[obj].color) {
-                collectionToColor[assetManager.yamlCache[obj].Collections] = assetManager.yamlCache[obj].color;
+                collectionToColor[assetManager.yamlCache[obj].Theme] = assetManager.yamlCache[obj].color;
             }
         }
 

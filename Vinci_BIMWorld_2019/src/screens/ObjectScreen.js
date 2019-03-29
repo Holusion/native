@@ -245,11 +245,11 @@ export default class ObjectScreen extends React.Component {
                                 <Text style={styles.rightContent}>Objet suivant</Text>
                             </Col>
                         </Grid>
-                <StyleProvider style={getTheme()}>
+                {/* <StyleProvider style={getTheme()}>
                     <Footer style={styles.footer}>
                         {this.generateFooter()}
                     </Footer>
-                </StyleProvider>
+                </StyleProvider> */}
             </Container>
         )
     }
