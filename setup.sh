@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if test -z "$1" ;then
+  echo "USAGE: setup.sh <project-name>"
+  exit 1
+fi
+
 react-native init $1
 cd $1
 echo "{
@@ -19,7 +24,7 @@ echo "{
   \"dependencies\": {
     \"@holusion/react-native-holusion\": \"^0.0.6\",
     \"markdown-it-attrs\": \"^2.3.2\",
-    \"native-base\": \"^2.8.1\",
+    \"native-base\": \"2.8.1\",
     \"react\": \"16.6.0-alpha.8af6728\",
     \"react-native\": \"0.57.3\",
     \"react-native-firebase\": \"^5.1.1\",
@@ -27,6 +32,7 @@ echo "{
     \"react-native-gesture-handler\": \"^1.0.10\",
     \"react-native-markdown-renderer\": \"^3.2.8\",
     \"react-native-share\": \"^1.1.3\",
+    \"react-native-vector-icons\": \"^6.4.2\",
     \"react-native-zeroconf\": \"^0.9.0\",
     \"react-navigation\": \"^2.18.3\",
     \"react-navigation-redux-helpers\": \"^2.0.6\"
@@ -84,14 +90,11 @@ target '$1-tvOS' do
 end" >> ./ios/Podfile
 echo "Run pod"
 cd ./ios
+pod update
 pod install
 cd ..
 echo "Link react dependencies"
-react-native link react-native-holusion
-react-native link react-native-fs
-react-native link react-native-zeroconf
-react-native link react-native-gesture-handler
-react-native link native-base
+react-native link
 echo "Copy src"
 cp -R ../Holomouseio/native-base-theme ./
 cp -R ../Holomouseio/src ./
@@ -99,8 +102,8 @@ cp -R ../Holomouseio/assets ./
 cp ../Holomouseio/App.js ./App.js
 cp ../Holomouseio/index.js ./index.js
 cp ../Holomouseio/GoogleService-Info.plist ./
-echo "Install third party"
-rm -rf ./node_modules/react-native/third-party
-cd node_modules/react-native/scripts/ && ./ios-install-third-party.sh && cd ../../../
-rm -r ~/.rncache/
-cd node_modules/react-native/third-party/glog-0.3.5/ && ./configure --host arm-apple-darwin && cd ../../../../
+echo "Link react-native dependencies"
+rm -rf ./android/app/src/debug/
+react-native link
+echo "Open xcodeproj"
+open ios/$1.xcworkspace &

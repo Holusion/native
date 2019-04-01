@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 const markdown = StyleSheet.create({
     em: {
         fontSize: 38,
-        fontStyle: 'bold',
+        fontWeight: 'bold',
         color: Config.primaryColor,
     },
     text: {
