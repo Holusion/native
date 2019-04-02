@@ -19,6 +19,8 @@ Lancez le build. Une autre erreur devrait apparaître. Cliquez sur l'erreur, un 
 return NULL
 ```
 
+source: https://github.com/facebook/react-native/issues/16106
+
 Ajoutez le fichier GoogleService-Info.plist (File> Add file to) et dans AppDelegate.m, remplacez "Holomouseio" par le nom de votre projet. Puis lancez le build.
 
 ## Configurer le projet
