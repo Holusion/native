@@ -11,17 +11,19 @@ bash setup.sh <project-name>
 Attendez que la fin de l'exécution et l'ouverture du projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
 puis dans l'onglet Signing, sélectionnez le compte Holusion. Faire de même dans la cible Test (à gauche de Général, sélectionnez project-nameTest)).
 
+Ajoutez le fichier GoogleService-Info.plist (File> Add file to)
+
 Pensez à changer les quelques paramètre permettant de forcer le build sur Ipad et de forcer le landscape.
 
-Lancez le build. Une autre erreur devrait apparaître. Cliquez sur l'erreur, un fichier va alors s'ouvrir, il suffit de remplacer la ligne provoquant l'erreur par : 
+Lancez le build. Une erreur devrait apparaître. Cliquez sur l'erreur, un fichier va alors s'ouvrir, il suffit de remplacer la ligne provoquant l'erreur par : 
 
 ```
-return NULL
+return NULL;
 ```
 
 source: https://github.com/facebook/react-native/issues/16106
 
-Ajoutez le fichier GoogleService-Info.plist (File> Add file to) et dans AppDelegate.m, remplacez "Holomouseio" par le nom de votre projet. Puis lancez le build.
+Puis lancez le build.
 
 ## Configurer le projet
 
