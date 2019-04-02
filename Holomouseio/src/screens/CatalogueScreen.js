@@ -8,6 +8,9 @@ import { StyleSheet, Text } from 'react-native'
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 
+/**
+ * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
+ */
 export default class CatalogueScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {

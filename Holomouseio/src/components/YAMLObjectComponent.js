@@ -4,6 +4,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Markdown from 'react-native-markdown-renderer'
 
+/**
+ * This component give the renderer for parsed yaml file
+ */
 export default class YAMLObjectComponent extends React.Component {
 
     render() {

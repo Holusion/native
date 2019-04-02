@@ -7,6 +7,9 @@ import RNFS from 'react-native-fs';
 
 import * as Config from '../utils/Config'
 
+/**
+ * This screen renders the remerciement page
+ */
 export default class RemerciementScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {

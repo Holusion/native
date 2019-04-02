@@ -7,6 +7,9 @@ import { network, ListItem, assetManager } from '@holusion/react-native-holusion
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 
+/**
+ * Selection theme are rendered as list with to seperate color
+ */
 export default class ThemeSelectorScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {

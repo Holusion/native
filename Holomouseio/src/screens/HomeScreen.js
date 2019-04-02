@@ -8,6 +8,9 @@ import * as Config from '../utils/Config'
 
 import * as networkExtension from '../utils/networkExtension';
 
+/**
+ * Default view, when all file download or product found
+ */
 class DefaultComponent extends React.Component {
     componentDidMount() {
         this.spring();
@@ -54,6 +57,9 @@ class DefaultComponent extends React.Component {
     }
 }
 
+/**
+ * This view appears when application search a product or if it downloads the files from firebase
+ */
 class SearchProductComponent extends React.Component {
 
     render() {
@@ -74,6 +80,9 @@ class SearchProductComponent extends React.Component {
     }
 }
 
+/**
+ * Encapsulate the two other view and change view when it's necessary
+ */
 export default class HomeScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {

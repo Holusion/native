@@ -13,6 +13,11 @@ import * as Config from '../utils/Config'
 
 import RNFS from 'react-native-fs';
 
+/**
+ * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
+ * the controller (on the connected product). It will deactivate all file and activate the current video associated to the object.
+ * It manage the modal renderering when footer button are clicked too
+ */
 export default class ObjectScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
