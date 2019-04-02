@@ -8,7 +8,7 @@ import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 
 /**
- * Selection theme are rendered as list with to seperate color
+ * Selection theme are rendered as list with two seperate color 
  */
 export default class ThemeSelectorScreen extends React.Component {
 
