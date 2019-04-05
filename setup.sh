@@ -13,7 +13,7 @@ echo "Install node dependencies"
 npm install
 
 echo "Copy AppDelegate"
-cp ../Holomouseio/ios/Holomouseio/AppDelegate.m ./ios/$1/AppDelegate.m
+cp ../Holomouseio_Template/ios/Holomouseio_Template/AppDelegate.m ./ios/$1/AppDelegate.m
 
 echo "Create Podfile"
 sed -e "s/{{name}}/$1/" ../_template/Podfile >> ./ios/Podfile
@@ -28,12 +28,12 @@ echo "Link react dependencies"
 react-native link
 
 echo "Copy src"
-cp -R ../Holomouseio/native-base-theme ./
-cp -R ../Holomouseio/src ./
-cp -R ../Holomouseio/assets ./
-cp ../Holomouseio/App.js ./App.js
-cp ../Holomouseio/index.js ./index.js
-cp ../Holomouseio/GoogleService-Info.plist ./
+cp -R ../Holomouseio_Template/native-base-theme ./
+cp -R ../Holomouseio_Template/src ./
+cp -R ../Holomouseio_Template/assets ./
+cp ../Holomouseio_Template/App.js ./App.js
+cp ../Holomouseio_Template/index.js ./index.js
+cp ../Holomouseio_Template/GoogleService-Info.plist ./
 
 echo "Link react-native dependencies"
 rm -rf ./android/app/src/debug/
