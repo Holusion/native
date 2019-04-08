@@ -2,6 +2,30 @@
 
 Holomouseio est à l'origine une application créer pour l'université de Lille dans le cadre d'un accord DRAC. L'objectif était de numériser des objets muséaux et de les faire apparaître en hologramme. L'application ajoute une dimension interactive, permettant de visualiser des collections en sélectionnant un objet particulier ou en mode visite.
 
+## Hiérarchie
+
+Il y a deux projet principaux :
+
+- Holomouseio_Template: template permettant de créer une application type Holomouseio. Le template est directement testable via XCode
+- react-native-holusion: API permettant de faire le pont entre l'application et les informations externe comme le dialogue réseau
+
+### Hoomouseio_Template
+
+L'application est composé de plusieurs dossier
+
+- **ios**: contient tout les fichiers nécessaire pour l'éxécution sur XCode, le fichier Podfile donne des dépendances qu'il faut installer et qui ne peuvent pas être simplement linker. L'éxécution de `pod install` va mettre à jour le fichier <nom-projet>.xcworkspace, le fichier à ouvrir dans XCode. 
+- **android**: contient tout les fichiers nécessaire pour l'éxécution sur android
+- **assets**: contient les assets de l'application, seul le dossiers icons sera importer (les autre objets étant téléchargé via Firebase)
+- **native-base-theme**: contient les informations de thèmes pour les objets provenant de native-base
+- **src**: contient les sources du projet
+  - **components**: contient les composants, les composants sont des morceaux que l'on ajoute aux écrans
+  - **screens**: contient les écrans
+  - **utils**: contient de la logique utile tels qu'une extension de l'api réseau pa exemple
+
+### react-native-holusion
+
+- **src**: contient les sources de l'API
+
 ## Dépendances
 
 ### React-native
@@ -20,13 +44,13 @@ Nous utilisons Firebase pour stocker les fichiers nécessaire à l'application p
 
 Nous utilisons react-navigation pour naviguer entre les écrans. On peut alors passer des propriétés par navigation en utilisant la méthode push :
 
-```
+```javascript
 this.props.navigation.push("MyScreen", {foo: "bar"})
 ```
 
 On les récupère avec getParam(string) :
 
-```
+```javascript
 this.bar = this.props.navigation.getParam("foo");
 ```
 
@@ -36,7 +60,7 @@ this.bar = this.props.navigation.getParam("foo");
 
 Chaques composant a des propriété et un état. La différence entre les deux est assez fine. Les prop sont immutable dans le composant, pour les modifier, il faut les modifier dans le composant qui l'utilise. Les state vont forcer le rendu du composant lorsque celui-ci change, on peut alors passer des valeur de state dans les prop d'un composant utilsé. Par exemple :
 
-```
+```javascript
 state {
     foo: true;
 }
