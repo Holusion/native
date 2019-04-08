@@ -1,12 +1,14 @@
 import React from 'react'
 
 import { Container, StyleProvider, Icon } from 'native-base';
-import { network, Playlist, assetManager } from '@holusion/react-native-holusion';
+import { network, assetManager } from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
+import PlaylistComponent from '../components/PlaylistComponent'
+import { Playlist } from '../../../react-native-holusion/src/components/Playlist';
 
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
@@ -41,7 +43,7 @@ export default class CatalogueScreen extends React.Component {
             <Container>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
                 <StyleProvider style={customTheme}>
-                    <Playlist titles={titles} localImage content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <PlaylistComponent titles={titles} playlist={this.playlist} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
@@ -53,6 +55,7 @@ export default class CatalogueScreen extends React.Component {
       if(network.getUrl()) {
         this.props.navigation.setParams({'color': 'green'});
       }
+      this.playlist = new Playlist(network.getUrl(), this.props.navigation.getParam("objList"), true);
     }
 }
 

@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
-import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
+import {network, assetManager} from '@holusion/react-native-holusion'
 import FirebaseController from '../utils/FirebaseController'
+import IconCardComponent from '../components/IconCardComponent'
 import * as Config from '../utils/Config'
 
 import * as networkExtension from '../utils/networkExtension';
@@ -24,10 +25,10 @@ class DefaultComponent extends React.Component {
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
                     <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
                         <TouchableOpacity onPress={this.props.visite}>
-                            <IconCard source={require("../../assets/icons/musee.png")} content="Visite" />
+                            <IconCardComponent source={require("../../assets/icons/musee.png")} content="Visite" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
+                            <IconCardComponent source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>

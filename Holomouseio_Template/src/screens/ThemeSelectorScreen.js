@@ -2,7 +2,8 @@ import React from 'react';
 import { Content, Icon } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
+import { network, assetManager } from '@holusion/react-native-holusion'
+import ListItemComponent from "../components/ListItemComponent";
 
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
@@ -36,11 +37,11 @@ export default class ThemeSelectorScreen extends React.Component {
             let color = isPurple ? "white" : Config.secondaryColor;
 
             allList.push(
-                <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
+                <ListItemComponent key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
                     <View style={{display: 'flex', flexDirection: 'column', justifyContent:'center'}}>
                         <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
                     </View>
-                </ListItem>
+                </ListItemComponent>
             );
         }
 
