@@ -10,6 +10,10 @@ légende : nom(valeur par défault): <description>
 
 ## prop
 
+- navigation.getParam("url"): l'url du produit
+- navigation.getParam("objList"): la liste objets appartenant au thème sélectionné
+- navigation.getParam("type"): le type de la carte sélectionnée dans HomeScreen
+
 ## method
 
 ### constructor(props, context)

@@ -13,6 +13,11 @@ currentVideoIndex(this.props.navigation.getParam('objId')): l'objet sélectionn�
 
 ## prop
 
+- navigation.getParam("url"): l'url du produit
+- navigation.getParam("objList"): la liste objets appartenant au thème sélectionné
+- navigation.getParam("objId"): id de l'objet à afficher lors de l'appariition de la fenêtre
+- navigation.getParam("type"): le type de la carte sélectionnée dans HomeScreen
+
 ## method
 
 ### activeModal(number)
