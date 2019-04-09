@@ -1,13 +1,11 @@
 import * as network from './src/utils/Network'
 import * as assetManager from './src/utils/AssetManager'
-import ListItem from './src/components/ListItem'
-import IconCard from './src/components/IconCard'
+import PlaylistItem from './src/components/PlaylistItem'
 import Playlist from './src/components/Playlist'
 
 export {
   network,
   assetManager,
-  ListItem,
-  IconCard,
+  PlaylistItem,
   Playlist
 }

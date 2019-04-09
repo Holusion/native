@@ -1,6 +1,5 @@
 import RNFS from 'react-native-fs';
 
-import IconCard from './IconCard';
 import * as network from '../utils/Network';
 import PlaylistItem from './PlaylistItem';
 
