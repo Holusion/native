@@ -1,7 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Grid, Col, Row, StyleProvider, connectStyle } from 'native-base';
-import RNFS from 'react-native-fs';
 
 import IconCardComponent from './IconCardComponent';
 
