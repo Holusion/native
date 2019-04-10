@@ -125,7 +125,7 @@ export default class RemerciementScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        if(network.getUrl()) {
+        if(network.getUrl(0)) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

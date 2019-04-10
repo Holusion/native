@@ -32,8 +32,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     launchVideo(videoName) {
-        if(network.getUrl()) {
-            let productUrl = network.getUrl();
+        if(network.getUrl(0)) {
+            let productUrl = network.getUrl(0);
     
             network.desactiveAll(productUrl).then(elem => {
                 network.active(productUrl, `${videoName}.mp4`)
@@ -195,7 +195,7 @@ export default class ObjectScreen extends React.Component {
                     }).map((s, index) => {
                         if(this.obj && this.obj[s]) {
                             let txt = `__${s}__: ${this.obj[s]}`
-                            return <Markdown style={markdownText}>{txt}</Markdown>
+                            return <Markdown key={index} style={markdownText}>{txt}</Markdown>
                         }
                         return null;
                     })
@@ -216,7 +216,6 @@ export default class ObjectScreen extends React.Component {
                             <Col>
                                 <Row size={1}>
                                     <Markdown style={markdownTitle}>{this.obj['Titre']}</Markdown>
-                                    {/* <Text style={styles.title}>{this.obj['Titre']}</Text> */}
                                 </Row>
                                 <Row size={5} style={styles.mainPanel}>
                                 <FlingGestureHandler
@@ -305,7 +304,7 @@ export default class ObjectScreen extends React.Component {
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
 
-        if(network.getUrl()) {
+        if(network.getUrl(0)) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

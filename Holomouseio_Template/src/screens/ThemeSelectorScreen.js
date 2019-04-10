@@ -20,7 +20,7 @@ export default class ThemeSelectorScreen extends React.Component {
     }
 
     componentDidMount() {
-        if(network.getUrl()) {
+        if(network.getUrl(0)) {
             networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
@@ -61,14 +61,14 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            if(network.getUrl()) {
+            if(network.getUrl(0)) {
                 networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
             }
         })
 
         this._onSelection = this._onSelection.bind(this);
 
-        if(network.getUrl()) {
+        if(network.getUrl(0)) {
             this.props.navigation.setParams({'color': 'green'});
         }
     }

@@ -111,7 +111,7 @@ export default class EndScreen extends React.Component {
 
         this._onAccueil = this._onAccueil.bind(this);
 
-        if(network.getUrl()) {
+        if(network.getUrl(0)) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

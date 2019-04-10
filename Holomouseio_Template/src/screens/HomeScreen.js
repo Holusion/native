@@ -149,7 +149,7 @@ export default class HomeScreen extends React.Component {
         
         network.connect(() => {
             clearTimeout(launchOfflineMode);
-            let url = network.getUrl();
+            let url = network.getUrl(0);
             this.props.navigation.setParams({color: 'green'})
             this.setState(() => {
                 return {url: url, offlineMode: false, loading: false}
