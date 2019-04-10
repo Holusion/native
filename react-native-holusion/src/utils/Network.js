@@ -27,10 +27,13 @@ export const connect = (callbackAdd, callbackRemove) => {
     }
 }
 
-export const getUrl = () => {
-    if(allProducts.length > 0) {
-        return allProducts[0].url[0];
-    }
+export const getUrls = () => {
+    return allProducts.map(e => e.url)
+}
+
+export const getUrl = (id) => {
+    let urls = getUrls();
+    if(urls.length > 0) { return urls[id][0]; }
     return null;
 }
 
