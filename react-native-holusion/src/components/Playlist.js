@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import * as network from '../utils/Network';
 import PlaylistItem from './PlaylistItem';
 
-export class Playlist {
+export default class Playlist {
 
     constructor(url, contents=null, localImage=false) {
         this.contents = contents;
@@ -12,11 +12,11 @@ export class Playlist {
         }
         
         this.contents = contents.map(elem => {
-            let imageUri = `http://${url}:3000/medias/${elem.name}?thumb=true`;
+            let imageUri = `http://${url}:3000/medias/${elem}?thumb=true`;
             if(localImage) {
-                imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem.name}.jpg`;
+                imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem}.jpg`;
             }
-            return new PlaylistItem(url, imageUri, elem.name);
+            return new PlaylistItem(url, imageUri, elem);
         });
     }
 }
