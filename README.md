@@ -32,3 +32,7 @@ Rendez vous dans `/src/utils/Config.js`, il y a plusieurs variables que vous pou
 - primaryColor: couleur primaire, couleur des cartes par exemple
 - secondaryColor: couleur secondaire, écriture, logo, etc...
 - projectName: nom du projet, utile pour firebase et les headers de l'application
+
+## Documentation
+
+La documentation concernant la structure du projet est situé dans le dossier "documentation"
