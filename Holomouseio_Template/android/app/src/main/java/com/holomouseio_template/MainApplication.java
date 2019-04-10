@@ -3,9 +3,9 @@ package com.holomouseio_template;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.balthazargronon.RCTZeroconf.ZeroconfReactPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.balthazargronon.RCTZeroconf.ZeroconfReactPackage;
 import cl.json.RNSharePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.rnfs.RNFSPackage;
@@ -30,9 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ZeroconfReactPackage(),
             new ReactVideoPackage(),
             new VectorIconsPackage(),
-            new ZeroconfReactPackage(),
             new RNSharePackage(),
             new RNGestureHandlerPackage(),
             new RNFSPackage(),

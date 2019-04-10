@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Image, Text } from "react-native";
 import { connectStyle } from 'native-base'
 
-import Markdown from 'react-native-mardown-renderer'
+import Markdown from 'react-native-markdown-renderer'
 
 export class IconCardComponent extends React.Component {
   render() {
-    const styles = this.props.style
+    const styles = this.props.style;
     return (
         <View style={styles.container}>
             <Image style={styles.icon} source={this.props.source}/>
@@ -18,7 +18,7 @@ export class IconCardComponent extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
       fontSize: 26,
       alignSelf: 'center'
     }
-})
+}
 
 const markdownTitle = StyleSheet.create({
     text: styles.titleText
 })
 
-export default connectStyle('holusion.IconCard', styles)(IconCard);
+export default connectStyle('holusion.IconCardComponent', styles)(IconCardComponent);

@@ -2,13 +2,13 @@ import React from 'react'
 
 import { Container, StyleProvider, Icon } from 'native-base';
 import { network, assetManager } from '@holusion/react-native-holusion';
+import {Playlist} from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 import PlaylistComponent from '../components/PlaylistComponent'
-import { Playlist } from '../../../react-native-holusion/src/components/Playlist';
 
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
@@ -38,7 +38,7 @@ export default class CatalogueScreen extends React.Component {
 
     render() {
         let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
-
+        
         return(
             <Container>
                 <Text style={styles.catchPhrase}>Choisissez un objet</Text>
@@ -48,14 +48,14 @@ export default class CatalogueScreen extends React.Component {
             </Container>
         )
     }
-
+    
     constructor(props, context) {
-      super(props, context);
-      this._onPlayslistItem = this._onPlayslistItem.bind(this);
-      if(network.getUrl()) {
-        this.props.navigation.setParams({'color': 'green'});
-      }
-      this.playlist = new Playlist(network.getUrl(), this.props.navigation.getParam("objList"), true);
+        super(props, context);
+        this._onPlayslistItem = this._onPlayslistItem.bind(this);
+        if(network.getUrl()) {
+            this.props.navigation.setParams({'color': 'green'});
+        }
+        this.playlist = new Playlist(network.getUrl(), this.props.navigation.getParam("objList"), true);
     }
 }
 
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
 })
 
 const customTheme = {
-    'holusion.Playlist': {
-        'holusion.IconCard': {
+    'holusion.PlaylistComponent': {
+        'holusion.IconCardComponent': {
             container: {
                 backgroundColor: "#fff",
                 borderWidth: 2,

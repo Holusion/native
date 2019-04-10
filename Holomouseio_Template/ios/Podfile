@@ -21,10 +21,10 @@ target 'Holomouseio_Template' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
-  target 'Holomouseio_TemplateTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  # target 'Holomouseio_TemplateTests' do
+  #   inherit! :search_paths
+  #   # Pods for testing
+  # end
 
 end
 

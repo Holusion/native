@@ -4,7 +4,7 @@ import { Grid, Col, Row, StyleProvider, connectStyle } from 'native-base';
 
 import IconCardComponent from './IconCardComponent';
 
-export class PlaylistComponent extends Reac.Component {
+export class PlaylistComponent extends React.Component {
     renderContent() {
         let rows = [];
         let items = [];
@@ -13,7 +13,7 @@ export class PlaylistComponent extends Reac.Component {
 
         for(let i = 0; i < contents.length; i++) {
             let current = contents[i];
-            let title = contents[i];
+            let title = contents[i].name;
             if(this.props.titles) {
                 title = this.props.titles[i];
             }
@@ -34,7 +34,7 @@ export class PlaylistComponent extends Reac.Component {
 
         if(items.length > 0) {
             rows.push(
-                <Row key={this.props.content.length + 1}>
+                <Row key={contents.length + 1}>
                     {items}
                 </Row>
             )
@@ -60,16 +60,16 @@ export class PlaylistComponent extends Reac.Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = {
     col: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     }
-})
+}
 
 const customTheme = {
-    'holusion.IconCard': {
+    'holusion.IconCardComponent': {
         container: {
             width: 250,
             height: 250
@@ -81,4 +81,4 @@ const customTheme = {
     },
 }
 
-export default connectStyle('holusion.Playlist', styles)(Playlist)
+export default connectStyle('holusion.PlaylistComponent', styles)(PlaylistComponent)

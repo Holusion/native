@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -12,8 +13,8 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* Holomouseio_TemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Holomouseio_TemplateTests.m */; };
-		08F41893BD284DA6B342D2A6 /* libRNZeroconf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D356B57A935440CCB95CE475 /* libRNZeroconf.a */; };
-		0EAF14C685694C12A68BA2CE /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 888C891ADBBE4F55953BEC1F /* Ionicons.ttf */; };
+		0A55B5DFEA874F698B31B531 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74B6603FCC974833A18BF730 /* Roboto_medium.ttf */; };
+		0D3EADF4EA80418B9483C067 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B67CED78986A4CC485F425DC /* MaterialIcons.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -23,13 +24,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1446AB3F007846D1901A357D /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D4A537E12014E919B7AACF9 /* Zocial.ttf */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		149ED57995CE49C7BF063113 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 834A99308E9548D99D2B3113 /* Feather.ttf */; };
-		1808F77704E64C1585FED3E3 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 061B523B2E7A4A6FBEC9A7AC /* rubicon-icon-font.ttf */; };
-		1C8DCD60C5C64911A84FCFB0 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46580BCCFD59473287CCB393 /* Entypo.ttf */; };
-		1DD0B8CA4D700ED6913C1A43 /* libPods-Holomouseio_TemplateTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 738875E50224FB4BBFF30EBF /* libPods-Holomouseio_TemplateTests.a */; };
-		206036B942264B1E96E294CD /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8497B6DF0FA8452088032C91 /* SimpleLineIcons.ttf */; };
-		21A268A43A894CD59A74B584 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE4D0806F4AD49EB82884096 /* FontAwesome5_Regular.ttf */; };
+		161132F958C08DE90CA6D51C /* libPods-Holomouseio_Template-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6303E52FC820C7E2BB61AB2A /* libPods-Holomouseio_Template-tvOSTests.a */; };
+		24D26DF3EA144B85B78C35F0 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5539B7623BA04F0290227F66 /* FontAwesome5_Regular.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -43,27 +41,27 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* Holomouseio_TemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Holomouseio_TemplateTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-		2FDCEBCE5F02B08BADDBB340 /* libPods-Holomouseio_Template-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB8D59BAEDB364210E97FBB /* libPods-Holomouseio_Template-tvOS.a */; };
-		3AAE9E1A2254B02500227DEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AAE9E192254B02400227DEE /* GoogleService-Info.plist */; };
-		444117A2479FEC09B21739D8 /* libPods-Holomouseio_Template-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB805481D956BE4D580759F /* libPods-Holomouseio_Template-tvOSTests.a */; };
-		4B4BDE5B97A947CAA39ADFE6 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0428D8DA65A445079205CEA3 /* libRNFirebase.a */; };
-		4B9B906CD42242D2BB9B0021 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 348E3AFC7C974F3DB7E94186 /* FontAwesome5_Solid.ttf */; };
-		5A7D680784CA4798AE630A47 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7C1E438644035829835D5 /* Roboto.ttf */; };
-		5F11CCE3A59947C5A64AE17B /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8DFC9DF656C47E494DDBBD8 /* Roboto_medium.ttf */; };
-		643C3CC8617E467EA343FA5A /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 341CD55D547C411BB1B86F2B /* AntDesign.ttf */; };
-		6E0B9676D4E548819AF0AEF9 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCABB1A8197D46A4A516F2FB /* Foundation.ttf */; };
-		6E8B7FC08878C9E1B687C541 /* libPods-Holomouseio_Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E500F1C938474C531969C95 /* libPods-Holomouseio_Template.a */; };
-		74D24554A5694333BAE5DBE6 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 719324D488B24576A1308288 /* EvilIcons.ttf */; };
-		77C9A9E14C614EDE8665507D /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58029B6A551A4E808E19050E /* MaterialCommunityIcons.ttf */; };
+		3A0B32B7225CFB3400CF0236 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A0B328F225CFB3400CF0236 /* GoogleService-Info.plist */; };
+		4E0A1C90A0AD466897B118FA /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CABE1772757F4D0AA10DFD76 /* Roboto.ttf */; };
+		529BF40CFADE475EBA2ACF68 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F7BF5D0DEF442DEA029B734 /* MaterialCommunityIcons.ttf */; };
+		6E93C1A3538B702219AE379D /* libPods-Holomouseio_Template-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36A5A05ECE267B7DE915D94F /* libPods-Holomouseio_Template-tvOS.a */; };
+		82789E50852B44C9A47FCD56 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BA537527D0047F18C636B11 /* libRNFirebase.a */; };
+		82BF5C2654604DF3A8AE593C /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF0EA9B805C641EE879A7F15 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		8DD94DDB5FD44534AF3827A3 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08628E9F41DF4C23A8C209E2 /* FontAwesome5_Brands.ttf */; };
-		9EDE5CD176D140F78C39D5C4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F09B61E9CB0941B28419B92C /* FontAwesome.ttf */; };
+		853DB5D3D3974EFC86EAA8A0 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC379955E94E487ABEC0A9A3 /* FontAwesome5_Brands.ttf */; };
+		8C16D82884EE4A6F95789DF3 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4166CB47D2034EE29F02569C /* rubicon-icon-font.ttf */; };
+		9BDFF61FCA1042B490F245C5 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E52E9BBE5548849E3CDD12 /* EvilIcons.ttf */; };
+		9E5D2AB545ADBF01E76C34AC /* libPods-Holomouseio_Template.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD33629966FE8BF7E33A47B6 /* libPods-Holomouseio_Template.a */; };
+		AAA77C3ADF004C1BAFF1FC6D /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83FE5C5A603E47419ACA00B6 /* Ionicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		C7D060E18621487E8B125992 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C5900CACB74462CAC53E2BB /* MaterialIcons.ttf */; };
-		D846CB728FB64294BE1943F6 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFE5DE51332E4022A8F1A250 /* Octicons.ttf */; };
-		DFB444C0632540949708028A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 241452A305C84104BB81A21F /* Zocial.ttf */; };
-		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
-		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
+		B0C025E2861942ED921B78E5 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C4D083C11FC49A8A7C38FFE /* Feather.ttf */; };
+		B7947B7C6AFE465C959D9799 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D96786033E74B33A942B225 /* Octicons.ttf */; };
+		C04A94E62EF84C9EAFBFFFDA /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C3034E6A2A442BDBD21C02B /* FontAwesome5_Solid.ttf */; };
+		C37B6A4997884843840D27E4 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F98D1226C84F4858943242DD /* Entypo.ttf */; };
+		C8893869B7294ED8A9D42FA6 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D1170FB004B4B9494241483 /* AntDesign.ttf */; };
+		CB937F1E2C0D47009789A604 /* libRNZeroconf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D53767F7E24DDC9A3D5B77 /* libRNZeroconf.a */; };
+		D79D518FD5F743CDA85AEA71 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E555067EADB9457E89859593 /* SimpleLineIcons.ttf */; };
+		F98E312B427F49DEAFB04808 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF98A67749404F7EA6BB3A3C /* Foundation.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,16 +212,16 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		3AAE9E122254AD9600227DEE /* PBXContainerItemProxy */ = {
+		3AB84C7F225CEE2000D2763C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 783809CE363B450CA1793B7A /* RNFirebase.xcodeproj */;
+			containerPortal = 34E0853A0632460B8EE3AABF /* RNFirebase.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFirebase;
 		};
-		3AAE9E172254AD9600227DEE /* PBXContainerItemProxy */ = {
+		3AB84C82225CEE2000D2763C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 95CBBF87C19045E5A64A0B85 /* RNZeroconf.xcodeproj */;
+			containerPortal = 87D12134E12E4D299434F014 /* RNZeroconf.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0DE485BD1BDD49E400020698;
 			remoteInfo = RNZeroconf;
@@ -366,11 +364,8 @@
 		00E356EE1AD99517003FC87E /* Holomouseio_TemplateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Holomouseio_TemplateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* Holomouseio_TemplateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Holomouseio_TemplateTests.m; sourceTree = "<group>"; };
-		0428D8DA65A445079205CEA3 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
-		061B523B2E7A4A6FBEC9A7AC /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
-		08628E9F41DF4C23A8C209E2 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		0A2D99E5FE2E47A49AEDC257 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		10F916A91366FF74A0B492DD /* Pods-Holomouseio_Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template/Pods-Holomouseio_Template.release.xcconfig"; sourceTree = "<group>"; };
+		0D493EF01DCD36B4BA02B25F /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOSTests/Pods-Holomouseio_Template-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0D4A537E12014E919B7AACF9 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Holomouseio_Template.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Holomouseio_Template.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -381,49 +376,43 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Holomouseio_Template/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Holomouseio_Template/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		1C746D6C001D4C13BBF4240D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		200CB459F73A4497C09CB71E /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOSTests/Pods-Holomouseio_Template-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		241452A305C84104BB81A21F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		2BF7C1E438644035829835D5 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
+		171DD2B295F4B591AC3C3A20 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOS/Pods-Holomouseio_Template-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Holomouseio_Template-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Holomouseio_Template-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Holomouseio_Template-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Holomouseio_Template-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FB805481D956BE4D580759F /* libPods-Holomouseio_Template-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		31CB41785568AE1C02B05063 /* Pods-Holomouseio_Template-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOS/Pods-Holomouseio_Template-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		341CD55D547C411BB1B86F2B /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		348E3AFC7C974F3DB7E94186 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		3A5DB05C4F81829FB97913C2 /* Pods-Holomouseio_Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template/Pods-Holomouseio_Template.debug.xcconfig"; sourceTree = "<group>"; };
-		3AAE9E192254B02400227DEE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4507DD02DDA2D87108458CA3 /* Pods-Holomouseio_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_TemplateTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_TemplateTests/Pods-Holomouseio_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
-		46580BCCFD59473287CCB393 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		4E67787A190D451493C3D9A5 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		58029B6A551A4E808E19050E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		2D96786033E74B33A942B225 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		34E0853A0632460B8EE3AABF /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
+		36A5A05ECE267B7DE915D94F /* libPods-Holomouseio_Template-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A0B328F225CFB3400CF0236 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3BA537527D0047F18C636B11 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
+		3D1170FB004B4B9494241483 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		4166CB47D2034EE29F02569C /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
+		5539B7623BA04F0290227F66 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		6B8743DFE06A4FEC96DBC342 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		6E500F1C938474C531969C95 /* libPods-Holomouseio_Template.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		719324D488B24576A1308288 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		738875E50224FB4BBFF30EBF /* libPods-Holomouseio_TemplateTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_TemplateTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		783809CE363B450CA1793B7A /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
+		6303E52FC820C7E2BB61AB2A /* libPods-Holomouseio_Template-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C4D083C11FC49A8A7C38FFE /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		6F7BF5D0DEF442DEA029B734 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		72FD6A10CA0ABF726951083E /* Pods-Holomouseio_Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template/Pods-Holomouseio_Template.release.xcconfig"; sourceTree = "<group>"; };
+		74B6603FCC974833A18BF730 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7C5900CACB74462CAC53E2BB /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		830B77D712A7B47B7E01BBF5 /* Pods-Holomouseio_TemplateTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_TemplateTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_TemplateTests/Pods-Holomouseio_TemplateTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7C3034E6A2A442BDBD21C02B /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		82D53767F7E24DDC9A3D5B77 /* libRNZeroconf.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNZeroconf.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		834A99308E9548D99D2B3113 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		8497B6DF0FA8452088032C91 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		888C891ADBBE4F55953BEC1F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		95CBBF87C19045E5A64A0B85 /* RNZeroconf.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNZeroconf.xcodeproj; path = "../node_modules/react-native-zeroconf/ios/RNZeroconf.xcodeproj"; sourceTree = "<group>"; };
-		9CB8D59BAEDB364210E97FBB /* libPods-Holomouseio_Template-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ED536450B3C42B0841674F6 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOS/Pods-Holomouseio_Template-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		83FE5C5A603E47419ACA00B6 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		85D221EC301FACA5001097CB /* Pods-Holomouseio_Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template/Pods-Holomouseio_Template.debug.xcconfig"; sourceTree = "<group>"; };
+		86E52E9BBE5548849E3CDD12 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		87D12134E12E4D299434F014 /* RNZeroconf.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNZeroconf.xcodeproj; path = "../node_modules/react-native-zeroconf/ios/RNZeroconf.xcodeproj"; sourceTree = "<group>"; };
+		AC379955E94E487ABEC0A9A3 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		C8DFC9DF656C47E494DDBBD8 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
-		CE4D0806F4AD49EB82884096 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		D356B57A935440CCB95CE475 /* libRNZeroconf.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNZeroconf.a; sourceTree = "<group>"; };
-		E96AC54522C717F88B36A628 /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOSTests/Pods-Holomouseio_Template-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F09B61E9CB0941B28419B92C /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		FCABB1A8197D46A4A516F2FB /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		FFE5DE51332E4022A8F1A250 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		B67CED78986A4CC485F425DC /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		C83F87B5A4F3A4794F26976F /* Pods-Holomouseio_Template-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOS/Pods-Holomouseio_Template-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		CABE1772757F4D0AA10DFD76 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
+		CF98A67749404F7EA6BB3A3C /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		D17C62DF57181AB4909C0F2D /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Holomouseio_Template-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Holomouseio_Template-tvOSTests/Pods-Holomouseio_Template-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD33629966FE8BF7E33A47B6 /* libPods-Holomouseio_Template.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Holomouseio_Template.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E555067EADB9457E89859593 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		EF0EA9B805C641EE879A7F15 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		F98D1226C84F4858943242DD /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,7 +421,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				1DD0B8CA4D700ED6913C1A43 /* libPods-Holomouseio_TemplateTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +428,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -453,9 +440,9 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				6E8B7FC08878C9E1B687C541 /* libPods-Holomouseio_Template.a in Frameworks */,
-				4B4BDE5B97A947CAA39ADFE6 /* libRNFirebase.a in Frameworks */,
-				08F41893BD284DA6B342D2A6 /* libRNZeroconf.a in Frameworks */,
+				82789E50852B44C9A47FCD56 /* libRNFirebase.a in Frameworks */,
+				CB937F1E2C0D47009789A604 /* libRNZeroconf.a in Frameworks */,
+				9E5D2AB545ADBF01E76C34AC /* libPods-Holomouseio_Template.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,7 +450,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
 				2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */,
 				2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */,
@@ -472,7 +458,7 @@
 				2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */,
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
-				2FDCEBCE5F02B08BADDBB340 /* libPods-Holomouseio_Template-tvOS.a in Frameworks */,
+				6E93C1A3538B702219AE379D /* libPods-Holomouseio_Template-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */,
-				444117A2479FEC09B21739D8 /* libPods-Holomouseio_Template-tvOSTests.a in Frameworks */,
+				161132F958C08DE90CA6D51C /* libPods-Holomouseio_Template-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +533,31 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0A9A4FC5DD39415BA252BB7B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F98D1226C84F4858943242DD /* Entypo.ttf */,
+				86E52E9BBE5548849E3CDD12 /* EvilIcons.ttf */,
+				6C4D083C11FC49A8A7C38FFE /* Feather.ttf */,
+				EF0EA9B805C641EE879A7F15 /* FontAwesome.ttf */,
+				CF98A67749404F7EA6BB3A3C /* Foundation.ttf */,
+				83FE5C5A603E47419ACA00B6 /* Ionicons.ttf */,
+				6F7BF5D0DEF442DEA029B734 /* MaterialCommunityIcons.ttf */,
+				B67CED78986A4CC485F425DC /* MaterialIcons.ttf */,
+				2D96786033E74B33A942B225 /* Octicons.ttf */,
+				74B6603FCC974833A18BF730 /* Roboto_medium.ttf */,
+				CABE1772757F4D0AA10DFD76 /* Roboto.ttf */,
+				4166CB47D2034EE29F02569C /* rubicon-icon-font.ttf */,
+				E555067EADB9457E89859593 /* SimpleLineIcons.ttf */,
+				0D4A537E12014E919B7AACF9 /* Zocial.ttf */,
+				3D1170FB004B4B9494241483 /* AntDesign.ttf */,
+				AC379955E94E487ABEC0A9A3 /* FontAwesome5_Brands.ttf */,
+				5539B7623BA04F0290227F66 /* FontAwesome5_Regular.ttf */,
+				7C3034E6A2A442BDBD21C02B /* FontAwesome5_Solid.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -604,58 +615,53 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		280DE2692D4A1A2F2D4A9C60 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85D221EC301FACA5001097CB /* Pods-Holomouseio_Template.debug.xcconfig */,
+				72FD6A10CA0ABF726951083E /* Pods-Holomouseio_Template.release.xcconfig */,
+				171DD2B295F4B591AC3C3A20 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */,
+				C83F87B5A4F3A4794F26976F /* Pods-Holomouseio_Template-tvOS.release.xcconfig */,
+				0D493EF01DCD36B4BA02B25F /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */,
+				D17C62DF57181AB4909C0F2D /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				6E500F1C938474C531969C95 /* libPods-Holomouseio_Template.a */,
-				9CB8D59BAEDB364210E97FBB /* libPods-Holomouseio_Template-tvOS.a */,
-				2FB805481D956BE4D580759F /* libPods-Holomouseio_Template-tvOSTests.a */,
-				738875E50224FB4BBFF30EBF /* libPods-Holomouseio_TemplateTests.a */,
+				DD33629966FE8BF7E33A47B6 /* libPods-Holomouseio_Template.a */,
+				36A5A05ECE267B7DE915D94F /* libPods-Holomouseio_Template-tvOS.a */,
+				6303E52FC820C7E2BB61AB2A /* libPods-Holomouseio_Template-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3AAE9DE92254AD9500227DEE /* Recovered References */ = {
+		3AB84C54225CEE1E00D2763C /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				0428D8DA65A445079205CEA3 /* libRNFirebase.a */,
-				D356B57A935440CCB95CE475 /* libRNZeroconf.a */,
+				3BA537527D0047F18C636B11 /* libRNFirebase.a */,
+				82D53767F7E24DDC9A3D5B77 /* libRNZeroconf.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		3AAE9E0F2254AD9600227DEE /* Products */ = {
+		3AB84C7A225CEE1F00D2763C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3AAE9E132254AD9600227DEE /* libRNFirebase.a */,
+				3AB84C80225CEE2000D2763C /* libRNFirebase.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3AAE9E142254AD9600227DEE /* Products */ = {
+		3AB84C7C225CEE1F00D2763C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3AAE9E182254AD9600227DEE /* libRNZeroconf.a */,
+				3AB84C83225CEE2000D2763C /* libRNZeroconf.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		4105F5E0BD6DD1C54F9C0A60 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3A5DB05C4F81829FB97913C2 /* Pods-Holomouseio_Template.debug.xcconfig */,
-				10F916A91366FF74A0B492DD /* Pods-Holomouseio_Template.release.xcconfig */,
-				9ED536450B3C42B0841674F6 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */,
-				31CB41785568AE1C02B05063 /* Pods-Holomouseio_Template-tvOS.release.xcconfig */,
-				E96AC54522C717F88B36A628 /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */,
-				200CB459F73A4497C09CB71E /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */,
-				830B77D712A7B47B7E01BBF5 /* Pods-Holomouseio_TemplateTests.debug.xcconfig */,
-				4507DD02DDA2D87108458CA3 /* Pods-Holomouseio_TemplateTests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -665,35 +671,6 @@
 				5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		62092F3D70AC41848828D566 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				0A2D99E5FE2E47A49AEDC257 /* AntDesign.ttf */,
-				46580BCCFD59473287CCB393 /* Entypo.ttf */,
-				719324D488B24576A1308288 /* EvilIcons.ttf */,
-				834A99308E9548D99D2B3113 /* Feather.ttf */,
-				F09B61E9CB0941B28419B92C /* FontAwesome.ttf */,
-				1C746D6C001D4C13BBF4240D /* FontAwesome5_Brands.ttf */,
-				6B8743DFE06A4FEC96DBC342 /* FontAwesome5_Regular.ttf */,
-				4E67787A190D451493C3D9A5 /* FontAwesome5_Solid.ttf */,
-				FCABB1A8197D46A4A516F2FB /* Foundation.ttf */,
-				888C891ADBBE4F55953BEC1F /* Ionicons.ttf */,
-				58029B6A551A4E808E19050E /* MaterialCommunityIcons.ttf */,
-				7C5900CACB74462CAC53E2BB /* MaterialIcons.ttf */,
-				FFE5DE51332E4022A8F1A250 /* Octicons.ttf */,
-				C8DFC9DF656C47E494DDBBD8 /* Roboto_medium.ttf */,
-				2BF7C1E438644035829835D5 /* Roboto.ttf */,
-				061B523B2E7A4A6FBEC9A7AC /* rubicon-icon-font.ttf */,
-				8497B6DF0FA8452088032C91 /* SimpleLineIcons.ttf */,
-				241452A305C84104BB81A21F /* Zocial.ttf */,
-				341CD55D547C411BB1B86F2B /* AntDesign.ttf */,
-				08628E9F41DF4C23A8C209E2 /* FontAwesome5_Brands.ttf */,
-				CE4D0806F4AD49EB82884096 /* FontAwesome5_Regular.ttf */,
-				348E3AFC7C974F3DB7E94186 /* FontAwesome5_Solid.ttf */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -720,8 +697,8 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				783809CE363B450CA1793B7A /* RNFirebase.xcodeproj */,
-				95CBBF87C19045E5A64A0B85 /* RNZeroconf.xcodeproj */,
+				34E0853A0632460B8EE3AABF /* RNFirebase.xcodeproj */,
+				87D12134E12E4D299434F014 /* RNZeroconf.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -738,15 +715,15 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				3AAE9E192254B02400227DEE /* GoogleService-Info.plist */,
+				3A0B328F225CFB3400CF0236 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Holomouseio_Template */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Holomouseio_TemplateTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				4105F5E0BD6DD1C54F9C0A60 /* Pods */,
-				62092F3D70AC41848828D566 /* Resources */,
-				3AAE9DE92254AD9500227DEE /* Recovered References */,
+				0A9A4FC5DD39415BA252BB7B /* Resources */,
+				3AB84C54225CEE1E00D2763C /* Recovered References */,
+				280DE2692D4A1A2F2D4A9C60 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -780,7 +757,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Holomouseio_TemplateTests" */;
 			buildPhases = (
-				8D100EBF46F2FCC82DAC00C5 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -799,12 +775,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Holomouseio_Template" */;
 			buildPhases = (
-				8FB4E879DCD80701ABF28B88 /* [CP] Check Pods Manifest.lock */,
+				84DEA415B294A578CB89072D /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				876F3B83D1FDE8354796EDC0 /* [CP] Copy Pods Resources */,
+				FC1CF19A6EF5E9A5A0D23AA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -819,7 +795,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Holomouseio_Template-tvOS" */;
 			buildPhases = (
-				46E16FC25A76E6B813A18E04 /* [CP] Check Pods Manifest.lock */,
+				D8F75FDF889D0CF2680729A3 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
@@ -838,7 +814,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Holomouseio_Template-tvOSTests" */;
 			buildPhases = (
-				F961B907ECA2DFAE33FD5EEE /* [CP] Check Pods Manifest.lock */,
+				2C381D82480842285C862810 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -942,12 +918,12 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 3AAE9E0F2254AD9600227DEE /* Products */;
-					ProjectRef = 783809CE363B450CA1793B7A /* RNFirebase.xcodeproj */;
+					ProductGroup = 3AB84C7A225CEE1F00D2763C /* Products */;
+					ProjectRef = 34E0853A0632460B8EE3AABF /* RNFirebase.xcodeproj */;
 				},
 				{
-					ProductGroup = 3AAE9E142254AD9600227DEE /* Products */;
-					ProjectRef = 95CBBF87C19045E5A64A0B85 /* RNZeroconf.xcodeproj */;
+					ProductGroup = 3AB84C7C225CEE1F00D2763C /* Products */;
+					ProjectRef = 87D12134E12E4D299434F014 /* RNZeroconf.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1094,18 +1070,18 @@
 			remoteRef = 2DF0FFEC2056DD460020B375 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3AAE9E132254AD9600227DEE /* libRNFirebase.a */ = {
+		3AB84C80225CEE2000D2763C /* libRNFirebase.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNFirebase.a;
-			remoteRef = 3AAE9E122254AD9600227DEE /* PBXContainerItemProxy */;
+			remoteRef = 3AB84C7F225CEE2000D2763C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3AAE9E182254AD9600227DEE /* libRNZeroconf.a */ = {
+		3AB84C83225CEE2000D2763C /* libRNZeroconf.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNZeroconf.a;
-			remoteRef = 3AAE9E172254AD9600227DEE /* PBXContainerItemProxy */;
+			remoteRef = 3AB84C82225CEE2000D2763C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1250,25 +1226,25 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				1C8DCD60C5C64911A84FCFB0 /* Entypo.ttf in Resources */,
-				74D24554A5694333BAE5DBE6 /* EvilIcons.ttf in Resources */,
-				149ED57995CE49C7BF063113 /* Feather.ttf in Resources */,
-				9EDE5CD176D140F78C39D5C4 /* FontAwesome.ttf in Resources */,
-				6E0B9676D4E548819AF0AEF9 /* Foundation.ttf in Resources */,
-				0EAF14C685694C12A68BA2CE /* Ionicons.ttf in Resources */,
-				77C9A9E14C614EDE8665507D /* MaterialCommunityIcons.ttf in Resources */,
-				C7D060E18621487E8B125992 /* MaterialIcons.ttf in Resources */,
-				D846CB728FB64294BE1943F6 /* Octicons.ttf in Resources */,
-				5F11CCE3A59947C5A64AE17B /* Roboto_medium.ttf in Resources */,
-				5A7D680784CA4798AE630A47 /* Roboto.ttf in Resources */,
-				1808F77704E64C1585FED3E3 /* rubicon-icon-font.ttf in Resources */,
-				206036B942264B1E96E294CD /* SimpleLineIcons.ttf in Resources */,
-				DFB444C0632540949708028A /* Zocial.ttf in Resources */,
-				3AAE9E1A2254B02500227DEE /* GoogleService-Info.plist in Resources */,
-				643C3CC8617E467EA343FA5A /* AntDesign.ttf in Resources */,
-				8DD94DDB5FD44534AF3827A3 /* FontAwesome5_Brands.ttf in Resources */,
-				21A268A43A894CD59A74B584 /* FontAwesome5_Regular.ttf in Resources */,
-				4B9B906CD42242D2BB9B0021 /* FontAwesome5_Solid.ttf in Resources */,
+				C37B6A4997884843840D27E4 /* Entypo.ttf in Resources */,
+				9BDFF61FCA1042B490F245C5 /* EvilIcons.ttf in Resources */,
+				B0C025E2861942ED921B78E5 /* Feather.ttf in Resources */,
+				82BF5C2654604DF3A8AE593C /* FontAwesome.ttf in Resources */,
+				F98E312B427F49DEAFB04808 /* Foundation.ttf in Resources */,
+				AAA77C3ADF004C1BAFF1FC6D /* Ionicons.ttf in Resources */,
+				529BF40CFADE475EBA2ACF68 /* MaterialCommunityIcons.ttf in Resources */,
+				0D3EADF4EA80418B9483C067 /* MaterialIcons.ttf in Resources */,
+				B7947B7C6AFE465C959D9799 /* Octicons.ttf in Resources */,
+				0A55B5DFEA874F698B31B531 /* Roboto_medium.ttf in Resources */,
+				4E0A1C90A0AD466897B118FA /* Roboto.ttf in Resources */,
+				8C16D82884EE4A6F95789DF3 /* rubicon-icon-font.ttf in Resources */,
+				D79D518FD5F743CDA85AEA71 /* SimpleLineIcons.ttf in Resources */,
+				1446AB3F007846D1901A357D /* Zocial.ttf in Resources */,
+				C8893869B7294ED8A9D42FA6 /* AntDesign.ttf in Resources */,
+				853DB5D3D3974EFC86EAA8A0 /* FontAwesome5_Brands.ttf in Resources */,
+				24D26DF3EA144B85B78C35F0 /* FontAwesome5_Regular.ttf in Resources */,
+				C04A94E62EF84C9EAFBFFFDA /* FontAwesome5_Solid.ttf in Resources */,
+				3A0B32B7225CFB3400CF0236 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1302,7 +1278,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		2C381D82480842285C862810 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Holomouseio_Template-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1318,7 +1316,29 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		46E16FC25A76E6B813A18E04 /* [CP] Check Pods Manifest.lock */ = {
+		84DEA415B294A578CB89072D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Holomouseio_Template-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8F75FDF889D0CF2680729A3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1340,7 +1360,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		876F3B83D1FDE8354796EDC0 /* [CP] Copy Pods Resources */ = {
+		FC1CF19A6EF5E9A5A0D23AA5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1390,72 +1410,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Holomouseio_Template/Pods-Holomouseio_Template-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8D100EBF46F2FCC82DAC00C5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Holomouseio_TemplateTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8FB4E879DCD80701ABF28B88 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Holomouseio_Template-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F961B907ECA2DFAE33FD5EEE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Holomouseio_Template-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1525,7 +1479,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 830B77D712A7B47B7E01BBF5 /* Pods-Holomouseio_TemplateTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 3235X6LFMC;
@@ -1558,7 +1511,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4507DD02DDA2D87108458CA3 /* Pods-Holomouseio_TemplateTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1588,7 +1540,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3A5DB05C4F81829FB97913C2 /* Pods-Holomouseio_Template.debug.xcconfig */;
+			baseConfigurationReference = 85D221EC301FACA5001097CB /* Pods-Holomouseio_Template.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1615,7 +1567,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10F916A91366FF74A0B492DD /* Pods-Holomouseio_Template.release.xcconfig */;
+			baseConfigurationReference = 72FD6A10CA0ABF726951083E /* Pods-Holomouseio_Template.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1641,7 +1593,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9ED536450B3C42B0841674F6 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 171DD2B295F4B591AC3C3A20 /* Pods-Holomouseio_Template-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1678,7 +1630,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31CB41785568AE1C02B05063 /* Pods-Holomouseio_Template-tvOS.release.xcconfig */;
+			baseConfigurationReference = C83F87B5A4F3A4794F26976F /* Pods-Holomouseio_Template-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1715,7 +1667,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E96AC54522C717F88B36A628 /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 0D493EF01DCD36B4BA02B25F /* Pods-Holomouseio_Template-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1751,7 +1703,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 200CB459F73A4497C09CB71E /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = D17C62DF57181AB4909C0F2D /* Pods-Holomouseio_Template-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

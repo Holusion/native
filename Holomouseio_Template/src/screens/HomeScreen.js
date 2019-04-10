@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
+import { Content, StyleProvider, Icon, Toast } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
-import {network, assetManager} from '@holusion/react-native-holusion'
-import FirebaseController from '../utils/FirebaseController'
+import {network, assetManager} from '@holusion/react-native-holusion';
 import IconCardComponent from '../components/IconCardComponent'
+import FirebaseController from '../utils/FirebaseController'
 import * as Config from '../utils/Config'
 
 import * as networkExtension from '../utils/networkExtension';
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
 });
 
 const customTheme = {
-    'holusion.IconCard': {
+    'holusion.IconCardComponent': {
         container: {
             backgroundColor: Config.primaryColor,
             width: 300,
