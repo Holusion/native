@@ -25,10 +25,10 @@ class DefaultComponent extends React.Component {
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
                     <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
                         <TouchableOpacity onPress={this.props.visite}>
-                            <IconCardComponent source={require("../../assets/icons/musee.png")} content="Visite" />
+                            <IconCardComponent source={require("../../assets/icons/musee.png")} title="Visite" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCardComponent source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
+                            <IconCardComponent source={require("../../assets/icons/catalogue.png")} title="Catalogue"/>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>

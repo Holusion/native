@@ -11,7 +11,7 @@ export class IconCardComponent extends React.Component {
         <View style={styles.container}>
             <Image style={styles.icon} source={this.props.source}/>
             <View style={styles.titleContainer}>
-                <Markdown style={markdownTitle}>{this.props.content}</Markdown>
+                <Markdown style={markdownTitle}>{this.props.title}</Markdown>
             </View>
         </View>
     );

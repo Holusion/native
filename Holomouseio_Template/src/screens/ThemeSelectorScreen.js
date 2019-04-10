@@ -28,7 +28,6 @@ export default class ThemeSelectorScreen extends React.Component {
     render() {
         let allList = [];
         let actualSelection = this.props.navigation.getParam('type') === 'catalogue' ? assetManager.allCatalogue : assetManager.allTheme;
-        let title = this.props.navigation.getParam('type') === 'catalogue' ? 'Collection : ' : 'Thème : ';
         let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
 
         for(let i = 0; i < actualSelection.length; i++) {

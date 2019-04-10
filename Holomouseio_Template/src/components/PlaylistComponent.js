@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { Grid, Col, Row, StyleProvider, connectStyle } from 'native-base';
 
 import IconCardComponent from './IconCardComponent';
@@ -19,7 +19,7 @@ export class PlaylistComponent extends React.Component {
             }
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCardComponent source={{uri: current.image, scale: 1}} content={title}/>
+                    <IconCardComponent source={{uri: current.image, scale: 1}} title={title}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {
