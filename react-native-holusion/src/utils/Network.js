@@ -30,7 +30,6 @@ export const connect = (callbackAdd, callbackRemove) => {
 export const hasInternetConnection = async () => {
     try {
         let res = await fetch("https://holusion.com")
-        console.error(res);
         if(res.status !== 200) {
             return false;
         }
