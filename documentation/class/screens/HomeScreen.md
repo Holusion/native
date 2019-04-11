@@ -12,8 +12,11 @@ Cette class donne les informations de la vue d'accueil, elle contient donc :
 légende : nom(valeur par défault): <description>
 
 - url(null): l'url du produit trouvé
-- offlineMode(false): si le produit n'est pas trouvé, cette valeur devient **true**
-- loading(true): au début, l'application se charge de trouver le produit, etc... quand elle a fini, loading devient **false**
+- screenState: l'état dan lequels ce trouve l'écran
+- - INIT: état initial
+- - DOWNLOAD_FIREBASE: l'application essaie de récupérer les fichiers présents sur firebase
+- - SEARCH_PRODUCT: l'application cherche un produit sur le réseau
+- - READY: l'application est prête
 
 ## prop
 
@@ -24,7 +27,15 @@ légende : nom(valeur par défault): <description>
 - props: les propriétés hérité du parent
 - context: le contexte de l'application
 
-Bind les événements. Lance un timer de 5 secondes, à la fin du timer, si l'application n'a pas trouvé de produit, on passe en offline. Sinon on coupe le timer et on met à jour l'état du composant. On finit par créer un composant qui lance une notification sur l'application perd la connexion avec le produit 
+Bind les événements et les états
+
+### connectToProduct()
+
+Lance un timer de 5 secondes, à la fin du timer, si l'application n'a pas trouvé de produit, on passe en mode offline. Sinon on coupe le timer et on met à jour l'état du composant. On finit par créer un composant qui lance une notification sur l'application perd la connexion avec le produit 
+
+### componentDidUpdate()
+
+Est lancé lorsque l'état de l'écran est mis à jour. Ici on détecte lorsque l'écran est dans l'état **SEARCH_PRODUCT** pour lancer le scan des produits.
 
 ### componentDidMount()
 
@@ -48,46 +59,3 @@ Evénement lancé lorsqu'on clique sur la carte "Catalogue", navigue vers ThemeS
 ### _onRemerciement()
 
 Evénement lancé lorsqu'on clique sur le bouton "Remerciement", navigue vers RemerciementScreen
-
-----------------------------------------------------------
-
-# class:DefaultComponent
-
-## state
-
-## prop
-
-- url: l'url du produit trouvé 
-- visite: la fonction d'événement lorsqu'on clique sur visite
-- catalogue: la fonction d'événement lorsqu'on clique sur catalogue
-- remerciement: la fonction d'événement lorsqu'on clique sur remerciement
-
-## method
-
-### componentDidMount()
-
-On initialise l'animation du texte lorsque le composant est monté
-
-### render()
-
-Rendu du composant, c'est ici que sont ajoutés les cartes et le texte.
-
-### spring()
-
-Définition de l'animation de spring (une sorte de bump à ressort)
-
-----------------------------------------------------------
-
-# class:SearchProductComponent
-
-## state
-
-## prop
-
-- loading: boolean définissant si l'application est dans l'état où elle essaie de télécharger les fichiers stockés sur firebase
-
-## method
-
-### render()
-
-Rend la page de chargement en fonction de l'état de la propriété loading, si loading vaut **vrai** alors le texte correspond au texte de téléchargement, sinon le texte de recherche du produit
