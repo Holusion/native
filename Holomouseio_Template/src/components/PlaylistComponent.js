@@ -15,7 +15,7 @@ export class PlaylistComponent extends React.Component {
             let current = contents[i];
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCardComponent source={{uri: current.image, scale: 1}} title={current.name}/>
+                    <IconCardComponent source={{uri: current.image, scale: 1}} title={current.title}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {
