@@ -16,11 +16,11 @@ export default class Playlist {
             if(localImage) {
                 imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem}.jpg`;
             }
-            let name = elem;
+            let title = elem;
             if(customTitles.length != 0) {
-                name = customTitles[index];
+                title = customTitles[index];
             }
-            return new PlaylistItem(url, imageUri, name);
+            return new PlaylistItem(url, imageUri, elem, title);
         });
     }
 }
