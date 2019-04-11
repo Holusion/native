@@ -27,6 +27,20 @@ export const connect = (callbackAdd, callbackRemove) => {
     }
 }
 
+export const hasInternetConnection = async () => {
+    try {
+        let res = await fetch("https://holusion.com")
+        console.error(res);
+        if(res.status !== 200) {
+            return false;
+        }
+        return true;
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 export const getUrls = () => {
     return allProducts.map(e => e.url)
 }
@@ -57,7 +71,7 @@ export const getPlaylist = async (url) => {
         let res = await fetch(`http://${url}:3000/playlist`);
         return res.json();
     } catch(err) {
-        console.error('Something wrong when get playlist at ' + url);
+        console.error('Something wrong when get playlist at ' + url + "\n" + err);
     }
 }
 
