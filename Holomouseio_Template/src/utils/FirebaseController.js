@@ -13,7 +13,7 @@ export default class FirebaseController {
         return new Promise((resolve, reject) => {
             
             ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`).then(() => {
-                resolve();
+                resolve(`${name}`);
             }).catch(err => {
                 console.error(err);
                 resolve();

@@ -1,85 +1,14 @@
 import React from 'react';
 
 import { Content, StyleProvider, Icon, Toast } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
+import { NetInfo } from 'react-native';
+import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
+import SearchScreenComponent from "../components/screenComponents/SearchScreenComponent";
+
 import {network, assetManager} from '@holusion/react-native-holusion';
-import IconCardComponent from '../components/IconCardComponent'
 import FirebaseController from '../utils/FirebaseController'
 import * as Config from '../utils/Config'
-
 import * as networkExtension from '../utils/networkExtension';
-
-/**
- * Default view, when all file download or product found
- */
-class DefaultComponent extends React.Component {
-    componentDidMount() {
-        this.spring();
-    }
-
-    render() {
-        return (
-            <Content>
-                <View>
-                    <Image style={styles.images} source={require("../../assets/images/logo.png")} />
-                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
-                    <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.props.visite}>
-                            <IconCardComponent source={require("../../assets/icons/musee.png")} title="Visite" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCardComponent source={require("../../assets/icons/catalogue.png")} title="Catalogue"/>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={this.props.remerciement}>
-                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
-                            <Text style={{color: 'white', fontSize: 28}}>Remerciements</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </Content>
-        )
-    }
-
-    spring() {
-        this.springValue.setValue(0.95);
-        Animated.loop(
-
-            Animated.spring(this.springValue, {
-                toValue: 1,
-                friction: 2,
-            })
-        ).start()
-    }
-
-    constructor(props, context) {
-        super(props, context);
-        this.springValue = new Animated.Value(0.95);
-    }
-}
-
-/**
- * This view appears when application search a product or if it downloads the files from firebase
- */
-class SearchProductComponent extends React.Component {
-
-    render() {
-
-        let mainContent = "Recherche du produit...";
-        if(this.props.loading) {
-            mainContent = "Téléchargement des fichiers..."
-        }
-
-        return (
-            <Content>
-                <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
-                    <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: Config.primaryColor, fontSize: 32}}>{mainContent}</Text>
-                </View>
-            </Content>
-        )
-    }
-}
 
 /**
  * Encapsulate the two other view and change view when it's necessary
@@ -93,6 +22,9 @@ export default class HomeScreen extends React.Component {
     }
 
     async componentDidMount() {
+        this.setState(() => {
+            return {screenState: states.DOWNLOAD_FIREBASE}
+        })
         this.props.navigation.setParams({color: 'red'});
         let netInfo = await NetInfo.getConnectionInfo();
         if(netInfo.type && netInfo.type != 'none') {
@@ -104,13 +36,64 @@ export default class HomeScreen extends React.Component {
         }
         assetManager.manage();
         this.setState(() => {
-            return {loading: false}
+            return {screenState: states.SEARCH_PRODUCT}
         })
     }
 
+    connectToProduct() {
+        const launchOfflineMode = setTimeout(() => {
+            this.setState(() => {
+                return {screenState: states.READY};
+            })
+            Toast.show({
+                text: "Aucun produit trouvé",
+                buttonText: "Ok",
+                position: 'top'
+            })
+        }, 5000);
+
+        network.connect(() => {
+            clearTimeout(launchOfflineMode);
+            let url = network.getUrl(0);
+            this.props.navigation.setParams({color: 'green'})
+            this.setState(() => {
+                return {url: url, screenState: states.READY}
+            });
+            assetManager.manage();
+        }, () => {
+            Toast.show({
+                text: "Produit déconnecté",
+                buttonText: "Ok",
+                position: 'top'
+            })
+            this.props.navigation.setParams({color: 'red'})
+            this.props.navigation.push('HomeScreen');
+        })
+    }
+
+    componentDidUpdate() {
+        switch(this.state.screenState) {
+            case states.SEARCH_PRODUCT:
+                this.connectToProduct()
+                break;
+            default:
+        }
+    }
+
     render() {
-        let display = !this.state.loading && (this.state.url || this.state.offlineMode) ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent loading={this.state.loading} />
-        
+        let display = <SearchScreenComponent content="Démarrage" />;
+
+        switch(this.state.screenState) {
+            case states.SEARCH_PRODUCT:
+                display = <SearchScreenComponent content="Recherche du produit..." />;
+                break;
+            case states.READY:
+                display = <DefaultHomeScreenComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />;
+                break;
+            default:
+                display = <SearchScreenComponent content="Téléchargement des fichiers..." />;
+        }
+
         if(this.state.url) {
             networkExtension.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
         }
@@ -132,37 +115,8 @@ export default class HomeScreen extends React.Component {
 
         this.state = {
             url: null,
-            offlineMode: false,
-            loading: true
+            screenState: states.INIT
         }
-
-        const launchOfflineMode = setTimeout(() => {
-            this.setState(() => {
-                return {offlineMode: true};
-            })
-            Toast.show({
-                text: "Aucun produit trouvé",
-                buttonText: "Ok",
-                position: 'top'
-            })
-        }, 5000);
-        
-        network.connect(() => {
-            clearTimeout(launchOfflineMode);
-            let url = network.getUrl(0);
-            this.props.navigation.setParams({color: 'green'})
-            this.setState(() => {
-                return {url: url, offlineMode: false, loading: false}
-            });
-            assetManager.manage();
-        }, () => {
-            Toast.show({
-                text: "Produit déconnecté",
-                buttonText: "Ok",
-                position: 'top'
-            })
-            this.props.navigation.push('HomeScreen');
-        })
 
     }
 
@@ -178,25 +132,13 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.push('Remerciement');
     }
 }
-const {height: screenHeight} = Dimensions.get("window");
 
-const styles = StyleSheet.create({
-    images: {
-        flex: 1,
-        width: 200,
-        height: 100,
-        resizeMode: 'contain',
-        alignSelf: 'flex-end',
-        marginRight: 16
-    },
-    catchphrase: {
-        color: Config.primaryColor,
-        fontSize: 48,
-        textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 50
-    }
-});
+const states = {
+    INIT: 'init',
+    DOWNLOAD_FIREBASE: 'download_firebase',
+    SEARCH_PRODUCT: 'search_product',
+    READY: 'ready'
+}
 
 const customTheme = {
     'holusion.IconCardComponent': {
