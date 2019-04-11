@@ -19,6 +19,7 @@ L'application est composé de plusieurs dossier
 - **native-base-theme**: contient les informations de thèmes pour les objets provenant de native-base
 - **src**: contient les sources du projet
   - **components**: contient les composants, les composants sont des morceaux que l'on ajoute aux écrans
+    - **screenComponents**: contient des composants qui prennent tout l'écran, ce ne sont pas des écrans car il n'entre pas dans la navigation 
   - **screens**: contient les écrans
   - **utils**: contient de la logique utile tels qu'une extension de l'api réseau pa exemple
 
