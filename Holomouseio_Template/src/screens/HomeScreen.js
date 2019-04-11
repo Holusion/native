@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Content, StyleProvider, Icon, Toast } from 'native-base';
-import { NetInfo } from 'react-native';
 import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
 import SearchScreenComponent from "../components/screenComponents/SearchScreenComponent";
 

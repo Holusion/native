@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, StyleProvider, Icon } from 'native-base';
-import { network, assetManager } from '@holusion/react-native-holusion';
+import { assetManager } from '@holusion/react-native-holusion';
 import {Playlist} from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'

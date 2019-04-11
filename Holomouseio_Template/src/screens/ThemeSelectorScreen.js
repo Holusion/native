@@ -2,7 +2,7 @@ import React from 'react';
 import { Content, Icon } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { network, assetManager } from '@holusion/react-native-holusion'
+import { assetManager } from '@holusion/react-native-holusion'
 import ListItemComponent from "../components/ListItemComponent";
 
 import * as networkExtension from '../utils/networkExtension'
@@ -20,7 +20,7 @@ export default class ThemeSelectorScreen extends React.Component {
     }
 
     componentDidMount() {
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
@@ -61,14 +61,14 @@ export default class ThemeSelectorScreen extends React.Component {
         super(props, context);
 
         this.props.navigation.addListener('willFocus', payload => {
-            if(network.getUrl(0)) {
+            if(this.props.navigation.getParam("url")) {
                 networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
             }
         })
 
         this._onSelection = this._onSelection.bind(this);
 
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
     }

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Container, Content, Icon, Grid, Col, Row, Button } from 'native-base'
-import { assetManager, network } from '@holusion/react-native-holusion';
+import { assetManager } from '@holusion/react-native-holusion';
 
 import Markdown from 'react-native-markdown-renderer'
 
@@ -111,7 +111,7 @@ export default class EndScreen extends React.Component {
 
         this._onAccueil = this._onAccueil.bind(this);
 
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

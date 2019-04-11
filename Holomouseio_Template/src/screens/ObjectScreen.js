@@ -32,8 +32,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     launchVideo(videoName) {
-        if(network.getUrl(0)) {
-            let productUrl = network.getUrl(0);
+        if(this.props.navigation.getParam("url")) {
+            let productUrl = this.props.navigation.getParam("url");
     
             network.desactiveAll(productUrl).then(elem => {
                 network.active(productUrl, `${videoName}.mp4`)
@@ -304,7 +304,7 @@ export default class ObjectScreen extends React.Component {
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
 
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }
