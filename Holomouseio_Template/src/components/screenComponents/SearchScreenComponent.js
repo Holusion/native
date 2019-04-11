@@ -10,12 +10,6 @@ import * as Config from '../../utils/Config'
 export default class SearchScreenComponent extends React.Component {
 
     render() {
-
-        let mainContent = "Recherche du produit...";
-        if(this.props.loading) {
-            mainContent = "Téléchargement des fichiers..."
-        }
-
         return (
             <Content>
                 <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
