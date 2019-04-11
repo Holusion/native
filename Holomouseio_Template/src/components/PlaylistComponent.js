@@ -13,13 +13,9 @@ export class PlaylistComponent extends React.Component {
 
         for(let i = 0; i < contents.length; i++) {
             let current = contents[i];
-            let title = contents[i].name;
-            if(this.props.titles) {
-                title = this.props.titles[i];
-            }
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCardComponent source={{uri: current.image, scale: 1}} title={title}/>
+                    <IconCardComponent source={{uri: current.image, scale: 1}} title={current.name}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {

@@ -22,7 +22,7 @@ export default class CatalogueScreen extends React.Component {
     }
 
     componentDidMount() {
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
@@ -52,10 +52,13 @@ export default class CatalogueScreen extends React.Component {
     constructor(props, context) {
         super(props, context);
         this._onPlayslistItem = this._onPlayslistItem.bind(this);
-        if(network.getUrl(0)) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
-        this.playlist = new Playlist(network.getUrl(0), this.props.navigation.getParam("objList"), true);
+        
+        let objList = this.props.navigation.getParam("objList");
+        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
+        this.playlist = new Playlist(this.props.navigation.getParam("url"), objList, true, titles);
     }
 }
 
