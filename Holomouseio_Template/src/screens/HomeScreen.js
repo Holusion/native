@@ -25,16 +25,18 @@ export default class HomeScreen extends React.Component {
         this.setState(() => {
             return {screenState: states.DOWNLOAD_FIREBASE}
         })
-        this.props.navigation.setParams({color: 'red'});
-        let netInfo = await NetInfo.getConnectionInfo();
-        if(netInfo.type && netInfo.type != 'none') {
+
+        const isConnected = await network.hasInternetConnection();
+
+        if(isConnected) {
             let firebaseController = new FirebaseController(Config.projectName);
             await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
             ]);
+            assetManager.manage();
         }
-        assetManager.manage();
+
         this.setState(() => {
             return {screenState: states.SEARCH_PRODUCT}
         })
