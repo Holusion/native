@@ -13,49 +13,43 @@ import * as Config from './src/utils/Config';
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const titleScreen = (mainTitle) => Config.projectName + " - " + mainTitle;
 
+const customNavigationOptions = (options, navigation) => {
+  let obj = {
+    title: titleScreen(options.title),
+    headerRight: wifiIcon(navigation)
+  }
+  
+  if(options.isHeader) {
+    obj = Object.assign(obj, {headerLeft: null})
+  }
+  
+  return obj
+}
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Accueil"),
-      headerLeft: null,
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({isHeader: true, title: "Accueil"}, navigation)
   },
   Remerciement: {
     screen: RemerciementScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Remerciements"),
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Remerciements"}, navigation)
   },
   Selection: {
     screen: ThemeSelectorScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Sélection"),
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Sélection"}, navigation)
   },
   Catalogue: {
     screen: CatalogueScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Catalogue"),
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Catalogue"}, navigation)
   },
   Object: {
     screen: ObjectScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Contenus"),
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Contenus"}, navigation)
   },
   End: {
     screen: EndScreen,
-    navigationOptions: ({navigation}) => ({
-      title: titleScreen("Remerciements"),
-      headerRight: wifiIcon(navigation)
-    })
+    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Remerciements"}, navigation)
   },
 });
 
