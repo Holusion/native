@@ -9,15 +9,16 @@ import FirebaseController from '../utils/FirebaseController'
 import * as Config from '../utils/Config'
 import * as networkExtension from '../utils/networkExtension';
 
+import { store } from "../stores/appStore";
+import * as actions from "../actions/appState";
+
 /**
  * Encapsulate the two other view and change view when it's necessary
  */
 export default class HomeScreen extends React.Component {
 
     async componentDidMount() {
-        this.setState(() => {
-            return {screenState: states.DOWNLOAD_FIREBASE}
-        })
+        store.dispatch(actions.changeState(actions.AppState.DOWNLOAD_FIREBASE));
 
         const isConnected = await network.hasInternetConnection();
 
@@ -30,16 +31,12 @@ export default class HomeScreen extends React.Component {
             assetManager.manage();
         }
 
-        this.setState(() => {
-            return {screenState: states.SEARCH_PRODUCT}
-        })
+        store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
 
     connectToProduct() {
         const launchOfflineMode = setTimeout(() => {
-            this.setState(() => {
-                return {screenState: states.READY};
-            })
+            store.dispatch(actions.changeState(actions.AppState.READY))
             Toast.show({
                 text: "Aucun produit trouvé",
                 buttonText: "Ok",
@@ -51,9 +48,8 @@ export default class HomeScreen extends React.Component {
             clearTimeout(launchOfflineMode);
             let url = network.getUrl(0);
             this.props.navigation.setParams({color: 'green'})
-            this.setState(() => {
-                return {url: url, screenState: states.READY}
-            });
+            store.dispatch(actions.changeState(actions.AppState.READY))
+            this.setState(() => ({url: url}));
             assetManager.manage();
         }, () => {
             Toast.show({
@@ -67,8 +63,8 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidUpdate() {
-        switch(this.state.screenState) {
-            case states.SEARCH_PRODUCT:
+        switch(store.getState().appState) {
+            case actions.AppState.SEARCH_PRODUCT:
                 this.connectToProduct()
                 break;
             default:
@@ -78,11 +74,11 @@ export default class HomeScreen extends React.Component {
     render() {
         let display = <SearchScreenComponent content="Démarrage" />;
 
-        switch(this.state.screenState) {
-            case states.SEARCH_PRODUCT:
+        switch(store.getState().appState) {
+            case actions.AppState.SEARCH_PRODUCT:
                 display = <SearchScreenComponent content="Recherche du produit..." />;
                 break;
-            case states.READY:
+            case actions.AppState.READY:
                 display = <DefaultHomeScreenComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />;
                 break;
             default:
@@ -110,9 +106,12 @@ export default class HomeScreen extends React.Component {
 
         this.state = {
             url: null,
-            screenState: states.INIT
+            screenState: actions.AppState.INIT
         }
 
+        store.subscribe(() => {
+            this.setState(() => ({screenState: store.getState().appState}))
+        })
     }
 
     _onVisite() {
@@ -126,13 +125,6 @@ export default class HomeScreen extends React.Component {
     _onRemerciement() {
         this.props.navigation.push('Remerciement');
     }
-}
-
-const states = {
-    INIT: 'init',
-    DOWNLOAD_FIREBASE: 'download_firebase',
-    SEARCH_PRODUCT: 'search_product',
-    READY: 'ready'
 }
 
 const customTheme = {
