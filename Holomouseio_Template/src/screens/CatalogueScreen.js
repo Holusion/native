@@ -15,12 +15,6 @@ import PlaylistComponent from '../components/PlaylistComponent'
  */
 export default class CatalogueScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     componentDidMount() {
         if(this.props.navigation.getParam("url")) {
             networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);

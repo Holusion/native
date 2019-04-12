@@ -12,12 +12,6 @@ import * as Config from '../utils/Config'
  */
 export default class RemerciementScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     renderLogo() {
         let allLogosFromYaml = Object.keys(assetManager.yamlCache).map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);
         let logo = ['holusion.png', 'comue.png'];

@@ -12,12 +12,6 @@ import * as Config from '../utils/Config'
 
 export default class EndScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     renderLogo() {
         let allLogosFromYaml = this.props.navigation.getParam('objList').map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);
         let logo = ['holusion.png'];

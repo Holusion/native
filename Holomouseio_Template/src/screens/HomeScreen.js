@@ -14,12 +14,6 @@ import * as networkExtension from '../utils/networkExtension';
  */
 export default class HomeScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     async componentDidMount() {
         this.setState(() => {
             return {screenState: states.DOWNLOAD_FIREBASE}

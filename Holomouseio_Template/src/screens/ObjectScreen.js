@@ -21,12 +21,6 @@ import VideoComponent from '../components/VideoComponent';
  */
 export default class ObjectScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     activeModal(number) {
         this.setState({modalVisible: number})
     }
