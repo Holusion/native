@@ -18,6 +18,9 @@ L'application est composé de plusieurs dossier
 - **assets**: contient les assets de l'application, seul le dossiers icons sera importer (les autre objets étant téléchargé via Firebase)
 - **native-base-theme**: contient les informations de thèmes pour les objets provenant de native-base
 - **src**: contient les sources du projet
+  - **actions**: les actions sont des méthodes permettant le transfert d'information entre l'application et le store
+  - **reducers**: les reducers donne une spécification sur la façon dont l'état de l'application change en fonction des actions
+  - **stores**: les store donne la possibilité de notifier un ou plusieurs composants d'un changement et peuvent alors répondre à cette notification
   - **components**: contient les composants, les composants sont des morceaux que l'on ajoute aux écrans
     - **screenComponents**: contient des composants qui prennent tout l'écran, ce ne sont pas des écrans car il n'entre pas dans la navigation 
   - **screens**: contient les écrans
