@@ -10,7 +10,7 @@ import * as Config from '../utils/Config'
 import * as networkExtension from '../utils/networkExtension';
 
 import { store } from "../stores/appStore";
-import * as actions from "../actions/appState";
+import * as actions from "../actions";
 
 /**
  * Encapsulate the two other view and change view when it's necessary

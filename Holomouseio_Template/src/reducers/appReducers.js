@@ -1,4 +1,4 @@
-import * as appState from "../actions/appState";
+import * as appState from "../actions";
 
 const { INIT } = appState.AppState
 
@@ -8,11 +8,5 @@ export const changeAppState = (state = INIT, action) => {
             return action.appState;
         default:
             return state;
-    }
-}
-
-export default app = (state = {}, action) => {
-    return {
-        appState: changeAppState(state.appState, action)
     }
 }
