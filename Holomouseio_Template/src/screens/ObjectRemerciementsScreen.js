@@ -10,7 +10,7 @@ import RNFS from 'react-native-fs'
 
 import * as Config from '../utils/Config'
 
-export default class EndScreen extends React.Component {
+export default class ObjectRemerciementsScreen extends React.Component {
 
     renderLogo() {
         let allLogosFromYaml = this.props.navigation.getParam('objList').map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);

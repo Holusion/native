@@ -2,7 +2,7 @@ import {createStackNavigator} from 'react-navigation'
 import ObjectScreen from './src/screens/ObjectScreen'
 import HomeScreen from './src/screens/HomeScreen';
 import ThemeSelectorScreen from './src/screens/ThemeSelectorScreen';
-import EndScreen from './src/screens/EndScreen';
+import ObjectRemerciementsScreen from './src/screens/ObjectRemerciementsScreen';
 import CatalogueScreen from './src/screens/CatalogueScreen';
 import { Root, Icon } from 'native-base';
 import React from 'react';
@@ -47,8 +47,8 @@ const AppNavigator = createStackNavigator({
     screen: ObjectScreen,
     navigationOptions: ({ navigation }) => customNavigationOptions({title: "Contenus"}, navigation)
   },
-  End: {
-    screen: EndScreen,
+  ObjectRemerciements: {
+    screen: ObjectRemerciementsScreen,
     navigationOptions: ({ navigation }) => customNavigationOptions({title: "Remerciements"}, navigation)
   },
 });
