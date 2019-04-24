@@ -34,6 +34,10 @@ export default class HomeScreen extends React.Component {
         store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
 
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     connectToProduct() {
         const launchOfflineMode = setTimeout(() => {
             store.dispatch(actions.changeState(actions.AppState.READY))
@@ -109,17 +113,19 @@ export default class HomeScreen extends React.Component {
             screenState: actions.AppState.INIT
         }
 
-        store.subscribe(() => {
+        this.unsubscribe = store.subscribe(() => {
             this.setState(() => ({screenState: store.getState().appState}))
         })
     }
 
     _onVisite() {
-        this.props.navigation.push('Selection', {type: 'visite', url: this.state.url});
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
+        this.props.navigation.push('Selection', {url: this.state.url});
     }
 
     _onCatalogue() {
-        this.props.navigation.push('Selection', {type: 'catalogue', url: this.state.url})
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
+        this.props.navigation.push('Selection', {url: this.state.url})
     }
 
     _onRemerciement() {

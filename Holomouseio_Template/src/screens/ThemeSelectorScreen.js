@@ -8,6 +8,9 @@ import ListItemComponent from "../components/ListItemComponent";
 import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 
+import { store } from "../stores/appStore";
+import { SelectionType } from "../actions"
+
 /**
  * Selection theme are rendered as list with two seperate color 
  */
@@ -19,10 +22,20 @@ export default class ThemeSelectorScreen extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     render() {
         let allList = [];
-        let actualSelection = this.props.navigation.getParam('type') === 'catalogue' ? assetManager.allCatalogue : assetManager.allTheme;
-        let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
+        
+        let actualSelection = assetManager.allCatalogue;
+        let catchphrase = 'Choisissez une collection';
+        
+        if(store.getState().selectionType === SelectionType.VISITE) {
+            actualSelection = assetManager.allTheme;
+            catchphrase = 'Choisissez un thème';
+        }
 
         for(let i = 0; i < actualSelection.length; i++) {
             let isPurple = (i % 2 == 0);
@@ -60,30 +73,36 @@ export default class ThemeSelectorScreen extends React.Component {
             }
         })
 
+        this.state = { type: SelectionType.ANY_SELECTION }
+
         this._onSelection = this._onSelection.bind(this);
 
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
+
+        this.unsubscribe = store.subscribe(() => {
+            this.setState(() => ({type: store.getState().selectionType}))
+        })
     }
 
     _onSelection(name) {
-        let realType = this.props.navigation.getParam('type') === "catalogue" ? 'Collections' : 'Theme'
+        let realType = store.getState().selectionType === SelectionType.CATALOGUE ? 'Collections' : 'Theme'
         let objs = assetManager.getObjectFromType(realType, name);
 
-        if(realType === "Theme") {
-            this.props.navigation.push('Object', {
-                objList: objs,
-                objId: 0,
-                url: this.props.navigation.getParam('url'),
-                type: this.props.navigation.getParam('type')
-            });
-        } else {
-            this.props.navigation.push("Catalogue", {
-                objList: objs,
-                url: this.props.navigation.getParam('url'),
-                type: this.props.navigation.getParam('type')
-            })
+        switch(store.getState().selectionType) {
+            case SelectionType.VISITE:
+                this.props.navigation.push('Object', {
+                    objList: objs,
+                    objId: 0,
+                    url: this.props.navigation.getParam('url')
+                });
+                break;
+            default:
+                this.props.navigation.push("Catalogue", {
+                    objList: objs,
+                    url: this.props.navigation.getParam('url')
+                })
         }
     }
 }

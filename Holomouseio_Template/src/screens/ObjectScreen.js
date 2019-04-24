@@ -14,6 +14,9 @@ import * as Config from '../utils/Config'
 import RNFS from 'react-native-fs';
 import VideoComponent from '../components/VideoComponent';
 
+import { store } from '../stores/appStore'
+import { SelectionType } from '../actions'
+
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
  * the controller (on the connected product). It will deactivate all file and activate the current video associated to the object.
@@ -181,7 +184,7 @@ export default class ObjectScreen extends React.Component {
             {this.generateComplButton()}
         </View>
 
-        if(this.props.navigation.getParam('type') == "catalogue") {
+        if(store.getState().selectionType == SelectionType.CATALOGUE) {
             txt = <View>
                 {
                     Object.keys(this.obj).filter(elem => {
