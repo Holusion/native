@@ -10,8 +10,6 @@ import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 import PlaylistComponent from '../components/PlaylistComponent'
 
-import { store } from '../stores/appStore'
-
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
  */

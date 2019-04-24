@@ -1,3 +1,4 @@
+import reducers from '../reducers'
 
 export default class Store {
     
@@ -33,3 +34,5 @@ export default class Store {
         return false;
     }
 }
+
+export const store = new Store(reducers);

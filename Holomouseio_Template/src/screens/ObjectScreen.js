@@ -14,7 +14,7 @@ import * as Config from '../utils/Config'
 import RNFS from 'react-native-fs';
 import VideoComponent from '../components/VideoComponent';
 
-import { store } from '../stores/appStore'
+import { store } from '../stores/Store'
 import { SelectionType } from '../actions'
 
 /**

@@ -9,7 +9,7 @@ import FirebaseController from '../utils/FirebaseController'
 import * as Config from '../utils/Config'
 import * as networkExtension from '../utils/networkExtension';
 
-import { store } from "../stores/appStore";
+import { store } from "../stores/Store";
 import * as actions from "../actions";
 
 /**
