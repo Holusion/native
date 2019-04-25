@@ -33,11 +33,11 @@ export default class ThemeSelectorScreen extends React.Component {
         let allList = [];
         
         let actualSelection = assetManager.allCatalogue;
-        let catchphrase = strings.catchphrase_collection;
+        let catchphrase = strings.selection.catchphrase_collection;
         
         if(store.getState().selectionType === SelectionType.VISITE) {
             actualSelection = assetManager.allTheme;
-            catchphrase = strings.catchphrase_theme;
+            catchphrase = strings.selection.catchphrase_theme;
         }
 
         for(let i = 0; i < actualSelection.length; i++) {
