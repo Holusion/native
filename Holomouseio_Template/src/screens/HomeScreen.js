@@ -76,7 +76,7 @@ export default class HomeScreen extends React.Component {
                 position: 'top'
             })
             this.props.navigation.setParams({color: 'red'})
-            this.props.navigation.push('HomeScreen');
+            this.props.navigation.push(navigator.home);
         })
     }
 

@@ -15,6 +15,10 @@
         "rightCardTitle": "Catalogue",
         "footerButton": "Remerciements"
     },
+    "selection": {
+        "catchphrase_collection": "Choisissez une collection",
+        "catchphrase_theme": "Choisissez un thème"
+    },
     "catalogue": {
         "catchphrase": "Choisissez un objet"
     }

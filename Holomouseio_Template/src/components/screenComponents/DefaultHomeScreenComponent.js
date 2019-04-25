@@ -32,7 +32,7 @@ export default class DefaultHomeScreenComponent extends React.Component {
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>
                         <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
-                            <Text style={{color: 'white', fontSize: 28}}>Remerciements</Text>
+                            <Text style={{color: 'white', fontSize: 28}}>{strings.home.footerButton}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

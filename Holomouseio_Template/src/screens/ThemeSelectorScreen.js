@@ -12,6 +12,7 @@ import { store } from "../stores/Store";
 import { SelectionType } from "../actions"
 
 import * as navigator from '../../navigator.json'
+import * as strings from '../../strings.json'
 
 /**
  * Selection theme are rendered as list with two seperate color 
@@ -32,11 +33,11 @@ export default class ThemeSelectorScreen extends React.Component {
         let allList = [];
         
         let actualSelection = assetManager.allCatalogue;
-        let catchphrase = 'Choisissez une collection';
+        let catchphrase = strings.catchphrase_collection;
         
         if(store.getState().selectionType === SelectionType.VISITE) {
             actualSelection = assetManager.allTheme;
-            catchphrase = 'Choisissez un thème';
+            catchphrase = strings.catchphrase_theme;
         }
 
         for(let i = 0; i < actualSelection.length; i++) {
