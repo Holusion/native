@@ -11,7 +11,6 @@ import * as networkExtension from '../utils/networkExtension';
 
 import { store } from "../stores/Store";
 import * as actions from "../actions";
-
 /**
  * Encapsulate the two other view and change view when it's necessary
  */
@@ -20,16 +19,27 @@ export default class HomeScreen extends React.Component {
     async componentDidMount() {
         store.dispatch(actions.changeState(actions.AppState.DOWNLOAD_FIREBASE));
 
-        const isConnected = await network.hasInternetConnection();
-
-        if(isConnected) {
-            let firebaseController = new FirebaseController(Config.projectName);
+        let firebaseController = new FirebaseController(Config.projectName);
+        try {
             await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
             ]);
-            assetManager.manage();
+        } catch(errorObj) {
+            let text = "erreur inconnu";
+            if(errorObj.code === "firestore/unavailable") {
+                text = "Impossible de se connecter à la base de donnée"
+            } else if(errorObj.name) {
+                text = "Impossible de télécharger : " + errorObj.name + " - " + errorObj.error.message;
+            }
+
+            Toast.show({
+                text: text,
+                buttonText: "Ok",
+                position: 'top'
+            })
         }
+        assetManager.manage();
 
         store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
@@ -119,12 +129,12 @@ export default class HomeScreen extends React.Component {
     }
 
     _onVisite() {
-        store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
+        store.dispatch(actions.changeSelection(actions.Selection.VISITE));
         this.props.navigation.push('Selection', {url: this.state.url});
     }
 
     _onCatalogue() {
-        store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
+        store.dispatch(actions.changeSelection(actions.Selection.CATALOGUE));
         this.props.navigation.push('Selection', {url: this.state.url})
     }
 
