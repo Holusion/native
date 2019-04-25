@@ -129,12 +129,12 @@ export default class HomeScreen extends React.Component {
     }
 
     _onVisite() {
-        store.dispatch(actions.changeSelection(actions.Selection.VISITE));
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
         this.props.navigation.push('Selection', {url: this.state.url});
     }
 
     _onCatalogue() {
-        store.dispatch(actions.changeSelection(actions.Selection.CATALOGUE));
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
         this.props.navigation.push('Selection', {url: this.state.url})
     }
 
