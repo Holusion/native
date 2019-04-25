@@ -10,6 +10,8 @@ import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../utils/Config'
 import PlaylistComponent from '../components/PlaylistComponent'
 
+import * as strings from '../../strings.json'
+
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
  */
@@ -22,7 +24,7 @@ export default class CatalogueScreen extends React.Component {
     }
 
     _onPlayslistItem(id) {
-        this.props.navigation.push('Object', {
+        this.props.navigation.push(navigator.object, {
             objList: this.props.navigation.getParam("objList"),
             objId: id,
             url: this.props.navigation.getParam('url'),
@@ -34,7 +36,7 @@ export default class CatalogueScreen extends React.Component {
         
         return(
             <Container>
-                <Text style={styles.catchPhrase}>Choisissez un objet</Text>
+                <Text style={styles.catchPhrase}>{strings.catalogue.catchphrase}</Text>
                 <StyleProvider style={customTheme}>
                     <PlaylistComponent titles={titles} playlist={this.playlist} actionItem={this._onPlayslistItem} />
                 </StyleProvider>

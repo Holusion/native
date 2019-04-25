@@ -17,6 +17,8 @@ import VideoComponent from '../components/VideoComponent';
 import { store } from '../stores/Store'
 import { SelectionType } from '../actions'
 
+import * as navigator from '../../navigator.json'
+
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
  * the controller (on the connected product). It will deactivate all file and activate the current video associated to the object.
@@ -108,7 +110,7 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.props.navigation.push('ObjectRemerciements', {objList: this.props.navigation.getParam('objList')})}>
+                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements, {objList: this.props.navigation.getParam('objList')})}>
                     <Text>Remerciements</Text>
                 </Button>
             </FooterTab>

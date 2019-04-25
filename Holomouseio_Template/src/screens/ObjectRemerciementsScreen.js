@@ -10,6 +10,8 @@ import RNFS from 'react-native-fs'
 
 import * as Config from '../utils/Config'
 
+import * as navigator from '../../navigator.json'
+
 export default class ObjectRemerciementsScreen extends React.Component {
 
     renderLogo() {
@@ -97,7 +99,7 @@ export default class ObjectRemerciementsScreen extends React.Component {
     }
 
     _onAccueil() {
-        this.props.navigation.push('Home')
+        this.props.navigation.push(navigator.home)
     }
 
     constructor(props, context) {

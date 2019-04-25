@@ -11,6 +11,10 @@ import * as networkExtension from '../utils/networkExtension';
 
 import { store } from "../stores/Store";
 import * as actions from "../actions";
+
+import * as strings from "../../strings.json"
+import * as navigator from "../../navigator.json"
+
 /**
  * Encapsulate the two other view and change view when it's necessary
  */
@@ -86,17 +90,17 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        let display = <SearchScreenComponent content="Démarrage" />;
+        let display = <SearchScreenComponent content={strings.home.content_start} />;
 
         switch(store.getState().appState) {
             case actions.AppState.SEARCH_PRODUCT:
-                display = <SearchScreenComponent content="Recherche du produit..." />;
+                display = <SearchScreenComponent content={strings.home.content_product} />;
                 break;
             case actions.AppState.READY:
                 display = <DefaultHomeScreenComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />;
                 break;
             default:
-                display = <SearchScreenComponent content="Téléchargement des fichiers..." />;
+                display = <SearchScreenComponent content={strings.home.content_files} />;
         }
 
         if(this.state.url) {
@@ -130,16 +134,16 @@ export default class HomeScreen extends React.Component {
 
     _onVisite() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
-        this.props.navigation.push('Selection', {url: this.state.url});
+        this.props.navigation.push(navigator.selection, {url: this.state.url});
     }
 
     _onCatalogue() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
-        this.props.navigation.push('Selection', {url: this.state.url})
+        this.props.navigation.push(navigator.selection, {url: this.state.url})
     }
 
     _onRemerciement() {
-        this.props.navigation.push('Remerciement');
+        this.props.navigation.push(navigator.remerciements);
     }
 }
 

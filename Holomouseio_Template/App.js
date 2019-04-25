@@ -10,6 +10,11 @@ import RemerciementScreen from './src/screens/RemerciementScreen';
 
 import * as Config from './src/utils/Config';
 
+import * as strings from './strings.json';
+import * as navigator from './navigator.json'
+
+let stackNavigator = {};
+
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const titleScreen = (mainTitle) => Config.projectName + " - " + mainTitle;
 
@@ -26,32 +31,21 @@ const customNavigationOptions = (options, navigation) => {
   return obj
 }
 
-const AppNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({isHeader: true, title: "Accueil"}, navigation)
-  },
-  Remerciement: {
-    screen: RemerciementScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Remerciements"}, navigation)
-  },
-  Selection: {
-    screen: ThemeSelectorScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Sélection"}, navigation)
-  },
-  Catalogue: {
-    screen: CatalogueScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Catalogue"}, navigation)
-  },
-  Object: {
-    screen: ObjectScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Contenus"}, navigation)
-  },
-  ObjectRemerciements: {
-    screen: ObjectRemerciementsScreen,
-    navigationOptions: ({ navigation }) => customNavigationOptions({title: "Remerciements"}, navigation)
-  },
-});
+const pushNavigator = (navName, screen, options) => {
+  stackNavigator[navName] = {
+    screen: screen,
+    navigationOptions: ({ navigation }) => customNavigationOptions(options, navigation)
+  };
+}
+
+pushNavigator(navigator.home, HomeScreen, {isHeader: true, title: strings.navigation.accueil});
+pushNavigator(navigator.remerciements, RemerciementScreen, {title: strings.navigation.remerciements});
+pushNavigator(navigator.selection, ThemeSelectorScreen, {title: strings.navigation.selection});
+pushNavigator(navigator.catalogue, CatalogueScreen, {title: strings.navigation.catalogue});
+pushNavigator(navigator.object, ObjectScreen, {title: strings.navigation.contenus});
+pushNavigator(navigator.objectRemerciements, ObjectRemerciementsScreen, {title: strings.navigation.remerciements})
+
+const AppNavigator = createStackNavigator(stackNavigator);
 
 export default () => 
   <Root>

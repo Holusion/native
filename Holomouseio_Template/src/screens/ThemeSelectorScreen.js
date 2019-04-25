@@ -11,6 +11,8 @@ import * as Config from '../utils/Config'
 import { store } from "../stores/Store";
 import { SelectionType } from "../actions"
 
+import * as navigator from '../../navigator.json'
+
 /**
  * Selection theme are rendered as list with two seperate color 
  */
@@ -92,14 +94,14 @@ export default class ThemeSelectorScreen extends React.Component {
 
         switch(store.getState().selectionType) {
             case SelectionType.VISITE:
-                this.props.navigation.push('Object', {
+                this.props.navigation.push(navigator.object, {
                     objList: objs,
                     objId: 0,
                     url: this.props.navigation.getParam('url')
                 });
                 break;
             default:
-                this.props.navigation.push("Catalogue", {
+                this.props.navigation.push(navigator.catalogue, {
                     objList: objs,
                     url: this.props.navigation.getParam('url')
                 })

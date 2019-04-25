@@ -1,0 +1,21 @@
+{
+    "navigation": {
+        "accueil": "Accueil",
+        "selection": "Sélection",
+        "remerciements": "Remerciements",
+        "catalogue": "Catalogue",
+        "contenus": "Contenus"
+    },
+    "home": {
+        "content_start": "Démarrage",
+        "content_files": "Téléchargement des fichiers...",
+        "content_product": "Recherche du produit...",
+        "catchphrase": "Bienvenue, touchez une carte",
+        "leftCardTitle": "Visite",
+        "rightCardTitle": "Catalogue",
+        "footerButton": "Remerciements"
+    },
+    "catalogue": {
+        "catchphrase": "Choisissez un objet"
+    }
+}

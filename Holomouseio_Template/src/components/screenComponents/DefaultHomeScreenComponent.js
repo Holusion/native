@@ -5,6 +5,9 @@ import IconCardComponent from '../../components/IconCardComponent'
 import { StyleSheet, View, TouchableOpacity, Image, Text, Animated } from 'react-native';
 import * as Config from '../../utils/Config'
 
+import resources from '../../../resources'
+import * as strings from '../../../strings'
+
 /**
  * Default view, when all file download or product found
  */
@@ -17,14 +20,14 @@ export default class DefaultHomeScreenComponent extends React.Component {
         return (
             <Content>
                 <View>
-                    <Image style={styles.images} source={require("../../../assets/images/logo.png")} />
-                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
+                    <Image style={styles.images} source={resources.topRightLogo} />
+                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
                     <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
                         <TouchableOpacity onPress={this.props.visite}>
-                            <IconCardComponent source={require("../../../assets/icons/musee.png")} title="Visite" />
+                            <IconCardComponent source={resources.leftCardIcon} title={strings.home.leftCardTitle} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCardComponent source={require("../../../assets/icons/catalogue.png")} title="Catalogue"/>
+                            <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={this.props.remerciement}>
