@@ -24,7 +24,7 @@ export default class CatalogueScreen extends React.Component {
     }
 
     _onPlayslistItem(id) {
-        this.props.navigation.push(navigator.object, {
+        this.props.navigation.push(navigator.object.id, {
             objList: this.props.navigation.getParam("objList"),
             objId: id,
             url: this.props.navigation.getParam('url'),

@@ -110,7 +110,7 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements, {objList: this.props.navigation.getParam('objList')})}>
+                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.props.navigation.getParam('objList')})}>
                     <Text>Remerciements</Text>
                 </Button>
             </FooterTab>

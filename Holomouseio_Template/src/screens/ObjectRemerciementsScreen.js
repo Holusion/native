@@ -99,7 +99,7 @@ export default class ObjectRemerciementsScreen extends React.Component {
     }
 
     _onAccueil() {
-        this.props.navigation.push(navigator.home)
+        this.props.navigation.push(navigator.home.id)
     }
 
     constructor(props, context) {

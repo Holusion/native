@@ -1,11 +1,4 @@
 {
-    "navigation": {
-        "accueil": "Accueil",
-        "selection": "Sélection",
-        "remerciements": "Remerciements",
-        "catalogue": "Catalogue",
-        "contenus": "Contenus"
-    },
     "home": {
         "content_start": "Démarrage",
         "content_files": "Téléchargement des fichiers...",

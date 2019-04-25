@@ -1,8 +1,26 @@
 {
-    "home": "Home",
-    "remerciements": "Remerciements",
-    "selection": "Selection",
-    "catalogue": "Catalogue",
-    "object": "Object",
-    "objectRemerciments": "ObjectRemerciements"
+    "home": {
+        "id": "Home",
+        "options": {"isHeader": true, "title": "Accueil"}
+    },
+    "remerciements": {
+        "id": "Remerciements",
+        "options": {"title": "Remerciements"}
+    },
+    "selection": {
+        "id": "Selection",
+        "options": {"title": "Sélection"}
+    },
+    "catalogue": {
+        "id": "Catalogue",
+        "options": {"title": "Catalogue"}
+    },
+    "object": {
+        "id": "Object",
+        "options": {"title": "Contenus"}
+    },
+    "objectRemerciements": {
+        "id": "ObjectRemerciements",
+        "options": {"title": "Remerciements"}
+    }
 }

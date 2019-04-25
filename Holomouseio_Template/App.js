@@ -31,19 +31,19 @@ const customNavigationOptions = (options, navigation) => {
   return obj
 }
 
-const pushNavigator = (navName, screen, options) => {
-  stackNavigator[navName] = {
+const pushNavigator = (navigator, screen) => {
+  stackNavigator[navigator.id] = {
     screen: screen,
-    navigationOptions: ({ navigation }) => customNavigationOptions(options, navigation)
+    navigationOptions: ({ navigation }) => customNavigationOptions(navigator.options, navigation)
   };
 }
 
-pushNavigator(navigator.home, HomeScreen, {isHeader: true, title: strings.navigation.accueil});
-pushNavigator(navigator.remerciements, RemerciementScreen, {title: strings.navigation.remerciements});
-pushNavigator(navigator.selection, ThemeSelectorScreen, {title: strings.navigation.selection});
-pushNavigator(navigator.catalogue, CatalogueScreen, {title: strings.navigation.catalogue});
-pushNavigator(navigator.object, ObjectScreen, {title: strings.navigation.contenus});
-pushNavigator(navigator.objectRemerciements, ObjectRemerciementsScreen, {title: strings.navigation.remerciements})
+pushNavigator(navigator.home, HomeScreen);
+pushNavigator(navigator.remerciements, RemerciementScreen);
+pushNavigator(navigator.selection, ThemeSelectorScreen);
+pushNavigator(navigator.catalogue, CatalogueScreen);
+pushNavigator(navigator.object, ObjectScreen);
+pushNavigator(navigator.objectRemerciements, ObjectRemerciementsScreen)
 
 const AppNavigator = createStackNavigator(stackNavigator);
 

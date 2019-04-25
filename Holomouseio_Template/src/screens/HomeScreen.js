@@ -76,7 +76,7 @@ export default class HomeScreen extends React.Component {
                 position: 'top'
             })
             this.props.navigation.setParams({color: 'red'})
-            this.props.navigation.push(navigator.home);
+            this.props.navigation.push(navigator.home.id);
         })
     }
 
@@ -134,16 +134,16 @@ export default class HomeScreen extends React.Component {
 
     _onVisite() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
-        this.props.navigation.push(navigator.selection, {url: this.state.url});
+        this.props.navigation.push(navigator.selection.id, {url: this.state.url});
     }
 
     _onCatalogue() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
-        this.props.navigation.push(navigator.selection, {url: this.state.url})
+        this.props.navigation.push(navigator.selection.id, {url: this.state.url})
     }
 
     _onRemerciement() {
-        this.props.navigation.push(navigator.remerciements);
+        this.props.navigation.push(navigator.remerciements.id);
     }
 }
 

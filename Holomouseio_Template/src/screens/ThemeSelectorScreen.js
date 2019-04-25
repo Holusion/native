@@ -95,14 +95,14 @@ export default class ThemeSelectorScreen extends React.Component {
 
         switch(store.getState().selectionType) {
             case SelectionType.VISITE:
-                this.props.navigation.push(navigator.object, {
+                this.props.navigation.push(navigator.object.id, {
                     objList: objs,
                     objId: 0,
                     url: this.props.navigation.getParam('url')
                 });
                 break;
             default:
-                this.props.navigation.push(navigator.catalogue, {
+                this.props.navigation.push(navigator.catalogue.id, {
                     objList: objs,
                     url: this.props.navigation.getParam('url')
                 })
