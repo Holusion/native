@@ -8,7 +8,7 @@ import { Root, Icon } from 'native-base';
 import React from 'react';
 import RemerciementScreen from './src/screens/RemerciementScreen';
 
-import * as Config from './src/utils/Config';
+import * as Config from './Config';
 
 import * as strings from './strings.json';
 import * as navigator from './navigator.json'

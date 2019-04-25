@@ -9,7 +9,7 @@ import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacit
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
 
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 import RNFS from 'react-native-fs';
 import VideoComponent from '../components/VideoComponent';

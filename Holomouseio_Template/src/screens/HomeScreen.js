@@ -6,7 +6,7 @@ import SearchScreenComponent from "../components/screenComponents/SearchScreenCo
 
 import {network, assetManager} from '@holusion/react-native-holusion';
 import FirebaseController from '../utils/FirebaseController'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 import * as networkExtension from '../utils/networkExtension';
 
 import { store } from "../stores/Store";

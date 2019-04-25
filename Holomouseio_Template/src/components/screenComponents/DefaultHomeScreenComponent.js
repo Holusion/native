@@ -3,7 +3,7 @@ import React from 'react';
 import { Content } from 'native-base';
 import IconCardComponent from '../../components/IconCardComponent'
 import { StyleSheet, View, TouchableOpacity, Image, Text, Animated } from 'react-native';
-import * as Config from '../../utils/Config'
+import * as Config from '../../../Config'
 
 import resources from '../../../resources'
 import * as strings from '../../../strings'

@@ -6,7 +6,7 @@ import { assetManager } from '@holusion/react-native-holusion'
 import ListItemComponent from "../components/ListItemComponent";
 
 import * as networkExtension from '../utils/networkExtension'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 import { store } from "../stores/Store";
 import { SelectionType } from "../actions"

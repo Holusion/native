@@ -8,7 +8,7 @@ import Markdown from 'react-native-markdown-renderer'
 
 import RNFS from 'react-native-fs'
 
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 import * as navigator from '../../navigator.json'
 

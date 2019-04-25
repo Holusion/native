@@ -5,7 +5,7 @@ import { assetManager } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs';
 
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 /**
  * This screen renders the remerciement page

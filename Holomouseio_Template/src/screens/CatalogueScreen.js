@@ -7,7 +7,7 @@ import {Playlist} from '@holusion/react-native-holusion';
 import { StyleSheet, Text } from 'react-native'
 
 import * as networkExtension from '../utils/networkExtension'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 import PlaylistComponent from '../components/PlaylistComponent'
 
 import * as strings from '../../strings.json'

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Content } from 'native-base';
 import { View, Text, ActivityIndicator, Dimensions } from 'react-native';
-import * as Config from '../../utils/Config'
+import * as Config from '../../../Config'
 
 /**
  * This view appears when application search a product or if it downloads the files from firebase
