@@ -1,17 +1,10 @@
 import {createStackNavigator} from 'react-navigation'
-import ObjectScreen from './src/screens/ObjectScreen'
-import HomeScreen from './src/screens/HomeScreen';
-import ThemeSelectorScreen from './src/screens/ThemeSelectorScreen';
-import ObjectRemerciementsScreen from './src/screens/ObjectRemerciementsScreen';
-import CatalogueScreen from './src/screens/CatalogueScreen';
 import { Root, Icon } from 'native-base';
 import React from 'react';
-import RemerciementScreen from './src/screens/RemerciementScreen';
 
 import * as Config from './Config';
 
-import * as strings from './strings.json';
-import * as navigator from './navigator.json'
+import {navigator} from './navigator'
 
 let stackNavigator = {};
 
@@ -31,19 +24,16 @@ const customNavigationOptions = (options, navigation) => {
   return obj
 }
 
-const pushNavigator = (navigator, screen) => {
-  stackNavigator[navigator.id] = {
-    screen: screen,
-    navigationOptions: ({ navigation }) => customNavigationOptions(navigator.options, navigation)
+const pushNavigator = (nav) => {
+  stackNavigator[nav.id] = {
+    screen: nav.screen,
+    navigationOptions: ({ navigation }) => customNavigationOptions(nav.options, navigation)
   };
 }
 
-pushNavigator(navigator.home, HomeScreen);
-pushNavigator(navigator.remerciements, RemerciementScreen);
-pushNavigator(navigator.selection, ThemeSelectorScreen);
-pushNavigator(navigator.catalogue, CatalogueScreen);
-pushNavigator(navigator.object, ObjectScreen);
-pushNavigator(navigator.objectRemerciements, ObjectRemerciementsScreen)
+for(let nav in navigator) {
+  pushNavigator(navigator[nav]);
+}
 
 const AppNavigator = createStackNavigator(stackNavigator);
 

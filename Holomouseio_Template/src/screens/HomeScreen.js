@@ -13,7 +13,7 @@ import { store } from "../stores/Store";
 import * as actions from "../actions";
 
 import * as strings from "../../strings.json"
-import * as navigator from "../../navigator.json"
+import {navigator} from "../../navigator"
 
 /**
  * Encapsulate the two other view and change view when it's necessary

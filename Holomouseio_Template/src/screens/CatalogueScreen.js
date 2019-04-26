@@ -11,6 +11,7 @@ import * as Config from '../../Config'
 import PlaylistComponent from '../components/PlaylistComponent'
 
 import * as strings from '../../strings.json'
+import {navigator} from '../../navigator'
 
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 

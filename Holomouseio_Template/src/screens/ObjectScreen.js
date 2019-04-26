@@ -17,7 +17,7 @@ import VideoComponent from '../components/VideoComponent';
 import { store } from '../stores/Store'
 import { SelectionType } from '../actions'
 
-import * as navigator from '../../navigator.json'
+import {navigator} from '../../navigator'
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to

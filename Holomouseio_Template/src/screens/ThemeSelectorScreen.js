@@ -11,7 +11,7 @@ import * as Config from '../../Config'
 import { store } from "../stores/Store";
 import { SelectionType } from "../actions"
 
-import * as navigator from '../../navigator.json'
+import {navigator} from '../../navigator'
 import * as strings from '../../strings.json'
 
 /**

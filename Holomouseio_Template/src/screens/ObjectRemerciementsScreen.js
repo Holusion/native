@@ -10,7 +10,7 @@ import RNFS from 'react-native-fs'
 
 import * as Config from '../../Config'
 
-import * as navigator from '../../navigator.json'
+import {navigator} from '../../navigator'
 
 export default class ObjectRemerciementsScreen extends React.Component {
 
