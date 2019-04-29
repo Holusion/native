@@ -97,13 +97,19 @@ export const active = async (url, name) => {
 export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
     playlist.filter(elem => predicate(elem)).forEach(async elem => {
-        console.log(elem)
         try {
             playlistPutActive(url, elem, active);
         } catch(error) {
             console.error("Something wrong when activation at " + url);
         }
     });
+}
+
+export const activeOnlyYamlItems = (url, yamlFiles) => {
+    activeWithPredicate(url, (elem) => {
+        let name = elem.name.split('.')[0];
+        return yamlFiles[name];
+    }, true)
 }
 
 export const play = async (url, name) => {
