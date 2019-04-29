@@ -32,13 +32,11 @@ export default class CatalogueScreen extends React.Component {
     }
 
     render() {
-        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
-        
         return(
             <Container>
                 <Text style={styles.catchPhrase}>{strings.catalogue.catchphrase}</Text>
                 <StyleProvider style={customTheme}>
-                    <PlaylistComponent titles={titles} playlist={this.playlist} actionItem={this._onPlayslistItem} />
+                    <PlaylistComponent playlist={this.playlist} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
@@ -52,8 +50,11 @@ export default class CatalogueScreen extends React.Component {
         }
         
         let objList = this.props.navigation.getParam("objList");
-        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
-        this.playlist = new Playlist(this.props.navigation.getParam("url"), objList, true, titles);
+        let contents = objList.map(elem => {
+            return {name: elem, title: assetManager.yamlCache[elem].Titre, localImage: true}
+        })
+
+        this.playlist = new Playlist(this.props.navigation.getParam("url"), contents);
     }
 }
 
