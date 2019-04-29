@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, Icon } from 'native-base';
+import { Content } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
 import { assetManager } from '@holusion/react-native-holusion'

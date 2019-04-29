@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Content, StyleProvider, Icon, Toast } from 'native-base';
+import { Content, StyleProvider, Toast } from 'native-base';
 import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
 import SearchScreenComponent from "../components/screenComponents/SearchScreenComponent";
 

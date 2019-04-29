@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, StyleProvider, Icon } from 'native-base';
+import { Container, StyleProvider } from 'native-base';
 import { assetManager } from '@holusion/react-native-holusion';
 import {Playlist} from '@holusion/react-native-holusion';
 

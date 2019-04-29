@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Text, StyleSheet, Image, ScrollView } from 'react-native'
-import { Container, Content, Icon, Grid, Col, Row, Button } from 'native-base'
+import { Container, Content, Grid, Col, Row } from 'native-base'
 import { assetManager } from '@holusion/react-native-holusion';
 
 import Markdown from 'react-native-markdown-renderer'
