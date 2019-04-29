@@ -55,6 +55,17 @@ test(".constructor basic", (done) => {
     done();
 })
 
+test(".constructor without array", (done) => {
+    let playlist = new Playlist("localhost", {"foo": "bar"});
+
+    expect(playlist.playlist).toEqual([
+        {active: true, imageUri: "http://localhost:3000/medias/foo.mp4?thumb=true", name: "foo.mp4", path: "/", rank: 0, title: "foo.mp4", url: "localhost"},
+        {active: false, imageUri: "http://localhost:3000/medias/bar.mp4?thumb=true", name: "bar.mp4", path: "/", rank: 0, title: "bar.mp4", url: "localhost"},
+        {active: true, imageUri: "http://localhost:3000/medias/baz.mp4?thumb=true", name: "baz.mp4", path: "/", rank: 0, title: "baz.mp4", url: "localhost"}
+    ]);
+    done();
+})
+
 test(".constructor customContents", (done) => {
     let playlist = new Playlist("localhost", [{name: "blabla"}]);
 
