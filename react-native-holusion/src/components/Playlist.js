@@ -4,27 +4,23 @@ import * as network from '../utils/Network';
 
 export default class Playlist {
 
-    constructor(url, contents=null, localImage=false, customTitles = []) {
-        let isNetworkContents = false;
+    constructor(url, contents) {
         this.playlist = contents;
 
-        if(!contents) {
+        if(!contents || !(contents instanceof Array)) {
             isNetworkContents = true;
             this.playlist = network.getPlaylist(url);
         }
         
-        this.playlist = this.playlist.map((elem, index) => {
-            let elemName = isNetworkContents ? elem.name : elem;
-
-            let imageUri = `http://${url}:3000/medias/${elemName}?thumb=true`;
-            if(localImage) {
-                imageUri = `file://${RNFS.DocumentDirectoryPath}/${elemName}.jpg`;
+        this.playlist = this.playlist.map((elem) => {
+            elem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem.name}.jpg`;
+            if(!elem.localImage) {
+                elem.imageUri = `http://${url}:3000/medias/${elem.name}?thumb=true`;
             }
-            let title = elemName;
-            if(customTitles.length != 0 && customTitles[index]) {
-                title = customTitles[index];
+            if(!elem.title) {
+                elem.title = elem.name;
             }
-            return isNetworkContents ? {url, imageUri, title, ...elem} : {url, imageUri, title, elem};
+            return {url, ...elem};
         });
     }
 }

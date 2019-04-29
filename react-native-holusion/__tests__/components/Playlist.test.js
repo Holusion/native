@@ -56,39 +56,32 @@ test(".constructor basic", (done) => {
 })
 
 test(".constructor customContents", (done) => {
-    let playlist = new Playlist("localhost", ["blabla"]);
+    let playlist = new Playlist("localhost", [{name: "blabla"}]);
 
-    expect(playlist.playlist).toEqual([{elem: "blabla", imageUri: "http://localhost:3000/medias/blabla?thumb=true", title: "blabla", url: "localhost"}]);
+    expect(playlist.playlist).toEqual([{imageUri: "http://localhost:3000/medias/blabla?thumb=true", name: "blabla", title: "blabla", url: "localhost"}]);
     done();
 })
 
 test(".constructor customContents + locaImage", (done) => {
-    let playlist = new Playlist("localhost", ["blabla"], true);
+    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true}]);
 
-    expect(playlist.playlist).toEqual([{elem: "blabla", imageUri: "file://./blabla.jpg", title: "blabla", url: "localhost"}]);
-    done();
-})
-
-test(".constructor customContents + localImage", (done) => {
-    let playlist = new Playlist("localhost", ["blabla"], true);
-
-    expect(playlist.playlist).toEqual([{elem: "blabla", imageUri: "file://./blabla.jpg", title: "blabla", url: "localhost"}]);
+    expect(playlist.playlist).toEqual([{imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "blabla", url: "localhost"}]);
     done();
 })
 
 test(".constructor customContents + localImage + customTitle", (done) => {
-    let playlist = new Playlist("localhost", ["blabla"], true, ["foo"]);
+    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true, title: "foo"}]);
 
-    expect(playlist.playlist).toEqual([{elem: "blabla", imageUri: "file://./blabla.jpg", title: "foo", url: "localhost"}]);
+    expect(playlist.playlist).toEqual([{imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "foo", url: "localhost"}]);
     done();
 })
 
 test(".constructor 2xcustomContents + localImage + 1xcustomTitle", (done) => {
-    let playlist = new Playlist("localhost", ["blabla", "blob"], true, ["foo"]);
+    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true, title: "foo"}, {name: "blob", localImage: true}]);
 
     expect(playlist.playlist).toEqual([
-        {elem: "blabla", imageUri: "file://./blabla.jpg", title: "foo", url: "localhost"},
-        {elem: "blob", imageUri: "file://./blob.jpg", title: "blob", url: "localhost"}
+        {imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "foo", url: "localhost"},
+        {imageUri: "file://./blob.jpg", localImage: true, name: "blob", title: "blob", url: "localhost"}
     ]);
     done();
 })
