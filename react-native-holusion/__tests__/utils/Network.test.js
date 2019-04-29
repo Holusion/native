@@ -104,13 +104,13 @@ test('.play', async () => {
   expect(currentPlay).toEqual('baz.mp4');
 })
 
-test('.getUrl when no url found', () => {
-  expect(network.getUrl()).toBe(null);
+test('.getUrls when no url found', () => {
+  expect(network.getUrl(0)).toBe(null);
 })
 
-test('.getUrl when resolved', () => {
+test('.getUrls when resolved', () => {
   let callbackCalled = false;
   network.connect(() => callbackCalled = true);
-  expect(network.getUrl()).toEqual("192.168.0.1");
+  expect(network.getUrl(0)).toEqual("192.168.0.1");
   expect(callbackCalled).toEqual(true);
 })

@@ -39,7 +39,7 @@ test('yamlCache', async () => {
 })
 
 test('allTheme', async () => {
-    expect(assetManager.allTheme).toEqual(['theme', 'blabla'])
+    expect(assetManager.allTheme).toEqual(['blabla', 'theme'])
 })
 
 test('allCatalogue', async () => {
