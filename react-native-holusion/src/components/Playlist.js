@@ -1,26 +1,30 @@
 import RNFS from 'react-native-fs';
 
 import * as network from '../utils/Network';
-import PlaylistItem from './PlaylistItem';
 
 export default class Playlist {
 
     constructor(url, contents=null, localImage=false, customTitles = []) {
-        this.contents = contents;
+        let isNetworkContents = false;
+        this.playlist = contents;
+
         if(!contents) {
-            this.contents = network.getPlaylist(url);
+            isNetworkContents = true;
+            this.playlist = network.getPlaylist(url);
         }
         
-        this.contents = contents.map((elem, index) => {
-            let imageUri = `http://${url}:3000/medias/${elem}?thumb=true`;
+        this.playlist = this.playlist.map((elem, index) => {
+            let elemName = isNetworkContents ? elem.name : elem;
+
+            let imageUri = `http://${url}:3000/medias/${elemName}?thumb=true`;
             if(localImage) {
-                imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem}.jpg`;
+                imageUri = `file://${RNFS.DocumentDirectoryPath}/${elemName}.jpg`;
             }
-            let title = elem;
-            if(customTitles.length != 0) {
+            let title = elemName;
+            if(customTitles.length != 0 && customTitles[index]) {
                 title = customTitles[index];
             }
-            return new PlaylistItem(url, imageUri, elem, title);
+            return isNetworkContents ? {url, imageUri, title, ...elem} : {url, imageUri, title, elem};
         });
     }
 }
