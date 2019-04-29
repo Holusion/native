@@ -43,7 +43,15 @@ export default class HomeScreen extends React.Component {
                 position: 'top'
             })
         }
-        assetManager.manage();
+        try {
+            await assetManager.manage();
+        } catch(err) {
+            Toast.show({
+                text: err,
+                buttonText: "Ok",
+                position: 'top'
+            })
+        }
 
         store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }

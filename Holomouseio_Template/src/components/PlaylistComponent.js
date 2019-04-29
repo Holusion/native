@@ -9,13 +9,13 @@ export class PlaylistComponent extends React.Component {
         let rows = [];
         let items = [];
 
-        let contents = this.props.playlist.contents;
+        let contents = this.props.playlist.playlist;
 
         for(let i = 0; i < contents.length; i++) {
             let current = contents[i];
             items.push(
                 <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCardComponent source={{uri: current.image, scale: 1}} title={current.title}/>
+                    <IconCardComponent source={{uri: current.imageUri, scale: 1}} title={current.title}/>
                 </TouchableOpacity>
             )
             if(items.length % 3 == 0) {
