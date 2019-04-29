@@ -1,12 +1,11 @@
 import React from 'react'
 
 import { Container, StyleProvider } from 'native-base';
-import { assetManager } from '@holusion/react-native-holusion';
+import { assetManager, network } from '@holusion/react-native-holusion';
 import {Playlist} from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
-import * as networkExtension from '../utils/networkExtension'
 import * as Config from '../../Config'
 import PlaylistComponent from '../components/PlaylistComponent'
 
@@ -20,7 +19,7 @@ export default class CatalogueScreen extends React.Component {
 
     componentDidMount() {
         if(this.props.navigation.getParam("url")) {
-            networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
+            network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         }
     }
 

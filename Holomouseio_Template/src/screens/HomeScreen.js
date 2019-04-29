@@ -7,7 +7,6 @@ import SearchScreenComponent from "../components/screenComponents/SearchScreenCo
 import {network, assetManager} from '@holusion/react-native-holusion';
 import FirebaseController from '../utils/FirebaseController'
 import * as Config from '../../Config'
-import * as networkExtension from '../utils/networkExtension';
 
 import { store } from "../stores/Store";
 import * as actions from "../actions";
@@ -112,7 +111,7 @@ export default class HomeScreen extends React.Component {
         }
 
         if(this.state.url) {
-            networkExtension.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
+            network.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
         }
 
         return (
