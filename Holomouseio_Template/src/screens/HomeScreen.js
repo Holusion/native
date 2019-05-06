@@ -13,6 +13,7 @@ import * as actions from "../actions";
 
 import * as strings from "../../strings.json"
 import {navigator} from "../../navigator"
+import { pushWarning, pushError, pushSuccess } from '../utils/Notifier';
 
 /**
  * Encapsulate the two other view and change view when it's necessary
@@ -36,20 +37,12 @@ export default class HomeScreen extends React.Component {
                 text = "Impossible de télécharger : " + errorObj.name + " - " + errorObj.error.message;
             }
 
-            Toast.show({
-                text: text,
-                buttonText: "Ok",
-                position: 'top'
-            })
+            pushWarning(text);
         }
         try {
             await assetManager.manage();
         } catch(err) {
-            Toast.show({
-                text: err,
-                buttonText: "Ok",
-                position: 'top'
-            })
+            pushError(err);
         }
 
         store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
@@ -57,39 +50,39 @@ export default class HomeScreen extends React.Component {
 
     componentWillUnmount() {
         this.unsubscribe();
+        this.closeConnection();
     }
 
     connectToProduct() {
         const launchOfflineMode = setTimeout(() => {
             store.dispatch(actions.changeState(actions.AppState.READY))
-            Toast.show({
-                text: "Aucun produit trouvé",
-                buttonText: "Ok",
-                position: 'top'
-            })
+            pushWarning("Aucun produit trouvé")
         }, 5000);
 
-        network.connect(() => {
-            clearTimeout(launchOfflineMode);
-            let url = network.getUrl(0);
-            this.props.navigation.setParams({color: 'green'})
-            store.dispatch(actions.changeState(actions.AppState.READY))
-            this.setState(() => ({url: url}));
-            assetManager.manage();
-        }, () => {
-            Toast.show({
-                text: "Produit déconnecté",
-                buttonText: "Ok",
-                position: 'top'
+        try {
+            this.closeConnection = network.connect((service) => {
+                clearTimeout(launchOfflineMode);
+                let url = network.getUrl(0);
+                this.props.navigation.setParams({color: 'green'})
+                pushSuccess("Connecté sur " + service.name)
+                store.dispatch(actions.changeState(actions.AppState.READY))
+                this.setState(() => ({url: url}));
+                assetManager.manage();
+            }, () => {
+                pushWarning("Produit déconnecté");
+                this.setState(() => ({url: ""}));
+                this.props.navigation.setParams({color: 'red'})
             })
-            this.props.navigation.setParams({color: 'red'})
-            this.props.navigation.push(navigator.home.id);
-        })
+        } catch(err) {
+            // BAD: https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
+            pushError(err);
+        }
     }
 
     componentDidUpdate() {
         switch(store.getState().appState) {
             case actions.AppState.SEARCH_PRODUCT:
+                store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
                 this.connectToProduct()
                 break;
             default:
