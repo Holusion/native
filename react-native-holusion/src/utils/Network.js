@@ -1,4 +1,4 @@
-import Zeroconf from 'react-native-zeroconf';
+import Zeroconf from 'react-native-zeroconf';   
 
 let allProducts = [];
 
@@ -28,6 +28,7 @@ export const connect = (callbackAdd, callbackRemove) => {
     return () => {
         zeroconf.stop();
         zeroconf.removeDeviceListeners();
+        allProducts = [];
     }
 }
 
@@ -39,8 +40,7 @@ export const hasInternetConnection = async () => {
         }
         return true;
     } catch(err) {
-        console.error(err);
-        return false;
+        throw err;
     }
 }
 
@@ -54,8 +54,8 @@ export const getUrl = (id) => {
     return null;
 }
 
-const playlistPutActive = (url, elem, active) => {
-    fetch(`http://${url}:3000/playlist`, {
+const playlistPutActive = async (url, elem, active) => {
+    await fetch(`http://${url}:3000/playlist`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -69,12 +69,18 @@ const playlistPutActive = (url, elem, active) => {
     });
 }
 
+/**
+ * give the playlist from a product given by its url
+ * activeWithPredicate, desactiveAll, desactive, activeAll, active, activeOnlyYamlItems will thrown same error too
+ * @param {string} url url product 
+ * @throws {TypeError} Network request failed -> when application disconnected from product
+ */
 export const getPlaylist = async (url) => {
     try {
         let res = await fetch(`http://${url}:3000/playlist`);
         return res.json();
     } catch(err) {
-        console.error('Something wrong when get playlist at ' + url + "\n" + err);
+        throw err;
     }
 }
 
@@ -97,10 +103,11 @@ export const active = async (url, name) => {
 export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
     playlist.filter(elem => predicate(elem)).forEach(async elem => {
+        await playlistPutActive(url, elem, active);
         try {
             playlistPutActive(url, elem, active);
         } catch(error) {
-            console.error("Something wrong when activation at " + url);
+            throw error;
         }
     });
 }

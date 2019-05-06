@@ -15,7 +15,7 @@ export const getObjectFromType = (type, content) => {
     return res;
 }
 
-const loadAlYamlFiles = async () => {
+const loadAllYamlFiles = async () => {
     let files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
     let yamlFiles = files.filter(f => f.name.endsWith('.yaml'));
     yamlFiles.sort((a, b) => a.name.localeCompare(b.name));
@@ -23,9 +23,14 @@ const loadAlYamlFiles = async () => {
     
     let result = await allFiles;
     let res = {};
+    
     for(let i = 0; i < result.length; i++) {
         let name = yamlFiles[i].name.replace('.yaml', '');
-        res[name] = yaml.load(result[i]);
+        try {
+            res[name] = yaml.safeLoad(result[i]);
+        } catch(err) {
+            continue;
+        }
     }
     return res;
 }
@@ -41,7 +46,7 @@ const findAll = (type) => {
 }
 
 export const manage = async () => {
-    yamlCache = await loadAlYamlFiles();
+    yamlCache = await loadAllYamlFiles();
     allTheme = findAll('Theme');
     allCatalogue = findAll('Collections');
 }
