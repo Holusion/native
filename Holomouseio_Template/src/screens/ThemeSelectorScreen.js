@@ -20,12 +20,10 @@ import { pushError } from '../utils/Notifier';
 export default class ThemeSelectorScreen extends React.Component {
 
     componentDidMount() {
-        if(this.props.navigation.getParam("url")) {
-            try {
-                network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-            } catch(err) {
-                pushError(err);
-            }
+        try {
+            network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
+        } catch(err) {
+            pushError(err);
         }
     }
 
@@ -73,16 +71,6 @@ export default class ThemeSelectorScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
-        this.props.navigation.addListener('willFocus', payload => {
-            if(this.props.navigation.getParam("url")) {
-                try {
-                    network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-                } catch(err) {
-                    pushError(err);
-                }
-            }
-        })
 
         this.state = { type: SelectionType.ANY_SELECTION }
 

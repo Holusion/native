@@ -12,7 +12,12 @@ export default class YAMLObjectComponent extends React.Component {
     render() {
         let texte = "";
         if(this.props.data) {
-            texte = this.props.data['Texte principal'];
+            if(this.props.data.error) {
+                texte = this.props.data.error;
+                pushError("Les informations sur l'objet sont mal formaté")
+            } else {
+                texte = this.props.data['Texte principal'];
+            }
         }
 
         return(

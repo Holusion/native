@@ -25,16 +25,17 @@ export default class HomeScreen extends React.Component {
 
         let firebaseController = new FirebaseController(Config.projectName);
         try {
-            await firebaseController.getFiles([
+            let errors = await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
             ]);
-        } catch(errorObj) {
-            let text = "erreur inconnu";
-            if(errorObj.code === "firestore/unavailable") {
+            for(let err of errors) {
+                pushWarning(err.error);
+            }
+        } catch(err) {
+            let text = err.message;
+            if(err.code === "firestore/unavailable") {
                 text = "Impossible de se connecter à la base de donnée"
-            } else if(errorObj.name) {
-                text = "Impossible de télécharger : " + errorObj.name + " - " + errorObj.error.message;
             }
 
             pushWarning(text);
@@ -67,14 +68,14 @@ export default class HomeScreen extends React.Component {
                 pushSuccess("Connecté sur " + service.name)
                 store.dispatch(actions.changeState(actions.AppState.READY))
                 this.setState(() => ({url: url}));
-                assetManager.manage();
             }, () => {
                 pushWarning("Produit déconnecté");
-                this.setState(() => ({url: ""}));
+                this.setState(() => ({url: null}));
                 this.props.navigation.setParams({color: 'red'})
             })
         } catch(err) {
-            // BAD: https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
+            // mDNS error code : https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
+            // CF URL Connection code : https://gist.github.com/mnkd/fa5911aa5808eda24298bf41b0436880
             pushError(err);
         }
     }
@@ -104,7 +105,11 @@ export default class HomeScreen extends React.Component {
         }
 
         if(this.state.url) {
-            network.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
+            try {
+                network.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
+            } catch(err) {
+                pushError(err);
+            }
         }
 
         return (

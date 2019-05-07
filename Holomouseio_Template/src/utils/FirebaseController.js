@@ -20,6 +20,7 @@ export default class FirebaseController {
         })
     }
 
+    // return list of error file
     async getFiles(collections) {
         let storage = firebase.storage();
         let files = [];
@@ -31,24 +32,35 @@ export default class FirebaseController {
                 let hide = documentData['hide'];
                 if(!hide) {
                     for(let prop of collect['properties']) {
-                        if(prop != "hide") {
-                            let uri = documentData[prop];
-                            let uriRef = storage.refFromURL(uri);
-                            let uriSplit = uri.split('/');
-                            let name = uriSplit[uriSplit.length - 1];
+                        let uri = documentData[prop];
+                        let uriRef = storage.refFromURL(uri);
+                        let uriSplit = uri.split('/');
+                        let name = uriSplit[uriSplit.length - 1];
+                        
+                        try {
+                            files.push(this.downloadFile(uriRef, name));
+                        } catch(err) {
+                            let errMessage = `Impossible de télécharger ${name}`;
 
-                            try {
-                                // essaie de fetch l'url pour vérifier la disponibilité
-                                await uriRef.getDownloadURL();   
-                                files.push(this.downloadFile(uriRef, name));
-                            } catch(err) {
-                                throw {error: err, name: name, uri: uri};
+                            switch(err.code) {
+                                case "storage/not-found":
+                                    files.push({error: new Error(`${errMessage}: le fichier distant n'a pas été trouvé`)});
+                                    break;
+                                case "storage/resource-exhausted":
+                                    files.push({error: new Error(`${errMessage}: plus d'espace disponible sur la tablette`)});
+                                    break;
+                                case "storage/project-not-found":
+                                    files.push({error: new Error(`${errMessage}: le projet distant n'existe pas`)});
+                                    break;
+                                default:
+                                    throw err;
                             }
                         }
                     }
                 }
             });
         }
-        return Promise.all(files);
+
+        return Promise.all(files).then(allFiles => allFiles.filter(elem => elem.error != null));
     }
 }
