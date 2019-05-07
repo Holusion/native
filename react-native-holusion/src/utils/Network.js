@@ -103,7 +103,6 @@ export const active = async (url, name) => {
 export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
     playlist.filter(elem => predicate(elem)).forEach(async elem => {
-        await playlistPutActive(url, elem, active);
         try {
             playlistPutActive(url, elem, active);
         } catch(error) {
