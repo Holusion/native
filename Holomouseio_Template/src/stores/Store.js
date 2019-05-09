@@ -29,7 +29,10 @@ export default class Store {
     subscribe = (listener) => {
         if(!this.listenerAlreadyExist()) {
             this.listeners.push(listener);
-            return () => delete this.listeners[listener];
+            return () => {
+                delete this.listeners[listener];
+                this.listeners = this.listeners.filter(el => el != null);
+            }
         }
         return false;
     }

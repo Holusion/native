@@ -4,8 +4,14 @@ import ThemeSelectorScreen from "./src/screens/ThemeSelectorScreen";
 import CatalogueScreen from "./src/screens/CatalogueScreen";
 import ObjectScreen from "./src/screens/ObjectScreen";
 import ObjectRemerciementsScreen from "./src/screens/ObjectRemerciementsScreen";
+import SetupScreen from "./src/screens/SetupScreen";
 
 export const navigator = {
+    setup: {
+        id: "Setup",
+        screen: SetupScreen,
+        options: {"isHeader": true, "title": "Setup"}
+    },
     home: {
         id: "Home",
         screen: HomeScreen,
