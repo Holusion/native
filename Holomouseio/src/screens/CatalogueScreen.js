@@ -1,58 +1,66 @@
 import React from 'react'
 
-import { Container, StyleProvider, Icon } from 'native-base';
-import { network, Playlist, assetManager } from '@holusion/react-native-holusion';
+import { Container, StyleProvider } from 'native-base';
+import { assetManager, network } from '@holusion/react-native-holusion';
+import {Playlist} from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
-import * as networkExtension from '../utils/networkExtension'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
+import PlaylistComponent from '../components/PlaylistComponent'
+
+import * as strings from '../../strings.json'
+import {navigator} from '../../navigator'
+import { pushInfo, pushError } from '../utils/Notifier';
 
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
  */
 export default class CatalogueScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     componentDidMount() {
-        if(network.getUrl()) {
-            networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
+        if(this.props.navigation.getParam("url")) {
+            try {
+                network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
+            } catch(err) {
+                // if url but error, it's a http error caused by fetch request
+                pushError(err.statusText);
+            }
         }
     }
 
     _onPlayslistItem(id) {
-        this.props.navigation.push('Object', {
+        this.props.navigation.push(navigator.object.id, {
             objList: this.props.navigation.getParam("objList"),
             objId: id,
             url: this.props.navigation.getParam('url'),
-            type: this.props.navigation.getParam('type')
         });
     }
 
     render() {
-        let titles = this.props.navigation.getParam("objList").map(e => assetManager.yamlCache[e].Titre);
-
         return(
             <Container>
-                <Text style={styles.catchPhrase}>Choisissez un objet</Text>
+                <Text style={styles.catchPhrase}>{strings.catalogue.catchphrase}</Text>
                 <StyleProvider style={customTheme}>
-                    <Playlist titles={titles} localImage content={this.props.navigation.getParam("objList")} url={this.props.navigation.getParam('url')} actionItem={this._onPlayslistItem} />
+                    <PlaylistComponent playlist={this.playlist} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
             </Container>
         )
     }
-
+    
     constructor(props, context) {
-      super(props, context);
-      this._onPlayslistItem = this._onPlayslistItem.bind(this);
-      if(network.getUrl()) {
-        this.props.navigation.setParams({'color': 'green'});
-      }
+        super(props, context);
+        this._onPlayslistItem = this._onPlayslistItem.bind(this);
+        if(this.props.navigation.getParam("url")) {
+            this.props.navigation.setParams({'color': 'green'});
+        }
+        
+        let objList = this.props.navigation.getParam("objList");
+        let contents = objList.map(elem => {
+            return {name: elem, title: assetManager.yamlCache[elem].Titre, localImage: true}
+        })
+
+        this.playlist = new Playlist(this.props.navigation.getParam("url"), contents);
     }
 }
 
@@ -66,8 +74,8 @@ const styles = StyleSheet.create({
 })
 
 const customTheme = {
-    'holusion.Playlist': {
-        'holusion.IconCard': {
+    'holusion.PlaylistComponent': {
+        'holusion.IconCardComponent': {
             container: {
                 backgroundColor: "#fff",
                 borderWidth: 2,

@@ -137,6 +137,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-video')
+    compile project(':react-native-share')
     compile project(':react-native-zeroconf')
     compile project(':react-native-vector-icons')
     compile project(':react-native-firebase')

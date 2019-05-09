@@ -1,22 +1,16 @@
 import React from 'react'
-import { Container, Content, Grid, Col, Row, Icon } from 'native-base';
+import { Container, Content, Grid, Col, Row } from 'native-base';
 import { Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { assetManager, network } from '@holusion/react-native-holusion';
+import { assetManager } from '@holusion/react-native-holusion';
 
 import RNFS from 'react-native-fs';
 
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 /**
  * This screen renders the remerciement page
  */
 export default class RemerciementScreen extends React.Component {
-
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
 
     renderLogo() {
         let allLogosFromYaml = Object.keys(assetManager.yamlCache).map(elem => assetManager.yamlCache[elem].logo).filter(elem => elem != null);
@@ -125,7 +119,7 @@ export default class RemerciementScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        if(network.getUrl()) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

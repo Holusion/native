@@ -1,0 +1,18 @@
+{
+    "home": {
+        "content_start": "Démarrage",
+        "content_files": "Téléchargement des fichiers...",
+        "content_product": "Recherche du produit...",
+        "catchphrase": "Bienvenue, touchez une carte",
+        "leftCardTitle": "Visite",
+        "rightCardTitle": "Catalogue",
+        "footerButton": "Remerciements"
+    },
+    "selection": {
+        "catchphrase_collection": "Choisissez une collection",
+        "catchphrase_theme": "Choisissez un thème"
+    },
+    "catalogue": {
+        "catchphrase": "Choisissez un objet"
+    }
+}

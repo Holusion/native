@@ -1,34 +1,46 @@
 import React from 'react';
-import { Content, Icon } from 'native-base';
+import { Content } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
-import { network, ListItem, assetManager } from '@holusion/react-native-holusion'
+import { assetManager, network } from '@holusion/react-native-holusion'
+import ListItemComponent from "../components/ListItemComponent";
 
-import * as networkExtension from '../utils/networkExtension'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
+
+import { store } from "../stores/Store";
+import { SelectionType } from "../actions"
+
+import {navigator} from '../../navigator'
+import * as strings from '../../strings.json'
+import { pushError } from '../utils/Notifier';
 
 /**
  * Selection theme are rendered as list with two seperate color 
  */
 export default class ThemeSelectorScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
+    componentDidMount() {
+        try {
+            network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
+        } catch(err) {
+            pushError(err);
         }
     }
 
-    componentDidMount() {
-        if(network.getUrl()) {
-            networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-        }
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {
         let allList = [];
-        let actualSelection = this.props.navigation.getParam('type') === 'catalogue' ? assetManager.allCatalogue : assetManager.allTheme;
-        let title = this.props.navigation.getParam('type') === 'catalogue' ? 'Collection : ' : 'Thème : ';
-        let catchphrase = this.props.navigation.getParam('type') === 'catalogue' ? 'Choisissez une collection' : 'Choisissez un thème';
+        
+        let actualSelection = assetManager.allCatalogue;
+        let catchphrase = strings.selection.catchphrase_collection;
+        
+        if(store.getState().selectionType === SelectionType.VISITE) {
+            actualSelection = assetManager.allTheme;
+            catchphrase = strings.selection.catchphrase_theme;
+        }
 
         for(let i = 0; i < actualSelection.length; i++) {
             let isPurple = (i % 2 == 0);
@@ -36,11 +48,11 @@ export default class ThemeSelectorScreen extends React.Component {
             let color = isPurple ? "white" : Config.secondaryColor;
 
             allList.push(
-                <ListItem key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
+                <ListItemComponent key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
                     <View style={{display: 'flex', flexDirection: 'column', justifyContent:'center'}}>
                         <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
                     </View>
-                </ListItem>
+                </ListItemComponent>
             );
         }
 
@@ -60,36 +72,36 @@ export default class ThemeSelectorScreen extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.props.navigation.addListener('willFocus', payload => {
-            if(network.getUrl()) {
-                networkExtension.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-            }
-        })
+        this.state = { type: SelectionType.ANY_SELECTION }
 
         this._onSelection = this._onSelection.bind(this);
 
-        if(network.getUrl()) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
+
+        this.unsubscribe = store.subscribe(() => {
+            this.setState(() => ({type: store.getState().selectionType}))
+        })
     }
 
     _onSelection(name) {
-        let realType = this.props.navigation.getParam('type') === "catalogue" ? 'Collections' : 'Theme'
+        let realType = store.getState().selectionType === SelectionType.CATALOGUE ? 'Collections' : 'Theme'
         let objs = assetManager.getObjectFromType(realType, name);
 
-        if(realType === "Theme") {
-            this.props.navigation.push('Object', {
-                objList: objs,
-                objId: 0,
-                url: this.props.navigation.getParam('url'),
-                type: this.props.navigation.getParam('type')
-            });
-        } else {
-            this.props.navigation.push("Catalogue", {
-                objList: objs,
-                url: this.props.navigation.getParam('url'),
-                type: this.props.navigation.getParam('type')
-            })
+        switch(store.getState().selectionType) {
+            case SelectionType.VISITE:
+                this.props.navigation.push(navigator.object.id, {
+                    objList: objs,
+                    objId: 0,
+                    url: this.props.navigation.getParam('url')
+                });
+                break;
+            default:
+                this.props.navigation.push(navigator.catalogue.id, {
+                    objList: objs,
+                    url: this.props.navigation.getParam('url')
+                })
         }
     }
 }

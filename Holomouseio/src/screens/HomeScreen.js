@@ -1,117 +1,115 @@
 import React from 'react';
 
-import { Content, Container, StyleProvider, Button, Grid, Col, Header, Right, Icon, Toast } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Image, Text, ActivityIndicator, Dimensions, Animated, NetInfo } from 'react-native';
-import {network, IconCard, assetManager} from '@holusion/react-native-holusion'
+import { Content, StyleProvider, Toast } from 'native-base';
+import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
+import SearchScreenComponent from "../components/screenComponents/SearchScreenComponent";
+
+import {network, assetManager} from '@holusion/react-native-holusion';
 import FirebaseController from '../utils/FirebaseController'
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
-import * as networkExtension from '../utils/networkExtension';
+import { store } from "../stores/Store";
+import * as actions from "../actions";
 
-/**
- * Default view, when all file download or product found
- */
-class DefaultComponent extends React.Component {
-    componentDidMount() {
-        this.spring();
-    }
-
-    render() {
-        return (
-            <Content>
-                <View>
-                    <Image style={styles.images} source={require("../../assets/images/logo.png")} />
-                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>Bienvenue, touchez une carte</Animated.Text>
-                    <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.props.visite}>
-                            <IconCard source={require("../../assets/icons/musee.png")} content="Visite" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCard source={require("../../assets/icons/catalogue.png")} content="Catalogue"/>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={this.props.remerciement}>
-                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
-                            <Text style={{color: 'white', fontSize: 28}}>Remerciements</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </Content>
-        )
-    }
-
-    spring() {
-        this.springValue.setValue(0.95);
-        Animated.loop(
-
-            Animated.spring(this.springValue, {
-                toValue: 1,
-                friction: 2,
-            })
-        ).start()
-    }
-
-    constructor(props, context) {
-        super(props, context);
-        this.springValue = new Animated.Value(0.95);
-    }
-}
-
-/**
- * This view appears when application search a product or if it downloads the files from firebase
- */
-class SearchProductComponent extends React.Component {
-
-    render() {
-
-        let mainContent = "Recherche du produit...";
-        if(this.props.loading) {
-            mainContent = "Téléchargement des fichiers..."
-        }
-
-        return (
-            <Content>
-                <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
-                    <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: Config.primaryColor, fontSize: 32}}>{mainContent}</Text>
-                </View>
-            </Content>
-        )
-    }
-}
+import * as strings from "../../strings.json"
+import {navigator} from "../../navigator"
+import { pushWarning, pushError, pushSuccess } from '../utils/Notifier';
 
 /**
  * Encapsulate the two other view and change view when it's necessary
  */
 export default class HomeScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     async componentDidMount() {
-        this.props.navigation.setParams({color: 'red'});
-        let netInfo = await NetInfo.getConnectionInfo();
-        if(netInfo.type && netInfo.type != 'none') {
-            let firebaseController = new FirebaseController(Config.projectName);
-            await firebaseController.getFiles([
+        store.dispatch(actions.changeState(actions.AppState.DOWNLOAD_FIREBASE));
+
+        let firebaseController = new FirebaseController(Config.projectName);
+        try {
+            let errors = await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
             ]);
+            for(let err of errors) {
+                pushWarning(err.error);
+            }
+        } catch(err) {
+            let text = err.message;
+            if(err.code === "firestore/unavailable") {
+                text = "Impossible de se connecter à la base de donnée"
+            }
+
+            pushWarning(text);
         }
-        assetManager.manage();
-        this.setState(() => {
-            return {loading: false}
-        })
+        try {
+            await assetManager.manage();
+        } catch(err) {
+            pushError(err);
+        }
+
+        store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+        this.closeConnection();
+    }
+
+    connectToProduct() {
+        const launchOfflineMode = setTimeout(() => {
+            store.dispatch(actions.changeState(actions.AppState.READY))
+            pushWarning("Aucun produit trouvé")
+        }, 5000);
+
+        try {
+            this.closeConnection = network.connect((service) => {
+                clearTimeout(launchOfflineMode);
+                let url = network.getUrl(0);
+                this.props.navigation.setParams({color: 'green'})
+                pushSuccess("Connecté sur " + service.name)
+                store.dispatch(actions.changeState(actions.AppState.READY))
+                this.setState(() => ({url: url}));
+            }, () => {
+                pushWarning("Produit déconnecté");
+                this.setState(() => ({url: null}));
+                this.props.navigation.setParams({color: 'red'})
+            })
+        } catch(err) {
+            // mDNS error code : https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
+            // CF URL Connection code : https://gist.github.com/mnkd/fa5911aa5808eda24298bf41b0436880
+            pushError(err);
+        }
+    }
+
+    componentDidUpdate() {
+        switch(store.getState().appState) {
+            case actions.AppState.SEARCH_PRODUCT:
+                store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
+                this.connectToProduct()
+                break;
+            default:
+        }
     }
 
     render() {
-        let display = !this.state.loading && (this.state.url || this.state.offlineMode) ? <DefaultComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} /> : <SearchProductComponent loading={this.state.loading} />
-        
+        let display = <SearchScreenComponent content={strings.home.content_start} />;
+
+        switch(store.getState().appState) {
+            case actions.AppState.SEARCH_PRODUCT:
+                display = <SearchScreenComponent content={strings.home.content_product} />;
+                break;
+            case actions.AppState.READY:
+                display = <DefaultHomeScreenComponent url={this.state.url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />;
+                break;
+            default:
+                display = <SearchScreenComponent content={strings.home.content_files} />;
+        }
+
         if(this.state.url) {
-            networkExtension.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
+            try {
+                network.activeOnlyYamlItems(this.state.url, assetManager.yamlCache);
+            } catch(err) {
+                pushError(err);
+            }
         }
 
         return (
@@ -131,74 +129,31 @@ export default class HomeScreen extends React.Component {
 
         this.state = {
             url: null,
-            offlineMode: false,
-            loading: true
+            screenState: actions.AppState.INIT
         }
 
-        const launchOfflineMode = setTimeout(() => {
-            this.setState(() => {
-                return {offlineMode: true};
-            })
-            Toast.show({
-                text: "Aucun produit trouvé",
-                buttonText: "Ok",
-                position: 'top'
-            })
-        }, 5000);
-        
-        network.connect(() => {
-            clearTimeout(launchOfflineMode);
-            let url = network.getUrl();
-            this.props.navigation.setParams({color: 'green'})
-            this.setState(() => {
-                return {url: url, offlineMode: false, loading: false}
-            });
-            assetManager.manage();
-        }, () => {
-            Toast.show({
-                text: "Produit déconnecté",
-                buttonText: "Ok",
-                position: 'top'
-            })
-            this.props.navigation.push('HomeScreen');
+        this.unsubscribe = store.subscribe(() => {
+            this.setState(() => ({screenState: store.getState().appState}))
         })
-
     }
 
     _onVisite() {
-        this.props.navigation.push('Selection', {type: 'visite', url: this.state.url});
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
+        this.props.navigation.push(navigator.selection.id, {url: this.state.url});
     }
 
     _onCatalogue() {
-        this.props.navigation.push('Selection', {type: 'catalogue', url: this.state.url})
+        store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
+        this.props.navigation.push(navigator.selection.id, {url: this.state.url})
     }
 
     _onRemerciement() {
-        this.props.navigation.push('Remerciement');
+        this.props.navigation.push(navigator.remerciements.id);
     }
 }
-const {height: screenHeight} = Dimensions.get("window");
-
-const styles = StyleSheet.create({
-    images: {
-        flex: 1,
-        width: 200,
-        height: 100,
-        resizeMode: 'contain',
-        alignSelf: 'flex-end',
-        marginRight: 16
-    },
-    catchphrase: {
-        color: Config.primaryColor,
-        fontSize: 48,
-        textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 50
-    }
-});
 
 const customTheme = {
-    'holusion.IconCard': {
+    'holusion.IconCardComponent': {
         container: {
             backgroundColor: Config.primaryColor,
             width: 300,

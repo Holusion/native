@@ -1,4 +1,8 @@
 rootProject.name = 'Holomouseio'
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
+include ':react-native-share'
+project(':react-native-share').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-share/android')
 include ':react-native-zeroconf'
 project(':react-native-zeroconf').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-zeroconf/android')
 include ':react-native-vector-icons'

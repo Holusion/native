@@ -9,9 +9,16 @@ import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacit
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
 
-import * as Config from '../utils/Config'
+import * as Config from '../../Config'
 
 import RNFS from 'react-native-fs';
+import VideoComponent from '../components/VideoComponent';
+
+import { store } from '../stores/Store'
+import { SelectionType } from '../actions'
+
+import {navigator} from '../../navigator'
+import { pushError } from '../utils/Notifier';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -20,26 +27,20 @@ import RNFS from 'react-native-fs';
  */
 export default class ObjectScreen extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: <Icon style={{marginRight: 16, color: navigation.getParam('color', 'red')}} name="ios-wifi"/>
-        }
-    }
-
     activeModal(number) {
         this.setState({modalVisible: number})
     }
 
     launchVideo(videoName) {
-        if(network.getUrl()) {
-            let productUrl = network.getUrl();
+        if(this.props.navigation.getParam("url")) {
+            let productUrl = this.props.navigation.getParam("url");
     
             network.desactiveAll(productUrl).then(elem => {
                 network.active(productUrl, `${videoName}.mp4`)
             }).then(_ => {
                 network.play(productUrl, `${videoName}.mp4`)
             }).catch(err => {
-                console.error(err);
+                pushError(err);
             })
         }
 
@@ -110,7 +111,7 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.props.navigation.push('End', {objList: this.props.navigation.getParam('objList')})}>
+                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.props.navigation.getParam('objList')})}>
                     <Text>Remerciements</Text>
                 </Button>
             </FooterTab>
@@ -175,13 +176,18 @@ export default class ObjectScreen extends React.Component {
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
+        let illustration = <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+        if(Config.isStingray) {
+            let videoUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.mp4`
+            illustration = <VideoComponent uri={`${videoUri}`} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
+        }
 
         let txt = <View>
             <YAMLObjectComponent style={markdownContent} data={this.obj}/>
             {this.generateComplButton()}
         </View>
 
-        if(this.props.navigation.getParam('type') == "catalogue") {
+        if(store.getState().selectionType == SelectionType.CATALOGUE) {
             txt = <View>
                 {
                     Object.keys(this.obj).filter(elem => {
@@ -189,13 +195,14 @@ export default class ObjectScreen extends React.Component {
                     }).map((s, index) => {
                         if(this.obj && this.obj[s]) {
                             let txt = `__${s}__: ${this.obj[s]}`
-                            return <Markdown style={markdownText}>{txt}</Markdown>
+                            return <Markdown key={index} style={markdownText}>{txt}</Markdown>
                         }
                         return null;
                     })
                 }
             </View>
         }
+
 
         return (
             <Container>
@@ -209,7 +216,6 @@ export default class ObjectScreen extends React.Component {
                             <Col>
                                 <Row size={1}>
                                     <Markdown style={markdownTitle}>{this.obj['Titre']}</Markdown>
-                                    {/* <Text style={styles.title}>{this.obj['Titre']}</Text> */}
                                 </Row>
                                 <Row size={5} style={styles.mainPanel}>
                                 <FlingGestureHandler
@@ -228,7 +234,7 @@ export default class ObjectScreen extends React.Component {
                                     }}>
                                     <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
                                         <View style={{height: this.screenHeight}}>
-                                            <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+                                            { illustration }
                                             <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
                                                 <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: Config.primaryColor}} />
                                             </TouchableOpacity>
@@ -298,7 +304,7 @@ export default class ObjectScreen extends React.Component {
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
 
-        if(network.getUrl()) {
+        if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'})
         }
     }

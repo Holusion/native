@@ -15,6 +15,12 @@ target 'Holomouseio' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'HolomouseioTests' do
     inherit! :search_paths
     # Pods for testing
