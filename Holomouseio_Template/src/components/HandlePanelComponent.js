@@ -3,6 +3,7 @@ import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import RetryButtonComponent from './RetryButtonComponent';
 
 import * as Config from '../../Config'
+import * as strings from '../../strings.json'
 
 export default class HandlePanelComponent extends React.Component {
 
@@ -16,10 +17,10 @@ export default class HandlePanelComponent extends React.Component {
 
         let title = '';
         switch(this.props.task.type) {
-            case "warn": title = "Avertissement"; break;
-            case "danger": title = "Erreur"; break;
-            case "info": title = "En attente"; break;
-            case "success": title = "Succès"; break;
+            case "warn": title = string.warn; break;
+            case "danger": title = strings.danger; break;
+            case "info": title = strings.info; break;
+            case "success": title = strings.success; break;
         }
         
         return (

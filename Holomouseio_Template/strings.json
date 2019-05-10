@@ -19,5 +19,9 @@
         "firebase": {
             "databaseUnavailable": "Impossible de se connecter à la base de donnée"
         }
-    }
+    },
+    "danger": "Erreur",
+    "warn": "Avertissement",
+    "info": "En attente",
+    "success": "Succès"
 }
