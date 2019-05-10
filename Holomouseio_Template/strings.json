@@ -1,4 +1,8 @@
 {
+    "setup": {
+        "title": "Mise en route",
+        "continue": "Continuer"
+    },
     "home": {
         "content_start": "Démarrage",
         "content_files": "Téléchargement des fichiers...",
@@ -17,7 +21,15 @@
     },
     "errors": {
         "firebase": {
-            "databaseUnavailable": "Impossible de se connecter à la base de donnée"
+            "download_yaml": "Téléchargement des fichiers yaml", 
+            "databaseUnavailable": "Impossible de se connecter à la base de donnée",
+            "yaml_ok": "Tout les fichiers ont été téléchargé"
+        },
+        "search_product": {
+            "search": "Recherche d'un produit sur le réseau",
+            "timeout": "Problème de connexion, aucun produit n'a été trouvé, vérifiez votre connexion et réessayez",
+            "disconnected": "Produit déconnecté"
+
         }
     },
     "danger": "Erreur",

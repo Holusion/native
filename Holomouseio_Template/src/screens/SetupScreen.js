@@ -12,9 +12,8 @@ import FirebaseController from '../utils/FirebaseController';
 import * as strings from "../../strings.json"
 import * as notifier from '../utils/Notifier';
 import {navigator} from '../../navigator';
-import RetryButtonComponent from '../components/RetryButtonComponent';
 import getTheme from '../../native-base-theme/components';
-import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import HandlePanelComponent from '../components/HandlePanelComponent';
 
 export default class SetupScreen extends React.Component {
@@ -25,7 +24,7 @@ export default class SetupScreen extends React.Component {
 
     async reactDownloadFirebase() {
         let firebaseController = new FirebaseController(Config.projectName);
-        notifier.setInfoTask("firebase_yaml", "Téléchargement des fichiers yaml");
+        notifier.setInfoTask("firebase_yaml", strings.errors.firebase.download_yaml);
         
         try {
             let files = await firebaseController.getFiles([
@@ -37,7 +36,7 @@ export default class SetupScreen extends React.Component {
                 notifier.setErrorTask("files", err.message);   
             }
             
-            notifier.setSuccessTask("firebase_yaml", "Tout les fichiers ont été téléchargé");
+            notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
         } catch(err) {
             let text = err.message;
             if(err.code === "firestore/unavailable") {
@@ -56,11 +55,11 @@ export default class SetupScreen extends React.Component {
     }
     
     connectToProduct() {
-        notifier.setInfoTask("search_product", "Recherche d'un produit sur le réseau")
+        notifier.setInfoTask("search_product", strings.errors.search_product.search)
         store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
 
         const launchOfflineMode = setTimeout(() => {
-            notifier.setWarningTask("search_product", "Problème de connexion, aucun produit n'a été trouvé, vérifiez votre connexion et réessayez");
+            notifier.setWarningTask("search_product", strings.errors.search_product.timeout);
             store.dispatch(actions.changeState(actions.AppState.READY))
         }, 5000);
 
@@ -75,7 +74,7 @@ export default class SetupScreen extends React.Component {
                 }
                 notifier.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`)
             }, () => {
-                notifier.setWarningTask("search_product", "Produit déconnecté");
+                notifier.setWarningTask("search_product", strings.errors.search_product.disconnected);
                 this.setState(() => ({url: null}));
                 this.props.navigation.setParams({color: 'red'})
             })
@@ -112,14 +111,15 @@ export default class SetupScreen extends React.Component {
     render() {
         let display = []
         
+        let cpt = 0;
         for(let [key, value] of this.state.tasks) {
-            display.push(<HandlePanelComponent taskName={key} task={value}/>)
+            display.push(<HandlePanelComponent key={cpt++} taskName={key} task={value}/>)
         }
 
         let continueButton = null;
         if(store.getState().appState == actions.AppState.READY) {
             continueButton = <Button key={0} style={styles.button} onPress={() => this.props.navigation.push(navigator.home.id, {url: this.state.url})}>
-                                <Text style={styles.textButton}>Continuer</Text>
+                                <Text style={styles.textButton}>{strings.setup.continue}</Text>
                             </Button>
         }
 
@@ -127,7 +127,7 @@ export default class SetupScreen extends React.Component {
             <Content>
                 <StyleProvider style={getTheme()}>
                     <View style={{display: 'flex', flexDirection: "column", alignItems: 'center'}}>
-                        <Text style={styles.catchphrase}>Résumé des étapes de Setup</Text>
+                        <Text style={styles.catchphrase}>{strings.setup.title}</Text>
                         <View style={{margin: 20, shadowColor: "#000", shadowOffset: {width: 1, height: 2}, shadowOpacity: 0.8, shadowRadius: 5}}>
                             {display}
                         </View>
