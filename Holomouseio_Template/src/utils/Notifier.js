@@ -1,31 +1,40 @@
-import { Toast } from "native-base";
+let listeners = [];
+let tasks = new Map();
 
-const showMessage = (msg, duration, type) => {
-    let options = {
-        text: msg,
-        duration: duration,
-        position: 'top'
+const setTask = (name, type, message, retry = () => {}) => {
+    let task = {type: type, message: message, retry: retry} 
+    tasks.set(name, task)
+    for(let l of listeners) {
+        l(task);
     }
+}
 
-    if(type) {
-        options['type'] = type;
+export const setErrorTask = (name, message, retry = () => {}) => {
+    setTask(name, 'danger', message, retry);
+}
+
+export const setInfoTask = (name, message) => {
+    setTask(name, 'info', message);
+}
+
+export const setWarningTask = (name, message, retry = () => {}) => {
+    setTask(name, 'warn', message, retry);
+}
+
+export const setSuccessTask = (name, message) => {
+    setTask(name, 'success', message,);
+}
+
+export const subscribe = (fn) => {
+    if(listeners.indexOf(fn) < 0) {
+        listeners.push(fn);
+        return () => {
+            delete listeners[fn];
+            listeners = listeners.filter(el => el != null);
+        }
     }
-    
-    Toast.show(options)
 }
 
-export const pushError = (errorMsg) => {
-    showMessage(errorMsg, 5000, danger);
-}
-
-export const pushInfo = (infoMsg) => {
-    showMessage(infoMsg, 5000);
-}
-
-export const pushWarning = (warnMsg) => {
-    showMessage(warnMsg, 5000, 'warning');
-}
-
-export const pushSuccess = (successMsg) => {
-    showMessage(successMsg, 5000, 'success');
+export const getTasks = () => {
+    return tasks;
 }

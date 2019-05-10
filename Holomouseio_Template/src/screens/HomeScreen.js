@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Content, StyleProvider } from 'native-base';
+import { Content, StyleProvider, Toast } from 'native-base';
 import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
 
 import {network, assetManager} from '@holusion/react-native-holusion';
@@ -10,7 +10,7 @@ import { store } from "../stores/Store";
 import * as actions from "../actions";
 
 import {navigator} from "../../navigator"
-import { pushError } from '../utils/Notifier';
+import * as notifier from '../utils/Notifier';
 
 /**
  * Encapsulate the two other view and change view when it's necessary
@@ -23,7 +23,7 @@ export default class HomeScreen extends React.Component {
             try {
                 network.activeOnlyYamlItems(url, assetManager.yamlCache);
             } catch(err) {
-                pushError(err);
+                notifier.setErrorTask("http_request", err);
             }
         }
 
@@ -48,6 +48,25 @@ export default class HomeScreen extends React.Component {
 
         this.unsubscribe = store.subscribe(() => {
             this.setState(() => ({selectionType: store.getState().selectionType}))
+        })
+
+        notifier.subscribe((elem) => {
+            let options = {
+                text: elem.message,
+                duration: 5000,
+                position: 'top'
+            }
+        
+            if(elem.type) {
+                let type = elem.type;
+                switch(elem.type) {
+                    case "warn": type = "warning"; break;
+                    default: type = elem.type;
+                }
+                options['type'] = type;
+            }
+            
+            Toast.show(options)
         })
 
         if(this.props.navigation.getParam("url")) {

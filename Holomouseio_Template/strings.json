@@ -14,5 +14,10 @@
     },
     "catalogue": {
         "catchphrase": "Choisissez un objet"
+    },
+    "errors": {
+        "firebase": {
+            "databaseUnavailable": "Impossible de se connecter à la base de donnée"
+        }
     }
 }

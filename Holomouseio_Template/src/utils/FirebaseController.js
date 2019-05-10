@@ -10,14 +10,24 @@ export default class FirebaseController {
         this.unsubscribe = null;
     }
     
-    downloadFile(ref, name) {
-        return new Promise((resolve, reject) => {
-            ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`).then(() => {
-                resolve(`${name}`);
-            }).catch(err => {
-                reject(err);
-            })
-        })
+    async downloadFile(ref, name) {
+        try {
+            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`)
+        } catch(err) {
+            let errMessage = `Impossible de télécharger ${name}`;
+
+            switch(err.code) {
+                case "storage/object-not-found":
+                case "storage/not-found":
+                    return new Error(`${errMessage}: le fichier distant n'a pas été trouvé`);
+                case "storage/resource-exhausted":
+                    return new Error(`${errMessage}: plus d'espace disponible sur la tablette`);
+                case "storage/project-not-found":
+                    return new Error(`${errMessage}: le projet distant n'existe pas`);
+                default:
+                    return err;
+            }
+        }
     }
 
     // return list of error file
@@ -37,30 +47,13 @@ export default class FirebaseController {
                         let uriSplit = uri.split('/');
                         let name = uriSplit[uriSplit.length - 1];
                         
-                        try {
-                            files.push(this.downloadFile(uriRef, name));
-                        } catch(err) {
-                            let errMessage = `Impossible de télécharger ${name}`;
-
-                            switch(err.code) {
-                                case "storage/not-found":
-                                    files.push({error: new Error(`${errMessage}: le fichier distant n'a pas été trouvé`)});
-                                    break;
-                                case "storage/resource-exhausted":
-                                    files.push({error: new Error(`${errMessage}: plus d'espace disponible sur la tablette`)});
-                                    break;
-                                case "storage/project-not-found":
-                                    files.push({error: new Error(`${errMessage}: le projet distant n'existe pas`)});
-                                    break;
-                                default:
-                                    throw err;
-                            }
-                        }
+                        let downloaded = this.downloadFile(uriRef, name);
+                        files.push(downloaded);
                     }
                 }
             });
         }
 
-        return Promise.all(files).then(allFiles => allFiles.filter(elem => elem.error != null));
+        return Promise.all(files);
     }
 }
