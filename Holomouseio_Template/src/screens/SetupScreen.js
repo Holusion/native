@@ -32,12 +32,15 @@ export default class SetupScreen extends React.Component {
                 {name: 'logos', properties: ['logo']}
             ]);
             
-            for(err of firebaseError) {
-                notifier.setWarningTask(err.fileName, err.message);   
+            if(firebaseError.length > 0) {
+                let message = strings.errors.firebase.download_failed + "\n";
+                for(err of firebaseError) {    
+                    message += "\n" + err.name + " : " +  err.message;   
+                }
+                notifier.setErrorTask("firebase_yaml", message, await this.reactDownloadFirebase.bind(this));
+            } else {
+                notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
             }
-            
-            
-            notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
         } catch(err) {
             let text = err.message;
             if(err.code === "firestore/unavailable") {

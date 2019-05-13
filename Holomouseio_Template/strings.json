@@ -23,6 +23,7 @@
         "firebase": {
             "download_yaml": "Téléchargement des fichiers yaml", 
             "databaseUnavailable": "Impossible de se connecter à la base de donnée, aucun fichier n'a été téléchargé",
+            "download_failed": "Impossible de télécharger certains fichiers, voir les détail ci-dessous",
             "yaml_ok": "Tout les fichiers ont été téléchargé"
         },
         "search_product": {
