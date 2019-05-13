@@ -18,7 +18,7 @@ import { store } from '../stores/Store'
 import { SelectionType } from '../actions'
 
 import {navigator} from '../../navigator'
-import { pushError } from '../utils/Notifier';
+import * as notifier from '../utils/Notifier';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -40,7 +40,7 @@ export default class ObjectScreen extends React.Component {
             }).then(_ => {
                 network.play(productUrl, `${videoName}.mp4`)
             }).catch(err => {
-                pushError(err);
+                notifier.setErrorTask("http_request", err.message);
             })
         }
 

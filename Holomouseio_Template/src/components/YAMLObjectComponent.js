@@ -4,6 +4,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import Markdown from 'react-native-markdown-renderer'
 
+import * as notifier from '../utils/Notifier'
+
 /**
  * This component give the renderer for parsed yaml file
  */
@@ -14,7 +16,7 @@ export default class YAMLObjectComponent extends React.Component {
         if(this.props.data) {
             if(this.props.data.error) {
                 texte = this.props.data.error;
-                pushError("Les informations sur l'objet sont mal formaté")
+                notifier.setErrorTask("yaml_view", "Les informations sur l'objet sont mal formaté")
             } else {
                 texte = this.props.data['Texte principal'];
             }

@@ -17,7 +17,7 @@ export default class HandlePanelComponent extends React.Component {
 
         let title = '';
         switch(this.props.task.type) {
-            case "warn": title = string.warn; break;
+            case "warn": title = strings.warn; break;
             case "danger": title = strings.danger; break;
             case "info": title = strings.info; break;
             case "success": title = strings.success; break;
