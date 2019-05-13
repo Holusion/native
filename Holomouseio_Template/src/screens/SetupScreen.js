@@ -36,6 +36,7 @@ export default class SetupScreen extends React.Component {
                 notifier.setWarningTask(err.fileName, err.message);   
             }
             
+            
             notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
         } catch(err) {
             let text = err.message;
@@ -119,7 +120,7 @@ export default class SetupScreen extends React.Component {
         }
 
         let continueButton = null;
-        if(store.getState().appState == actions.AppState.READY) {
+        if(store.getState().appState == actions.AppState.READY && [...notifier.getTasks().values()].filter(elem => elem.type == "danger").length == 0) {
             continueButton = <Button key={0} style={styles.button} onPress={() => this.props.navigation.push(navigator.home.id, {url: this.state.url})}>
                                 <Text style={styles.textButton}>{strings.setup.continue}</Text>
                             </Button>
