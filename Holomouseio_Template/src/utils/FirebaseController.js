@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase';
 import RNFS from 'react-native-fs';
+import FirebaseDownloadError from '../errors/FirebaseDownloadError';
 
 export default class FirebaseController {
 
@@ -12,20 +13,20 @@ export default class FirebaseController {
     
     async downloadFile(ref, name) {
         try {
-            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`)
+            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`);
         } catch(err) {
             let errMessage = `Impossible de télécharger ${name}`;
 
             switch(err.code) {
                 case "storage/object-not-found":
                 case "storage/not-found":
-                    return new Error(`${errMessage}: le fichier distant n'a pas été trouvé`);
+                    return new FirebaseDownloadError(name, `${errMessage}: le fichier distant n'a pas été trouvé (${ref})`);
                 case "storage/resource-exhausted":
-                    return new Error(`${errMessage}: plus d'espace disponible sur la tablette`);
+                    return new FirebaseDownloadError(name, `${errMessage}: plus d'espace disponible sur la tablette`);
                 case "storage/project-not-found":
-                    return new Error(`${errMessage}: le projet distant n'existe pas`);
+                    return new FirebaseDownloadError(name, `${errMessage}: le projet distant n'existe pas`);
                 default:
-                    return err;
+                    return new FirebaseDownloadError(name, err.message);
             }
         }
     }
@@ -46,7 +47,7 @@ export default class FirebaseController {
                         let uriRef = storage.refFromURL(uri);
                         let uriSplit = uri.split('/');
                         let name = uriSplit[uriSplit.length - 1];
-                        
+
                         let downloaded = this.downloadFile(uriRef, name);
                         files.push(downloaded);
                     }
@@ -54,6 +55,9 @@ export default class FirebaseController {
             });
         }
 
-        return Promise.all(files);
+        let errors = await Promise.all(files);
+        errors = errors.filter(elem => elem != null);
+
+        return errors;
     }
 }

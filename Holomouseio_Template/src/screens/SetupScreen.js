@@ -27,13 +27,13 @@ export default class SetupScreen extends React.Component {
         notifier.setInfoTask("firebase_yaml", strings.errors.firebase.download_yaml);
         
         try {
-            let files = await firebaseController.getFiles([
+            let firebaseError = await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
                 {name: 'logos', properties: ['logo']}
             ]);
-            let errors = files.filter(elem => elem instanceof Error);
-            for(err of errors) {
-                notifier.setErrorTask("files", err.message);   
+            
+            for(err of firebaseError) {
+                notifier.setWarningTask(err.fileName, err.message);   
             }
             
             notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
@@ -43,10 +43,12 @@ export default class SetupScreen extends React.Component {
                 text = strings.errors.firebase.databaseUnavailable
             }
             
-            notifier.setWarningTask("firebase_yaml", text, await this.reactDownloadFirebase);
+            notifier.setWarningTask("firebase_yaml", text, await this.reactDownloadFirebase.bind(this));
         }
         try {
+            notifier.setInfoTask("load_yaml", strings.errors.load_yaml.load);
             await assetManager.manage();
+            notifier.setSuccessTask("load_yaml", strings.errors.load_yaml.ok);
         } catch(err) {
             notifier.setErrorTask("load_yaml", err.message);
         }

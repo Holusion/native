@@ -22,14 +22,17 @@
     "errors": {
         "firebase": {
             "download_yaml": "Téléchargement des fichiers yaml", 
-            "databaseUnavailable": "Impossible de se connecter à la base de donnée",
+            "databaseUnavailable": "Impossible de se connecter à la base de donnée, aucun fichier n'a été téléchargé",
             "yaml_ok": "Tout les fichiers ont été téléchargé"
         },
         "search_product": {
             "search": "Recherche d'un produit sur le réseau",
             "timeout": "Problème de connexion, aucun produit n'a été trouvé, vérifiez votre connexion et réessayez",
             "disconnected": "Produit déconnecté"
-
+        },
+        "load_yaml": {
+            "load": "Chargement des fichiers",
+            "ok": "Tous les fichiers ont été chargé correctement"
         }
     },
     "danger": "Erreur",

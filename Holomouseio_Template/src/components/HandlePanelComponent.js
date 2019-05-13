@@ -8,11 +8,11 @@ import * as strings from '../../strings.json'
 export default class HandlePanelComponent extends React.Component {
 
     render() {
-        let retryButton = <ActivityIndicator />
-        if(this.props.task.type == "warn" || this.props.task.type == "danger") {
+        let retryButton = null;
+        if((this.props.task.type == "warn" || this.props.task.type == "danger") && this.props.task.retry) {
             retryButton = <RetryButtonComponent type={this.props.task.type} onPress={this.props.task.retry.bind(this)}/>
-        } else if(this.props.task.type == "success") {
-            retryButton = null;
+        } else if(this.props.task.type == "info") {
+            retryButton = <ActivityIndicator />
         }
 
         let title = '';
@@ -29,10 +29,10 @@ export default class HandlePanelComponent extends React.Component {
                 <Text style={{color: "#fff", fontSize: 18, padding: 8}}>{title}</Text>
             </View>
             <View style={styles[this.props.task.type]}>
-                <View style={{width: "75%", alignContent: 'center', alignContent: 'center'}}>
+                <View style={{width: "80%", alignContent: 'center', alignContent: 'center'}}>
                     <Text style={styles[`text_${this.props.task.type}`]}>{this.props.taskName + " : " + this.props.task.message}</Text>
                 </View>
-                <View style={{width: "25%", alignContent: 'center', alignContent: 'center'}}>
+                <View style={{width: "20%", alignContent: 'center', alignContent: 'center'}}>
                     {retryButton}
                 </View>
             </View>

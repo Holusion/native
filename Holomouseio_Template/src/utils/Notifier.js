@@ -1,7 +1,7 @@
 let listeners = [];
 let tasks = new Map();
 
-const setTask = (name, type, message, retry = () => {}) => {
+const setTask = (name, type, message, retry) => {
     let task = {type: type, message: message, retry: retry} 
     tasks.set(name, task)
     for(let l of listeners) {
@@ -9,7 +9,7 @@ const setTask = (name, type, message, retry = () => {}) => {
     }
 }
 
-export const setErrorTask = (name, message, retry = () => {}) => {
+export const setErrorTask = (name, message, retry) => {
     setTask(name, 'danger', message, retry);
 }
 
@@ -17,7 +17,7 @@ export const setInfoTask = (name, message) => {
     setTask(name, 'info', message);
 }
 
-export const setWarningTask = (name, message, retry = () => {}) => {
+export const setWarningTask = (name, message, retry) => {
     setTask(name, 'warn', message, retry);
 }
 
