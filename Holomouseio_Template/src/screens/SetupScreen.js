@@ -46,15 +46,24 @@ export default class SetupScreen extends React.Component {
             
             notifier.setWarningTask("firebase_yaml", text, await this.reactDownloadFirebase.bind(this));
         }
-        try {
-            notifier.setInfoTask("load_yaml", strings.errors.load_yaml.load);
-            await assetManager.manage();
-            notifier.setSuccessTask("load_yaml", strings.errors.load_yaml.ok);
-        } catch(err) {
-            notifier.setErrorTask("load_yaml", err.message);
-        }
         
-        if(store.getState().appState == actions.AppState.DOWNLOAD_FIREBASE) store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
+        if(store.getState().appState == actions.AppState.DOWNLOAD_FIREBASE) store.dispatch(actions.changeState(actions.AppState.LOAD_YAML));
+    }
+
+    async reactLoadYaml() {
+        notifier.setInfoTask("load_yaml", strings.errors.load_yaml.load);
+        let errors = await assetManager.manage();
+        if(errors.length == 0) {
+            notifier.setSuccessTask("load_yaml", strings.errors.load_yaml.ok);
+        } else {
+            let message = strings.errors.load_yaml.error + "\n";
+            for(let err of errors) {
+                message += "\n" + err.name + ".yaml : " + err.error.message;
+            }
+            notifier.setErrorTask("load_yaml", message, await this.reactLoadYaml.bind(this));
+        }
+
+        if(store.getState().appState == actions.AppState.LOAD_YAML) store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
     
     connectToProduct() {
@@ -98,6 +107,9 @@ export default class SetupScreen extends React.Component {
             switch(store.getState().appState) {
                 case actions.AppState.DOWNLOAD_FIREBASE:
                     await this.reactDownloadFirebase();
+                    break;
+                case actions.AppState.LOAD_YAML:
+                    await this.reactLoadYaml();
                     break;
                 case actions.AppState.SEARCH_PRODUCT:
                     this.connectToProduct();

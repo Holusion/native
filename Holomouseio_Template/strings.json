@@ -32,7 +32,8 @@
         },
         "load_yaml": {
             "load": "Chargement des fichiers",
-            "ok": "Tous les fichiers ont été chargé correctement"
+            "ok": "Tous les fichiers ont été chargé correctement",
+            "error": "Des fichiers n'ont pas pu être lu, voir les détail ci-dessous"
         }
     },
     "danger": "Erreur",
