@@ -36,7 +36,6 @@ const loadAllYamlFiles = async () => {
     )
     
     return Promise.all(yamlLoads).then(values => values.reduce((map, elem) => {
-        console.log(elem);
         if(elem.err) {
             map[elem.key] = elem.err;
         } else {
@@ -60,4 +59,5 @@ export const manage = async () => {
     yamlCache = await loadAllYamlFiles();
     allTheme = findAll('Theme');
     allCatalogue = findAll('Collections');
+    return Object.keys(yamlCache).filter(elem => yamlCache[elem] instanceof yaml.YAMLException).map(elem => ({name: elem, error: yamlCache[elem]}));
 }
