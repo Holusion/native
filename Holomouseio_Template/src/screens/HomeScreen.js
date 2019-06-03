@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
             try {
                 network.activeOnlyYamlItems(url, assetManager.yamlCache);
             } catch(err) {
-                // notifier.setErrorTask("http_request", err);
+                store.dispatch(actions.setErrorTask("http_request", err));
             }
         }
 
@@ -42,31 +42,32 @@ export default class HomeScreen extends React.Component {
         this._onRemerciement = this._onRemerciement.bind(this);
 
         this.state = {
-            selectionType: actions.SelectionType.ANY_SELECTION
+            selectionType: actions.SelectionType.ANY_SELECTION,
         }
 
-        this.unsubscribe = store.subscribe(() => {
+        this.unsubscribe = store.subscribe((action) => {
             this.setState(() => ({selectionType: store.getState().selectionType}))
-        })
-
-        // notifier.subscribe((elem) => {
-        //     let options = {
-        //         text: elem.message,
-        //         duration: 5000,
-        //         position: 'top'
-        //     }
-        
-        //     if(elem.type) {
-        //         let type = elem.type;
-        //         switch(elem.type) {
-        //             case "warn": type = "warning"; break;
-        //             default: type = elem.type;
-        //         }
-        //         options['type'] = type;
-        //     }
             
-        //     Toast.show(options)
-        // })
+            if(action.type == actions.Task.SET_TASK) {
+                let elem = action.task
+                let options = {
+                    text: elem.message,
+                    duration: 5000,
+                    position: 'top'
+                }
+            
+                if(elem.type) {
+                    let type = elem.type;
+                    switch(elem.type) {
+                        case "warn": type = "warning"; break;
+                        default: type = elem.type;
+                    }
+                    options['type'] = type;
+                }
+                
+                Toast.show(options)
+            }
+        })
 
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});

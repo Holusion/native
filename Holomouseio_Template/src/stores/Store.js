@@ -11,7 +11,7 @@ export default class Store {
     dispatch = (action) => {
         this.state = this.reducer(this.getState(), action);
         for(let listener of this.listeners) {
-            listener();
+            listener(action);
         }
     }
     
