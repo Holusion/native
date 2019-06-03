@@ -11,6 +11,8 @@ import PlaylistComponent from '../components/PlaylistComponent'
 
 import * as strings from '../../strings.json'
 import {navigator} from '../../navigator'
+import * as actions from '../actions'
+import { store } from '../stores/Store';
 
 /**
  * Catalogue screen is the screen with small cards that represent by collection. Click on a card has effect to open Object screen of selected object 
@@ -23,7 +25,7 @@ export default class CatalogueScreen extends React.Component {
                 network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
             } catch(err) {
                 // if url but error, it's a http error caused by fetch request
-                // notifier.setErrorTask("http_request", err.statusText);
+                store.dispatch(actions.setErrorTask("http_request", err.statusText));
             }
         }
     }

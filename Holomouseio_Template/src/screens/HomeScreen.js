@@ -81,7 +81,6 @@ export default class HomeScreen extends React.Component {
 
     _onCatalogue() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
-        console.error(store.getState())
         this.props.navigation.push(navigator.selection.id, {url: this.props.navigation.getParam('url')})
     }
 
