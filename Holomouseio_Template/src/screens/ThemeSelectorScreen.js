@@ -12,7 +12,6 @@ import { SelectionType } from "../actions"
 
 import {navigator} from '../../navigator'
 import * as strings from '../../strings.json'
-import * as notifier from '../utils/Notifier';
 
 /**
  * Selection theme are rendered as list with two seperate color 
@@ -23,7 +22,7 @@ export default class ThemeSelectorScreen extends React.Component {
         try {
             network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
         } catch(err) {
-            notifier.setErrorTask("http_request", err.message);
+            // notifier.setErrorTask("http_request", err.message);
         }
     }
 

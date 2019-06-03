@@ -10,7 +10,6 @@ import { store } from "../stores/Store";
 import * as actions from "../actions";
 
 import {navigator} from "../../navigator"
-import * as notifier from '../utils/Notifier';
 
 /**
  * Encapsulate the two other view and change view when it's necessary
@@ -23,7 +22,7 @@ export default class HomeScreen extends React.Component {
             try {
                 network.activeOnlyYamlItems(url, assetManager.yamlCache);
             } catch(err) {
-                notifier.setErrorTask("http_request", err);
+                // notifier.setErrorTask("http_request", err);
             }
         }
 
@@ -50,24 +49,24 @@ export default class HomeScreen extends React.Component {
             this.setState(() => ({selectionType: store.getState().selectionType}))
         })
 
-        notifier.subscribe((elem) => {
-            let options = {
-                text: elem.message,
-                duration: 5000,
-                position: 'top'
-            }
+        // notifier.subscribe((elem) => {
+        //     let options = {
+        //         text: elem.message,
+        //         duration: 5000,
+        //         position: 'top'
+        //     }
         
-            if(elem.type) {
-                let type = elem.type;
-                switch(elem.type) {
-                    case "warn": type = "warning"; break;
-                    default: type = elem.type;
-                }
-                options['type'] = type;
-            }
+        //     if(elem.type) {
+        //         let type = elem.type;
+        //         switch(elem.type) {
+        //             case "warn": type = "warning"; break;
+        //             default: type = elem.type;
+        //         }
+        //         options['type'] = type;
+        //     }
             
-            Toast.show(options)
-        })
+        //     Toast.show(options)
+        // })
 
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
@@ -81,6 +80,7 @@ export default class HomeScreen extends React.Component {
 
     _onCatalogue() {
         store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
+        console.error(store.getState())
         this.props.navigation.push(navigator.selection.id, {url: this.props.navigation.getParam('url')})
     }
 

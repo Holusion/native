@@ -10,7 +10,6 @@ import * as Config from '../../Config'
 import FirebaseController from '../utils/FirebaseController';
 
 import * as strings from "../../strings.json"
-import * as notifier from '../utils/Notifier';
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
@@ -24,7 +23,7 @@ export default class SetupScreen extends React.Component {
 
     async reactDownloadFirebase() {
         let firebaseController = new FirebaseController(Config.projectName);
-        notifier.setInfoTask("firebase_yaml", strings.errors.firebase.download_yaml);
+        store.dispatch(actions.setInfoTask("firebase_yaml", strings.errors.firebase.download_yaml));
         
         try {
             let firebaseError = await firebaseController.getFiles([
@@ -37,9 +36,9 @@ export default class SetupScreen extends React.Component {
                 for(err of firebaseError) {    
                     message += "\n" + err.name + " : " +  err.message;   
                 }
-                notifier.setErrorTask("firebase_yaml", message, await this.reactDownloadFirebase.bind(this));
+                store.dispatch(actions.setErrorTask("firebase_yaml", message, await this.reactDownloadFirebase.bind(this)));
             } else {
-                notifier.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok);
+                store.dispatch(actions.setSuccessTask("firebase_yaml", strings.errors.firebase.yaml_ok));
             }
         } catch(err) {
             let text = err.message;
@@ -47,34 +46,34 @@ export default class SetupScreen extends React.Component {
                 text = strings.errors.firebase.databaseUnavailable
             }
             
-            notifier.setWarningTask("firebase_yaml", text, await this.reactDownloadFirebase.bind(this));
+            store.dispatch(actions.setWarningTask("firebase_yaml", text, await this.reactDownloadFirebase.bind(this)));
         }
         
         if(store.getState().appState == actions.AppState.DOWNLOAD_FIREBASE) store.dispatch(actions.changeState(actions.AppState.LOAD_YAML));
     }
 
     async reactLoadYaml() {
-        notifier.setInfoTask("load_yaml", strings.errors.load_yaml.load);
+        store.dispatch(actions.setInfoTask("load_yaml", strings.errors.load_yaml.load));
         let errors = await assetManager.manage();
         if(errors.length == 0) {
-            notifier.setSuccessTask("load_yaml", strings.errors.load_yaml.ok);
+            store.dispatch(actions.setSuccessTask("load_yaml", strings.errors.load_yaml.ok));
         } else {
             let message = strings.errors.load_yaml.error + "\n";
             for(let err of errors) {
                 message += "\n" + err.name + ".yaml : " + err.error.message;
             }
-            notifier.setErrorTask("load_yaml", message, await this.reactLoadYaml.bind(this));
+            store.dispatch(actions.setErrorTask("load_yaml", message, await this.reactLoadYaml.bind(this)));
         }
 
         if(store.getState().appState == actions.AppState.LOAD_YAML) store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
     
     connectToProduct() {
-        notifier.setInfoTask("search_product", strings.errors.search_product.search)
+        store.dispatch(actions.setInfoTask("search_product", strings.errors.search_product.search))
         store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
 
         const launchOfflineMode = setTimeout(() => {
-            notifier.setWarningTask("search_product", strings.errors.search_product.timeout);
+            store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.timeout));
             store.dispatch(actions.changeState(actions.AppState.READY))
         }, 5000);
 
@@ -87,16 +86,16 @@ export default class SetupScreen extends React.Component {
                     store.dispatch(actions.changeState(actions.AppState.PRODUCT_FOUND))
                     this.setState(() => ({url: url}));
                 }
-                notifier.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`)
+                store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`))
             }, () => {
-                notifier.setWarningTask("search_product", strings.errors.search_product.disconnected);
+                store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected));
                 this.setState(() => ({url: null}));
                 this.props.navigation.setParams({color: 'red'})
             })
         } catch(err) {
             // mDNS error code : https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
             // CF URL Connection code : https://gist.github.com/mnkd/fa5911aa5808eda24298bf41b0436880
-            notifier.setErrorTask("search_product", err.message);
+            store.dispatch(actions.setErrorTask("search_product", err.message));
         }
     }
 
@@ -135,7 +134,7 @@ export default class SetupScreen extends React.Component {
         }
 
         let continueButton = null;
-        if(store.getState().appState == actions.AppState.READY && [...notifier.getTasks().values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
+        if(store.getState().appState == actions.AppState.READY && [...store.getState().tasks.values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
             continueButton = <Button key={0} style={styles.button} onPress={() => this.props.navigation.push(navigator.home.id, {url: this.state.url})}>
                                 <Text style={styles.textButton}>{strings.setup.continue}</Text>
                             </Button>
@@ -166,16 +165,11 @@ export default class SetupScreen extends React.Component {
         }
         
         this.unsubscribe = store.subscribe(() => {
-            this.setState(() => ({screenState: store.getState().appState}))
-        })
-
-        this.unsubscribeNotifier = notifier.subscribe(() => {
-            this.setState(() => ({tasks: notifier.getTasks()}))
+            this.setState(() => ({screenState: store.getState().appState, tasks: store.getState().tasks}))
         })
         
         this.props.navigation.addListener("didBlur", payload => {
             this.unsubscribe();
-            this.unsubscribeNotifier();
         })
     }
 }
