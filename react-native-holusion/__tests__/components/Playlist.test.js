@@ -1,4 +1,4 @@
-import Playlist from "../../src/components/Playlist"
+import { playlistFromContents, playlistFromNetwork } from "../../src/components/Playlist"
 import * as network from "../../src/utils/Network"
 
 let playlist = [
@@ -13,7 +13,7 @@ jest.mock("react-native-fs", () => {
     }
 });
 
-network.getPlaylist = (url) => playlist;
+// network.getPlaylist = (url) => playlist;
 
 fetch = (url, obj) => {
     if(!obj) {
@@ -27,10 +27,19 @@ fetch = (url, obj) => {
           playlist = playlist.map(elem => elem.name === body.name ? body : elem);
           break;
         default:
-          return Promise.resolve({
-            ok: true,
-            json: () => playlist
-          });
+          if(url.includes('localhost')) {
+            return Promise.resolve({
+              ok: true,
+              json: () => playlist
+            });
+          } else if(url.includes('empty')) {
+            return Promise.resolve({
+              ok: true,
+              json: () => []
+            });
+          } else {
+            return Promise.reject(new Error("Network Error"));
+          }
       }
     } else if(url.includes('current')) {
       switch (obj.method) {
@@ -44,55 +53,43 @@ fetch = (url, obj) => {
     }
   }
 
-test(".constructor basic", (done) => {
-    let playlist = new Playlist("localhost");
+describe(".playlistFromContents", () => {
+  it("basic case", () => {
+    const contents = [{name: 'a', title: 'b'}, {name: 'b', title: 'a'}]
+    const res = playlistFromContents("localhost", contents);
+    const expected = [{url: "localhost", name: 'a', title: 'b', imageUri: 'file://./a.jpg'}, {url: "localhost", name: 'b', title: 'a', imageUri: 'file://./b.jpg'}]
+    expect(res).toEqual(expected)
+  })
 
-    expect(playlist.playlist).toEqual([
-        {active: true, imageUri: "http://localhost:3000/medias/foo.mp4?thumb=true", name: "foo.mp4", path: "/", rank: 0, title: "foo.mp4", url: "localhost"},
-        {active: false, imageUri: "http://localhost:3000/medias/bar.mp4?thumb=true", name: "bar.mp4", path: "/", rank: 0, title: "bar.mp4", url: "localhost"},
-        {active: true, imageUri: "http://localhost:3000/medias/baz.mp4?thumb=true", name: "baz.mp4", path: "/", rank: 0, title: "baz.mp4", url: "localhost"}
+  it("when contents empty", () => {
+    const contents = [];
+    const res = playlistFromContents("localhost", contents);
+    const expected = [];
+    expect(res).toEqual(expected);
+  })
+})
+
+describe(".playlistFromNetwork", () => {
+  it("basic case", async () => {
+    const contents = await playlistFromNetwork("localhost");
+    expect(contents).toEqual([
+      {active: true, imageUri: "http://localhost:3000/medias/foo.mp4?thumb=true", name: "foo.mp4", path: "/", rank: 0, title: "foo.mp4", url: "localhost"},
+      {active: false, imageUri: "http://localhost:3000/medias/bar.mp4?thumb=true", name: "bar.mp4", path: "/", rank: 0, title: "bar.mp4", url: "localhost"},
+      {active: true, imageUri: "http://localhost:3000/medias/baz.mp4?thumb=true", name: "baz.mp4", path: "/", rank: 0, title: "baz.mp4", url: "localhost"}
     ]);
-    done();
-})
+  })
 
-test(".constructor without array", (done) => {
-    let playlist = new Playlist("localhost", {"foo": "bar"});
+  it("when empty playlist", async () => {
+    const contents = await playlistFromNetwork("empty");
+    expect(contents).toEqual([]);
+  })
 
-    expect(playlist.playlist).toEqual([
-        {active: true, imageUri: "http://localhost:3000/medias/foo.mp4?thumb=true", name: "foo.mp4", path: "/", rank: 0, title: "foo.mp4", url: "localhost"},
-        {active: false, imageUri: "http://localhost:3000/medias/bar.mp4?thumb=true", name: "bar.mp4", path: "/", rank: 0, title: "bar.mp4", url: "localhost"},
-        {active: true, imageUri: "http://localhost:3000/medias/baz.mp4?thumb=true", name: "baz.mp4", path: "/", rank: 0, title: "baz.mp4", url: "localhost"}
-    ]);
-    done();
-})
-
-test(".constructor customContents", (done) => {
-    let playlist = new Playlist("localhost", [{name: "blabla"}]);
-
-    expect(playlist.playlist).toEqual([{imageUri: "http://localhost:3000/medias/blabla?thumb=true", name: "blabla", title: "blabla", url: "localhost"}]);
-    done();
-})
-
-test(".constructor customContents + locaImage", (done) => {
-    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true}]);
-
-    expect(playlist.playlist).toEqual([{imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "blabla", url: "localhost"}]);
-    done();
-})
-
-test(".constructor customContents + localImage + customTitle", (done) => {
-    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true, title: "foo"}]);
-
-    expect(playlist.playlist).toEqual([{imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "foo", url: "localhost"}]);
-    done();
-})
-
-test(".constructor 2xcustomContents + localImage + 1xcustomTitle", (done) => {
-    let playlist = new Playlist("localhost", [{name: "blabla", localImage: true, title: "foo"}, {name: "blob", localImage: true}]);
-
-    expect(playlist.playlist).toEqual([
-        {imageUri: "file://./blabla.jpg", localImage: true, name: "blabla", title: "foo", url: "localhost"},
-        {imageUri: "file://./blob.jpg", localImage: true, name: "blob", title: "blob", url: "localhost"}
-    ]);
-    done();
+  it("when empty playlist", async () => {
+    try {
+      await playlistFromNetwork("error");
+      fail(new Error("This test should throw a Network Error"));
+    } catch(err) {
+      expect(err.message).toEqual("Network Error");
+    }
+  })
 })
