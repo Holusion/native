@@ -8,7 +8,6 @@ export default class Playlist {
         this.playlist = contents;
 
         if(!contents || !(contents instanceof Array)) {
-            isNetworkContents = true;
             this.playlist = network.getPlaylist(url);
         }
         
