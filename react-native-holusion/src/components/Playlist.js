@@ -2,24 +2,19 @@ import RNFS from 'react-native-fs';
 
 import * as network from '../utils/Network';
 
-export default class Playlist {
+export const playlistFromContents = (url, contents) => {
+    return contents.map(elem => createPlaylistItem(url, elem.name, elem.title, `file://${RNFS.DocumentDirectoryPath}/${elem.name}.jpg`));
+}
 
-    constructor(url, contents) {
-        this.playlist = contents;
+export const playlistFromNetwork = (url) => {
+    return network.getPlaylist(url).map(elem => createPlaylistItem(url, elem.name, elem.name, `http://${url}:3000/medias/${elem.name}?thumb=true`))
+}
 
-        if(!contents || !(contents instanceof Array)) {
-            this.playlist = network.getPlaylist(url);
-        }
-        
-        this.playlist = this.playlist.map((elem) => {
-            elem.imageUri = `file://${RNFS.DocumentDirectoryPath}/${elem.name}.jpg`;
-            if(!elem.localImage) {
-                elem.imageUri = `http://${url}:3000/medias/${elem.name}?thumb=true`;
-            }
-            if(!elem.title) {
-                elem.title = elem.name;
-            }
-            return {url, ...elem};
-        });
+const createPlaylistItem = (url, name, title, imageUri) => {
+    return {
+        url,
+        name,
+        title,
+        imageUri
     }
 }
