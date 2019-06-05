@@ -12,47 +12,7 @@ jest.mock("react-native-fs", () => {
         DocumentDirectoryPath: "."
     }
 });
-
-// network.getPlaylist = (url) => playlist;
-
-fetch = (url, obj) => {
-    if(!obj) {
-      obj = {method: 'GET'};
-    }
   
-    if(url.endsWith('/playlist')) {
-      switch (obj.method) {
-        case 'PUT':
-          let body = JSON.parse(obj.body);
-          playlist = playlist.map(elem => elem.name === body.name ? body : elem);
-          break;
-        default:
-          if(url.includes('localhost')) {
-            return Promise.resolve({
-              ok: true,
-              json: () => playlist
-            });
-          } else if(url.includes('empty')) {
-            return Promise.resolve({
-              ok: true,
-              json: () => []
-            });
-          } else {
-            return Promise.reject(new Error("Network Error"));
-          }
-      }
-    } else if(url.includes('current')) {
-      switch (obj.method) {
-        case 'PUT':
-          let urlSplit = url.split('/');
-          currentPlay = urlSplit[urlSplit.length - 1];
-          break;
-        default:
-  
-      }
-    }
-  }
-
 describe(".playlistFromContents", () => {
   it("basic case", () => {
     const contents = [{name: 'a', title: 'b'}, {name: 'b', title: 'a'}]
@@ -70,6 +30,32 @@ describe(".playlistFromContents", () => {
 })
 
 describe(".playlistFromNetwork", () => {
+  beforeAll(() => {
+    const mockLocalhostResponse = Promise.resolve(playlist);
+    const mockEmptyResponse = Promise.resolve([]);
+    const mockErrorResponse = Promise.reject(new Error("Network Error"));
+
+    const mockFetchPromiseLocalhost = Promise.resolve({
+      json: () => mockLocalhostResponse
+    })
+    const mockFetchPromiseEmpty = Promise.resolve({
+      json: () => mockEmptyResponse
+    })
+    const mockFetchPromiseError = Promise.resolve({
+      json: () => mockErrorResponse
+    })
+
+    global.fetch = jest.fn((url) => {
+      if(url.includes('localhost')) return mockFetchPromiseLocalhost;
+      else if(url.includes('empty')) return mockFetchPromiseEmpty;
+      else return mockFetchPromiseError;
+    })
+  })
+
+  afterAll(() => {
+    global.fetch.mockClear()
+  })
+
   it("basic case", async () => {
     const contents = await playlistFromNetwork("localhost");
     expect(contents).toEqual([
