@@ -33,15 +33,11 @@ export const connect = (callbackAdd, callbackRemove) => {
 }
 
 export const hasInternetConnection = async () => {
-    try {
-        let res = await fetch("https://holusion.com")
-        if(res.status !== 200) {
-            return false;
-        }
-        return true;
-    } catch(err) {
-        throw err;
+    let res = await fetch("https://holusion.com")
+    if(res.status !== 200) {
+        return false;
     }
+    return true;
 }
 
 export const getUrls = () => {
@@ -76,50 +72,51 @@ const playlistPutActive = async (url, elem, active) => {
  * @throws {TypeError} Network request failed -> when application disconnected from product
  */
 export const getPlaylist = async (url) => {
-    try {
-        let res = await fetch(`http://${url}:3000/playlist`);
-        return res.json();
-    } catch(err) {
-        throw err;
-    }
+    let res = await fetch(`http://${url}:3000/playlist`);
+    return res.json();
 }
 
 export const desactiveAll = async (url) => {
-    await activeWithPredicate(url, elem => elem.active, false);
+    return await activeWithPredicate(url, elem => elem.active, false);
 }
 
 export const desactive = async (url, name) => {
-    await activeWithPredicate(url, elem => elem.name == name, false);
+    return await activeWithPredicate(url, elem => elem.name == name, false);
 }
 
 export const activeAll = async (url) => {
-    await activeWithPredicate(url, elem => !elem.active, true);
+    return await activeWithPredicate(url, elem => !elem.active, true);
 }
 
 export const active = async (url, name) => {
-    await activeWithPredicate(url, (elem) => elem.name == name, true);
+    return await activeWithPredicate(url, (elem) => elem.name == name, true);
 }
 
 export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
-    playlist.filter(elem => predicate(elem)).forEach(async elem => {
-        try {
-            playlistPutActive(url, elem, active);
-        } catch(error) {
-            throw error;
-        }
-    });
+    let errors = [];
+    let ops = Promise.all(
+        playlist.filter(elem => predicate(elem)).map(async elem => {
+            try {
+                await playlistPutActive(url, elem, active);
+            } catch(err) {
+                errors.push(new Error(`${elem.name} is not accessible`));
+            }
+        })
+    )
+    await ops;
+    return errors;
 }
 
-export const activeOnlyYamlItems = (url, yamlFiles) => {
-    activeWithPredicate(url, (elem) => {
+export const activeOnlyYamlItems = async (url, yamlFiles) => {
+    return await activeWithPredicate(url, (elem) => {
         let name = elem.name.split('.')[0];
         return yamlFiles[name];
     }, true)
 }
 
 export const play = async (url, name) => {
-    fetch(`http://${url}:3000/control/current/${name}`, {
+    await fetch(`http://${url}:3000/control/current/${name}`, {
         method: 'PUT'
     });
 }

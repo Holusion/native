@@ -1,5 +1,4 @@
 import { playlistFromContents, playlistFromNetwork } from "../../src/components/Playlist"
-import * as network from "../../src/utils/Network"
 
 let playlist = [
     {name: "foo.mp4", rank: 0, path: '/', active: true},
@@ -70,7 +69,7 @@ describe(".playlistFromNetwork", () => {
     expect(contents).toEqual([]);
   })
 
-  it("when empty playlist", async () => {
+  it("when url is not found", async () => {
     try {
       await playlistFromNetwork("error");
       fail(new Error("This test should throw a Network Error"));
