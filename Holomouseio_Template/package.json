@@ -13,13 +13,13 @@
     ]
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^0.1.4",
+    "@holusion/react-native-holusion": "^0.2.1",
     "events": "^3.0.0",
     "markdown-it-attrs": "^2.3.2",
-    "native-base": "2.8.1",
+    "native-base": "^2.12.1",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.3",
-    "react-native-firebase": "^5.1.1",
+    "react-native": "^0.59.9",
+    "react-native-firebase": "^5.4.2",
     "react-native-fs": "^2.12.1",
     "react-native-gesture-handler": "^1.0.10",
     "react-native-markdown-renderer": "^3.2.8",
@@ -31,8 +31,8 @@
     "react-navigation-redux-helpers": "^2.0.6"
   },
   "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.48.1",
     "react-test-renderer": "16.6.0-alpha.8af6728"
   },

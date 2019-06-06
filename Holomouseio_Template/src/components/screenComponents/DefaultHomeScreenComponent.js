@@ -18,7 +18,7 @@ export default class DefaultHomeScreenComponent extends React.Component {
 
     render() {
         return (
-            <Content>
+            // <Content>
                 <View>
                     <Image style={styles.images} source={resources.topRightLogo} />
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
@@ -36,7 +36,7 @@ export default class DefaultHomeScreenComponent extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-            </Content>
+            // </Content>
         )
     }
 

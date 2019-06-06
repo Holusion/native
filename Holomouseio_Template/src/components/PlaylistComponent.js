@@ -9,7 +9,7 @@ export class PlaylistComponent extends React.Component {
         let rows = [];
         let items = [];
 
-        let contents = this.props.playlist.playlist;
+        let contents = this.props.playlist;
 
         for(let i = 0; i < contents.length; i++) {
             let current = contents[i];

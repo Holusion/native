@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Container, StyleProvider } from 'native-base';
 import { assetManager, network } from '@holusion/react-native-holusion';
-import {Playlist} from '@holusion/react-native-holusion';
+import { playlistFromContents } from '@holusion/react-native-holusion';
 
 import { StyleSheet, Text } from 'react-native'
 
@@ -58,10 +58,9 @@ export default class CatalogueScreen extends React.Component {
         
         let objList = this.props.navigation.getParam("objList");
         let contents = objList.map(elem => {
-            return {name: elem, title: assetManager.yamlCache[elem].Titre, localImage: true}
+            return {name: elem, title: assetManager.yamlCache[elem].Titre}
         })
-
-        this.playlist = new Playlist(this.props.navigation.getParam("url"), contents);
+        this.playlist = playlistFromContents(this.props.navigation.getParam('url'), contents)
     }
 }
 
