@@ -1,6 +1,6 @@
 export const primaryColor = "#ae2573ff";
 export const secondaryColor = "#3c0c27ff";
-export const projectName = "Holomouseio";
+export const projectName = "Holomouseio_Demo";
 export const isStingray = false;
 
 export const dangerBackground = "#FFCCCC";
