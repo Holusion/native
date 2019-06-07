@@ -34,6 +34,9 @@ cp -R ../Holomouseio_Template/assets ./
 cp ../Holomouseio_Template/App.js ./App.js
 cp ../Holomouseio_Template/index.js ./index.js
 cp ../Holomouseio_Template/GoogleService-Info.plist ./
+cp ../Holomouseio_Template/resources.js ./
+cp ../Holomouseio_Template/strings.js ./
+cp ../Holomouseio_Template/navigator.js ./
 
 echo "Link react-native dependencies"
 rm -rf ./android/app/src/debug/
