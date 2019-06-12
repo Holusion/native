@@ -51,17 +51,19 @@ export const getUrl = (id) => {
 }
 
 const playlistPutActive = async (url, elem, active) => {
-    await fetch(`http://${url}:3000/playlist`, {
+    const json = {
+        name: elem.name,
+        rank: elem.rank,
+        path: elem.path,
+        active: active
+    };
+    
+    const res = await fetch(`http://${url}:3000/playlist`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            name: elem.name,
-            rank: elem.rank,
-            path: elem.path,
-            active: active
-        })
+        body: JSON.stringify(json)
     });
 }
 
@@ -73,6 +75,9 @@ const playlistPutActive = async (url, elem, active) => {
  */
 export const getPlaylist = async (url) => {
     let res = await fetch(`http://${url}:3000/playlist`);
+    if(res.status === 204) {
+        return []
+    }
     return res.json();
 }
 
@@ -94,18 +99,16 @@ export const active = async (url, name) => {
 
 export const activeWithPredicate = async (url, predicate, active) => {
     let playlist = await getPlaylist(url);
-    let errors = [];
     let ops = Promise.all(
         playlist.filter(elem => predicate(elem)).map(async elem => {
             try {
-                await playlistPutActive(url, elem, active);
+                return await playlistPutActive(url, elem, active);
             } catch(err) {
-                errors.push(new Error(`${elem.name} is not accessible`));
+                return new Error(`${elem.name} is not accessible`);
             }
         })
     )
-    await ops;
-    return errors;
+    return (await ops).filter(elem => elem instanceof Error);
 }
 
 export const activeOnlyYamlItems = async (url, yamlFiles) => {
