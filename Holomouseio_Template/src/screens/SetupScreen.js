@@ -4,10 +4,8 @@ import { Content, StyleProvider, Button } from 'native-base';
 import { store } from "../utils/flux";
 import * as actions from "../actions";
 
-import {network, assetManager} from '@holusion/react-native-holusion';
+import {network, assetManager, FirebaseController } from '@holusion/react-native-holusion';
 import * as Config from '../../Config'
-
-import FirebaseController from '../utils/FirebaseController';
 
 import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';

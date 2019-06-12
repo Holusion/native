@@ -13,13 +13,12 @@
     ]
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^0.2.1",
+    "@holusion/react-native-holusion": "^0.2.2",
     "events": "^3.0.0",
     "markdown-it-attrs": "^2.3.2",
     "native-base": "^2.12.1",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "^0.59.9",
-    "react-native-firebase": "^5.4.2",
     "react-native-fs": "^2.12.1",
     "react-native-gesture-handler": "^1.0.10",
     "react-native-markdown-renderer": "^3.2.8",
