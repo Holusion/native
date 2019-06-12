@@ -80,13 +80,13 @@ export default class SetupScreen extends React.Component {
         try {
             this.closeConnection = network.connect((service) => {
                 clearTimeout(launchOfflineMode);
-                let url = network.getUrl(0);
+                let url = service.addresses[0];
                 this.props.navigation.setParams({color: 'green'})
                 if(store.getState().appState === actions.AppState.WAIT_FOR_PRODUCT) {
                     store.dispatch(actions.changeState(actions.AppState.PRODUCT_FOUND))
                     this.setState(() => ({url: url}));
+                    store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`))
                 }
-                store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`))
             }, () => {
                 store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected));
                 this.setState(() => ({url: null}));
