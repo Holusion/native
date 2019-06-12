@@ -19,17 +19,6 @@ import { store } from '../utils/flux';
  */
 export default class CatalogueScreen extends React.Component {
 
-    componentDidMount() {
-        if(this.props.navigation.getParam("url")) {
-            try {
-                network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-            } catch(err) {
-                // if url but error, it's a http error caused by fetch request
-                store.dispatch(actions.setErrorTask("http_request", err.statusText));
-            }
-        }
-    }
-
     _onPlayslistItem(id) {
         this.props.navigation.push(navigator.object.id, {
             objList: this.props.navigation.getParam("objList"),
@@ -61,6 +50,17 @@ export default class CatalogueScreen extends React.Component {
             return {name: elem, title: assetManager.yamlCache[elem].Titre}
         })
         this.playlist = playlistFromContents(this.props.navigation.getParam('url'), contents)
+
+        this.props.navigation.addListener('didFocus', async () => {
+            let url = this.props.navigation.getParam('url');
+            if(url) {
+                try {
+                    await network.activeOnlyYamlItems(url, assetManager.yamlCache);
+                } catch(err) {
+                    store.dispatch(actions.setErrorTask("http_request", err.message));
+                }
+            }
+        })
     }
 }
 

@@ -16,16 +16,7 @@ import {navigator} from "../../navigator"
  */
 export default class HomeScreen extends React.Component {
     render() {
-        let url = this.props.navigation.getParam('url');
-        
-        if(url) {
-            try {
-                network.activeOnlyYamlItems(url, assetManager.yamlCache);
-            } catch(err) {
-                store.dispatch(actions.setErrorTask("http_request", err));
-            }
-        }
-
+        const url = this.props.navigation.getParam("url");
         return (
             <Content enableResetScrollToCoords={false} disableKBDismissScroll={true}>
                 <StyleProvider style={customTheme}>
@@ -72,6 +63,17 @@ export default class HomeScreen extends React.Component {
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
+
+        this.props.navigation.addListener('didFocus', async () => {
+            let url = this.props.navigation.getParam('url');
+            if(url) {
+                try {
+                    await network.activeOnlyYamlItems(url, assetManager.yamlCache);
+                } catch(err) {
+                    store.dispatch(actions.setErrorTask("http_request", err.message));
+                }
+            }
+        })
     }
 
     _onVisite() {

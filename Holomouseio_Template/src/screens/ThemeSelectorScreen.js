@@ -19,18 +19,6 @@ import * as actions from '../actions'
  */
 export default class ThemeSelectorScreen extends React.Component {
 
-    componentDidMount() {
-        try {
-            network.activeOnlyYamlItems(this.props.navigation.getParam('url'), assetManager.yamlCache);
-        } catch(err) {
-            store.dispatch(actions.setErrorTask("http_request", err.message));
-        }
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
     render() {
         let allList = [];
         
@@ -82,6 +70,21 @@ export default class ThemeSelectorScreen extends React.Component {
 
         this.unsubscribe = store.subscribe(() => {
             this.setState(() => ({type: store.getState().selectionType}))
+        })
+
+        this.props.navigation.addListener('didFocus', async () => {
+            let url = this.props.navigation.getParam('url');
+            if(url) {
+                try {
+                    await network.activeOnlyYamlItems(url, assetManager.yamlCache);
+                } catch(err) {
+                    store.dispatch(actions.setErrorTask("http_request", err.message));
+                }
+            }
+        })
+
+        this.props.navigation.addListener('didBlur', () => {
+            this.unsubscribe();
         })
     }
 
