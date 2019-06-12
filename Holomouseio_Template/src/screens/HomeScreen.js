@@ -6,7 +6,7 @@ import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHo
 import {network, assetManager} from '@holusion/react-native-holusion';
 import * as Config from '../../Config'
 
-import { store } from "../stores/Store";
+import { store } from "../utils/flux";
 import * as actions from "../actions";
 
 import {navigator} from "../../navigator"

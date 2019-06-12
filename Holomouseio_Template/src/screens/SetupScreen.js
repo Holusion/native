@@ -1,7 +1,7 @@
 import React from 'react';
 import { Content, StyleProvider, Button } from 'native-base';
 
-import { store } from "../stores/Store";
+import { store } from "../utils/flux";
 import * as actions from "../actions";
 
 import {network, assetManager} from '@holusion/react-native-holusion';

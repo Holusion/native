@@ -7,7 +7,7 @@ import ListItemComponent from "../components/ListItemComponent";
 
 import * as Config from '../../Config'
 
-import { store } from "../stores/Store";
+import { store } from "../utils/flux";
 import { SelectionType } from "../actions"
 
 import {navigator} from '../../navigator'
