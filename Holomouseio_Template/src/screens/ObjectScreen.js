@@ -50,20 +50,20 @@ export default class ObjectScreen extends React.Component {
     renderModal(number) {
         let display = null;
         if(number === 0) {
-            let refs = Object.keys(this.obj).filter(elem => {
-                return !elem.includes("Texte", 0) && elem != "logo" && this.obj[elem];
+            let refs = Object.keys(this.state.obj).filter(elem => {
+                return !elem.includes("Texte", 0) && elem != "logo" && this.state.obj[elem];
             })
             display = refs.map((s, index) => {
-                if(this.obj && this.obj[s]) {
-                    let txt = `__${s}__: ${this.obj[s]}`
+                if(this.state.obj && this.state.obj[s]) {
+                    let txt = `__${s}__: ${this.state.obj[s]}`
                     return <Markdown style={markdownText} key={index}>{txt}</Markdown>
                 }
                 return null;
             })
         } else if(number > 0) {
             let text = "";
-            if(this.obj) {
-                text = this.obj[`Texte complémentaire ${number}`];
+            if(this.state.obj) {
+                text = this.state.obj[`Texte complémentaire ${number}`];
             }
             display = <Markdown style={markdownText}>{text}</Markdown>
         }
@@ -86,8 +86,8 @@ export default class ObjectScreen extends React.Component {
 
     generateComplButton() {
         let compls = [];
-        if(this.obj) {
-            compls = Object.keys(this.obj).filter(elem => elem.indexOf('compl') == 6); //#startsWith made something strange :/
+        if(this.state.obj) {
+            compls = Object.keys(this.state.obj).filter(elem => elem.indexOf('compl') == 6); //#startsWith made something strange :/
         }
 
         return (
@@ -112,7 +112,7 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <FooterTab>
-                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.props.navigation.getParam('objList')})}>
+                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.store.getState().objectVideo.videos})}>
                     <Text>Remerciements</Text>
                 </Button>
             </FooterTab>
@@ -131,8 +131,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     renderLogo() {
-        if(this.obj['logo']) {
-            let logos = this.obj['logo'];
+        if(this.state.obj['logo']) {
+            let logos = this.state.obj['logo'];
             let display = [];
             let row = [];
             for(let i = 0; i < logos.length; i++) {
@@ -171,31 +171,31 @@ export default class ObjectScreen extends React.Component {
     }
 
     scrollToImage = () => {
-        this.scroller.scrollTo({x: 0, y: 0});
+        if(this.scroller) this.scroller.scrollTo({x: 0, y: 0});
     }
 
     render() {
         let allModals = this.generateAllModal();
-        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.jpg`;
+        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
         let illustration = <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
         if(Config.isStingray) {
-            let videoUri = `file://${RNFS.DocumentDirectoryPath}/${this.props.navigation.getParam('objList')[this.state.currentVideoIndex]}.mp4`
+            let videoUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.mp4`
             illustration = <VideoComponent uri={`${videoUri}`} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
         }
 
         let txt = <View>
-            <YAMLObjectComponent style={markdownContent} data={this.obj}/>
+            <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
             {this.generateComplButton()}
         </View>
 
         if(store.getState().selectionType == SelectionType.CATALOGUE) {
             txt = <View>
                 {
-                    Object.keys(this.obj).filter(elem => {
-                        return !elem.includes("Texte", 0) && elem != "logo" && this.obj[elem];
+                    Object.keys(this.state.obj).filter(elem => {
+                        return !elem.includes("Texte", 0) && elem != "logo" && this.state.obj[elem];
                     }).map((s, index) => {
-                        if(this.obj && this.obj[s]) {
-                            let txt = `__${s}__: ${this.obj[s]}`
+                        if(this.state.obj && this.state.obj[s]) {
+                            let txt = `__${s}__: ${this.state.obj[s]}`
                             return <Markdown key={index} style={markdownText}>{txt}</Markdown>
                         }
                         return null;
@@ -216,7 +216,7 @@ export default class ObjectScreen extends React.Component {
                             </Col>
                             <Col>
                                 <Row size={1}>
-                                    <Markdown style={markdownTitle}>{this.obj['Titre']}</Markdown>
+                                    <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
                                 </Row>
                                 <Row size={5} style={styles.mainPanel}>
                                 <FlingGestureHandler
@@ -267,38 +267,21 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
-        let index = (this.state.currentVideoIndex + 1) % this.props.navigation.getParam('objList').length
-        let nextVideo = this.props.navigation.getParam('objList')[index];
-        this.obj = assetManager.yamlCache[nextVideo];
-        this.launchVideo(nextVideo);
-        this.setState({currentVideoIndex: index});
-        this.scrollToImage()
+        store.dispatch(actions.nextVideo(store.getState().objectVideo.videos))
     }
 
     _onPrevious() {
-        let index = this.state.currentVideoIndex <= 0 ? this.props.navigation.getParam('objList').length - 1 : this.state.currentVideoIndex - 1;
-        
-        let previousVideo = this.props.navigation.getParam('objList')[index];
-        this.obj = assetManager.yamlCache[previousVideo];
-        this.launchVideo(previousVideo);
-        this.setState({currentVideoIndex: index});
-        this.scrollToImage();
+        store.dispatch(actions.previousVideo(store.getState().objectVideo.videos))
     }
 
     constructor(props, context) {
         super(props, context);
 
-        let currentObj = this.props.navigation.getParam('objList')[this.props.navigation.getParam('objId')];
-        this.obj = assetManager.yamlCache[currentObj]
-
         this.state = {
             modalVisible: -1,
-            currentVideoIndex: this.props.navigation.getParam('objId')
+            currentVideoIndex: store.getState().objectVideo.index,
+            obj: assetManager.yamlCache[store.getState().objectVideo.video]
         }
-        this.complLength = 0;
-        this.complLength = Object.keys(this.obj).filter(elem => elem.indexOf('compl') == 6).length;
-
-        this.launchVideo(currentObj);
 
         this.screenHeight = Dimensions.get('window').height * (4/5);
 
@@ -308,6 +291,17 @@ export default class ObjectScreen extends React.Component {
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'})
         }
+
+        this.props.navigation.addListener('didFocus', () => {
+            this.unsubscribe = store.subscribe(() => {
+                this.setState(() => ({currentVideoIndex: store.getState().objectVideo.index, obj: assetManager.yamlCache[store.getState().objectVideo.video]}));
+                this.launchVideo(store.getState().objectVideo.video);
+                this.scrollToImage();
+            })
+        })
+
+
+        this.props.navigation.addListener('willBlur', (payload) => this.unsubscribe());
     }
 }
 

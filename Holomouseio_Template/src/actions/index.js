@@ -1,6 +1,7 @@
 export const CHANGE_STATE = 'CHANGE_STATE'
 export const CHANGE_SELECTION_TYPE = 'CHANGE_SELECTION_TYPE'
 export const Task = {SET_TASK: "ADD_TASK", REMOVE_TASK: "REMOVE_TASK", CLEAR_TASK: "CLEAR_TASK"}
+export const SetObjectVideo = {NEXT_VIDEO: "NEXT_VIDEO", PREVIOUS_VIDEO: "PREVIOUS_VIDEO", SET_VIDEO: "SET_VIDEO"}
 
 export const AppState = {INIT: "INIT", DOWNLOAD_FIREBASE: "DOWNLOAD_FIREBASE", LOAD_YAML: "LOAD_YAML", SEARCH_PRODUCT: "SEARCH_PRODUCT", WAIT_FOR_PRODUCT: "WAIT_FOR_PRODUCT", PRODUCT_FOUND: "PRODUCT_FOUND", READY: "READY"}
 export const SelectionType = {ANY_SELECTION: "ANY_SELECTION", VISITE: "VISITE", CATALOGUE: "CATALOGUE"}
@@ -35,4 +36,16 @@ export const setWarningTask = (name, message, retry) => {
 
 export const setSuccessTask = (name, message) => {
     return setTask(name, 'success', message,);
+}
+
+export const nextVideo = (videos) => {
+    return {type: SetObjectVideo.NEXT_VIDEO, videos}
+}
+
+export const previousVideo = (videos) => {
+    return {type: SetObjectVideo.PREVIOUS_VIDEO, videos}
+}
+
+export const setVideo = (videos, index) => {
+    return {type: SetObjectVideo.SET_VIDEO, videos, index}
 }

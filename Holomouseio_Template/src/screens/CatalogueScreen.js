@@ -20,9 +20,9 @@ import { store } from '../utils/flux';
 export default class CatalogueScreen extends React.Component {
 
     _onPlayslistItem(id) {
+        store.dispatch(actions.setVideo(this.props.navigation.getParam('objList'), id))
+
         this.props.navigation.push(navigator.object.id, {
-            objList: this.props.navigation.getParam("objList"),
-            objId: id,
             url: this.props.navigation.getParam('url'),
         });
     }
