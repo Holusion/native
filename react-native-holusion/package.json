@@ -1,13 +1,15 @@
 {
   "name": "@holusion/react-native-holusion",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "react native api for holusion app",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./__mock__/mockFirebase"],
+    "setupFilesAfterEnv": [
+      "./__mock__/mockFirebase"
+    ],
     "preset": "react-native",
     "transformIgnorePatterns": [
       "/node_modules/(?!native-base)/"
