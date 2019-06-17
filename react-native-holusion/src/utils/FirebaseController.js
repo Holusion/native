@@ -20,13 +20,13 @@ export default class FirebaseController {
             switch(err.code) {
                 case "storage/object-not-found":
                 case "storage/not-found":
-                    return new FirebaseDownloadError(name, `${errMessage}: le fichier distant n'a pas été trouvé (${ref})`);
+                    throw new FirebaseDownloadError(name, `${errMessage}: le fichier distant n'a pas été trouvé (${ref})`);
                 case "storage/resource-exhausted":
-                    return new FirebaseDownloadError(name, `${errMessage}: plus d'espace disponible sur la tablette`);
+                    throw new FirebaseDownloadError(name, `${errMessage}: plus d'espace disponible sur la tablette`);
                 case "storage/project-not-found":
-                    return new FirebaseDownloadError(name, `${errMessage}: le projet distant n'existe pas`);
+                    throw new FirebaseDownloadError(name, `${errMessage}: le projet distant n'existe pas`);
                 default:
-                    return new FirebaseDownloadError(name, err.message);
+                    throw new FirebaseDownloadError(name, err.message);
             }
         }
     }
@@ -34,30 +34,30 @@ export default class FirebaseController {
     // return list of error file
     async getFiles(collections) {
         let storage = firebase.storage();
-        let files = [];
         
-        for(let collect of collections) {
-            let value = await this.collection.collection(collect['name']).get({source: "server"});
-            value.forEach(async (document) => {
-                let documentData = document.data();
-                let hide = documentData['hide'];
-                if(!hide) {
+        let res = collections.map(async collect => {
+            return (await this.collection.collection(collect['name']).get({source: "server"})).docs
+                .map(document => document.data())
+                .filter(data => !data.hide)
+                .reduce((acc, data) => {
                     for(let prop of collect['properties']) {
-                        let uri = documentData[prop];
-                        let uriRef = storage.refFromURL(uri);
-                        let uriSplit = uri.split('/');
-                        let name = uriSplit[uriSplit.length - 1];
-
-                        let downloaded = this.downloadFile(uriRef, name);
-                        files.push(downloaded);
+                        acc.push(data[prop])
                     }
-                }
-            });
-        }
+                    return acc;
+                }, [])
+                .map(async elem => {
+                    let split = elem.split('/');
+                    let name = split[split.length - 1];
+                    try {
+                        return await this.downloadFile(storage.refFromURL(elem), name);
+                    } catch(err) {
+                        return err
+                    }
+                })
+        })
+        
 
-        let errors = await Promise.all(files);
-        errors = errors.filter(elem => elem != null);
-
-        return errors;
+        let ops = (await Promise.all(res)).reduce((a, b) => a.concat(b));
+        return (await Promise.all(ops)).filter(elem => elem instanceof Error);
     }
 }
