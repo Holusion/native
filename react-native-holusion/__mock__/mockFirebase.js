@@ -1,7 +1,6 @@
 jest.mock('react-native-firebase', () => {
-    const db = [{uri: "foo.yaml", error: "error"}, {uri: "bar.yaml", error: "error"}]
+    const db = [{uri: "gs://foo.yaml", error: "error"}, {uri: "gs://bar.yaml", error: "error"}, {erroruri: "gs://error.yaml"}]
     const files = ["foo.yaml", "bar.yaml"];
-    let link = "";
 
     const DocumentSnapshot = jest.fn((dbItem) => ({
         data: jest.fn(() => dbItem)
@@ -9,11 +8,9 @@ jest.mock('react-native-firebase', () => {
     const docs = db.map(elem => DocumentSnapshot(elem));
 
     const collection = jest.fn((name) => {
-        link += name + "/";
         return {
             id: name,
             doc: jest.fn((projectName) => {
-                link += projectName + "/";
                 return {
                     id: projectName,
                     collection: collection
@@ -28,7 +25,7 @@ jest.mock('react-native-firebase', () => {
 
     const ref = jest.fn((url) => ({
         downloadFile: jest.fn(async (path) => {
-            if(files.filter(elem => url === elem).length === 0) throw new Error("blabla"); 
+            if(files.filter(elem => url.endsWith(elem)).length === 0) throw new Error("blabla"); 
         })
     }))
 

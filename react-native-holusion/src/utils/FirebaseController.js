@@ -46,12 +46,17 @@ export default class FirebaseController {
                     return acc;
                 }, [])
                 .map(async elem => {
-                    let split = elem.split('/');
-                    let name = split[split.length - 1];
-                    try {
-                        return await this.downloadFile(storage.refFromURL(elem), name);
-                    } catch(err) {
-                        return err
+                    if(elem) {
+                        const regex = /^gs:\/\/|^http:\/\/|^https:\/\//
+                        if(!regex.test(elem)) return new FirebaseDownloadError(elem, `${elem} ne peux pas être téléchargé car l'url spécifié ne commence pas par gs://, http:// ou https://`)
+
+                        let split = elem.split('/');
+                        let name = split[split.length - 1];
+                        try {
+                            return await this.downloadFile(storage.refFromURL(elem), name);
+                        } catch(err) {
+                            return err
+                        }
                     }
                 })
         })

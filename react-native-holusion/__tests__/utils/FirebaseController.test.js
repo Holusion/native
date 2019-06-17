@@ -68,16 +68,22 @@ describe("FirestoreController", () => {
             expect(res.length).toBe(0);
         })
 
-        it("when files not found", async() => {
+        it("when url field is not set correctly", async () => {
             const controller = new FirebaseController(("foo"));
             const res = await controller.getFiles([{name: 'projects', properties: ['error']}]);
             expect(res.length).toBe(2);
         })
 
-        it("when files not found and some files found", async () => {
+        it("when url not set correctly and some files found", async () => {
             const controller = new FirebaseController(("foo"));
             const res = await controller.getFiles([{name: 'projects', properties: ['uri', 'error']}]);
             expect(res.length).toBe(2);
+        })
+
+        it("when file not found", async () => {
+            const controller = new FirebaseController("foo");
+            const res = await controller.getFiles([{name: 'projects', properties: ['erroruri']}]);
+            expect(res.length).toBe(1);
         })
     })
 })
