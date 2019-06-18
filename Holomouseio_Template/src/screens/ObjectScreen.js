@@ -1,11 +1,10 @@
 import React from 'react'
 import { Footer, FooterTab, Text, Button, Container, Body, Grid, Col, Row, StyleProvider } from 'native-base';
-import Icon from 'react-native-vector-icons/Ionicons'
 import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity, findNodeHandle } from 'react-native';
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, findNodeHandle } from 'react-native';
 
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
@@ -23,6 +22,7 @@ import * as strings from '../../strings'
 
 import * as actions from '../actions'
 import ClickPanelComponent from '../components/ClickPanelComponent';
+import ButtonInOutComponent from '../components/ButtonInOutComponent';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -170,8 +170,11 @@ export default class ObjectScreen extends React.Component {
     }
 
     scrollToText = () => {
-        let scrollYPos = this.screenHeight * 1;
-        this.scroller.scrollTo({x: 0, y: scrollYPos})
+        if(this.buttonRef) {
+            this.buttonRef.refs.innerView.measureLayout(findNodeHandle(this.scroller), (x, y) => {
+                this.scroller.scrollTo({x: 0, y: y})
+            })
+        }
     }
 
     scrollToImage = () => {
@@ -179,13 +182,14 @@ export default class ObjectScreen extends React.Component {
             this.imageRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
                 this.scroller.scrollTo({x: 0, y: y});
             })
+            this.buttonRef.setState(() => ({in: true}))
         }
     }
 
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
-        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, marginBottom: 32, resizeMode: 'contain', alignSelf: "center"}}/>
         if(Config.isStingray) {
             let videoUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.mp4`
             illustration = <VideoComponent uri={`${videoUri}`} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
@@ -238,16 +242,11 @@ export default class ObjectScreen extends React.Component {
                                     }
                                 }}>
                                     <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
-                                        <View style={{height: this.screenHeight}}>
+                                        <View>
                                             { illustration }
-                                            <TouchableOpacity onPress={this.scrollToText} style={{alignSelf: 'center'}}>
-                                                <Icon name='ios-arrow-dropdown-circle' style={{fontSize: 75, color: Config.primaryColor}} />
-                                            </TouchableOpacity>
+                                            <ButtonInOutComponent ref={(component) => this.buttonRef = component} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
                                         </View>
                                         <View>
-                                            <TouchableOpacity onPress={this.scrollToImage} style={{alignSelf: 'center'}}>
-                                                <Icon name='ios-arrow-dropup-circle' style={{fontSize: 75, color: Config.primaryColor}}/>
-                                            </TouchableOpacity>
                                             {txt}
                                             {this.renderLogo()}
                                         </View>
