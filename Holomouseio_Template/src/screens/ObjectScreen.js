@@ -19,7 +19,10 @@ import { store } from '../utils/flux'
 import { SelectionType } from '../actions'
 
 import {navigator} from '../../navigator'
+import * as strings from '../../strings'
+
 import * as actions from '../actions'
+import ClickPanelComponent from '../components/ClickPanelComponent';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -84,7 +87,7 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
-    generateComplButton() {
+    renderComplButton() {
         let compls = [];
         if(this.state.obj) {
             compls = Object.keys(this.state.obj).filter(elem => elem.indexOf('compl') == 6); //#startsWith made something strange :/
@@ -108,14 +111,15 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
-    generateFooter() {
-
+    renderFooter() {
         return (
-            <FooterTab>
-                <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.store.getState().objectVideo.videos})}>
-                    <Text>Remerciements</Text>
-                </Button>
-            </FooterTab>
+            <Footer>
+                <FooterTab>
+                    <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: this.store.getState().objectVideo.videos})}>
+                        <Text>Remerciements</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         );
     }
 
@@ -185,7 +189,7 @@ export default class ObjectScreen extends React.Component {
 
         let txt = <View>
             <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
-            {this.generateComplButton()}
+            {this.renderComplButton()}
         </View>
 
         if(store.getState().selectionType == SelectionType.CATALOGUE) {
@@ -208,31 +212,27 @@ export default class ObjectScreen extends React.Component {
         return (
             <Container>
                 {allModals}
-
-                        <Grid>
-                            <Col style={styles.rightPanel} onPress={this._onPrevious}>
-                                <Icon name="ios-arrow-back" style={styles.rightIcon}/>
-                                <Text style={styles.rightContent}>Objet précédent</Text>
-                            </Col>
-                            <Col>
-                                <Row size={1}>
-                                    <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
-                                </Row>
-                                <Row size={5} style={styles.mainPanel}>
-                                <FlingGestureHandler
-                                direction={Directions.RIGHT}
+                <Grid>
+                    <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" />
+                    <Col>
+                        <Row size={1}>
+                            <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
+                        </Row>
+                        <Row size={5} style={styles.mainPanel}>
+                            <FlingGestureHandler
+                            direction={Directions.RIGHT}
+                            onHandlerStateChange={({ nativeEvent }) => {
+                                if (nativeEvent.state === State.ACTIVE) {
+                                    this._onPrevious();
+                                }
+                            }}>
+                                <FlingGestureHandler 
+                                direction={Directions.LEFT}
                                 onHandlerStateChange={({ nativeEvent }) => {
                                     if (nativeEvent.state === State.ACTIVE) {
-                                        this._onPrevious();
+                                        this._onNext();
                                     }
                                 }}>
-                                    <FlingGestureHandler 
-                                    direction={Directions.LEFT}
-                                    onHandlerStateChange={({ nativeEvent }) => {
-                                        if (nativeEvent.state === State.ACTIVE) {
-                                            this._onNext();
-                                        }
-                                    }}>
                                     <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
                                         <View style={{height: this.screenHeight}}>
                                             { illustration }
@@ -248,19 +248,15 @@ export default class ObjectScreen extends React.Component {
                                             {this.renderLogo()}
                                         </View>
                                     </ScrollView>
-                                    </FlingGestureHandler>
                                 </FlingGestureHandler>
-                                </Row>
-                            </Col>
-                            <Col style={styles.rightPanel} onPress={this._onNext}>
-                                <Icon name="ios-arrow-forward" style={styles.rightIcon} />
-                                <Text style={styles.rightContent}>Objet suivant</Text>
-                            </Col>
-                        </Grid>
+                            </FlingGestureHandler>
+                        </Row>
+                    </Col>
+                    <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" />
+                </Grid>
+
                 <StyleProvider style={getTheme()}>
-                    <Footer style={styles.footer}>
-                        {this.generateFooter()}
-                    </Footer>
+                    {this.renderFooter()}
                 </StyleProvider>
             </Container>
         )
@@ -343,30 +339,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
 
     },
-    rightPanel: {
-        backgroundColor: '#ecececff',
-        width: 150,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    rightIcon: {
-        fontSize: 100,
-        color: Config.primaryColor
-    },
-    rightContent: {
-        color: Config.secondaryColor,
-        fontSize: 16
-    }, 
     title: {
         color: Config.primaryColor,
         fontSize: 28,
         margin: 12,
         textAlign: 'left'
     },
-    footer: {
-
-    }
 })
 
 const markdownContent = StyleSheet.create({

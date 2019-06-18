@@ -18,25 +18,23 @@ export default class DefaultHomeScreenComponent extends React.Component {
 
     render() {
         return (
-            // <Content>
-                <View>
-                    <Image style={styles.images} source={resources.topRightLogo} />
-                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
-                    <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.props.visite}>
-                            <IconCardComponent source={resources.leftCardIcon} title={strings.home.leftCardTitle} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.props.catalogue}>
-                            <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={this.props.remerciement}>
-                        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
-                            <Text style={{color: 'white', fontSize: 28}}>{strings.home.footerButton}</Text>
-                        </View>
+            <View>
+                <Image style={styles.images} source={resources.topRightLogo} />
+                <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
+                <View style= {{display: 'flex', flex: 1, flexDirection: "row", alignContent: 'center', justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={this.props.visite}>
+                        <IconCardComponent source={resources.leftCardIcon} title={strings.home.leftCardTitle} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.catalogue}>
+                        <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
                     </TouchableOpacity>
                 </View>
-            // </Content>
+                <TouchableOpacity onPress={this.props.remerciement}>
+                    <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', margin: 24, backgroundColor: Config.primaryColor, borderRadius: 8, padding: 8, shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.8, shadowRadius: 10}}>
+                        <Text style={{color: 'white', fontSize: 28}}>{strings.home.footerButton}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         )
     }
 

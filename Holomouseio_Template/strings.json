@@ -19,6 +19,10 @@
     "catalogue": {
         "catchphrase": "Choisissez un objet"
     },
+    "object": {
+        "previous_object": "Objet précédent",
+        "next_object": "Object suivant"
+    },
     "errors": {
         "firebase": {
             "download_yaml": "Téléchargement des fichiers yaml", 
