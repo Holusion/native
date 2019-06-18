@@ -5,7 +5,7 @@ import getTheme from '../../native-base-theme/components';
 
 import YAMLObjectComponent from '../components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, TouchableOpacity, findNodeHandle } from 'react-native';
 
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
@@ -175,13 +175,17 @@ export default class ObjectScreen extends React.Component {
     }
 
     scrollToImage = () => {
-        if(this.scroller) this.scroller.scrollTo({x: 0, y: 0});
+        if(this.scroller) {
+            this.imageRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
+                this.scroller.scrollTo({x: 0, y: y});
+            })
+        }
     }
 
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
-        let illustration = <Image source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
         if(Config.isStingray) {
             let videoUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.mp4`
             illustration = <VideoComponent uri={`${videoUri}`} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
