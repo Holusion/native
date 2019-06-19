@@ -1,5 +1,5 @@
 const checkReducers = (reducers) => {
-    return Object.entries(reducers).filter(e => typeof e[1] !== "function" || e[1].name !== e[0]);
+    return Object.entries(reducers).filter(e => typeof e[1] !== "function");
 }
 
 export const combineReducers = (reducers = {}) => {
