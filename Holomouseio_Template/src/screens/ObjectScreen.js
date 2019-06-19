@@ -186,6 +186,11 @@ export default class ObjectScreen extends React.Component {
         }
     }
 
+    handleScroll = (event) => {
+        const yOffset = event.nativeEvent.contentOffset.y;
+        this.setState(() => ({scrollPos: yOffset}))
+    }
+
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
@@ -241,10 +246,10 @@ export default class ObjectScreen extends React.Component {
                                         this._onNext();
                                     }
                                 }}>
-                                    <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller}>
+                                    <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
                                         <View>
                                             { illustration }
-                                            <ButtonInOutComponent ref={(component) => this.buttonRef = component} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
+                                            <ButtonInOutComponent ref={(component) => this.buttonRef = component} predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
                                         </View>
                                         <View>
                                             {txt}
@@ -279,7 +284,8 @@ export default class ObjectScreen extends React.Component {
         this.state = {
             modalVisible: -1,
             currentVideoIndex: store.getState().objectVideo.index,
-            obj: assetManager.yamlCache[store.getState().objectVideo.video]
+            obj: assetManager.yamlCache[store.getState().objectVideo.video],
+            scrollPos: 0
         }
 
         this.screenHeight = Dimensions.get('window').height * (4/5);
