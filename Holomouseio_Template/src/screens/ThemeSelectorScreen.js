@@ -3,7 +3,7 @@ import { Content } from 'native-base';
 import { Text, StyleSheet, View } from 'react-native';
 
 import { assetManager, network } from '@holusion/react-native-holusion'
-import ListItemComponent from "../components/ListItemComponent";
+import ListItemComponent from "@components/ListItemComponent";
 
 import * as Config from '../../Config'
 

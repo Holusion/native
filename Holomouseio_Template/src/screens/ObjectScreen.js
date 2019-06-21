@@ -2,7 +2,7 @@ import React from 'react'
 import { Footer, FooterTab, Text, Button, Container, Body, Grid, Col, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
-import YAMLObjectComponent from '../components/YAMLObjectComponent';
+import YAMLObjectComponent from '@components/YAMLObjectComponent';
 import { assetManager, network } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, findNodeHandle } from 'react-native';
 
@@ -21,8 +21,8 @@ import {navigator} from '../../navigator'
 import * as strings from '../../strings'
 
 import * as actions from '../actions'
-import ClickPanelComponent from '../components/ClickPanelComponent';
-import ButtonInOutComponent from '../components/ButtonInOutComponent';
+import ClickPanelComponent from '@components/ClickPanelComponent';
+import ButtonInOutComponent from '@components/ButtonInOutComponent';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to

@@ -11,7 +11,7 @@ import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import HandlePanelComponent from '../components/HandlePanelComponent';
+import HandlePanelComponent from '@components/HandlePanelComponent';
 
 export default class SetupScreen extends React.Component {
     

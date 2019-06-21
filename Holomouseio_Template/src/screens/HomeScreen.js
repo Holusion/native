@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Content, StyleProvider, Toast } from 'native-base';
-import DefaultHomeScreenComponent from "../components/screenComponents/DefaultHomeScreenComponent";
+import DefaultHomeScreenComponent from "@components/screenComponents/DefaultHomeScreenComponent";
 
 import {network, assetManager} from '@holusion/react-native-holusion';
 import * as Config from '../../Config'
