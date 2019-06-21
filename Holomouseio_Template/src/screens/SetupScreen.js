@@ -141,9 +141,9 @@ export default class SetupScreen extends React.Component {
         return (
             <Content>
                 <StyleProvider style={getTheme()}>
-                    <View style={{display: 'flex', flexDirection: "column", alignItems: 'center'}}>
+                    <View style={styles.container}>
                         <Text style={styles.catchphrase}>{strings.setup.title}</Text>
-                        <View style={{margin: 20, shadowColor: "#000", shadowOffset: {width: 1, height: 2}, shadowOpacity: 0.8, shadowRadius: 5}}>
+                        <View style={styles.panel}>
                             {display}
                         </View>
                         {continueButton}
@@ -197,6 +197,21 @@ const styles = StyleSheet.create({
         fontSize: 32,
         margin: 24
     },
+    container: {
+        display: 'flex', 
+        flexDirection: "column", 
+        alignItems: 'center'
+    },
+    panel: {
+        margin: 20, 
+        shadowColor: "#000", 
+        shadowOffset: {
+            width: 1, 
+            height: 2
+        }, 
+        shadowOpacity: 0.8, 
+        shadowRadius: 5
+    }
 })
 
 const {height: screenHeight} = Dimensions.get("window");

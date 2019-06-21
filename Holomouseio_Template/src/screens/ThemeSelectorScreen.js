@@ -37,7 +37,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
             allList.push(
                 <ListItemComponent key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
-                    <View style={{display: 'flex', flexDirection: 'column', justifyContent:'center'}}>
+                    <View style={styles.textContainer}>
                         <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
                     </View>
                 </ListItemComponent>
@@ -49,7 +49,7 @@ export default class ThemeSelectorScreen extends React.Component {
                 <View>
                     <Text  style={styles.catchPhrase}>{catchphrase}</Text>
                 </View>
-                <View style={{borderWidth: 1, borderColor: '#ccccccff', marginLeft: 24, marginRight: 24}}></View>
+                <View style={styles.separator}></View>
                 <View>
                     { allList }
                 </View>
@@ -118,11 +118,22 @@ const styles = StyleSheet.create({
     
     selectionText: {
         fontSize: 26,
-        paddingLeft: 16
+        paddingLeft: 16,
     },
 
     listItem: {
         height: 128,
-        padding: 16
+        padding: 16,
+    },
+    textContainer: {
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent:'center'
+    },
+    separator: {
+        borderWidth: 1, 
+        borderColor: '#ccccccff', 
+        marginLeft: 24, 
+        marginRight: 24
     }
 });

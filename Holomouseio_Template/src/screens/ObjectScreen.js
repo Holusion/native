@@ -94,16 +94,16 @@ export default class ObjectScreen extends React.Component {
         }
 
         return (
-            <View style={{display: 'flex', flexDirection: "column", justifyContent: 'center'}}>
-                <Button key={0} onPress={() => this.activeModal(0)} style={{backgroundColor: Config.primaryColor, margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Référence de l'objet</Text>
+            <View style={styles.buttonContainer}>
+                <Button key={0} onPress={() => this.activeModal(0)} style={styles.bottomButton}>
+                    <Text style={styles.bottomButtonText}>Référence de l'objet</Text>
                 </Button>
             {
                 compls.map((element, index) => {
                     const elemSplit = element.split(' ');
                     let number = parseInt(elemSplit[elemSplit.length - 1]);
-                    return <Button key={index} onPress={() => this.activeModal(number)} style={{backgroundColor: Config.primaryColor, margin: 4, marginBottom: 16, alignSelf: 'center', width: 225, justifyContent: 'center'}}>
-                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Info complémentaire {number}</Text>
+                    return <Button key={index} onPress={() => this.activeModal(number)} style={styles.bottomButton}>
+                        <Text style={styles.bottomButtonText}>Info complémentaire {number}</Text>
                     </Button>
                 })
             }
@@ -142,7 +142,7 @@ export default class ObjectScreen extends React.Component {
             for(let i = 0; i < logos.length; i++) {
                 row.push(
                     <Col key={i}>
-                        <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={{width:100, height:100, marginTop: 8, resizeMode: 'contain', alignSelf: "center"}}/>
+                        <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={styles.logo}/>
                     </Col>
                 )
                 if(i % 3 == 0 && i != 0) {
@@ -163,7 +163,7 @@ export default class ObjectScreen extends React.Component {
                 )
             }
 
-            return <Grid style={{margin: 8}}>
+            return <Grid style={styles.grid}>
                 {display}
             </Grid>
         }
@@ -194,10 +194,10 @@ export default class ObjectScreen extends React.Component {
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
-        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={{width:400, height:400, marginTop: 8, marginBottom: 32, resizeMode: 'contain', alignSelf: "center"}}/>
+        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={styles.image}/>
         if(Config.isStingray) {
             let videoUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.mp4`
-            illustration = <VideoComponent uri={`${videoUri}`} style={{width:400, height:400, marginTop: 8, alignSelf: "center"}}/>
+            illustration = <VideoComponent uri={`${videoUri}`} style={styles.video}/>
         }
 
         let txt = <View>
@@ -246,7 +246,7 @@ export default class ObjectScreen extends React.Component {
                                         this._onNext();
                                     }
                                 }}>
-                                    <ScrollView style= {{marginTop: 16}} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
+                                    <ScrollView style= {styles.scrollContainer} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
                                         <View>
                                             { illustration }
                                             <ButtonInOutComponent ref={(component) => this.buttonRef = component} predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
@@ -354,6 +354,50 @@ const styles = StyleSheet.create({
         margin: 12,
         textAlign: 'left'
     },
+    bottomButton: {
+        backgroundColor: Config.primaryColor, 
+        margin: 4, 
+        marginBottom: 16, 
+        alignSelf: 'center', 
+        width: 225, 
+        justifyContent: 'center'
+    },
+    bottomButtonText: {
+        fontSize: 18, 
+        fontWeight: 'bold'
+    },
+    scrollContainer: {
+        marginTop: 16
+    },
+    image: {
+        width:400, 
+        height:400, 
+        marginTop: 8, 
+        marginBottom: 32, 
+        resizeMode: 'contain', 
+        alignSelf: "center"
+    },
+    video: {
+        width:400, 
+        height:400, 
+        marginTop: 8, 
+        alignSelf: "center"
+    },
+    logo: {
+        width:100, 
+        height:100, 
+        marginTop: 8, 
+        resizeMode: 'contain', 
+        alignSelf: "center"
+    },
+    buttonContainer: {
+        display: 'flex', 
+        flexDirection: "column", 
+        justifyContent: 'center'
+    },
+    grid: {
+        margin: 8
+    }
 })
 
 const markdownContent = StyleSheet.create({

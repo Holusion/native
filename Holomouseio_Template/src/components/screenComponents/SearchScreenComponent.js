@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Content } from 'native-base';
-import { View, Text, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
 import * as Config from '../../../Config'
 
 /**
@@ -12,9 +12,9 @@ export default class SearchScreenComponent extends React.Component {
     render() {
         return (
             <Content>
-                <View style={{flex: 1, justifyContent: 'center', height: screenHeight}}>
+                <View style={styles.container}>
                     <ActivityIndicator size="large" />
-                    <Text style={{textAlign: 'center', color: Config.primaryColor, fontSize: 32}}>{this.props.content}</Text>
+                    <Text style={styles.text}>{this.props.content}</Text>
                 </View>
             </Content>
         )
@@ -22,3 +22,16 @@ export default class SearchScreenComponent extends React.Component {
 }
 
 const {height: screenHeight} = Dimensions.get("window");
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1, 
+        justifyContent: 'center', 
+        height: screenHeight
+    },
+    text: {
+        textAlign: 'center', 
+        color: Config.primaryColor, 
+        fontSize: 32
+    }
+})

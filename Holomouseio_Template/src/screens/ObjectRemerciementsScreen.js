@@ -89,7 +89,7 @@ export default class ObjectRemerciementsScreen extends React.Component {
             <Container>
                 <Content>
                     <Text style={styles.catchphrase}>Remerciements</Text>
-                    <ScrollView style={{marginLeft: 32, marginRight: 32, marginBottom: 32}}>
+                    <ScrollView style={styles.scrollContainer}>
                         {this.renderText()}
                         {this.renderLogo()}
                     </ScrollView>
@@ -124,6 +124,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 50,
         marginBottom: 50
+    },
+    scrollContainer: {
+        marginLeft: 32, 
+        marginRight: 32, 
+        marginBottom: 32
     }
 });
 
