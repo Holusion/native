@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, StyleProvider, Button } from 'native-base';
+import { StyleProvider, Button, Container } from 'native-base';
 
 import { store } from "../utils/flux";
 import * as actions from "../actions";
@@ -10,11 +10,12 @@ import * as Config from '../../Config'
 import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, Alert } from 'react-native';
 import HandlePanelComponent from '@components/HandlePanelComponent';
+import IconButton from '../components/IconButton';
 
 export default class SetupScreen extends React.Component {
-    
+
     componentDidMount() {
         store.dispatch(actions.changeState(actions.AppState.DOWNLOAD_FIREBASE));
     }
@@ -66,34 +67,41 @@ export default class SetupScreen extends React.Component {
         if(store.getState().appState == actions.AppState.LOAD_YAML) store.dispatch(actions.changeState(actions.AppState.SEARCH_PRODUCT));
     }
     
+    connectToSpecificProduct(product) {
+        let url = product.addresses[0];
+        this.setState(() => ({url: url}));
+        store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${product.name}`))
+    }
+
     connectToProduct() {
+        let waiting = true;
         store.dispatch(actions.setInfoTask("search_product", strings.errors.search_product.search))
         store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
 
         const launchOfflineMode = setTimeout(() => {
+            waiting = false;
             store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.timeout));
             store.dispatch(actions.changeState(actions.AppState.READY))
         }, 5000);
 
-        try {
-            this.closeConnection = network.connect((service) => {
+        while(waiting) {
+            if(this.state.products.length > 0) {
+                waiting = false;
                 clearTimeout(launchOfflineMode);
-                let url = service.addresses[0];
+                let product = this.state.products[0];
+                let url = product.addresses[0];
                 this.props.navigation.setParams({color: 'green'})
                 if(store.getState().appState === actions.AppState.WAIT_FOR_PRODUCT) {
                     store.dispatch(actions.changeState(actions.AppState.PRODUCT_FOUND))
                     this.setState(() => ({url: url}));
-                    store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${service.name}`))
+                    store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${product.name}`))
                 }
-            }, () => {
+            } else {
                 store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected));
                 this.setState(() => ({url: null}));
                 this.props.navigation.setParams({color: 'red'})
-            })
-        } catch(err) {
-            // mDNS error code : https://opensource.apple.com/source/mDNSResponder/mDNSResponder-98/mDNSShared/dns_sd.h.auto.html
-            // CF URL Connection code : https://gist.github.com/mnkd/fa5911aa5808eda24298bf41b0436880
-            store.dispatch(actions.setErrorTask("search_product", err.message));
+    
+            }
         }
     }
 
@@ -123,6 +131,14 @@ export default class SetupScreen extends React.Component {
         }
     }
 
+    listAllProduct() {
+        this.closeConnection = network.connect((service) => {
+            this.setState(() => ({products: [...this.state.products, service]}))
+        }, () => {
+            // this.setState(() => ({url: null}));
+        })
+    }
+
     render() {
         let display = []
         
@@ -139,17 +155,21 @@ export default class SetupScreen extends React.Component {
         }
 
         return (
-            <Content>
+            <Container>
                 <StyleProvider style={getTheme()}>
                     <View style={styles.container}>
                         <Text style={styles.catchphrase}>{strings.setup.title}</Text>
-                        <View style={styles.panel}>
+                        <ScrollView style={styles.panel}>
                             {display}
-                        </View>
-                        {continueButton}
+                            {continueButton}
+                        </ScrollView>
+                        <IconButton type="MaterialIcons" style={styles.fab} name="cast" onPress={() => {
+                            let buttons = this.state.products.map(e => ({text: e.name, onPress: () => this.connectToSpecificProduct(e)}))
+                            Alert.alert("Liste des produits trouvé sur le réseau", "Choisissez un produit:", buttons)
+                        }} />
                     </View>
                 </StyleProvider>
-            </Content>
+            </Container>
         )
     }
 
@@ -159,7 +179,8 @@ export default class SetupScreen extends React.Component {
         this.state = {
             url: null,
             screenState: actions.AppState.INIT,
-            tasks: new Map()
+            tasks: new Map(),
+            products: []
         }
         
         this.unsubscribe = store.subscribe(() => {
@@ -169,19 +190,17 @@ export default class SetupScreen extends React.Component {
         this.props.navigation.addListener("didBlur", payload => {
             this.unsubscribe();
         })
+
+        this.listAllProduct();
     }
 }
 
 const styles = StyleSheet.create({
-    main: {
-        flex: 1,
-        height: screenHeight,
-        justifyContent: "center"
-    },
     button: {
         backgroundColor: Config.primaryColor, 
         margin: 4, 
-        marginBottom: 16, 
+        marginBottom: 16,
+        marginTop: 16, 
         alignSelf: 'center', 
         width: 225, 
         justifyContent: 'center'
@@ -198,19 +217,27 @@ const styles = StyleSheet.create({
         margin: 24
     },
     container: {
+        flex: 1,
         display: 'flex', 
         flexDirection: "column", 
         alignItems: 'center'
     },
     panel: {
-        margin: 20, 
+        margin: 20,
+        paddingLeft: 100,
+        paddingRight: 100,
         shadowColor: "#000", 
         shadowOffset: {
             width: 1, 
             height: 2
         }, 
         shadowOpacity: 0.8, 
-        shadowRadius: 5
+        shadowRadius: 5,
+    },
+    fab: {
+        position: 'absolute',
+        right: 32,
+        bottom: 32,
     }
 })
 

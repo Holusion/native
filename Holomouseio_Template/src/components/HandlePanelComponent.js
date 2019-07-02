@@ -44,7 +44,7 @@ export default class HandlePanelComponent extends React.Component {
 
 const styles = StyleSheet.create({
     main: {
-        width: "75%",
+        width: "100%",
         marginTop: 8
     },
     title: {
