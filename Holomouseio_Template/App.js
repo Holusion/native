@@ -1,4 +1,4 @@
-import {createStackNavigator} from 'react-navigation'
+import {createStackNavigator, createAppContainer} from 'react-navigation'
 import { Root, Icon } from 'native-base';
 import React from 'react';
 
@@ -36,8 +36,12 @@ for(let nav in navigator) {
 }
 
 const AppNavigator = createStackNavigator(stackNavigator);
+const AppContainer = createAppContainer(AppNavigator);
 
-export default () => 
-  <Root>
-    <AppNavigator />
-  </Root>
+export default class App extends React.Component {
+  render() {
+    return <Root>
+      <AppContainer />
+    </Root>
+  }
+}
