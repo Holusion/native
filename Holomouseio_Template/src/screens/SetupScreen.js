@@ -74,34 +74,23 @@ export default class SetupScreen extends React.Component {
     }
 
     connectToProduct() {
-        let waiting = true;
         store.dispatch(actions.setInfoTask("search_product", strings.errors.search_product.search))
         store.dispatch(actions.changeState(actions.AppState.WAIT_FOR_PRODUCT));
 
-        const launchOfflineMode = setTimeout(() => {
-            waiting = false;
-            store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.timeout));
-            store.dispatch(actions.changeState(actions.AppState.READY))
-        }, 5000);
-
-        while(waiting) {
-            if(this.state.products.length > 0) {
-                waiting = false;
-                clearTimeout(launchOfflineMode);
-                let product = this.state.products[0];
-                let url = product.addresses[0];
-                this.props.navigation.setParams({color: 'green'})
-                if(store.getState().appState === actions.AppState.WAIT_FOR_PRODUCT) {
-                    store.dispatch(actions.changeState(actions.AppState.PRODUCT_FOUND))
-                    this.setState(() => ({url: url}));
-                    store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${product.name}`))
-                }
-            } else {
-                store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected));
-                this.setState(() => ({url: null}));
-                this.props.navigation.setParams({color: 'red'})
-    
+        if(this.state.products.length > 0) {
+            let product = this.state.products[0];
+            let url = product.addresses[0];
+            this.props.navigation.setParams({color: 'green'})
+            if(store.getState().appState === actions.AppState.WAIT_FOR_PRODUCT) {
+                store.dispatch(actions.changeState(actions.AppState.PRODUCT_FOUND))
+                this.setState(() => ({url: url}));
+                store.dispatch(actions.setSuccessTask("search_product", `Connecté sur le produit : ${product.name}`))
             }
+        } else {
+            store.dispatch(actions.changeState(actions.AppState.READY));
+            store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected, this.connectToProduct.bind(this)));
+            this.setState(() => ({url: null}));
+            this.props.navigation.setParams({color: 'red'});
         }
     }
 
@@ -132,11 +121,18 @@ export default class SetupScreen extends React.Component {
     }
 
     listAllProduct() {
-        this.closeConnection = network.connect((service) => {
-            this.setState(() => ({products: [...this.state.products, service]}))
-        }, () => {
-            // this.setState(() => ({url: null}));
-        })
+        try {
+            this.closeConnection = network.connect((service) => {
+                this.setState(() => ({products: [...this.state.products, service]}))
+            }, (name) => {
+                let products = this.state.products.filter(e => e.name !== name);
+                this.setState(() => ({url: null, products: products}));
+                this.props.navigation.setParams({color: 'red'});
+                store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.disconnected, this.connectToProduct.bind(this)));
+            })
+        } catch(err) {
+            store.dispatch(actions.setWarningTask("search_product", strings.errors.search_product.timeout));
+        }
     }
 
     render() {
@@ -165,7 +161,7 @@ export default class SetupScreen extends React.Component {
                         </ScrollView>
                         <IconButton type="MaterialIcons" style={styles.fab} name="cast" onPress={() => {
                             let buttons = this.state.products.map(e => ({text: e.name, onPress: () => this.connectToSpecificProduct(e)}))
-                            Alert.alert("Liste des produits trouvé sur le réseau", "Choisissez un produit:", buttons)
+                            Alert.alert("Liste des produits trouvé sur le réseau", "Choisissez un produit:", [...buttons, {text: "Cancel"}])
                         }} />
                     </View>
                 </StyleProvider>
