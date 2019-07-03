@@ -303,6 +303,8 @@ export default class ObjectScreen extends React.Component {
                 this.launchVideo(store.getState().objectVideo.video);
                 this.scrollToImage();
             })
+            this.launchVideo(store.getState().objectVideo.video);
+            this.scrollToImage();
         })
 
 
