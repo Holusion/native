@@ -4,15 +4,13 @@ import { StyleProvider, Button, Container } from 'native-base';
 import { store } from "../utils/flux";
 import * as actions from "../actions";
 
-import {network, assetManager, FirebaseController } from '@holusion/react-native-holusion';
+import {network, assetManager, FirebaseController, HandlePanelComponent, IconButton } from '@holusion/react-native-holusion';
 import * as Config from '../../Config'
 
 import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
 import { View, Text, StyleSheet, Dimensions, ScrollView, Alert } from 'react-native';
-import HandlePanelComponent from '@components/HandlePanelComponent';
-import IconButton from '../components/IconButton';
 
 export default class SetupScreen extends React.Component {
 
@@ -140,7 +138,7 @@ export default class SetupScreen extends React.Component {
         
         let cpt = 0;
         for(let [key, value] of this.state.tasks) {
-            display.push(<HandlePanelComponent key={cpt++} taskName={key} task={value}/>)
+            display.push(<HandlePanelComponent key={cpt++} taskName={key} task={value} warnTitle={strings.warn} dangerTitle={strings.danger} infoTitle={strings.info} successTitle={strings.success}/>)
         }
 
         let continueButton = null;
@@ -152,14 +150,14 @@ export default class SetupScreen extends React.Component {
 
         return (
             <Container>
-                <StyleProvider style={getTheme()}>
+                <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={styles.container}>
                         <Text style={styles.catchphrase}>{strings.setup.title}</Text>
                         <ScrollView style={styles.panel}>
                             {display}
                             {continueButton}
                         </ScrollView>
-                        <IconButton type="MaterialIcons" style={styles.fab} name="cast" onPress={() => {
+                        <IconButton type="MaterialIcons" name="cast" onPress={() => {
                             let buttons = this.state.products.map(e => ({text: e.name, onPress: () => this.connectToSpecificProduct(e)}))
                             Alert.alert("Liste des produits trouvé sur le réseau", "Choisissez un produit:", [...buttons, {text: "Cancel"}])
                         }} />
@@ -236,5 +234,16 @@ const styles = StyleSheet.create({
         bottom: 32,
     }
 })
+
+customTheme = {
+    'holusion.IconButton': {
+        button: {
+            position: 'absolute',
+            right: 32,
+            bottom: 32,
+            backgroundColor: Config.primaryColor
+        }
+    }
+}
 
 const {height: screenHeight} = Dimensions.get("window");

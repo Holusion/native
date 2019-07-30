@@ -10,9 +10,7 @@ import SetupScreen from "./src/screens/SetupScreen";
 
 import * as Config from "./Config";
 
-import {View} from 'react-native';
 import {Icon} from 'native-base';
-import IconButton from './src/components/IconButton';
 
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const titleScreen = (mainTitle) => Config.projectName + " - " + mainTitle;

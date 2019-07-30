@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IconCardComponent from '../../components/IconCardComponent'
+import { IconCardComponent } from '@holusion/react-native-holusion'
 import { StyleSheet, View, TouchableOpacity, Image, Text, Animated } from 'react-native';
 import * as Config from '../../../Config'
 

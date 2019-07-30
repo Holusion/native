@@ -2,8 +2,7 @@ import React from 'react'
 import { Footer, FooterTab, Text, Button, Container, Body, Grid, Col, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
-import YAMLObjectComponent from '@components/YAMLObjectComponent';
-import { assetManager, network } from '@holusion/react-native-holusion'
+import { assetManager, network, YAMLObjectComponent, ButtonInOutComponent, ClickPanelComponent } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, findNodeHandle } from 'react-native';
 
 import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
@@ -21,8 +20,6 @@ import {navigator} from '../../navigator'
 import * as strings from '../../strings'
 
 import * as actions from '../actions'
-import ClickPanelComponent from '@components/ClickPanelComponent';
-import ButtonInOutComponent from '@components/ButtonInOutComponent';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -225,43 +222,45 @@ export default class ObjectScreen extends React.Component {
         return (
             <Container>
                 {allModals}
-                <Grid>
-                    <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" />
-                    <Col>
-                        <Row size={1}>
-                            <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
-                        </Row>
-                        <Row size={5} style={styles.mainPanel}>
-                            <FlingGestureHandler
-                            direction={Directions.RIGHT}
-                            onHandlerStateChange={({ nativeEvent }) => {
-                                if (nativeEvent.state === State.ACTIVE) {
-                                    this._onPrevious();
-                                }
-                            }}>
-                                <FlingGestureHandler 
-                                direction={Directions.LEFT}
+                <StyleProvider style={Object.assign(getTheme(), customTheme)}>
+                    <Grid>
+                        <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" />
+                        <Col>
+                            <Row size={1}>
+                                <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
+                            </Row>
+                            <Row size={5} style={styles.mainPanel}>
+                                <FlingGestureHandler
+                                direction={Directions.RIGHT}
                                 onHandlerStateChange={({ nativeEvent }) => {
                                     if (nativeEvent.state === State.ACTIVE) {
-                                        this._onNext();
+                                        this._onPrevious();
                                     }
                                 }}>
-                                    <ScrollView style= {styles.scrollContainer} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
-                                        <View>
-                                            { illustration }
-                                            <ButtonInOutComponent ref={(component) => this.buttonRef = component} predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
-                                        </View>
-                                        <View>
-                                            {txt}
-                                            {this.renderLogo()}
-                                        </View>
-                                    </ScrollView>
+                                    <FlingGestureHandler 
+                                    direction={Directions.LEFT}
+                                    onHandlerStateChange={({ nativeEvent }) => {
+                                        if (nativeEvent.state === State.ACTIVE) {
+                                            this._onNext();
+                                        }
+                                    }}>
+                                        <ScrollView style= {styles.scrollContainer} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
+                                            <View>
+                                                { illustration }
+                                                <ButtonInOutComponent ref={(component) => this.buttonRef = component} predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
+                                            </View>
+                                            <View>
+                                                {txt}
+                                                {this.renderLogo()}
+                                            </View>
+                                        </ScrollView>
+                                    </FlingGestureHandler>
                                 </FlingGestureHandler>
-                            </FlingGestureHandler>
-                        </Row>
-                    </Col>
-                    <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" />
-                </Grid>
+                            </Row>
+                        </Col>
+                        <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" />
+                    </Grid>
+                </StyleProvider>
 
                 <StyleProvider style={getTheme()}>
                     {this.renderFooter()}
@@ -357,7 +356,8 @@ const styles = StyleSheet.create({
         textAlign: 'left'
     },
     bottomButton: {
-        backgroundColor: Config.primaryColor, 
+        backgroundColor: Config.primaryColor,
+        color: "#FFFFFF",
         margin: 4, 
         marginBottom: 16, 
         alignSelf: 'center', 
@@ -428,3 +428,19 @@ const markdownText = StyleSheet.create({
         fontSize: 24
     }
 })
+
+const customTheme = {
+    'holusion.ButtonInOutComponent': {
+        icon: {
+            color: Config.primaryColor
+        }
+    },
+    'holusion.ClickPanelComponent': {
+        icon: {
+            color: Config.primaryColor
+        },
+        content: {
+            color: Config.secondaryColor
+        }
+    }
+}
