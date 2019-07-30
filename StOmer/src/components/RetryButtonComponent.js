@@ -5,22 +5,12 @@ import {StyleSheet, Text} from 'react-native'
 
 import * as Config from '../../Config'
 
-export default class RetryButtonComponent extends React.Component {
-
-    render() {
-        let button = <Button style={styles[`button_${this.props.type}`]} onPress={this.props.onPress}>
-                        <Text style={styles[`textButton_${this.props.type}`]}>Réessayer</Text>
-                    </Button>
-
-        return button
-    }
-
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            process: false
-        }
-    }
+export default function RetryButtonComponent(props) {
+    return (
+        <Button style={styles[`button_${props.type}`]} onPress={props.onPress}>
+            <Text style={styles[`textButton_${props.type}`]}>Réessayer</Text>
+        </Button>
+    )
 }
 
 const styles = StyleSheet.create({

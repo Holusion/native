@@ -1,25 +1,19 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 
-export default class ListItemComponent extends React.Component {
-    renderChildren() {
-        const childrenArray = React.Children.map(
-            this.props.children,
-            child => child
-        );
+export default function ListItemComponent(props) {
+    const childrenArray = React.Children.map(
+        props.children,
+        child => child
+    );
 
-        return childrenArray;
-    }
-
-    render() {
-        return (
-            <TouchableOpacity onPress={this.props.onPress}>
-                <View style={[this.props.style, styles.container]}>
-                    {this.renderChildren()}
-                </View>
-            </TouchableOpacity>
-        );
-    }
+    return (
+        <TouchableOpacity onPress={props.onPress}>
+            <View style={[props.style, styles.container]}>
+                {childrenArray}
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 const styles = StyleSheet.create({

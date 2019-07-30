@@ -5,41 +5,37 @@ import RetryButtonComponent from './RetryButtonComponent';
 import * as Config from '../../Config'
 import * as strings from '../../strings.json'
 
-export default class HandlePanelComponent extends React.Component {
-
-    render() {
-        let retryButton = null;
-        if((this.props.task.type == "warn" || this.props.task.type == "danger") && this.props.task.retry) {
-            retryButton = <RetryButtonComponent type={this.props.task.type} onPress={this.props.task.retry.bind(this)}/>
-        } else if(this.props.task.type == "info") {
-            retryButton = <ActivityIndicator />
-        }
-
-        let title = '';
-        switch(this.props.task.type) {
-            case "warn": title = strings.warn; break;
-            case "danger": title = strings.danger; break;
-            case "info": title = strings.info; break;
-            case "success": title = strings.success; break;
-        }
-        
-        return (
-        <View style={styles.main}>
-            <View style={styles[`title_${this.props.task.type}`]}>
-                <Text style={styles.title}>{title}</Text>
+export default function HandlePanelComponent(props) {
+    let retryButton = null;
+    if((props.task.type == "warn" || props.task.type == "danger") && props.task.retry) {
+        retryButton = <RetryButtonComponent type={props.task.type} onPress={props.task.retry.bind(this)}/>
+    } else if(props.task.type == "info") {
+        retryButton = <ActivityIndicator />
+    }
+    
+    let title = '';
+    switch(props.task.type) {
+        case "warn": title = strings.warn; break;
+        case "danger": title = strings.danger; break;
+        case "info": title = strings.info; break;
+        case "success": title = strings.success; break;
+    }
+    
+    return (
+    <View style={styles.main}>
+        <View style={styles[`title_${props.task.type}`]}>
+            <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles[props.task.type]}>
+            <View style={styles.messageContainer}>
+                <Text style={styles[`text_${props.task.type}`]}>{props.taskName + " : " + props.task.message}</Text>
             </View>
-            <View style={styles[this.props.task.type]}>
-                <View style={styles.messageContainer}>
-                    <Text style={styles[`text_${this.props.task.type}`]}>{this.props.taskName + " : " + this.props.task.message}</Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    {retryButton}
-                </View>
+            <View style={styles.buttonContainer}>
+                {retryButton}
             </View>
         </View>
-        )
-        
-    }
+    </View>
+    )
 }
 
 const styles = StyleSheet.create({

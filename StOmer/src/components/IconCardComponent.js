@@ -4,18 +4,16 @@ import { connectStyle } from 'native-base'
 
 import Markdown from 'react-native-markdown-renderer'
 
-export class IconCardComponent extends React.Component {
-  render() {
-    const styles = this.props.style;
-    return (
-        <View style={styles.container}>
-            <Image style={styles.icon} source={this.props.source}/>
-            <View style={styles.titleContainer}>
-                <Markdown style={markdownTitle}>{this.props.title}</Markdown>
-            </View>
-        </View>
-    );
-  }
+function IconCardComponent(props) {
+  const styles = props.style;
+  return (
+      <View style={styles.container}>
+          <Image style={styles.icon} source={props.source}/>
+          <View style={styles.titleContainer}>
+              <Markdown style={markdownTitle}>{props.title}</Markdown>
+          </View>
+      </View>
+  );
 }
 
 const styles = {

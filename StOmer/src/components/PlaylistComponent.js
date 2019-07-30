@@ -4,56 +4,54 @@ import { Grid, Col, Row, StyleProvider, connectStyle } from 'native-base';
 
 import IconCardComponent from './IconCardComponent';
 
-export class PlaylistComponent extends React.Component {
-    renderContent() {
-        let rows = [];
-        let items = [];
+function renderContent(props) {
+    let rows = [];
+    let items = [];
 
-        let contents = this.props.playlist;
+    let contents = props.playlist;
 
-        for(let i = 0; i < contents.length; i++) {
-            let current = contents[i];
-            items.push(
-                <TouchableOpacity key={i} onPress={() => this.props.actionItem(i)}>
-                    <IconCardComponent source={{uri: current.imageUri, scale: 1}} title={current.title}/>
-                </TouchableOpacity>
-            )
-            if(items.length % 3 == 0) {
-                rows.push(
-                    <Row key={i}>
-                        {items}
-                    </Row>
-                )
-                items = []
-            }
-        }
-
-        if(items.length > 0) {
+    for(let i = 0; i < contents.length; i++) {
+        let current = contents[i];
+        items.push(
+            <TouchableOpacity key={i} onPress={() => props.actionItem(i)}>
+                <IconCardComponent source={{uri: current.imageUri, scale: 1}} title={current.title}/>
+            </TouchableOpacity>
+        )
+        if(items.length % 3 == 0) {
             rows.push(
-                <Row key={contents.length + 1}>
+                <Row key={i}>
                     {items}
                 </Row>
             )
+            items = []
         }
-
-        return rows;
     }
 
-    render() {
-        const styles = this.props.style;
-
-        return (
-            <ScrollView>
-                <Grid>
-                    <StyleProvider style={customTheme}>
-                        <Col style={styles.col}>
-                            {this.renderContent()}
-                        </Col>
-                    </StyleProvider>
-                </Grid>
-            </ScrollView>
+    if(items.length > 0) {
+        rows.push(
+            <Row key={contents.length + 1}>
+                {items}
+            </Row>
         )
     }
+
+    return rows;
+}
+
+function PlaylistComponent(props) {
+    const styles = props.style;
+
+    return (
+        <ScrollView>
+            <Grid>
+                <StyleProvider style={customTheme}>
+                    <Col style={styles.col}>
+                        {renderContent(props)}
+                    </Col>
+                </StyleProvider>
+            </Grid>
+        </ScrollView>
+    )
 }
 
 const styles = {

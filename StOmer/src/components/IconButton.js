@@ -5,18 +5,12 @@ import { Icon } from 'native-base';
 
 import * as Config from '../../Config'
 
-export default class IconButton extends React.Component {
-    constructor(context, props) {
-        super(context, props)
-    }
-
-    render() {
-        return (
-            <TouchableOpacity style={Object.assign({}, styles.button, this.props.style)} onPress={this.props.onPress}>
-                <Icon type={this.props.type} style={styles.icon} name={this.props.name} />
-            </TouchableOpacity>
-        )
-    }
+export default function IconButton(props) {
+    return (
+        <TouchableOpacity style={Object.assign({}, styles.button, props.style)} onPress={props.onPress}>
+            <Icon type={props.type} style={styles.icon} name={props.name} />
+        </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({

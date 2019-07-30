@@ -5,14 +5,11 @@ import Icon from "react-native-vector-icons/Ionicons"
 
 import * as Config from '../../Config'
 
-export default class ClickPanelComponent extends React.Component {
-
-    render() {
-        return <Col style={styles.panel} onPress={this.props.onPress}>
-            <Icon name={this.props.icon} style={styles.icon}/>
-            <Text style={styles.content}>{this.props.content}</Text>
-        </Col>
-    }
+export default function ClickPanelComponent(props) {
+    return <Col style={styles.panel} onPress={props.onPress}>
+        <Icon name={props.icon} style={styles.icon}/>
+        <Text style={styles.content}>{props.content}</Text>
+    </Col>
 }
 
 const styles = StyleSheet.create({
