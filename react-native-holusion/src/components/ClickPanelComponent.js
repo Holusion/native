@@ -1,18 +1,20 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native';
-import { Col } from "native-base";
+import { Text } from 'react-native';
+import { Col, connectStyle } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons"
 
 import * as Config from '../../Config'
 
-export default function ClickPanelComponent(props) {
+function ClickPanelComponent(props) {
+    const styles = props.style;
+
     return <Col style={styles.panel} onPress={props.onPress}>
         <Icon name={props.icon} style={styles.icon}/>
         <Text style={styles.content}>{props.content}</Text>
     </Col>
 }
 
-const styles = StyleSheet.create({
+const styles = {
     panel: {
         backgroundColor: '#ecececff',
         width: 150,
@@ -28,4 +30,6 @@ const styles = StyleSheet.create({
         color: Config.secondaryColor,
         fontSize: 16
     }, 
-})
+}
+
+export default connectStyle('holusion.ClickPanelComponent', styles)(ClickPanelComponent)

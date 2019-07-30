@@ -1,14 +1,18 @@
 import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {connectStyle, StyleProvider} from 'native-base'
 
 import * as Config from '../../Config'
 
-export default class ButtonInOutComponent extends React.Component {
+class ButtonInOutComponent extends React.Component {
     render() {
-        return <TouchableOpacity ref="innerView" onPress={this.onPress} style={styles.container}>
+        const styles = this.props.style;
+        return ( 
+        <TouchableOpacity ref="innerView" onPress={this.onPress} style={styles.container}>
             <Icon name={this.props.predicate ? this.props.iconIn : this.props.iconOut} style={styles.icon} />
         </TouchableOpacity>
+        )
     }
 
     onPress() {
@@ -21,7 +25,7 @@ export default class ButtonInOutComponent extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = {
     container: {
         alignSelf: 'center'
     },
@@ -29,4 +33,6 @@ const styles = StyleSheet.create({
         fontSize: 75, 
         color: Config.primaryColor
     }
-})
+}
+
+export default connectStyle('holusion.ButtonInOutComponent', styles)(ButtonInOutComponent)

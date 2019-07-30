@@ -1,19 +1,21 @@
 import React from 'react';
 
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import { Icon } from 'native-base';
+import {TouchableOpacity} from 'react-native';
+import { Icon, connectStyle } from 'native-base';
 
 import * as Config from '../../Config'
 
-export default function IconButton(props) {
+function IconButton(props) {
+    const styles = props.style;
+    
     return (
-        <TouchableOpacity style={Object.assign({}, styles.button, props.style)} onPress={props.onPress}>
+        <TouchableOpacity style={styles.button} onPress={props.onPress}>
             <Icon type={props.type} style={styles.icon} name={props.name} />
         </TouchableOpacity>
     )
 }
 
-const styles = StyleSheet.create({
+const styles = {
     button: {
         width: 75,
         height: 75,
@@ -36,4 +38,6 @@ const styles = StyleSheet.create({
         fontSize: 75 / 2,
         color: "white"
     }
-})
+}
+
+export default connectStyle('holusion.IconButton', styles)(IconButton);

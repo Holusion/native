@@ -1,5 +1,5 @@
-export const primaryColor = "#ae2573ff";
-export const secondaryColor = "#3c0c27ff";
+export const primaryColor = "#00A5E8";
+export const secondaryColor = "#2FAFE6";
 
 export const dangerBackground = "#FFCCCC";
 export const dangerText = "#FF1133";
