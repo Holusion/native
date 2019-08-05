@@ -167,8 +167,8 @@ export default class ObjectScreen extends React.Component {
     }
 
     scrollToText = () => {
-        if(this.buttonRef) {
-            this.buttonRef.refs.innerView.measureLayout(findNodeHandle(this.scroller), (x, y) => {
+        if(this.txtRef) {
+            this.txtRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
                 this.scroller.scrollTo({x: 0, y: y})
             })
         }
@@ -179,7 +179,6 @@ export default class ObjectScreen extends React.Component {
             this.imageRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
                 this.scroller.scrollTo({x: 0, y: y});
             })
-            this.buttonRef.setState(() => ({in: true}))
         }
     }
 
@@ -247,9 +246,9 @@ export default class ObjectScreen extends React.Component {
                                         <ScrollView style= {styles.scrollContainer} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
                                             <View>
                                                 { illustration }
-                                                <ButtonInOutComponent ref={(component) => this.buttonRef = component} predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
+                                                <ButtonInOutComponent predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
                                             </View>
-                                            <View>
+                                            <View ref={component => this.txtRef = component}>
                                                 {txt}
                                                 {this.renderLogo()}
                                             </View>
