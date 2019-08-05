@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Content, StyleProvider, Toast } from 'native-base';
+import { Container, StyleProvider, Toast } from 'native-base';
 import DefaultHomeScreenComponent from "@components/screenComponents/DefaultHomeScreenComponent";
 
 import {network, assetManager} from '@holusion/react-native-holusion';
@@ -18,11 +18,11 @@ export default class HomeScreen extends React.Component {
     render() {
         const url = this.props.navigation.getParam("url");
         return (
-            <Content enableResetScrollToCoords={false} disableKBDismissScroll={true}>
+            <Container style={{flex: 1}}>
                 <StyleProvider style={customTheme}>
                     <DefaultHomeScreenComponent url={url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />     
                 </StyleProvider>
-            </Content>
+            </Container>
         )
     }
 

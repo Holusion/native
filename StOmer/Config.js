@@ -1,5 +1,5 @@
-export const primaryColor = "#ae2573ff";
-export const secondaryColor = "#3c0c27ff";
+export const primaryColor = "#00517d";
+export const secondaryColor = "#103040";
 export const projectName = "E_Thesaurus";
 export const isStingray = false;
 

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { IconCardComponent } from '@holusion/react-native-holusion'
-import { StyleSheet, View, TouchableOpacity, Image, Text, Animated } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Animated } from 'react-native';
 import * as Config from '../../../Config'
 
 import resources from '../../../resources'
 import * as strings from '../../../strings'
+import { Container } from 'native-base';
 
 /**
  * Default view, when all file download or product found
@@ -17,9 +18,10 @@ export default class DefaultHomeScreenComponent extends React.Component {
 
     render() {
         return (
-            <View>
-                <Image style={styles.images} source={resources.topRightLogo} />
-                <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
+            <View style={styles.container}>
+                <View style={styles.titleContainer}>
+                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
+                </View>
                 <View style= {styles.cardContainer}>
                     <TouchableOpacity onPress={this.props.visite}>
                         <IconCardComponent source={resources.leftCardIcon} title={strings.home.leftCardTitle} />
@@ -28,8 +30,8 @@ export default class DefaultHomeScreenComponent extends React.Component {
                         <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={this.props.remerciement}>
-                    <View style={styles.footerContainer}>
+                <TouchableOpacity onPress={this.props.remerciement} style={styles.footerContainer}>
+                    <View>
                         <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
                     </View>
                 </TouchableOpacity>
@@ -55,8 +57,13 @@ export default class DefaultHomeScreenComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    images: {
+    container: {
         flex: 1,
+        display: 'flex', 
+        flexDirection: "column", 
+        alignItems: 'center'
+    },
+    images: {
         width: 200,
         height: 100,
         resizeMode: 'contain',
@@ -66,13 +73,18 @@ const styles = StyleSheet.create({
     catchphrase: {
         color: Config.primaryColor,
         fontSize: 48,
-        textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 50
+        textAlign: 'center'
+    },
+    titleContainer: {
+        flex: 1,
+        display: "flex",
+        justifyContent: 'center',
+        alignItems: 'center'
+
     },
     cardContainer: {
+        flex: 2,
         display: 'flex', 
-        flex: 1, 
         flexDirection: "row", 
         alignContent: 'center', 
         justifyContent: 'center'
@@ -81,7 +93,6 @@ const styles = StyleSheet.create({
         display: 'flex', 
         justifyContent: 'center', 
         flexDirection: 'row', 
-        margin: 24, 
         backgroundColor: Config.primaryColor, 
         borderRadius: 8, 
         padding: 8, 
@@ -90,7 +101,10 @@ const styles = StyleSheet.create({
             height: 10
         }, 
         shadowOpacity: 0.8, 
-        shadowRadius: 10
+        shadowRadius: 10,
+        width: "90%",
+        position: "absolute",
+        bottom: 32
     },
     footerButton: {
         color: 'white', 

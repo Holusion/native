@@ -10,7 +10,7 @@ import * as Config from '../../Config'
 import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
-import { View, Text, StyleSheet, Dimensions, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 
 export default class SetupScreen extends React.Component {
 
@@ -227,11 +227,6 @@ const styles = StyleSheet.create({
         }, 
         shadowOpacity: 0.8, 
         shadowRadius: 5,
-    },
-    fab: {
-        position: 'absolute',
-        right: 32,
-        bottom: 32,
     }
 })
 
@@ -245,5 +240,3 @@ customTheme = {
         }
     }
 }
-
-const {height: screenHeight} = Dimensions.get("window");
