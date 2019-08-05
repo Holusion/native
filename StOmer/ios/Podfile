@@ -35,6 +35,8 @@ target 'StOmer' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'StOmerTests' do
     inherit! :search_paths
     # Pods for testing
