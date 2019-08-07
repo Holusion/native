@@ -34,6 +34,7 @@ target 'StOmer' do
   pod 'Firebase/Firestore'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  pod 'RNZeroconf', :path => '../node_modules/react-native-zeroconf'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
