@@ -14,7 +14,6 @@ import RNFS from 'react-native-fs';
 import { store } from '../utils/flux'
 
 import {navigator} from '../../navigator'
-import * as strings from '../../strings'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
@@ -183,7 +182,7 @@ export default class ObjectScreen extends React.Component {
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
                         <View style={styles.topPanel}>
-                            <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
+                            {/* Add interaction controller here */}
                             <View style={styles.medallionContainer}>
                                 <Medallion imageUri={imageUri} />
                             </View>
