@@ -2,7 +2,7 @@ import React from 'react'
 import { Footer, FooterTab, Text, Button, Body, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
-import { assetManager, network, YAMLObjectComponent } from '@holusion/react-native-holusion'
+import { assetManager, network, YAMLObjectComponent, IconButton, IconPushButton } from '@holusion/react-native-holusion'
 import { Modal, StyleSheet, View, Image, ScrollView, Dimensions } from 'react-native';
 
 import Markdown from 'react-native-markdown-renderer'
@@ -17,6 +17,7 @@ import {navigator} from '../../navigator'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
+import { HeaderBackButton } from 'react-navigation';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -26,7 +27,7 @@ import Medallion from '../components/Medallion';
 export default class ObjectScreen extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
-        title: `${navigation.getParam('title')}`
+        title: `${navigation.getParam('title')}`,
     })
 
     activeModal(number) {
@@ -182,6 +183,11 @@ export default class ObjectScreen extends React.Component {
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
                         <View style={styles.topPanel}>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                                <IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />
+                                <IconPushButton type="Ionicons" name="pause" />
+                                <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
+                            </View>
                             {/* Add interaction controller here */}
                             <View style={styles.medallionContainer}>
                                 <Medallion imageUri={imageUri} />
@@ -234,8 +240,10 @@ export default class ObjectScreen extends React.Component {
 
         this.props.navigation.addListener('didFocus', () => {
             this.unsubscribe = store.subscribe(() => {
-                this.setState(() => ({currentVideoIndex: store.getState().objectVideo.index, obj: assetManager.yamlCache[store.getState().objectVideo.video]}));
-                this.launchVideo(store.getState().objectVideo.video);
+                this.props.navigation.push(navigator.object.id, {
+                    url: this.props.navigation.getParam('url'),
+                    title: assetManager.yamlCache[store.getState().objectVideo.video]['Titre']
+                });
             })
             this.launchVideo(store.getState().objectVideo.video);
         })
@@ -255,7 +263,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         textAlign: "left",
-        color: Config.secondaryColor,
+        color: Config.textColor,
         marginLeft: 32,
         marginRight: 32,
         fontSize: 24
@@ -268,6 +276,9 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 2,
     },
     mainPanel: {
         flex: 4,
@@ -309,32 +320,22 @@ const styles = StyleSheet.create({
     },
     medallionContainer: {
         position: "absolute",
-        right: 0,
-        top: 0
+        left: 0,
     }
 })
 
 const markdownContent = StyleSheet.create({
     text: {
-        color: Config.secondaryColor,
+        color: Config.textColor,
         fontSize: 24,
         padding: 24
-    }
-})
-
-const markdownTitle = StyleSheet.create({
-    text: {
-        color: Config.primaryColor,
-        fontSize: 42,
-        marginLeft: 16,
-        textAlign: 'left',
     }
 })
 
 const markdownText = StyleSheet.create({
     text: {
         textAlign: 'left',
-        color: Config.secondaryColor,
+        color: Config.textColor,
         marginLeft: 16,
         marginRight: 16,
         fontSize: 32
@@ -357,7 +358,22 @@ const customTheme = {
     },
     'holusion.Medallion': {
         container: {
-            borderBottomLeftRadius: 16
+            borderColor: "#fff"
+        }
+    },
+    'holusion.IconButton': {
+        button: {
+            marginLeft: 8,
+            marginRight: 8,
+            shadowRadius: 0,
+            shadowOffset: {
+                width: 0, 
+                height: 0
+            },
+            backgroundColor: null
+        },
+        icon: {
+            color: Config.secondaryColor
         }
     }
 }

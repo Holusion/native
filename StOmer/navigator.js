@@ -11,6 +11,7 @@ import SetupScreen from "./src/screens/SetupScreen";
 import * as Config from "./Config";
 
 import {Icon} from 'native-base';
+import { HeaderBackButton } from 'react-navigation';
 
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const titleScreen = (mainTitle) => Config.projectName + " - " + mainTitle;
@@ -44,7 +45,7 @@ export const navigator = {
     object: {
         id: "Object",
         screen: ObjectScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={titleScreen("Catalogue")} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
     },
     objectRemerciements: {
         id: "ObjectRemerciements",
