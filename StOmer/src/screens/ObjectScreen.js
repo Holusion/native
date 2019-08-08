@@ -1,17 +1,15 @@
 import React from 'react'
-import { Footer, FooterTab, Text, Button, Container, Body, Grid, Col, Row, StyleProvider } from 'native-base';
+import { Footer, FooterTab, Text, Button, Body, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
-import { assetManager, network, YAMLObjectComponent, ButtonInOutComponent, ClickPanelComponent } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView, Dimensions, findNodeHandle } from 'react-native';
+import { assetManager, network, YAMLObjectComponent } from '@holusion/react-native-holusion'
+import { Modal, StyleSheet, View, Image, ScrollView, Dimensions } from 'react-native';
 
-import {FlingGestureHandler, Directions, State} from 'react-native-gesture-handler'
 import Markdown from 'react-native-markdown-renderer'
 
 import * as Config from '../../Config'
 
 import RNFS from 'react-native-fs';
-import VideoComponent from '../components/VideoComponent';
 
 import { store } from '../utils/flux'
 import { SelectionType } from '../actions'
@@ -20,6 +18,7 @@ import {navigator} from '../../navigator'
 import * as strings from '../../strings'
 
 import * as actions from '../actions'
+import Medallion from '../components/Medallion';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -138,9 +137,9 @@ export default class ObjectScreen extends React.Component {
             let row = [];
             for(let i = 0; i < logos.length; i++) {
                 row.push(
-                    <Col key={i}>
+                    <View key={i}>
                         <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={styles.logo}/>
-                    </Col>
+                    </View>
                 )
                 if(i % 3 == 0 && i != 0) {
                     display.push(
@@ -160,41 +159,15 @@ export default class ObjectScreen extends React.Component {
                 )
             }
 
-            return <Grid style={styles.grid}>
+            return <View style={styles.grid}>
                 {display}
-            </Grid>
+            </View>
         }
-    }
-
-    scrollToText = () => {
-        if(this.txtRef) {
-            this.txtRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
-                this.scroller.scrollTo({x: 0, y: y})
-            })
-        }
-    }
-
-    scrollToImage = () => {
-        if(this.scroller) {
-            this.imageRef.measureLayout(findNodeHandle(this.scroller), (x, y) => {
-                this.scroller.scrollTo({x: 0, y: y});
-            })
-        }
-    }
-
-    handleScroll = (event) => {
-        const yOffset = event.nativeEvent.contentOffset.y;
-        this.setState(() => ({scrollPos: yOffset}))
     }
 
     render() {
         let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
-        let illustration = <Image ref={component => this.imageRef = component} source={{uri: `${imageUri}`, scale: 1}} style={styles.image}/>
-        if(Config.isStingray) {
-            let videoUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.mp4`
-            illustration = <VideoComponent uri={`${videoUri}`} style={styles.video}/>
-        }
 
         let txt = <View>
             <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
@@ -219,52 +192,35 @@ export default class ObjectScreen extends React.Component {
 
 
         return (
-            <Container>
+            <View style={{flex: 1}}>
                 {allModals}
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
-                    <Grid>
-                        <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" />
-                        <Col>
-                            <Row size={1}>
+                    <View style={{flex: 1}}>
+                        {/* <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" /> */}
+                        <View style={{flex: 1}}>
+                            <View style={styles.topPanel}>
                                 <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
-                            </Row>
-                            <Row size={5} style={styles.mainPanel}>
-                                <FlingGestureHandler
-                                direction={Directions.RIGHT}
-                                onHandlerStateChange={({ nativeEvent }) => {
-                                    if (nativeEvent.state === State.ACTIVE) {
-                                        this._onPrevious();
-                                    }
-                                }}>
-                                    <FlingGestureHandler 
-                                    direction={Directions.LEFT}
-                                    onHandlerStateChange={({ nativeEvent }) => {
-                                        if (nativeEvent.state === State.ACTIVE) {
-                                            this._onNext();
-                                        }
-                                    }}>
-                                        <ScrollView style= {styles.scrollContainer} ref={(scroller) => this.scroller = scroller} onScroll={this.handleScroll} scrollEventThrottle={16}>
-                                            <View>
-                                                { illustration }
-                                                <ButtonInOutComponent predicate={this.state.scrollPos <= this.screenHeight / 4} iconIn='ios-arrow-dropdown-circle' iconOut='ios-arrow-dropup-circle' onPressIn={this.scrollToText} onPressOut={this.scrollToImage} />
-                                            </View>
-                                            <View ref={component => this.txtRef = component}>
-                                                {txt}
-                                                {this.renderLogo()}
-                                            </View>
-                                        </ScrollView>
-                                    </FlingGestureHandler>
-                                </FlingGestureHandler>
-                            </Row>
-                        </Col>
-                        <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" />
-                    </Grid>
+                                <View style={styles.medallionContainer}>
+                                    <Medallion imageUri={imageUri} />
+                                </View>
+                            </View>
+                            <View style={styles.mainPanel}>
+                                <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
+                                    <View ref={component => this.txtRef = component}>
+                                        {txt}
+                                        {this.renderLogo()}
+                                    </View>
+                                </ScrollView>
+                            </View>
+                        </View>
+                        {/* <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" /> */}
+                    </View>
                 </StyleProvider>
 
                 <StyleProvider style={getTheme()}>
                     {this.renderFooter()}
                 </StyleProvider>
-            </Container>
+            </View>
         )
     }
 
@@ -299,10 +255,8 @@ export default class ObjectScreen extends React.Component {
             this.unsubscribe = store.subscribe(() => {
                 this.setState(() => ({currentVideoIndex: store.getState().objectVideo.index, obj: assetManager.yamlCache[store.getState().objectVideo.video]}));
                 this.launchVideo(store.getState().objectVideo.video);
-                this.scrollToImage();
             })
             this.launchVideo(store.getState().objectVideo.video);
-            this.scrollToImage();
         })
 
 
@@ -337,12 +291,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    content: {
-        color: Config.secondaryColor,
-        fontSize: 24,
-        padding: 24
+    topPanel: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
     },
     mainPanel: {
+        flex: 4,
         display: 'flex',
         alignItems: "center",
         justifyContent: 'center'
@@ -367,23 +322,6 @@ const styles = StyleSheet.create({
         fontSize: 18, 
         fontWeight: 'bold'
     },
-    scrollContainer: {
-        marginTop: 16
-    },
-    image: {
-        width:400, 
-        height:400, 
-        marginTop: 8, 
-        marginBottom: 32, 
-        resizeMode: 'contain', 
-        alignSelf: "center"
-    },
-    video: {
-        width:400, 
-        height:400, 
-        marginTop: 8, 
-        alignSelf: "center"
-    },
     logo: {
         width:100, 
         height:100, 
@@ -396,8 +334,10 @@ const styles = StyleSheet.create({
         flexDirection: "column", 
         justifyContent: 'center'
     },
-    grid: {
-        margin: 8
+    medallionContainer: {
+        position: "absolute",
+        right: 0,
+        top: 0
     }
 })
 
@@ -412,8 +352,8 @@ const markdownContent = StyleSheet.create({
 const markdownTitle = StyleSheet.create({
     text: {
         color: Config.primaryColor,
-        fontSize: 26,
-        margin: 12,
+        fontSize: 42,
+        marginLeft: 16,
         textAlign: 'left',
     }
 })
@@ -422,9 +362,9 @@ const markdownText = StyleSheet.create({
     text: {
         textAlign: 'left',
         color: Config.secondaryColor,
-        marginLeft: 32,
-        marginRight: 32,
-        fontSize: 24
+        marginLeft: 16,
+        marginRight: 16,
+        fontSize: 32
     }
 })
 
@@ -440,6 +380,11 @@ const customTheme = {
         },
         content: {
             color: Config.secondaryColor
+        }
+    },
+    'holusion.Medallion': {
+        container: {
+            borderBottomLeftRadius: 16
         }
     }
 }
