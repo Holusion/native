@@ -6,7 +6,6 @@ import * as Config from '../../../Config'
 
 import resources from '../../../resources'
 import * as strings from '../../../strings'
-import { Container } from 'native-base';
 
 /**
  * Default view, when all file download or product found
@@ -23,9 +22,6 @@ export default class DefaultHomeScreenComponent extends React.Component {
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
                 </View>
                 <View style= {styles.cardContainer}>
-                    <TouchableOpacity onPress={this.props.visite}>
-                        <IconCardComponent source={resources.leftCardIcon} title={strings.home.leftCardTitle} />
-                    </TouchableOpacity>
                     <TouchableOpacity onPress={this.props.catalogue}>
                         <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
                     </TouchableOpacity>

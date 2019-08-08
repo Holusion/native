@@ -57,13 +57,6 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "StOmer-tvOS";
 		};
-		3A0D09A322FB04A000025E29 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 19F387F30157483AA7B0C41D /* RNZeroconf.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0DE485BD1BDD49E400020698;
-			remoteInfo = RNZeroconf;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -82,7 +75,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StOmer/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = StOmer/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = StOmer/main.m; sourceTree = "<group>"; };
-		19F387F30157483AA7B0C41D /* RNZeroconf.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNZeroconf.xcodeproj; path = "../node_modules/react-native-zeroconf/ios/RNZeroconf.xcodeproj"; sourceTree = "<group>"; };
 		2026570BA5B670A07147829F /* libPods-StOmer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StOmer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		223D36EED34E4B0D9C4276D0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		23D5B45EFAD446FEA2F10B48 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -222,14 +214,6 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		3A0D09A022FB049F00025E29 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3A0D09A422FB04A000025E29 /* libRNZeroconf.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5B42DD8D0B484859AAFF639B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,7 +258,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				19F387F30157483AA7B0C41D /* RNZeroconf.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -444,12 +427,6 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 3A0D09A022FB049F00025E29 /* Products */;
-					ProjectRef = 19F387F30157483AA7B0C41D /* RNZeroconf.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* StOmer */,
@@ -459,16 +436,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		3A0D09A422FB04A000025E29 /* libRNZeroconf.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNZeroconf.a;
-			remoteRef = 3A0D09A322FB04A000025E29 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
