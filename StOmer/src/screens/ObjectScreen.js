@@ -68,10 +68,10 @@ export default class ObjectScreen extends React.Component {
 
         return (
             <Modal key={number} animationType="slide" transparent={false} visible={this.state.modalVisible == number} style={styles.modal}>
-                <View style={styles.modalContent}>
+                <ScrollView>
                     {display}
-                </View>
-                <View style={styles.modalFooter}>
+                </ScrollView>
+                <View>
                     <Body style={styles.modalButton}>
                         <Button bordered onPress={() => this.activeModal(-1)}>
                             <Text>Revenir sur l'objet</Text>
@@ -178,24 +178,20 @@ export default class ObjectScreen extends React.Component {
                 {allModals}
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
-                        {/* <ClickPanelComponent onPress={this._onPrevious} content={strings.object.previous_object} icon="ios-arrow-back" /> */}
-                        <View style={{flex: 1}}>
-                            <View style={styles.topPanel}>
-                                <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
-                                <View style={styles.medallionContainer}>
-                                    <Medallion imageUri={imageUri} />
-                                </View>
-                            </View>
-                            <View style={styles.mainPanel}>
-                                <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
-                                    <View ref={component => this.txtRef = component}>
-                                        {txt}
-                                        {this.renderLogo()}
-                                    </View>
-                                </ScrollView>
+                        <View style={styles.topPanel}>
+                            <Markdown style={markdownTitle}>{this.state.obj['Titre']}</Markdown>
+                            <View style={styles.medallionContainer}>
+                                <Medallion imageUri={imageUri} />
                             </View>
                         </View>
-                        {/* <ClickPanelComponent onPress={this._onNext} content={strings.object.next_object} icon="ios-arrow-forward" /> */}
+                        <View style={styles.mainPanel}>
+                            <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
+                                <View ref={component => this.txtRef = component}>
+                                    {txt}
+                                    {this.renderLogo()}
+                                </View>
+                            </ScrollView>
+                        </View>
                     </View>
                 </StyleProvider>
 
@@ -254,20 +250,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    modalContent: {
-        flex: 4,
-        display: 'flex',
-        justifyContent: "center",
-    },
     modalText: {
         textAlign: "left",
         color: Config.secondaryColor,
         marginLeft: 32,
         marginRight: 32,
         fontSize: 24
-    },
-    modalFooter: {
-        flex: 1
     },
     modalButton: {
         flexDirection: 'row',
