@@ -44,7 +44,7 @@ export const navigator = {
     object: {
         id: "Object",
         screen: ObjectScreen,
-        options: navigation => ({title: titleScreen("Contenus"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation)})
     },
     objectRemerciements: {
         id: "ObjectRemerciements",

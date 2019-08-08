@@ -26,6 +26,10 @@ import Medallion from '../components/Medallion';
  */
 export default class ObjectScreen extends React.Component {
 
+    static navigationOptions = ({navigation}) => ({
+        title: `${navigation.getParam('title')}`
+    })
+
     activeModal(number) {
         this.setState({modalVisible: number})
     }

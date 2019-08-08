@@ -23,6 +23,7 @@ export default class CatalogueScreen extends React.Component {
 
         this.props.navigation.push(navigator.object.id, {
             url: this.props.navigation.getParam('url'),
+            title: assetManager.yamlCache[store.getState().objectVideo.video]['Titre']
         });
     }
 
