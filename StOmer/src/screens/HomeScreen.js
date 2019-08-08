@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
         return (
             <Container style={{flex: 1}}>
                 <StyleProvider style={customTheme}>
-                    <DefaultHomeScreenComponent url={url} visite={this._onVisite} catalogue={this._onCatalogue} remerciement={this._onRemerciement} />     
+                    <DefaultHomeScreenComponent url={url} onCardSelected={this._onCardSelected} onRemerciement={this._onRemerciement} />     
                 </StyleProvider>
             </Container>
         )
@@ -28,17 +28,10 @@ export default class HomeScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        this._onCatalogue = this._onCatalogue.bind(this);
-        this._onVisite = this._onVisite.bind(this);
+        this._onCardSelected = this._onCardSelected.bind(this);
         this._onRemerciement = this._onRemerciement.bind(this);
 
-        this.state = {
-            selectionType: actions.SelectionType.ANY_SELECTION,
-        }
-
         this.unsubscribe = store.subscribe((action) => {
-            this.setState(() => ({selectionType: store.getState().selectionType}))
-            
             if(action.type == actions.Task.SET_TASK) {
                 let elem = action.task
                 let options = {
@@ -76,13 +69,7 @@ export default class HomeScreen extends React.Component {
         })
     }
 
-    _onVisite() {
-        store.dispatch(actions.changeSelectionType(actions.SelectionType.VISITE));
-        this.props.navigation.push(navigator.selection.id, {url: this.props.navigation.getParam('url')});
-    }
-
-    _onCatalogue() {
-        store.dispatch(actions.changeSelectionType(actions.SelectionType.CATALOGUE));
+    _onCardSelected() {
         this.props.navigation.push(navigator.selection.id, {url: this.props.navigation.getParam('url')})
     }
 

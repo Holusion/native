@@ -12,7 +12,6 @@ import * as Config from '../../Config'
 import RNFS from 'react-native-fs';
 
 import { store } from '../utils/flux'
-import { SelectionType } from '../actions'
 
 import {navigator} from '../../navigator'
 import * as strings from '../../strings'
@@ -173,23 +172,6 @@ export default class ObjectScreen extends React.Component {
             <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
             {this.renderComplButton()}
         </View>
-
-        if(store.getState().selectionType == SelectionType.CATALOGUE) {
-            txt = <View>
-                {
-                    Object.keys(this.state.obj).filter(elem => {
-                        return !elem.includes("Texte", 0) && elem != "logo" && this.state.obj[elem];
-                    }).map((s, index) => {
-                        if(this.state.obj && this.state.obj[s]) {
-                            let txt = `__${s}__: ${this.state.obj[s]}`
-                            return <Markdown key={index} style={markdownText}>{txt}</Markdown>
-                        }
-                        return null;
-                    })
-                }
-            </View>
-        }
-
 
         return (
             <View style={{flex: 1}}>

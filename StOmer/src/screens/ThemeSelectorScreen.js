@@ -7,7 +7,6 @@ import { assetManager, network, ListItemComponent } from '@holusion/react-native
 import * as Config from '../../Config'
 
 import { store } from "../utils/flux";
-import { SelectionType } from "../actions"
 
 import {navigator} from '../../navigator'
 import * as strings from '../../strings.json'
@@ -23,11 +22,6 @@ export default class ThemeSelectorScreen extends React.Component {
         
         let actualSelection = assetManager.allCatalogue;
         let catchphrase = strings.selection.catchphrase_collection;
-        
-        if(store.getState().selectionType === SelectionType.VISITE) {
-            actualSelection = assetManager.allTheme;
-            catchphrase = strings.selection.catchphrase_theme;
-        }
 
         for(let i = 0; i < actualSelection.length; i++) {
             let isPurple = (i % 2 == 0);
@@ -59,17 +53,11 @@ export default class ThemeSelectorScreen extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = { type: SelectionType.ANY_SELECTION }
-
         this._onSelection = this._onSelection.bind(this);
 
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }
-
-        this.unsubscribe = store.subscribe(() => {
-            this.setState(() => ({type: store.getState().selectionType}))
-        })
 
         this.props.navigation.addListener('didFocus', async () => {
             let url = this.props.navigation.getParam('url');
@@ -81,29 +69,14 @@ export default class ThemeSelectorScreen extends React.Component {
                 }
             }
         })
-
-        this.props.navigation.addListener('didBlur', () => {
-            this.unsubscribe();
-        })
     }
 
     _onSelection(name) {
-        let realType = store.getState().selectionType === SelectionType.CATALOGUE ? 'Collections' : 'Theme'
-        let objs = assetManager.getObjectFromType(realType, name);
-
-        switch(store.getState().selectionType) {
-            case SelectionType.VISITE:
-                store.dispatch(actions.setVideo(objs, 0))
-                this.props.navigation.push(navigator.object.id, {
-                    url: this.props.navigation.getParam('url')
-                });
-                break;
-            default:
-                this.props.navigation.push(navigator.catalogue.id, {
-                    objList: objs,
-                    url: this.props.navigation.getParam('url')
-                })
-        }
+        let objs = assetManager.getObjectFromType('Collections', name);
+        this.props.navigation.push(navigator.catalogue.id, {
+            objList: objs,
+            url: this.props.navigation.getParam('url')
+        });
     }
 }
 

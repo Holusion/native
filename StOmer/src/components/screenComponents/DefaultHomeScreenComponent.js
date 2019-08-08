@@ -22,11 +22,11 @@ export default class DefaultHomeScreenComponent extends React.Component {
                     <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
                 </View>
                 <View style= {styles.cardContainer}>
-                    <TouchableOpacity onPress={this.props.catalogue}>
+                    <TouchableOpacity onPress={this.props.onCardSelected}>
                         <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={this.props.remerciement} style={styles.footerContainer}>
+                <TouchableOpacity onPress={this.props.onRemerciement} style={styles.footerContainer}>
                     <View>
                         <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
                     </View>
