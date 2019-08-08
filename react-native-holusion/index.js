@@ -14,6 +14,7 @@ export {default as IconButton} from './src/components/IconButton'
 export {default as YAMLObjectComponent} from './src/components/YAMLObjectComponent'
 export {default as ButtonInOutComponent} from './src/components/ButtonInOutComponent'
 export {default as ClickPanelComponent} from './src/components/ClickPanelComponent'
+export {default as IconPushButton} from './src/components/IconPushButton'
 
 export {
   network,
