@@ -16,7 +16,7 @@ echo "Copy AppDelegate"
 cp ../Holomouseio_Template/ios/Holomouseio_Template/AppDelegate.m ./ios/$1/AppDelegate.m
 
 echo "Create Podfile"
-sed -e "s/{{name}}/$1/" ../_template/Podfile >> ./ios/Podfile
+sed -e "s/{{name}}/$1/" ../_template/Podfile > ./ios/Podfile
 
 echo "Run pod"
 cd ./ios
