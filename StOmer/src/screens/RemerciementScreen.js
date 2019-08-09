@@ -86,29 +86,9 @@ export default class RemerciementScreen extends React.Component {
                     <Text style={styles.catchphrase}>Remerciements</Text>
                     <ScrollView style={{marginLeft: 32, marginRight: 32}}>
                         <Text style={styles.content}>
-                            <Text style={{fontWeight: 'bold'}}>Université de Lille{"\n"}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Sophie Braun</Text>, Chargée du patrimoine scientifique, Direction Culture{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Bernard Mikolajczyk</Text>, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Bernard Deleplanque</Text>, Ingénieur multimédia, Direction de l’Innovation Pédagogique{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Didier Devauchelle</Text>, Professeur d&#39;égyptologie, UMR 8164 HALMA{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Ghislaine Widmer</Text>, Maître de conférences en égyptologie, UMR 8164 HALMA{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Thomas Gamelin</Text>, Égyptologue, chargé de cours, UMR 8164 HALMA{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Jessie Cuvelier</Text>, Ingénieur d’études CNRS, UMR 8198 Évo-Éco-Paléo,{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Camille De Visscher</Text>, Chargée de médiation scientifique, Direction de la Valorisation de la Recherche{"\n"}{"\n"}
-
-                            <Text style={{fontWeight: 'bold'}}>Palais des Beaux-Arts de Lille{"\n"}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Fleur Morfoisse</Text>, égyptologue, conservateur en chef, Antiquités / Arts décoratifs, Palais des Beaux-Arts de Lille{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Karine Dautel</Text>, titre{"\n"}{"\n"}
-
-                            <Text style={{fontWeight: 'bold'}}>Centre historique minier de Lewarde{"\n"}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Amy Benadiba</Text>, directrice-conservatrice{"\n"}{"\n"}
-
                             <Text style={{fontWeight: 'bold'}}>Holusion{"\n"}</Text>
                             <Text style={{fontWeight: 'bold'}}>Thibault Guillaumont</Text>, Co-fondateur{"\n"}
                             <Text style={{fontWeight: 'bold'}}>Yann Dubois</Text>, Chef de projet informatique et technique{"\n"}{"\n"}
-
-                            <Text style={{fontWeight: 'bold'}}>ComUE Lille Nord de France / &amp; / Muséomix Nord{"\n"}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Antoine Matrion</Text>, Chargé du patrimoine scientifique, Service Culture
                         </Text>
                         {this.renderLogo()}
                     </ScrollView>
@@ -128,7 +108,7 @@ export default class RemerciementScreen extends React.Component {
 const styles = StyleSheet.create({
     content: {
         fontSize: 32,
-        color: Config.secondaryColor
+        color: Config.textColor
     },
     catchphrase: {
         color: Config.primaryColor,
