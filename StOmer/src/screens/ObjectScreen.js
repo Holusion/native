@@ -110,18 +110,6 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
-    renderFooter() {
-        return (
-            <Footer>
-                <FooterTab>
-                    <Button onPress={() => this.props.navigation.push(navigator.objectRemerciements.id, {objList: store.getState().objectVideo.videos})}>
-                        <Text>Remerciements</Text>
-                    </Button>
-                </FooterTab>
-            </Footer>
-        );
-    }
-
     generateAllModal() {
         let modals = [];
         modals.push(this.renderModal(0));
@@ -202,10 +190,6 @@ export default class ObjectScreen extends React.Component {
                             </ScrollView>
                         </View>
                     </View>
-                </StyleProvider>
-
-                <StyleProvider style={getTheme()}>
-                    {this.renderFooter()}
                 </StyleProvider>
             </View>
         )
