@@ -27,7 +27,9 @@ export default class SetupScreen extends React.Component {
             await fetch("http://holusion.com");
             const files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
             for(let f of files) {
-                await RNFS.unlink(f.path);
+                if(await f.isFile()) {
+                    await RNFS.unlink(f.path);
+                }
             }
         } catch(err) {
             store.dispatch(actions.setWarningTask("firebase_yaml", "Aucune connexion internet n'a été trouvée", await this.reactDownloadFirebase.bind(this)));
