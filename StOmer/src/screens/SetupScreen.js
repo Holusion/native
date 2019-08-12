@@ -11,7 +11,6 @@ import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import RNFS from 'react-native-fs'
 
 export default class SetupScreen extends React.Component {
 
@@ -22,20 +21,6 @@ export default class SetupScreen extends React.Component {
     async reactDownloadFirebase() {
         let firebaseController = new FirebaseController(Config.projectName);
         store.dispatch(actions.setInfoTask("firebase_yaml", strings.errors.firebase.download_yaml));
-        
-        try {
-            await fetch("http://holusion.com");
-            const files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
-            for(let f of files) {
-                if(await f.isFile()) {
-                    await RNFS.unlink(f.path);
-                }
-            }
-        } catch(err) {
-            store.dispatch(actions.setWarningTask("firebase_yaml", "Aucune connexion internet n'a été trouvée", await this.reactDownloadFirebase.bind(this)));
-            if(store.getState().appState == actions.AppState.DOWNLOAD_FIREBASE) store.dispatch(actions.changeState(actions.AppState.LOAD_YAML));
-            return;
-        }
 
         try {
             let firebaseError = await firebaseController.getFiles([
