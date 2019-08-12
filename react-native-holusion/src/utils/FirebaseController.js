@@ -21,12 +21,13 @@ export default class FirebaseController {
         const filePath = `${RNFS.DocumentDirectoryPath}/${this.projectName}/${name}`;
 
         try {
-            let lastUpdated = (await ref.getMetadata()).updated;
-            if(!(name in this.cache) || lastUpdated !== this.cache[name] || !(await RNFS.exists(filePath))) {
+            const metadata = await ref.getMetadata();
+            let lastUpdated = metadata.updated;
+            if(!(name in this.cache) || lastUpdated !== this.cache[name].updated || !(await RNFS.exists(filePath))) {
                 if(await RNFS.exists(filePath)) {
                     await RNFS.unlink(filePath)
                 }
-                this.cache[name] = lastUpdated;
+                this.cache[name] = metadata;
                 await ref.downloadFile(filePath);
             }
         } catch(err) {
