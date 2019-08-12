@@ -13,7 +13,7 @@ export default class FirebaseController {
     
     async downloadFile(ref, name) {
         try {
-            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${name}`);
+            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${this.projectName}/${name}`);
         } catch(err) {
             let errMessage = `Impossible de télécharger ${name}`;
 

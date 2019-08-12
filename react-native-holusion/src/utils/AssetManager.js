@@ -15,8 +15,8 @@ export const getObjectFromType = (type, content) => {
     return res;
 }
 
-const loadAllYamlFiles = async () => {
-    let files = await RNFS.readDir(RNFS.DocumentDirectoryPath);
+const loadAllYamlFiles = async (projectName) => {
+    let files = await RNFS.readDir(`${RNFS.DocumentDirectoryPath}/${projectName}`);
     let yamlFiles = files.filter(f => f.name.endsWith('.yaml'));
     yamlFiles.sort((a, b) => a.name.localeCompare(b.name));
     let names = yamlFiles.map(elem => elem.name).map(name => name.replace(".yaml", ""));
@@ -55,8 +55,8 @@ const findAll = (type) => {
     return uniq;
 }
 
-export const manage = async () => {
-    yamlCache = await loadAllYamlFiles();
+export const manage = async (projectName) => {
+    yamlCache = await loadAllYamlFiles(projectName);
     allTheme = findAll('Theme');
     allCatalogue = findAll('Collections');
     return Object.keys(yamlCache).filter(elem => yamlCache[elem] instanceof yaml.YAMLException).map(elem => ({name: elem, error: yamlCache[elem]}));
