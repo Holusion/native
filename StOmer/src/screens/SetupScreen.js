@@ -66,7 +66,7 @@ export default class SetupScreen extends React.Component {
 
     async reactLoadYaml() {
         store.dispatch(actions.setInfoTask("load_yaml", strings.errors.load_yaml.load));
-        let errors = await assetManager.manage();
+        let errors = await assetManager.manage(Config.projectName);
         if(errors.length == 0) {
             store.dispatch(actions.setSuccessTask("load_yaml", strings.errors.load_yaml.ok));
         } else {
