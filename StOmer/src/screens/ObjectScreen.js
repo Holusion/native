@@ -1,5 +1,5 @@
 import React from 'react'
-import { Footer, FooterTab, Text, Button, Body, Row, StyleProvider } from 'native-base';
+import { Text, Button, Body, Row, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
 import { assetManager, network, YAMLObjectComponent, IconButton, IconPushButton } from '@holusion/react-native-holusion'
@@ -17,7 +17,6 @@ import {navigator} from '../../navigator'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
-import { HeaderBackButton } from 'react-navigation';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
