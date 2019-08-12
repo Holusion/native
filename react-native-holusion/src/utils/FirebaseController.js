@@ -52,15 +52,26 @@ export default class FirebaseController {
         let storage = firebase.storage();
         
         let res = collections.map(async collect => {
-            return (await this.collection.collection(collect['name']).get({source: "server"})).docs
-                .map(document => document.data())
-                .filter(data => !data.hide)
-                .reduce((acc, data) => {
-                    for(let prop of collect['properties']) {
-                        acc.push(data[prop])
-                    }
-                    return acc;
-                }, [])
+            const collected = await this.collection.collection(collect['name']);
+            const docs = (await collected.get({source: "server"})).docs;
+            const datas = docs.map(document => document.data());
+            const notHide = datas.filter(data => !data.hide);
+            const allFilesToDownload = notHide.map(elem => Object.values(elem)).flat();
+            let allFilesToRemove = [];
+
+            for(let c in this.cache) {
+                const ref = `gs://${this.cache[c].bucket}/${this.cache[c].name}`;
+                if(!allFilesToDownload.find(elem => elem === ref)){
+                    allFilesToRemove.push(c);
+                    delete this.cache[c];
+                }
+            }
+
+            for(let f of allFilesToRemove) {
+                await RNFS.unlink(`${RNFS.DocumentDirectoryPath}/${this.projectName}/${f}`)
+            }
+
+            return allFilesToDownload
                 .map(async elem => {
                     if(elem) {
                         const regex = /^gs:\/\/|^http:\/\/|^https:\/\//
