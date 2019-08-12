@@ -129,7 +129,7 @@ export default class ObjectScreen extends React.Component {
             for(let i = 0; i < logos.length; i++) {
                 row.push(
                     <View key={i}>
-                        <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${logos[i]}`, scale: 1}} style={styles.logo}/>
+                        <Image key={i} source={{uri: `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${logos[i]}`, scale: 1}} style={styles.logo}/>
                     </View>
                 )
                 if(i % 3 == 0 && i != 0) {
@@ -158,7 +158,7 @@ export default class ObjectScreen extends React.Component {
 
     render() {
         let allModals = this.generateAllModal();
-        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${store.getState().objectVideo.video}.jpg`;
+        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
 
         let txt = <View>
             <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
@@ -176,7 +176,6 @@ export default class ObjectScreen extends React.Component {
                                 <IconPushButton type="Ionicons" name="pause" />
                                 <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
                             </View>
-                            {/* Add interaction controller here */}
                             <View style={styles.medallionContainer}>
                                 <Medallion imageUri={imageUri} />
                             </View>

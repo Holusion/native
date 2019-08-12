@@ -47,7 +47,7 @@ export default class CatalogueScreen extends React.Component {
         
         let objList = this.props.navigation.getParam("objList");
         let contents = objList.map(elem => {
-            return {name: elem, title: assetManager.yamlCache[elem].Titre}
+            return {name: Config.projectName + "/" + elem, title: assetManager.yamlCache[elem].Titre}
         })
         this.playlist = playlistFromContents(this.props.navigation.getParam('url'), contents)
 
