@@ -9,11 +9,26 @@ export default class FirebaseController {
         let firestore = firebase.firestore();
         this.collection = firestore.collection('applications').doc(projectName);
         this.unsubscribe = null;
+        this.cache = {}
+        RNFS.exists(`${RNFS.DocumentDirectoryPath}/${projectName}/cache.json`).then(res => {
+            if(res) {
+                RNFS.readFile(`${RNFS.DocumentDirectoryPath}/${projectName}/cache.json`).then(json => this.cache = JSON.parse(json));
+            }
+        })
     }
     
     async downloadFile(ref, name) {
+        const filePath = `${RNFS.DocumentDirectoryPath}/${this.projectName}/${name}`;
+
         try {
-            await ref.downloadFile(`${RNFS.DocumentDirectoryPath}/${this.projectName}/${name}`);
+            let lastUpdated = (await ref.getMetadata()).updated;
+            if(!(name in this.cache) || lastUpdated !== this.cache[name] || !(await RNFS.exists(filePath))) {
+                if(await RNFS.exists(filePath)) {
+                    await RNFS.unlink(filePath)
+                }
+                this.cache[name] = lastUpdated;
+                await ref.downloadFile(filePath);
+            }
         } catch(err) {
             let errMessage = `Impossible de télécharger ${name}`;
 
@@ -61,8 +76,9 @@ export default class FirebaseController {
                 })
         })
         
-
         let ops = (await Promise.all(res)).reduce((a, b) => a.concat(b));
-        return (await Promise.all(ops)).filter(elem => elem instanceof Error);
+        const errors = (await Promise.all(ops)).filter(elem => elem instanceof Error);
+        await RNFS.writeFile(`${RNFS.DocumentDirectoryPath}/${this.projectName}/cache.json`, JSON.stringify(this.cache), 'utf8');
+        return errors;
     }
 }
