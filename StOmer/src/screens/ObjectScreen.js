@@ -101,7 +101,7 @@ export default class ObjectScreen extends React.Component {
                                         {short}
                                     </View>
                                     <View style={styles.medallionContainer}>
-                                        <Medallion imageUri={imageUri} obj={this.state.obj} references={["Date ou Période", "Matériaux", "Provenance"]}/>
+                                        <Medallion imageUri={imageUri} obj={this.state.obj} references={this.state.obj.references}/>
                                     </View>
                                 </View>
                             </ScrollView>
