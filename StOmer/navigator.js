@@ -20,36 +20,36 @@ export const navigator = {
     setup: {
         id: "Setup",
         screen: SetupScreen,
-        options: navigation => ({headerLeft: null, title: titleScreen("Setup"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
     },
     home: {
         id: "Home",
         screen: HomeScreen,
-        options: navigation => ({headerLeft: null, title: titleScreen("Accueil"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
     },
     remerciements: {
         id: "Remerciements",
         screen: RemerciementScreen,
-        options: navigation => ({title: titleScreen("Remerciements"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
     },
     selection: {
         id: "Selection",
         screen: ThemeSelectorScreen,
-        options: navigation => ({title: titleScreen("Sélection"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
     },
     catalogue: {
         id: "Catalogue",
         screen: CatalogueScreen,
-        options: navigation => ({title: titleScreen("Catalogue"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
     },
     object: {
         id: "Object",
         screen: ObjectScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={titleScreen("Catalogue")} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={"Retour"} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
     },
     objectRemerciements: {
         id: "ObjectRemerciements",
         screen: ObjectRemerciementsScreen,
-        options: navigation => ({title: titleScreen("Remerciements"), headerRight: wifiIcon(navigation)})
+        options: navigation => ({headerRight: wifiIcon(navigation)})
     }
 }
