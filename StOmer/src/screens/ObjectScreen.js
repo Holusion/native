@@ -83,13 +83,6 @@ export default class ObjectScreen extends React.Component {
             <View style={{flex: 1}}>
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
-                        {/* <View style={styles.topPanel}>
-                            <View style={{display: 'flex', flexDirection: 'row'}}>
-                                <IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />
-                                <IconPushButton type="Ionicons" name="pause" />
-                                <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
-                            </View>
-                        </View> */}
                         <View style={styles.mainPanel}>
                             <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
                                 <View style={styles.textContent}>
@@ -105,6 +98,13 @@ export default class ObjectScreen extends React.Component {
                                     </View>
                                 </View>
                             </ScrollView>
+                            <View style={styles.controller}>
+                                <View style={styles.controllerContent}>
+                                    <IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />
+                                    <IconPushButton type="Ionicons" name="pause" />
+                                    <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
+                                </View>
+                            </View>
                         </View>
                     </View>
                 </StyleProvider>
@@ -153,13 +153,21 @@ export default class ObjectScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    topPanel: {
-        flex: 1,
+    controller: {
+        position: 'absolute',
+        bottom: 16,
+        width: "100%",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: '#dddddd',
-        borderBottomWidth: 2,
+    },
+    controllerContent: {
+        display: 'flex', 
+        flexDirection: 'row',
+        padding: 24,
+        backgroundColor: Config.primaryColor,
+        borderRadius: 50,
     },
     mainPanel: {
         flex: 1,
