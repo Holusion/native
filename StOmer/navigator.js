@@ -8,44 +8,43 @@ import ObjectScreen from "./src/screens/ObjectScreen";
 import ObjectRemerciementsScreen from "./src/screens/ObjectRemerciementsScreen";
 import SetupScreen from "./src/screens/SetupScreen";
 
-import * as Config from "./Config";
+import * as strings from "./strings.json";
 
 import {Icon} from 'native-base';
 import { HeaderBackButton } from 'react-navigation';
 
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
-const titleScreen = (mainTitle) => Config.projectName + " - " + mainTitle;
 
 export const navigator = {
     setup: {
         id: "Setup",
         screen: SetupScreen,
-        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
+        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     home: {
         id: "Home",
         screen: HomeScreen,
-        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
+        options: navigation => ({headerLeft: null, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     remerciements: {
         id: "Remerciements",
         screen: RemerciementScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     selection: {
         id: "Selection",
         screen: ThemeSelectorScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     catalogue: {
         id: "Catalogue",
         screen: CatalogueScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: "Retour"})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     object: {
         id: "Object",
         screen: ObjectScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={"Retour"} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
+        options: navigation => ({headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={strings.back} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
     },
     objectRemerciements: {
         id: "ObjectRemerciements",

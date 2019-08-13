@@ -44,5 +44,6 @@
     "danger": "Erreur",
     "warn": "Avertissement",
     "info": "En attente",
-    "success": "Succès"
+    "success": "Succès",
+    "back": "Retour"
 }
