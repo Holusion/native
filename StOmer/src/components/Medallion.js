@@ -1,14 +1,22 @@
 import React from 'react'
-import {View, Image} from 'react-native'
+import {View, Image, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import {connectStyle} from 'native-base'
 import * as Config from '../../Config'
+import Markdown from 'react-native-markdown-renderer';
 
 function Medallion(props) {
     const styles = props.style;
+    const txt = props.references.map(ref => <Markdown style={markdownText}>**{ref}** : {props.obj[ref]}</Markdown>)
+
     return (
         <View style={styles.container}>
-            <Image source={{uri: `${props.imageUri}`, scale: 1}} style={styles.image}/>
+            <View style={styles.imageContainer}>
+                <Image source={{uri: `${props.imageUri}`}} style={styles.image}/>
+            </View>
+            <View style={styles.textContainer}>
+                {txt}
+            </View>
         </View>
     )
 }
@@ -18,19 +26,26 @@ const styles = {
         borderWidth: 3,
         borderColor: Config.primaryColor,
         padding: 8,
-        width: 116,
-        height: 116,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     image: {
-        width:100, 
-        height:100,
+        width: 200,
+        height: 200,
         resizeMode: 'contain', 
-        alignSelf: "center"
+    },
+    imageContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center"
     }
 }
+
+markdownText = StyleSheet.create({
+    text: {
+        color: Config.textColor,
+        fontSize: 24
+    }
+})
 
 Medallion.propTypes = {
     imageUri: PropTypes.string,

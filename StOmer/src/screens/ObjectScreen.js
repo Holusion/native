@@ -25,14 +25,6 @@ import Medallion from '../components/Medallion';
  */
 export default class ObjectScreen extends React.Component {
 
-    static navigationOptions = ({navigation}) => ({
-        title: `${navigation.getParam('title')}`,
-    })
-
-    activeModal(number) {
-        this.setState({modalVisible: number})
-    }
-
     launchVideo(videoName) {
         if(this.props.navigation.getParam("url")) {
             let productUrl = this.props.navigation.getParam("url");
@@ -46,78 +38,6 @@ export default class ObjectScreen extends React.Component {
             })
         }
 
-    }
-
-    renderModal(number) {
-        let display = null;
-        if(number === 0) {
-            let refs = Object.keys(this.state.obj).filter(elem => {
-                return !elem.includes("Texte", 0) && elem != "logo" && this.state.obj[elem];
-            })
-            display = refs.map((s, index) => {
-                if(this.state.obj && this.state.obj[s]) {
-                    let txt = `__${s}__: ${this.state.obj[s]}`
-                    return <Markdown style={markdownText} key={index}>{txt}</Markdown>
-                }
-                return null;
-            })
-        } else if(number > 0) {
-            let text = "";
-            if(this.state.obj) {
-                text = this.state.obj[`Texte complémentaire ${number}`];
-            }
-            display = <Markdown style={markdownText}>{text}</Markdown>
-        }
-
-        return (
-            <Modal key={number} animationType="slide" transparent={false} visible={this.state.modalVisible == number} style={styles.modal}>
-                <ScrollView>
-                    {display}
-                </ScrollView>
-                <View>
-                    <Body style={styles.modalButton}>
-                        <Button bordered onPress={() => this.activeModal(-1)}>
-                            <Text>Revenir sur l'objet</Text>
-                        </Button>
-                    </Body>
-                </View>
-            </Modal>
-        )
-    }
-
-    renderComplButton() {
-        let compls = [];
-        if(this.state.obj) {
-            compls = Object.keys(this.state.obj).filter(elem => elem.indexOf('compl') == 6); //#startsWith made something strange :/
-        }
-
-        return (
-            <View style={styles.buttonContainer}>
-                <Button key={0} onPress={() => this.activeModal(0)} style={styles.bottomButton}>
-                    <Text style={styles.bottomButtonText}>Référence de l'objet</Text>
-                </Button>
-            {
-                compls.map((element, index) => {
-                    const elemSplit = element.split(' ');
-                    let number = parseInt(elemSplit[elemSplit.length - 1]);
-                    return <Button key={index} onPress={() => this.activeModal(number)} style={styles.bottomButton}>
-                        <Text style={styles.bottomButtonText}>Info complémentaire {number}</Text>
-                    </Button>
-                })
-            }
-            </View>
-        )
-    }
-
-    generateAllModal() {
-        let modals = [];
-        modals.push(this.renderModal(0));
-
-        for(let i = 1; i <= this.complLength; i++) {
-            modals.push(this.renderModal(i));
-        }
-
-        return modals;
     }
 
     renderLogo() {
@@ -156,34 +76,33 @@ export default class ObjectScreen extends React.Component {
     }
 
     render() {
-        let allModals = this.generateAllModal();
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
-
-        let txt = <View>
-            <YAMLObjectComponent style={markdownContent} data={this.state.obj}/>
-            {this.renderComplButton()}
-        </View>
+        const short = <Markdown style={markdownContent}>{this.state.obj.short}</Markdown>
 
         return (
             <View style={{flex: 1}}>
-                {allModals}
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
-                        <View style={styles.topPanel}>
+                        {/* <View style={styles.topPanel}>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                                 <IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />
                                 <IconPushButton type="Ionicons" name="pause" />
                                 <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
                             </View>
-                            <View style={styles.medallionContainer}>
-                                <Medallion imageUri={imageUri} />
-                            </View>
-                        </View>
+                        </View> */}
                         <View style={styles.mainPanel}>
                             <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
-                                <View ref={component => this.txtRef = component}>
-                                    {txt}
-                                    {this.renderLogo()}
+                                <View style={styles.textContent}>
+                                    <View style={styles.short}>
+                                        <View style={styles.titleContainer}>
+                                            <Text style={styles.catchPhrase}>{this.state.obj['Titre']}</Text>
+                                            <Text style={styles.subTitle}>{this.state.obj['SousTitre']}</Text>
+                                        </View>
+                                        {short}
+                                    </View>
+                                    <View style={styles.medallionContainer}>
+                                        <Medallion imageUri={imageUri} obj={this.state.obj} references={["Date ou Période", "Matériaux", "Provenance"]}/>
+                                    </View>
                                 </View>
                             </ScrollView>
                         </View>
@@ -205,10 +124,8 @@ export default class ObjectScreen extends React.Component {
         super(props, context);
 
         this.state = {
-            modalVisible: -1,
             currentVideoIndex: store.getState().objectVideo.index,
             obj: assetManager.yamlCache[store.getState().objectVideo.video],
-            scrollPos: 0
         }
 
         this.screenHeight = Dimensions.get('window').height * (4/5);
@@ -236,24 +153,6 @@ export default class ObjectScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    modal: {
-        margin: 16,
-        display: 'flex',
-        flexDirection: "column",
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalText: {
-        textAlign: "left",
-        color: Config.textColor,
-        marginLeft: 32,
-        marginRight: 32,
-        fontSize: 24
-    },
-    modalButton: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
     topPanel: {
         flex: 1,
         display: 'flex',
@@ -263,11 +162,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
     },
     mainPanel: {
-        flex: 4,
-        display: 'flex',
-        alignItems: "center",
-        justifyContent: 'center'
-
+        flex: 1,
     },
     title: {
         color: Config.primaryColor,
@@ -301,8 +196,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     medallionContainer: {
-        position: "absolute",
-        left: 0,
+        width: "33%"
+    },
+    catchPhrase: {
+        color: Config.primaryColor,
+        fontSize: 32,
+        textAlign: 'left'
+    },
+    short: {
+        width: "66%",
+        paddingRight: 24
+    },
+    textContent: {
+        margin: 24,
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    titleContainer: {
+        paddingBottom: 24
+    },
+    subTitle: {
+        color: "#bbbbbb",
+        fontSize: 24,
+        fontStyle: "italic"
     }
 })
 
@@ -310,17 +227,6 @@ const markdownContent = StyleSheet.create({
     text: {
         color: Config.textColor,
         fontSize: 24,
-        padding: 24
-    }
-})
-
-const markdownText = StyleSheet.create({
-    text: {
-        textAlign: 'left',
-        color: Config.textColor,
-        marginLeft: 16,
-        marginRight: 16,
-        fontSize: 32
     }
 })
 
@@ -339,9 +245,6 @@ const customTheme = {
         }
     },
     'holusion.Medallion': {
-        container: {
-            borderColor: "#fff"
-        }
     },
     'holusion.IconButton': {
         button: {
