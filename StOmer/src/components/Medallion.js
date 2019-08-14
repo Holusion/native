@@ -28,8 +28,8 @@ const styles = {
         padding: 8,
     },
     image: {
-        width: 200,
-        height: 200,
+        width: 150,
+        height: 150,
         resizeMode: 'contain', 
     },
     imageContainer: {
