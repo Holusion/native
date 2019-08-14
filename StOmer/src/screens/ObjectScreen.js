@@ -259,7 +259,14 @@ const styles = StyleSheet.create({
         display: "flex",
         marginBottom: 16,
         borderRadius: 24,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        shadowColor: "#000", 
+        shadowOffset: {
+            width: 1, 
+            height: 2
+        }, 
+        shadowOpacity: 0.4, 
+        shadowRadius: 5,
     },
     detailIcon: {
         width: 32,
