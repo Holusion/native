@@ -176,20 +176,16 @@ export default class ObjectScreen extends React.Component {
 
 const styles = StyleSheet.create({
     controller: {
-        position: 'absolute',
-        bottom: 16,
         width: "100%",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: '#dddddd',
+        backgroundColor: Config.primaryColor,
     },
     controllerContent: {
         display: 'flex', 
         flexDirection: 'row',
-        padding: 24,
-        backgroundColor: Config.primaryColor,
-        borderRadius: 50,
     },
     mainPanel: {
         flex: 1,
@@ -318,5 +314,8 @@ const customTheme = {
         icon: {
             color: Config.secondaryColor
         }
+    },
+    'holusion.IconPushButton': {
+        button: {marginTop: -37}
     }
 }
