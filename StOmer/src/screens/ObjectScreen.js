@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         padding: 8,
         width: "100%",
         display: "flex",
-        marginBottom: 16,
+        marginTop: 16,
         borderRadius: 24,
         flexDirection: 'row',
         shadowColor: "#000", 
