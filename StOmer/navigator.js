@@ -21,36 +21,36 @@ export const navigator = {
     setup: {
         id: "Setup",
         screen: SetupScreen,
-        options: navigation => ({headerLeft: null, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerLeft: null, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     home: {
         id: "Home",
         screen: HomeScreen,
-        options: navigation => ({headerLeft: null, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerLeft: null, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     remerciements: {
         id: "Remerciements",
         screen: RemerciementScreen,
-        options: navigation => ({headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     selection: {
         id: "Selection",
         screen: ThemeSelectorScreen,
-        options: navigation => ({headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     catalogue: {
         id: "Catalogue",
         screen: CatalogueScreen,
-        options: navigation => ({headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     object: {
         id: "Object",
         screen: ObjectScreen,
-        options: navigation => ({headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={strings.back} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
+        options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerLeft: <HeaderBackButton title={strings.back} backTitleVisible={true} onPress={() => navigation.navigate(navigator.catalogue.id)}/>})
     },
     objectRemerciements: {
         id: "ObjectRemerciements",
         screen: ObjectRemerciementsScreen,
-        options: navigation => ({headerRight: wifiIcon(navigation), headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerBackTitle: strings.back})
+        options: navigation => ({gesturesEnabled: false, headerRight: wifiIcon(navigation), headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerBackTitle: strings.back})
     }
 }
