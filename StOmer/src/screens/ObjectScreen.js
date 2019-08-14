@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, Button, Body, Row, StyleProvider } from 'native-base';
+import { Text, Row, StyleProvider, Icon } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
-import { assetManager, network, YAMLObjectComponent, IconButton, IconPushButton } from '@holusion/react-native-holusion'
-import { Modal, StyleSheet, View, Image, ScrollView, Dimensions } from 'react-native';
+import { assetManager, network, IconButton, IconPushButton } from '@holusion/react-native-holusion'
+import { View, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 
 import Markdown from 'react-native-markdown-renderer'
 
@@ -17,6 +17,7 @@ import {navigator} from '../../navigator'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
+import { whileStatement } from '@babel/types';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -75,6 +76,25 @@ export default class ObjectScreen extends React.Component {
         }
     }
 
+    renderDetailsButton() {
+        const buttons = this.state.obj.details.map(elem => {
+            return (
+                <TouchableOpacity style={styles.detailContainer}>
+                    <View style={styles.detailIcon}>
+                        <Icon type={"Ionicons"} style={{color: "white", fontSize: 24}} name={"play"} />
+                    </View>
+                    <Text style={styles.detailText}>{elem.titre}</Text>
+                </TouchableOpacity>
+            )
+        })
+
+        return (
+            <View>
+                {buttons}
+            </View>
+        )
+    }
+
     render() {
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
         const short = <Markdown style={markdownContent}>{this.state.obj.short}</Markdown>
@@ -92,6 +112,7 @@ export default class ObjectScreen extends React.Component {
                                             <Text style={styles.subTitle}>{this.state.obj['SousTitre']}</Text>
                                         </View>
                                         {short}
+                                        {this.renderDetailsButton()}
                                     </View>
                                     <View style={styles.medallionContainer}>
                                         <Medallion imageUri={imageUri} obj={this.state.obj} references={this.state.obj.references}/>
@@ -127,8 +148,6 @@ export default class ObjectScreen extends React.Component {
             currentVideoIndex: store.getState().objectVideo.index,
             obj: assetManager.yamlCache[store.getState().objectVideo.video],
         }
-
-        this.screenHeight = Dimensions.get('window').height * (4/5);
 
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
@@ -228,6 +247,29 @@ const styles = StyleSheet.create({
         color: "#bbbbbb",
         fontSize: 24,
         fontStyle: "italic"
+    },
+    detailContainer: {
+        backgroundColor: Config.primaryColor,
+        padding: 8,
+        width: "100%",
+        display: "flex",
+        marginBottom: 16,
+        borderRadius: 24,
+        flexDirection: 'row'
+    },
+    detailIcon: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: Config.textColor,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    detailText: {
+        fontSize: 24,
+        color: "white",
+        marginLeft: 8
     }
 })
 
