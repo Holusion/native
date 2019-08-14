@@ -10,7 +10,7 @@ import * as Config from '../../Config'
 import * as strings from "../../strings.json"
 import {navigator} from '../../navigator';
 import getTheme from '../../native-base-theme/components';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
 
 export default class SetupScreen extends React.Component {
 
@@ -134,29 +134,20 @@ export default class SetupScreen extends React.Component {
     }
 
     render() {
-        let display = []
-        
-        let cpt = 0;
-        for(let [key, value] of this.state.tasks) {
-            display.push(<HandlePanelComponent key={cpt++} taskName={key} task={value} warnTitle={strings.warn} dangerTitle={strings.danger} infoTitle={strings.info} successTitle={strings.success}/>)
-        }
+        let display = <ActivityIndicator color={Config.primaryColor} size="large" />
 
-        let continueButton = null;
         if(store.getState().appState == actions.AppState.READY && [...store.getState().tasks.values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
-            continueButton = <Button key={0} style={styles.button} onPress={() => this.props.navigation.push(navigator.home.id, {url: this.state.url})}>
-                                <Text style={styles.textButton}>{strings.setup.continue}</Text>
-                            </Button>
+            this.props.navigation.push(navigator.home.id, {url: this.state.url})
         }
 
         return (
             <Container>
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={styles.container}>
-                        <Text style={styles.catchphrase}>{strings.setup.title}</Text>
-                        <ScrollView style={styles.panel}>
+                        <Text style={styles.catchphrase}>{strings.setup.title}</Text>        
+                        <View style={styles.infos}>
                             {display}
-                            {continueButton}
-                        </ScrollView>
+                        </View>
                         <IconButton type="MaterialIcons" name="cast" onPress={() => {
                             let buttons = this.state.products.map(e => ({text: e.name, onPress: () => this.connectToSpecificProduct(e)}))
                             Alert.alert("Liste des produits trouvé sur le réseau", "Choisissez un produit:", [...buttons, {text: "Cancel"}])
@@ -227,6 +218,12 @@ const styles = StyleSheet.create({
         }, 
         shadowOpacity: 0.8, 
         shadowRadius: 5,
+    },
+    infos: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 
