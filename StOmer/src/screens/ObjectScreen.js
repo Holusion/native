@@ -118,6 +118,9 @@ export default class ObjectScreen extends React.Component {
                                         <Medallion imageUri={imageUri} obj={this.state.obj} references={this.state.obj.references}/>
                                     </View>
                                 </View>
+                                <View style={styles.content}>
+                                    <Markdown style={markdownContent}>{this.state.obj['Texte principal']}</Markdown>
+                                </View>
                             </ScrollView>
                             <View style={styles.controller}>
                                 <View style={styles.controllerContent}>
@@ -190,6 +193,11 @@ const styles = StyleSheet.create({
     },
     mainPanel: {
         flex: 1,
+    },
+    content: {
+        fontSize: 24,
+        paddingLeft: 24,
+        paddingRight: 24
     },
     title: {
         color: Config.primaryColor,
