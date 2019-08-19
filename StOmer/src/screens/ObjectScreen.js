@@ -306,6 +306,10 @@ const customTheme = {
         }
     },
     'holusion.Medallion': {
+        container: {
+            borderColor: "#bbbbbb",
+            borderWidth: 1
+        }
     },
     'holusion.IconButton': {
         button: {
