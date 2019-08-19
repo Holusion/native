@@ -327,6 +327,6 @@ const customTheme = {
         }
     },
     'holusion.IconPushButton': {
-        button: {marginTop: -37}
+        button: {marginTop: -37, borderColor: Config.primaryColor},
     }
 }
