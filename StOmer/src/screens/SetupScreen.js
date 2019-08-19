@@ -135,12 +135,15 @@ export default class SetupScreen extends React.Component {
 
     render() {
         let display = <ActivityIndicator color={Config.primaryColor} size="large" />
-        let text = Object.values(this.state.tasks).map(task => {
-            console.error(task)
-            return (
-                <Text>{task.message}</Text>
-            )
-        })
+        const tasks = store.getState().tasks;
+        let text = [];
+        if(tasks) {
+            const a_tasks = [...tasks.values()];
+            if(a_tasks.length > 0) {
+                text.push(<Text style={styles.catchphrase}>{a_tasks[a_tasks.length - 1].message}</Text>);
+            }
+            a_tasks.filter(elem => elem.type === "danger").forEach(elem => text.push(<Text style={styles.errorText}>{elem.message}</Text>))
+        }
 
         if(store.getState().appState == actions.AppState.READY && [...store.getState().tasks.values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
             this.props.navigation.push(navigator.home.id, {url: this.state.url})
@@ -207,6 +210,13 @@ const styles = StyleSheet.create({
         color: Config.primaryColor, 
         fontSize: 32,
         margin: 24
+    },
+    errorText: {
+        textAlign: 'center', 
+        color: Config.primaryColor, 
+        fontSize: 32,
+        margin: 24,
+        color: "red"
     },
     container: {
         flex: 1,
