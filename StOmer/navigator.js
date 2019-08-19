@@ -19,19 +19,19 @@ const headerStyle = {height: 24, display: 'flex'}
 const iconStyle = {top: -8}
 
 const slideFromRight = (index, position, width) => {
-    const inputRange = [index - 1, index, index + 1];
+    const inputRange = [index - 1, index];
     const translateX = position.interpolate({
         inputRange: inputRange,
-        outputRange: [width, 0, 0]
+        outputRange: [width, 0]
     })
     return {transform: [{translateX}]}
 }
 
 const slideFromLeft = (index, position, width) => {
-    const inputRange = [index - 1, index, index + 1];
+    const inputRange = [index - 1, index];
     const translateX = position.interpolate({
         inputRange: inputRange,
-        outputRange: [-width, 0, 0]
+        outputRange: [-width, 0]
     })
     return {transform: [{translateX}]}
 }
