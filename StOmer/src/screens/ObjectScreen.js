@@ -17,7 +17,6 @@ import {navigator} from '../../navigator'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
-import { whileStatement } from '@babel/types';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomColor: '#dddddd',
         backgroundColor: Config.primaryColor,
+        height: 55
     },
     controllerContent: {
         display: 'flex', 
@@ -327,6 +327,6 @@ const customTheme = {
         }
     },
     'holusion.IconPushButton': {
-        button: {marginTop: -37, borderColor: Config.primaryColor},
+        button: {marginTop: -22, borderColor: Config.primaryColor},
     }
 }
