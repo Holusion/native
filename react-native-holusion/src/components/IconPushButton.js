@@ -13,10 +13,12 @@ function handleOnPressIn(setPress, func) {
 }
 
 function handleOnPressOut(setPress, func) {
-    setPress(false);
-    if(func) {
-        func();
-    }
+    setTimeout(() => {
+        setPress(false);
+        if(func) {
+            func();
+        }
+    }, 500);
 }
 
 function IconPushButton(props) {
