@@ -17,6 +17,7 @@ import {navigator} from '../../navigator'
 
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
+import { NavigationActions } from 'react-navigation';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -140,6 +141,7 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onPrevious() {
+        this.previous = true;
         store.dispatch(actions.previousVideo(store.getState().objectVideo.videos))
     }
 
@@ -160,10 +162,16 @@ export default class ObjectScreen extends React.Component {
 
         this.props.navigation.addListener('didFocus', () => {
             this.unsubscribe = store.subscribe(() => {
-                this.props.navigation.push(navigator.object.id, {
-                    url: this.props.navigation.getParam('url'),
-                    title: assetManager.yamlCache[store.getState().objectVideo.video]['Titre']
+                this.props.navigation.navigate({
+                    routeName: navigator.object.id,
+                    params: {
+                        url: this.props.navigation.getParam('url'),
+                        title: assetManager.yamlCache[store.getState().objectVideo.video]['Titre'],
+                        transition: this.previous ? "slideLeft" : "default"
+                    },
+                    key: '_' + Math.random().toString(36).substr(2, 9)
                 });
+
             })
             this.launchVideo(store.getState().objectVideo.video);
         })

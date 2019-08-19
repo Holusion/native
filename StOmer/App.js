@@ -2,7 +2,7 @@ import {createStackNavigator, createAppContainer} from 'react-navigation'
 import { Root } from 'native-base';
 import React from 'react';
 
-import {navigator} from './navigator'
+import {navigator, TransitionConfiguration} from './navigator'
 
 let stackNavigator = {};
 
@@ -17,7 +17,7 @@ for(let nav in navigator) {
   pushNavigator(navigator[nav]);
 }
 
-const AppNavigator = createStackNavigator(stackNavigator);
+const AppNavigator = createStackNavigator(stackNavigator, {transitionConfig: TransitionConfiguration});
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {

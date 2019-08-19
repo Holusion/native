@@ -12,10 +12,51 @@ import * as strings from "./strings.json";
 
 import {Icon} from 'native-base';
 import { HeaderBackButton } from 'react-navigation';
+import { Easing, Animated } from 'react-native';
 
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const headerStyle = {height: 24, display: 'flex'}
 const iconStyle = {top: -8}
+
+const slideFromRight = (index, position, width) => {
+    const inputRange = [index - 1, index, index + 1];
+    const translateX = position.interpolate({
+        inputRange: inputRange,
+        outputRange: [width, 0, 0]
+    })
+    return {transform: [{translateX}]}
+}
+
+const slideFromLeft = (index, position, width) => {
+    const inputRange = [index - 1, index, index + 1];
+    const translateX = position.interpolate({
+        inputRange: inputRange,
+        outputRange: [-width, 0, 0]
+    })
+    return {transform: [{translateX}]}
+}
+
+export const TransitionConfiguration = () => {
+    return {
+        transitionSpec: {
+            duration: 750,
+            easing: Easing.out(Easing.poly(4)),
+            timing: Animated.timing,
+            useNativeDriver: true
+        },
+        screenInterpolator: (sceneProps) => {
+            const {layout, position, scene} = sceneProps;
+            const width = layout.initWidth;
+            const {index, route} = scene;
+            const params = route.params || {};
+            const transition = params.transition || "default";
+            return {
+                default: slideFromRight(index, position, width),
+                slideLeft: slideFromLeft(index, position, width)
+            }[transition];
+        }
+    }
+}
 
 export const navigator = {
     setup: {
