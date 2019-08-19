@@ -288,6 +288,7 @@ const markdownContent = StyleSheet.create({
     text: {
         color: Config.textColor,
         fontSize: 24,
+        textAlign: "justify"
     }
 })
 
