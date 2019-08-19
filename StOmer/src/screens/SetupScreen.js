@@ -135,6 +135,12 @@ export default class SetupScreen extends React.Component {
 
     render() {
         let display = <ActivityIndicator color={Config.primaryColor} size="large" />
+        let text = Object.values(this.state.tasks).map(task => {
+            console.error(task)
+            return (
+                <Text>{task.message}</Text>
+            )
+        })
 
         if(store.getState().appState == actions.AppState.READY && [...store.getState().tasks.values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
             this.props.navigation.push(navigator.home.id, {url: this.state.url})
@@ -147,6 +153,7 @@ export default class SetupScreen extends React.Component {
                         <Text style={styles.catchphrase}>{strings.setup.title}</Text>        
                         <View style={styles.infos}>
                             {display}
+                            {text}
                         </View>
                         <IconButton type="MaterialIcons" name="cast" onPress={() => {
                             let buttons = this.state.products.map(e => ({text: e.name, onPress: () => this.connectToSpecificProduct(e)}))
