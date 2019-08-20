@@ -3,7 +3,7 @@ import { Text, Row, StyleProvider, Icon } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 
 import { assetManager, network, IconButton, IconPushButton } from '@holusion/react-native-holusion'
-import { View, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
 
 import Markdown from 'react-native-markdown-renderer'
 
@@ -13,11 +13,8 @@ import RNFS from 'react-native-fs';
 
 import { store } from '../utils/flux'
 
-import {navigator} from '../../navigator'
-
 import * as actions from '../actions'
 import Medallion from '../components/Medallion';
-import { NavigationActions } from 'react-navigation';
 
 /**
  * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
@@ -41,9 +38,9 @@ export default class ObjectScreen extends React.Component {
 
     }
 
-    renderLogo() {
-        if(this.state.obj['logo']) {
-            let logos = this.state.obj['logo'];
+    renderLogo(video) {
+        if(video['logo']) {
+            let logos = video['logo'];
             let display = [];
             let row = [];
             for(let i = 0; i < logos.length; i++) {
@@ -76,8 +73,8 @@ export default class ObjectScreen extends React.Component {
         }
     }
 
-    renderDetailsButton() {
-        const buttons = this.state.obj.details.map(elem => {
+    renderDetailsButton(video) {
+        const buttons = video.details.map(elem => {
             return (
                 <TouchableOpacity style={styles.detailContainer}>
                     <View style={styles.detailIcon}>
@@ -95,39 +92,55 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
+    renderObjects() {
+        const videos = store.getState().objectVideo.videos.map(elem => assetManager.yamlCache[elem]);
+
+        return videos.map((video, index) => {
+            let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
+            const short = <Markdown style={markdownContent}>{video.short}</Markdown>
+            
+            return (
+                <Animated.View style={{...styles.mainPanel, transform: [{translateX: this.state.screenPosition}]}}>
+                    <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
+                        <View style={styles.textContent}>
+                            <View style={styles.short}>
+                                <View style={styles.titleContainer}>
+                                    <Text style={styles.catchPhrase}>{video['Titre']}</Text>
+                                    <Text style={styles.subTitle}>{video['SousTitre']}</Text>
+                                </View>
+                                {short}
+                                {this.renderDetailsButton(video)}
+                            </View>
+                            <View style={styles.medallionContainer}>
+                                <Medallion imageUri={imageUri} obj={video} references={video.references}/>
+                            </View>
+                        </View>
+                        <View style={styles.content}>
+                            <Markdown style={markdownContent}>{video['Texte principal']}</Markdown>
+                        </View>
+                    </ScrollView>
+                </Animated.View>
+            )
+        })
+    }
+
     render() {
-        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
-        const short = <Markdown style={markdownContent}>{this.state.obj.short}</Markdown>
+        const controller = [<IconPushButton type="Ionicons" name="pause" />];
+        if(store.getState().objectVideo.videos.length > 1) {
+            controller.unshift(<IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />);
+            controller.push(<IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />);
+        }
 
         return (
             <View style={{flex: 1}}>
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
                     <View style={{flex: 1}}>
-                        <View style={styles.mainPanel}>
-                            <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
-                                <View style={styles.textContent}>
-                                    <View style={styles.short}>
-                                        <View style={styles.titleContainer}>
-                                            <Text style={styles.catchPhrase}>{this.state.obj['Titre']}</Text>
-                                            <Text style={styles.subTitle}>{this.state.obj['SousTitre']}</Text>
-                                        </View>
-                                        {short}
-                                        {this.renderDetailsButton()}
-                                    </View>
-                                    <View style={styles.medallionContainer}>
-                                        <Medallion imageUri={imageUri} obj={this.state.obj} references={this.state.obj.references}/>
-                                    </View>
-                                </View>
-                                <View style={styles.content}>
-                                    <Markdown style={markdownContent}>{this.state.obj['Texte principal']}</Markdown>
-                                </View>
-                            </ScrollView>
-                            <View style={styles.controller}>
-                                <View style={styles.controllerContent}>
-                                    <IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />
-                                    <IconPushButton type="Ionicons" name="pause" />
-                                    <IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />
-                                </View>
+                        <View style={styles.screens}>
+                            {this.renderObjects()}
+                        </View>
+                        <View style={styles.controller}>
+                            <View style={styles.controllerContent}>
+                                {controller}
                             </View>
                         </View>
                     </View>
@@ -149,8 +162,7 @@ export default class ObjectScreen extends React.Component {
         super(props, context);
 
         this.state = {
-            currentVideoIndex: store.getState().objectVideo.index,
-            obj: assetManager.yamlCache[store.getState().objectVideo.video],
+            screenPosition: new Animated.Value(store.getState().objectVideo.index * -screenWidth),
         }
 
         this._onNext = this._onNext.bind(this);
@@ -162,16 +174,11 @@ export default class ObjectScreen extends React.Component {
 
         this.props.navigation.addListener('didFocus', () => {
             this.unsubscribe = store.subscribe(() => {
-                this.props.navigation.navigate({
-                    routeName: navigator.object.id,
-                    params: {
-                        url: this.props.navigation.getParam('url'),
-                        title: assetManager.yamlCache[store.getState().objectVideo.video]['Titre'],
-                        transition: this.previous ? "slideLeft" : "default"
-                    },
-                    key: '_' + Math.random().toString(36).substr(2, 9)
-                });
-
+                Animated.timing(this.state.screenPosition, {
+                    toValue: store.getState().objectVideo.index * -screenWidth,
+                    duration: 500,
+                }).start();
+                this.launchVideo(store.getState().objectVideo.video);
             })
             this.launchVideo(store.getState().objectVideo.video);
         })
@@ -189,14 +196,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomColor: '#dddddd',
         backgroundColor: Config.primaryColor,
-        height: 55
     },
     controllerContent: {
         display: 'flex', 
         flexDirection: 'row',
     },
     mainPanel: {
-        flex: 1,
+        width: "100%"
     },
     content: {
         fontSize: 24,
@@ -289,6 +295,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: "white",
         marginLeft: 8
+    },
+    screens: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        flex: 1,
     }
 })
 
@@ -339,3 +351,5 @@ const customTheme = {
         button: {marginTop: -22, borderColor: Config.primaryColor},
     }
 }
+
+const screenWidth = Math.round(Dimensions.get('window').width);
