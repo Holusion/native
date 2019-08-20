@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: '#dddddd',
-        backgroundColor: Config.primaryColor,
         bottom: 16,
         width: 75 * 3 + 32,
         height: 75 + 32,
