@@ -188,26 +188,35 @@ export default class ObjectScreen extends React.Component {
     }
 }
 
+const screenWidth = Math.round(Dimensions.get('window').width);
+
 const styles = StyleSheet.create({
     controller: {
-        width: "100%",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: '#dddddd',
         backgroundColor: Config.primaryColor,
+        bottom: 16,
+        width: 75 * 3 + 32,
+        height: 75 + 32,
+        left: (screenWidth - 75 * 3 + 32) / 2,
+        position: "absolute",
     },
     controllerContent: {
         display: 'flex', 
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     mainPanel: {
-        width: "100%"
+        width: "100%",
     },
     content: {
         fontSize: 24,
         paddingLeft: 24,
-        paddingRight: 24
+        paddingRight: 24,
+        marginBottom: 150
     },
     title: {
         color: Config.primaryColor,
@@ -348,8 +357,6 @@ const customTheme = {
         }
     },
     'holusion.IconPushButton': {
-        button: {marginTop: -22, borderColor: Config.primaryColor},
+        button: {borderColor: Config.primaryColor},
     }
 }
-
-const screenWidth = Math.round(Dimensions.get('window').width);
