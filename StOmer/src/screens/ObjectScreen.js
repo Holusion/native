@@ -30,6 +30,7 @@ export default class ObjectScreen extends React.Component {
             network.desactiveAll(productUrl).then(elem => {
                 network.active(productUrl, `${videoName}.mp4`)
             }).then(_ => {
+                // Log video, timestamp
                 network.play(productUrl, `${videoName}.mp4`)
             }).catch(err => {
                 store.dispatch(actions.setErrorTask("http_request", err.message));
@@ -38,6 +39,7 @@ export default class ObjectScreen extends React.Component {
 
     }
 
+    //interesting to render more images and logos, need rework
     renderLogo(video) {
         if(video['logo']) {
             let logos = video['logo'];
@@ -73,6 +75,7 @@ export default class ObjectScreen extends React.Component {
         }
     }
 
+    // Active video, play once 
     renderDetailsButton(video) {
         const buttons = video.details.map(elem => {
             return (

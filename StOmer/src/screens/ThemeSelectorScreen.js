@@ -23,15 +23,16 @@ export default class ThemeSelectorScreen extends React.Component {
         let actualSelection = assetManager.allCatalogue;
         let catchphrase = strings.selection.catchphrase_collection;
 
+        // color alternance for items
         for(let i = 0; i < actualSelection.length; i++) {
-            let isPurple = (i % 2 == 0);
-            let backgroundColor = isPurple ? Config.primaryColor : null;
-            let color = isPurple ? "white" : Config.secondaryColor;
+            let isPrimary = (i % 2 == 0); 
+            let backgroundColor = isPrimary ? Config.primaryColor : null;
+            let color = isPrimary ? "white" : Config.secondaryColor;
 
             allList.push(
                 <ListItemComponent key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
                     <View style={styles.textContainer}>
-                        <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i].replace('Thème : ', '')}</Text>
+                        <Text style={[{color: color}, styles.selectionText]}>{actualSelection[i]}</Text>
                     </View>
                 </ListItemComponent>
             );
@@ -55,6 +56,7 @@ export default class ThemeSelectorScreen extends React.Component {
 
         this._onSelection = this._onSelection.bind(this);
 
+        // should be in an other class to include
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
         }

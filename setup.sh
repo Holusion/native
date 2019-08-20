@@ -1,4 +1,5 @@
 #!/bin/bash
+# Not use it, it't not updated
 
 if test -z "$1" ;then
   echo "USAGE: setup.sh <project-name>"

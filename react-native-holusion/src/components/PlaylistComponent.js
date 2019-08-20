@@ -17,6 +17,7 @@ function renderContent(props) {
                 <IconCardComponent source={{uri: current.imageUri, scale: 1}} title={current.title}/>
             </TouchableOpacity>
         )
+        // Create new row each 3 items (should be a variable)
         if(items.length % 3 == 0) {
             rows.push(
                 <Row key={i}>

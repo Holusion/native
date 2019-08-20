@@ -19,6 +19,7 @@ import { store } from '../utils/flux';
 export default class CatalogueScreen extends React.Component {
 
     _onPlayslistItem(id) {
+        // Store the collection of yaml passed in navigation param
         store.dispatch(actions.setVideo(this.props.navigation.getParam('objList'), id))
 
         this.props.navigation.push(navigator.object.id, {
@@ -55,6 +56,7 @@ export default class CatalogueScreen extends React.Component {
             let url = this.props.navigation.getParam('url');
             if(url) {
                 try {
+                    // Should only active items from current collection
                     await network.activeOnlyYamlItems(url, assetManager.yamlCache);
                 } catch(err) {
                     store.dispatch(actions.setErrorTask("http_request", err.message));
