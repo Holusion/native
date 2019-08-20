@@ -17,7 +17,7 @@ for(let nav in navigator) {
   pushNavigator(navigator[nav]);
 }
 
-const AppNavigator = createStackNavigator(stackNavigator, {transitionConfig: TransitionConfiguration});
+const AppNavigator = createStackNavigator(stackNavigator);
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
