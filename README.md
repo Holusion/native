@@ -5,10 +5,55 @@
 Lancez la commande suivante :
 
 ```
-bash setup.sh <project-name>
+react-native init <project-name>
 ```
 
-Attendez que la fin de l'exécution et l'ouverture du projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
+### Dépendances :
+
+A ajouter au package.json
+
+```json
+  //package.json, toujours préférer une version de react native récente
+  "dependencies": {
+    "react": "16.8.6",
+    "react-native": "0.60.4",
+    "@holusion/react-native-holusion": "^0.3.0",
+    "events": "^3.0.0",
+    "markdown-it-attrs": "^2.3.2",
+    "native-base": "^2.12.1",
+    "react-native-fs": "^2.12.1",
+    "react-native-gesture-handler": "^1.0.10",
+    "react-native-markdown-renderer": "^3.2.8",
+    "react-native-share": "^1.1.3",
+    "react-native-vector-icons": "^6.4.2",
+    "react-native-video": "^4.4.1",
+    "react-native-zeroconf": "^0.9.0",
+    "react-navigation": "^3.11.0",
+    "react-navigation-redux-helpers": "^2.0.6",
+    "react-native-firebase": "^5.5.6"
+  },
+  "devDependencies": {
+    "@babel/core": "7.5.5",
+    "@babel/runtime": "7.5.5",
+    "@react-native-community/eslint-config": "0.0.3",
+    "babel-jest": "24.8.0",
+    "eslint": "6.1.0",
+    "jest": "24.8.0",
+    "metro-react-native-babel-preset": "0.54.1",
+    "react-test-renderer": "16.8.6"
+  }
+```
+
+puis
+
+```sh
+react-native link
+cd ios
+pod update
+pod install
+```
+
+Ouvrez le projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
 puis dans l'onglet Signing, sélectionnez le compte Holusion. Faire de même dans la cible Test (à gauche de Général, sélectionnez project-nameTest)).
 
 Ajoutez le fichier GoogleService-Info.plist (File> Add file to)
@@ -26,6 +71,18 @@ source: https://github.com/facebook/react-native/issues/16106
 Puis lancez le build.
 
 ## Fichiers remarquable
+
+Ils faut copier ces fichiers au travers des différents projets :
+
+- assets/
+- src/
+- App.js
+- Config.js
+- navigator.js
+- string.json
+- resources.js
+- GoogleService-Info.plist
+- index.js
 
 Certains fichiers permettent de configurer plus en profondeur le projet :
 
