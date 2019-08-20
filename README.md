@@ -25,14 +25,43 @@ source: https://github.com/facebook/react-native/issues/16106
 
 Puis lancez le build.
 
-## Configurer le projet
+## Fichiers remarquable
 
-Rendez vous dans `/src/utils/Config.js`, il y a plusieurs variables que vous pouvez modifier. Modifier ces variables aura un effet sur toute l'application.
+Certains fichiers permettent de configurer plus en profondeur le projet :
 
-- primaryColor: couleur primaire, couleur des cartes par exemple
-- secondaryColor: couleur secondaire, écriture, logo, etc...
-- projectName: nom du projet, utile pour firebase et les headers de l'application
+### Config.js
 
-## Documentation
+Ce fichier stock différentes valeurs concernant le projet, par exemple les couleurs principales, secondaires et de texte sont inscrientt ici.
+On peut aussi y indiquer le nom du projet (important pour que Firebase puisse retrouver les fichiers associés)
 
-La documentation concernant la structure du projet est situé dans le dossier "documentation"
+### strings.js
+
+Ce fichier contient toutes les chaines de caractères statique du projet, Il est plus facile alors de changer une zone de texte grâce à ce fichier.
+
+## navigator.js
+
+Ce fichier contient la configuration des écrans, on y retrouver leur identifiant, leur composant associé et leurs options (voir la doc de react-navigation pour plus d'informations concernant les options).
+
+## Troubleshooting
+
+### RNZeroconf.lib emet un erreur  la compilation
+
+La bibliothèque n'est pas à jour pour react-native v0.6 ou plus, avec de la chance la pull request : https://github.com/balthazar/react-native-zeroconf/pull/97. En attendant il
+faut récupérer le commit de la pull request et ajouter le fichier podspec dans le dossier node-modules/react-native-zeroconf du projet
+
+### L'appli renvoie une erreur concernant FIRApp
+
+Il faut ajouter un morceau de code dans le AppDelegate.m du projet (sur XCode)
+
+```c#
+#import <Firebase.h>
+
+[FIRApp configure]; // Au dessus de RCTBridge dans la méthode didFinishLaunchingWithOptions
+```
+
+source : https://rnfirebase.io/docs/v5.x.x/installation/ios
+
+### react-native-markdown-renderer envoie des warning
+
+La bibliothèque utiliser pour afficher du texte markdown n'est plus maintenu : https://github.com/mientjan/react-native-markdown-renderer/issues/115
+Il faudra probablement penser à trouver une autre solution lors de la prchaine grosse mise à jour de React
