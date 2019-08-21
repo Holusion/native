@@ -4,6 +4,7 @@ import getTheme from '../../native-base-theme/components';
 
 import { assetManager, network, IconButton, IconPushButton } from '@holusion/react-native-holusion'
 import { View, Image, ScrollView, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
+import Carousel from 'react-native-looped-carousel'
 
 import Markdown from 'react-native-markdown-renderer'
 
@@ -95,36 +96,41 @@ export default class ObjectScreen extends React.Component {
         )
     }
 
+    renderObject(video) {
+        let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
+        const short = <Markdown style={markdownContent}>{video.short}</Markdown>
+        
+        return (
+            <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
+                <View style={styles.textContent}>
+                    <View style={styles.short}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.catchPhrase}>{video['Titre']}</Text>
+                            <Text style={styles.subTitle}>{video['SousTitre']}</Text>
+                        </View>
+                        {short}
+                        {this.renderDetailsButton(video)}
+                    </View>
+                    <View style={styles.medallionContainer}>
+                        <Medallion imageUri={imageUri} obj={video} references={video.references}/>
+                    </View>
+                </View>
+                <View style={styles.content}>
+                    <Markdown style={markdownContent}>{video['Texte principal']}</Markdown>
+                </View>
+            </ScrollView>
+        )
+    }
+
     renderObjects() {
         const videos = store.getState().objectVideo.videos.map(elem => assetManager.yamlCache[elem]);
 
-        return videos.map((video, index) => {
-            let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
-            const short = <Markdown style={markdownContent}>{video.short}</Markdown>
-            
-            return (
-                <Animated.View style={{...styles.mainPanel, transform: [{translateX: this.state.screenPosition}]}}>
-                    <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
-                        <View style={styles.textContent}>
-                            <View style={styles.short}>
-                                <View style={styles.titleContainer}>
-                                    <Text style={styles.catchPhrase}>{video['Titre']}</Text>
-                                    <Text style={styles.subTitle}>{video['SousTitre']}</Text>
-                                </View>
-                                {short}
-                                {this.renderDetailsButton(video)}
-                            </View>
-                            <View style={styles.medallionContainer}>
-                                <Medallion imageUri={imageUri} obj={video} references={video.references}/>
-                            </View>
-                        </View>
-                        <View style={styles.content}>
-                            <Markdown style={markdownContent}>{video['Texte principal']}</Markdown>
-                        </View>
-                    </ScrollView>
-                </Animated.View>
-            )
-        })
+        return videos.map(video => this.renderObject(video));
+    }
+
+    onLayoutDidChange = (e) => {
+        const layout = e.nativeEvent.layout;
+        this.setState(() => ({size: {width: layout.width, height: layout.height}}))
     }
 
     render() {
@@ -137,10 +143,10 @@ export default class ObjectScreen extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <StyleProvider style={Object.assign(getTheme(), customTheme)}>
-                    <View style={{flex: 1}}>
-                        <View style={styles.screens}>
+                    <View style={{flex: 1}} onLayout={this.onLayoutDidChange}>
+                        <Carousel ref={ref => this.carousel = ref} style={[{flex: 1, width: this.state.size.width}]} autoplay={false} currentPage={store.getState().objectVideo.index} onAnimateNextPage={this.changeVideo}>
                             {this.renderObjects()}
-                        </View>
+                        </Carousel>
                         <View style={styles.controller}>
                             <View style={styles.controllerContent}>
                                 {controller}
@@ -153,19 +159,25 @@ export default class ObjectScreen extends React.Component {
     }
 
     _onNext() {
+        this.carousel._animateNextPage();
         store.dispatch(actions.nextVideo(store.getState().objectVideo.videos))
     }
 
     _onPrevious() {
-        this.previous = true;
+        this.carousel._animatePreviousPage();
         store.dispatch(actions.previousVideo(store.getState().objectVideo.videos))
+    }
+
+    changeVideo = (p) => {
+        console.error(p);
+        store.dispatch(actions.setVideo(store.getState().objectVideo.videos, p))
     }
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            screenPosition: new Animated.Value(store.getState().objectVideo.index * -screenWidth),
+            size: {width, height}
         }
 
         this._onNext = this._onNext.bind(this);
@@ -177,10 +189,6 @@ export default class ObjectScreen extends React.Component {
 
         this.props.navigation.addListener('didFocus', () => {
             this.unsubscribe = store.subscribe(() => {
-                Animated.timing(this.state.screenPosition, {
-                    toValue: store.getState().objectVideo.index * -screenWidth,
-                    duration: 500,
-                }).start();
                 this.launchVideo(store.getState().objectVideo.video);
             })
             this.launchVideo(store.getState().objectVideo.video);
@@ -191,7 +199,7 @@ export default class ObjectScreen extends React.Component {
     }
 }
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     controller: {
@@ -202,7 +210,7 @@ const styles = StyleSheet.create({
         bottom: 16,
         width: 75 * 3 + 32,
         height: 75 + 32,
-        left: (screenWidth - 75 * 3 + 32) / 2,
+        left: (width - 75 * 3 + 32) / 2,
         position: "absolute",
     },
     controllerContent: {
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     mainPanel: {
-        width: "100%",
+        
     },
     content: {
         fontSize: 24,
