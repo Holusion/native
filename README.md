@@ -17,7 +17,7 @@ A ajouter au package.json
   "dependencies": {
     "react": "16.8.6",
     "react-native": "0.60.4",
-    "@holusion/react-native-holusion": "^0.3.0",
+    "@holusion/react-native-holusion": "^0.4.0",
     "events": "^3.0.0",
     "markdown-it-attrs": "^2.3.2",
     "native-base": "^2.12.1",
