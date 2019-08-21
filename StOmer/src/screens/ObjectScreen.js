@@ -18,9 +18,7 @@ import * as actions from '../actions'
 import Medallion from '../components/Medallion';
 
 /**
- * Object screen is the screen that render the selected object. We can change object to click on left or right panel. Changing object has effect to send multiple request to
- * the controller (on the connected product). It will deactivate all file and activate the current video associated to the object.
- * It manage the modal renderering when footer button are clicked too
+ * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
  */
 export default class ObjectScreen extends React.Component {
 
@@ -145,8 +143,17 @@ export default class ObjectScreen extends React.Component {
         this.setState(() => ({size: {width: layout.width, height: layout.height}}))
     }
 
+    pauseVideo = () => {
+        //TODO: should send pause to the controller
+    }
+
+    unpauseVideo = () => {
+        //TODO: should send unpause to the controller
+    }
+
     render() {
-        const controller = [<IconPushButton type="Ionicons" name="pause" />];
+        // onPressIn when touched start, onPressOut when touched end
+        const controller = [<IconPushButton type="Ionicons" name="pause" onPressIn={pauseVideo} onPressOut={unpauseVideo} />];
         if(store.getState().objectVideo.videos.length > 1) {
             controller.unshift(<IconButton type="Ionicons" name="skip-backward" onPress={this._onPrevious} />);
             controller.push(<IconButton type="Ionicons" name="skip-forward" onPress={this._onNext} />);
