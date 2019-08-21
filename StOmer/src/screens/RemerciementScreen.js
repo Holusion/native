@@ -6,6 +6,7 @@ import { assetManager } from '@holusion/react-native-holusion';
 import RNFS from 'react-native-fs';
 
 import * as Config from '../../Config'
+import Markdown from 'react-native-markdown-renderer';
 
 /**
  * This screen renders the remerciement page
@@ -85,11 +86,9 @@ export default class RemerciementScreen extends React.Component {
                 <Content>
                     <Text style={[styles.catchphrase, {color: Config.remoteConfig.primaryColor}]}>Remerciements</Text>
                     <ScrollView style={{marginLeft: 32, marginRight: 32}}>
-                        <Text style={[styles.content, {color: Config.remoteConfig.textColor}]}>
-                            <Text style={{fontWeight: 'bold'}}>Holusion{"\n"}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Thibault Guillaumont</Text>, Co-fondateur{"\n"}
-                            <Text style={{fontWeight: 'bold'}}>Yann Dubois</Text>, Chef de projet informatique et technique{"\n"}{"\n"}
-                        </Text>
+                        <Markdown style={{text: {fontSize: 32, color: Config.remoteConfig.textColor}}}>
+                            {Config.remoteConfig.remerciements}
+                        </Markdown>
                         {this.renderLogo()}
                     </ScrollView>
                 </Content>
