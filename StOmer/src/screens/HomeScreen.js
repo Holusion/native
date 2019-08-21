@@ -17,6 +17,7 @@ import {navigator} from "../../navigator"
 export default class HomeScreen extends React.Component {
     render() {
         const url = this.props.navigation.getParam("url");
+
         return (
             <Container style={{flex: 1}}>
                 <StyleProvider style={customTheme}>
@@ -30,6 +31,8 @@ export default class HomeScreen extends React.Component {
         super(props, context);
         this._onCardSelected = this._onCardSelected.bind(this);
         this._onRemerciement = this._onRemerciement.bind(this);
+
+        customTheme['holusion.IconCardComponent'].container.backgroundColor = Config.remoteConfig.primaryColor;
 
         this.unsubscribe = store.subscribe((action) => {
             if(action.type == actions.Task.SET_TASK) {
@@ -81,7 +84,6 @@ export default class HomeScreen extends React.Component {
 const customTheme = {
     'holusion.IconCardComponent': {
         container: {
-            backgroundColor: Config.primaryColor,
             width: 300,
             height: 300,
             shadowColor: '#000',

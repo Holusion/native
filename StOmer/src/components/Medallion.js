@@ -7,7 +7,7 @@ import Markdown from 'react-native-markdown-renderer';
 
 function Medallion(props) {
     const styles = props.style;
-    const txt = props.references.map(ref => <Markdown style={markdownText}>**{ref}** : {props.obj[ref]}</Markdown>)
+    const txt = props.references.map(ref => <Markdown style={{text: {color: Config.remoteConfig.textColor, fontSize: 24}}}>**{ref}** : {props.obj[ref]}</Markdown>)
 
     return (
         <View style={styles.container}>
@@ -39,13 +39,6 @@ const styles = {
         justifyContent: "center"
     }
 }
-
-markdownText = StyleSheet.create({
-    text: {
-        color: Config.textColor,
-        fontSize: 24
-    }
-})
 
 Medallion.propTypes = {
     imageUri: PropTypes.string,

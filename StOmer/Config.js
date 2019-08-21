@@ -1,3 +1,11 @@
+import { assetManager } from "@holusion/react-native-holusion";
+
+export const setup = () => {
+    remoteConfig = assetManager.yamlCache['config'];
+}
+
+export let remoteConfig = {};
+
 export const primaryColor = "#00517d";
 export const secondaryColor = "#2fafe6"
 export const textColor = "#103040";

@@ -19,14 +19,16 @@ export default class DefaultHomeScreenComponent extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Animated.Text style={{...styles.catchphrase, transform: [{scale: this.springValue}]}}>{strings.home.catchphrase}</Animated.Text>
+                    <Animated.Text style={[styles.catchphrase, {color: Config.remoteConfig.primaryColor, transform: [{scale: this.springValue}]}]}>
+                        {Config.remoteConfig.welcomePhrase}
+                    </Animated.Text>
                 </View>
                 <View style= {styles.cardContainer}>
                     <TouchableOpacity onPress={this.props.onCardSelected}>
-                        <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} />
+                        <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={this.props.onRemerciement} style={styles.footerContainer}>
+                <TouchableOpacity onPress={this.props.onRemerciement} style={[styles.footerContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
                     <View>
                         <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
                     </View>
@@ -67,7 +69,6 @@ const styles = StyleSheet.create({
         marginRight: 16
     },
     catchphrase: {
-        color: Config.primaryColor,
         fontSize: 48,
         textAlign: 'center'
     },
@@ -88,8 +89,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         display: 'flex', 
         justifyContent: 'center', 
-        flexDirection: 'row', 
-        backgroundColor: Config.primaryColor, 
+        flexDirection: 'row',
         borderRadius: 8, 
         padding: 8, 
         shadowOffset: {

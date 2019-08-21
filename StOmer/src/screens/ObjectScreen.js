@@ -80,8 +80,8 @@ export default class ObjectScreen extends React.Component {
     renderDetailsButton(video) {
         const buttons = video.details.map(elem => {
             return (
-                <TouchableOpacity style={styles.detailContainer}>
-                    <View style={styles.detailIcon}>
+                <TouchableOpacity style={[styles.detailContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
+                    <View style={[styles.detailIcon, {backgroundColor: Config.remoteConfig.textColor}]}>
                         <Icon type={"Ionicons"} style={{color: "white", fontSize: 24}} name={"play"} />
                     </View>
                     <Text style={styles.detailText}>{elem.titre}</Text>
@@ -98,14 +98,20 @@ export default class ObjectScreen extends React.Component {
 
     renderObject(video) {
         let imageUri = `file://${RNFS.DocumentDirectoryPath}/${Config.projectName}/${store.getState().objectVideo.video}.jpg`;
-        const short = <Markdown style={markdownContent}>{video.short}</Markdown>
+        const short = <Markdown style={{text: {
+            color: Config.remoteConfig.textColor,
+            fontSize: 24,
+            textAlign: "justify"
+        }}}>
+            {video.short}
+        </Markdown>
         
         return (
             <ScrollView style={styles.scrollContainer} scrollEventThrottle={16}>
                 <View style={styles.textContent}>
                     <View style={styles.short}>
                         <View style={styles.titleContainer}>
-                            <Text style={styles.catchPhrase}>{video['Titre']}</Text>
+                            <Text style={[styles.catchPhrase, {color: Config.remoteConfig.primaryColor}]}>{video['Titre']}</Text>
                             <Text style={styles.subTitle}>{video['SousTitre']}</Text>
                         </View>
                         {short}
@@ -116,7 +122,13 @@ export default class ObjectScreen extends React.Component {
                     </View>
                 </View>
                 <View style={styles.content}>
-                    <Markdown style={markdownContent}>{video['Texte principal']}</Markdown>
+                    <Markdown style={{text: {
+                        color: Config.remoteConfig.textColor,
+                        fontSize: 24,
+                        textAlign: "justify"
+                    }}}>
+                        {video['Texte principal']}
+                    </Markdown>
                 </View>
             </ScrollView>
         )
@@ -174,10 +186,15 @@ export default class ObjectScreen extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
         this.state = {
             size: {width, height}
         }
+
+        customTheme['holusion.ButtonInOutComponent'].icon.color = Config.remoteConfig.primaryColor;
+        customTheme['holusion.ClickPanelComponent'].icon.color = Config.remoteConfig.primaryColor;
+        customTheme['holusion.ClickPanelComponent'].content.color = Config.remoteConfig.secondaryColor;
+        customTheme['holusion.IconButton'].icon.color = Config.remoteConfig.secondaryColor;
+        customTheme['holusion.IconPushButton'].button.borderColor = Config.remoteConfig.primaryColor;
 
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
@@ -227,14 +244,8 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         marginBottom: 150
     },
-    title: {
-        color: Config.primaryColor,
-        fontSize: 28,
-        margin: 12,
-        textAlign: 'left'
-    },
     bottomButton: {
-        backgroundColor: Config.primaryColor,
+        backgroundColor: Config.remoteConfig.primaryColor,
         color: "#FFFFFF",
         margin: 4, 
         marginBottom: 16, 
@@ -262,7 +273,6 @@ const styles = StyleSheet.create({
         width: "33%"
     },
     catchPhrase: {
-        color: Config.primaryColor,
         fontSize: 32,
         textAlign: 'left'
     },
@@ -285,7 +295,6 @@ const styles = StyleSheet.create({
         fontStyle: "italic"
     },
     detailContainer: {
-        backgroundColor: Config.primaryColor,
         padding: 8,
         width: "100%",
         display: "flex",
@@ -304,7 +313,6 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: Config.textColor,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -314,34 +322,20 @@ const styles = StyleSheet.create({
         color: "white",
         marginLeft: 8
     },
-    screens: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        flex: 1,
-    }
-})
-
-const markdownContent = StyleSheet.create({
-    text: {
-        color: Config.textColor,
-        fontSize: 24,
-        textAlign: "justify"
-    }
 })
 
 const customTheme = {
     'holusion.ButtonInOutComponent': {
         icon: {
-            color: Config.primaryColor
+            color: Config.remoteConfig.primaryColor
         }
     },
     'holusion.ClickPanelComponent': {
         icon: {
-            color: Config.primaryColor
+            color: Config.remoteConfig.primaryColor
         },
         content: {
-            color: Config.secondaryColor
+            color: Config.remoteConfig.secondaryColor
         }
     },
     'holusion.Medallion': {
@@ -362,10 +356,10 @@ const customTheme = {
             backgroundColor: null
         },
         icon: {
-            color: Config.secondaryColor
+            color: Config.remoteConfig.secondaryColor
         }
     },
     'holusion.IconPushButton': {
-        button: {borderColor: Config.primaryColor},
+        button: {borderColor: Config.remoteConfig.primaryColor},
     }
 }

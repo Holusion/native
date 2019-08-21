@@ -31,7 +31,7 @@ export default class CatalogueScreen extends React.Component {
     render() {
         return(
             <Container>
-                <Text style={styles.catchPhrase}>{strings.catalogue.catchphrase}</Text>
+                <Text style={[styles.catchPhrase, {color: Config.remoteConfig.primaryColor}]}>{strings.catalogue.catchphrase}</Text>
                 <StyleProvider style={customTheme}>
                     <PlaylistComponent playlist={this.playlist} actionItem={this._onPlayslistItem} />
                 </StyleProvider>
@@ -41,6 +41,10 @@ export default class CatalogueScreen extends React.Component {
     
     constructor(props, context) {
         super(props, context);
+
+        customTheme['holusion.PlaylistComponent']['holusion.IconCardComponent'].container.borderColor = Config.remoteConfig.primaryColor;
+        customTheme['holusion.PlaylistComponent']['holusion.IconCardComponent'].titleContainer.backgroundColor = Config.remoteConfig.primaryColor;
+
         this._onPlayslistItem = this._onPlayslistItem.bind(this);
         if(this.props.navigation.getParam("url")) {
             this.props.navigation.setParams({'color': 'green'});
@@ -68,7 +72,6 @@ export default class CatalogueScreen extends React.Component {
 
 const styles = StyleSheet.create({
     catchPhrase: {
-        color: Config.primaryColor,
         fontSize: 32,
         margin: 24,
         textAlign: 'left'
@@ -81,7 +84,6 @@ const customTheme = {
             container: {
                 backgroundColor: "#fff",
                 borderWidth: 2,
-                borderColor: Config.primaryColor,
                 margin: 4,
                 padding: 0,
                 shadowColor: '#000',
@@ -95,7 +97,6 @@ const customTheme = {
                 resizeMode: 'contain'
             },
             titleContainer: {
-                backgroundColor: Config.primaryColor,
                 width: '100%',
                 height: '25%',
                 flex: 1,

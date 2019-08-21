@@ -26,8 +26,8 @@ export default class ThemeSelectorScreen extends React.Component {
         // color alternance for items
         for(let i = 0; i < actualSelection.length; i++) {
             let isPrimary = (i % 2 == 0); 
-            let backgroundColor = isPrimary ? Config.primaryColor : null;
-            let color = isPrimary ? "white" : Config.secondaryColor;
+            let backgroundColor = isPrimary ? Config.remoteConfig.primaryColor : null;
+            let color = isPrimary ? "white" : Config.remoteConfig.secondaryColor;
 
             allList.push(
                 <ListItemComponent key={i} style={[{backgroundColor: backgroundColor}, styles.listItem]} onPress={() => this._onSelection(actualSelection[i])}>
@@ -41,7 +41,7 @@ export default class ThemeSelectorScreen extends React.Component {
         return (
             <Content>
                 <View>
-                    <Text  style={styles.catchPhrase}>{catchphrase}</Text>
+                    <Text  style={[styles.catchPhrase, {color: Config.remoteConfig.primaryColor}]}>{catchphrase}</Text>
                 </View>
                 <View style={styles.separator}></View>
                 <View>
@@ -84,7 +84,6 @@ export default class ThemeSelectorScreen extends React.Component {
 
 const styles = StyleSheet.create({
     catchPhrase: {
-        color: Config.primaryColor,
         fontSize: 32,
         margin: 24,
         textAlign: 'left'

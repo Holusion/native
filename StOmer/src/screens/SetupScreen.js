@@ -25,6 +25,7 @@ export default class SetupScreen extends React.Component {
         try {
             let firebaseError = await firebaseController.getFiles([
                 {name: 'projects', properties: ['uri', 'thumb']},
+                {name: 'config', properties: ['uri']},
                 {name: 'logos', properties: ['logo']}
             ]);
             
@@ -146,6 +147,7 @@ export default class SetupScreen extends React.Component {
         }
 
         if(store.getState().appState == actions.AppState.READY && [...store.getState().tasks.values()].filter(elem => elem.type == "danger" || elem.type == "info").length == 0) {
+            Config.setup();
             this.props.navigation.push(navigator.home.id, {url: this.state.url})
         }
 

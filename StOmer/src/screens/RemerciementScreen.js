@@ -83,9 +83,9 @@ export default class RemerciementScreen extends React.Component {
         return (
             <Container>
                 <Content>
-                    <Text style={styles.catchphrase}>Remerciements</Text>
+                    <Text style={[styles.catchphrase, {color: Config.remoteConfig.primaryColor}]}>Remerciements</Text>
                     <ScrollView style={{marginLeft: 32, marginRight: 32}}>
-                        <Text style={styles.content}>
+                        <Text style={[styles.content, {color: Config.remoteConfig.textColor}]}>
                             <Text style={{fontWeight: 'bold'}}>Holusion{"\n"}</Text>
                             <Text style={{fontWeight: 'bold'}}>Thibault Guillaumont</Text>, Co-fondateur{"\n"}
                             <Text style={{fontWeight: 'bold'}}>Yann Dubois</Text>, Chef de projet informatique et technique{"\n"}{"\n"}
@@ -108,10 +108,8 @@ export default class RemerciementScreen extends React.Component {
 const styles = StyleSheet.create({
     content: {
         fontSize: 32,
-        color: Config.textColor
     },
     catchphrase: {
-        color: Config.primaryColor,
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,

@@ -116,10 +116,10 @@ export default class ObjectRemerciementsScreen extends React.Component {
 const styles = StyleSheet.create({
     content: {
         fontSize: 32, 
-        color: Config.secondaryColor
+        color: Config.remoteConfig.secondaryColor
     },
     catchphrase: {
-        color: Config.primaryColor,
+        color: Config.remoteConfig.primaryColor,
         fontSize: 48,
         textAlign: 'center',
         marginTop: 50,
@@ -136,10 +136,10 @@ const markdown = StyleSheet.create({
     em: {
         fontSize: 38,
         fontWeight: 'bold',
-        color: Config.primaryColor,
+        color: Config.remoteConfig.primaryColor,
     },
     text: {
         fontSize: 32, 
-        color: Config.secondaryColor
+        color: Config.remoteConfig.secondaryColor
     }
 })
