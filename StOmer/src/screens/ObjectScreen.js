@@ -169,7 +169,6 @@ export default class ObjectScreen extends React.Component {
     }
 
     changeVideo = (p) => {
-        console.error(p);
         store.dispatch(actions.setVideo(store.getState().objectVideo.videos, p))
     }
 
