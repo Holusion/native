@@ -49,7 +49,7 @@ class HomeScreen extends React.Component {
     }
 
     _onCardSelected() {
-        this.props.navigation.push(navigator.selection.id, {url: this.props.navigation.getParam('url')})
+        this.props.navigation.navigate("")
     }
 
     _onRemerciement() {

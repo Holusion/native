@@ -1,38 +1,62 @@
-import {createStackNavigator, createAppContainer, NavigationActions} from 'react-navigation'
-import { Root } from 'native-base';
-import {Button} from "react-native";
+import {createStackNavigator, createAppContainer} from 'react-navigation'
+import { Root, Icon, Button, Text } from 'native-base';
 import React from 'react';
-import { Provider} from 'react-redux'
+import { Provider, connect} from 'react-redux'
 
 import store from './src/store'
 import HomeScreen from "./src/screens/HomeScreen";
+import ConnectScreen from "./src/screens/ConnectScreen";
 
 import {navigator, TransitionConfiguration} from './navigator'
 
 import Network from "./Network";
 import * as strings from "./strings.json";
 
-
-const navigator = {
-  home: {
-    screen: HomeScreen,
-    navigationOptions: (navigation)=>{
-      return {}
-    }
+function navigationOptions({navigation}){
+  return {
+    headerRight: <NetIcon onPress={() => {navigation.navigate("Connect")}}/>, 
   }
 }
 
-const navigationOptions = {
+const navigation = {
+  Home: {
+    screen: HomeScreen,
+    navigationOptions,
+  },
+  Connect:{
+    screen: ConnectScreen,
+    navigationOptions,
+  }
+}
+
+class NetworkIcon extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color: this.props.connected?"green": "red"}} name="ios-wifi" /></Button>);
+  }
+}
+
+function mapStateToProps(state){
+  const {products} = state;
+  return {
+    connected: products.find(p => p.active == true)?true: false
+  }
+}
+
+const NetIcon = connect(mapStateToProps)(NetworkIcon);
+
+const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
     headerLeft: null,
     headerStyle: {height: 24, display: 'flex'}, 
-    headerRight: <Button onPress={NavigationActions.navigate("Connect")} title="Connect"/>, 
     headerBackTitle: strings.back
   }
 }
 
-const AppNavigator = createStackNavigator(navigator, navigationOptions);
+const AppNavigator = createStackNavigator(navigation, options);
 const AppContainer = createAppContainer(AppNavigator);
 
 

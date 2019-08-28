@@ -4,6 +4,9 @@ export const Task = {SET_TASK: "ADD_TASK", REMOVE_TASK: "REMOVE_TASK", CLEAR_TAS
 export const SetObjectVideo = {NEXT_VIDEO: "NEXT_VIDEO", PREVIOUS_VIDEO: "PREVIOUS_VIDEO", SET_VIDEO: "SET_VIDEO"}
 
 export const SET_PRODUCTS = 'SET_PRODUCTS';
+export const SET_ACTIVE = 'SET_ACTIVE';
+
+export const SET_NETINFO = 'SET_NETINFO';
 
 export const AppState = {INIT: "INIT", DOWNLOAD_FIREBASE: "DOWNLOAD_FIREBASE", LOAD_YAML: "LOAD_YAML", SEARCH_PRODUCT: "SEARCH_PRODUCT", WAIT_FOR_PRODUCT: "WAIT_FOR_PRODUCT", PRODUCT_FOUND: "PRODUCT_FOUND", READY: "READY"}
 export const SelectionType = {ANY_SELECTION: "ANY_SELECTION", VISITE: "VISITE", CATALOGUE: "CATALOGUE"}
@@ -54,4 +57,10 @@ export const setVideo = (videos, index) => {
 
 export const setProducts = (products) => {
     return {type:SET_PRODUCTS, products}
+}
+export const setActive = (item)=>{
+    return {type: SET_ACTIVE, name: item.name}
+}
+export const setNetInfo = (status)=>{
+    return {type: SET_NETINFO, status}
 }
