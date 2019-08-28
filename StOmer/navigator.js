@@ -12,7 +12,6 @@ import * as strings from "./strings.json";
 
 import {Icon} from 'native-base';
 import { HeaderBackButton } from 'react-navigation';
-import { Easing, Animated } from 'react-native';
 
 const wifiIcon = (navigation) => <Icon style={{marginRight: 16, color: navigation.getParam("color", "red")}} name="ios-wifi"/>;
 const headerStyle = {height: 24, display: 'flex'}

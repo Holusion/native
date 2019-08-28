@@ -1,29 +1,46 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation'
+import {createStackNavigator, createAppContainer, NavigationActions} from 'react-navigation'
 import { Root } from 'native-base';
+import {Button} from "react-native";
 import React from 'react';
+import { Provider} from 'react-redux'
+
+import store from './src/store'
+import HomeScreen from "./src/screens/HomeScreen";
 
 import {navigator, TransitionConfiguration} from './navigator'
 
-let stackNavigator = {};
+import Network from "./Network";
+import * as strings from "./strings.json";
 
-const pushNavigator = (nav) => {
-  stackNavigator[nav.id] = {
-    screen: nav.screen,
-    navigationOptions: ({ navigation }) => nav.options(navigation)
-  };
+
+const navigator = {
+  home: {
+    screen: HomeScreen,
+    navigationOptions: (navigation)=>{
+      return {}
+    }
+  }
 }
 
-for(let nav in navigator) {
-  pushNavigator(navigator[nav]);
+const navigationOptions = {
+  defaultNavigationOptions:{
+    gesturesEnabled: false,
+    headerLeft: null,
+    headerStyle: {height: 24, display: 'flex'}, 
+    headerRight: <Button onPress={NavigationActions.navigate("Connect")} title="Connect"/>, 
+    headerBackTitle: strings.back
+  }
 }
 
-const AppNavigator = createStackNavigator(stackNavigator);
+const AppNavigator = createStackNavigator(navigator, navigationOptions);
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {
-  render() {
-    return <Root>
-      <AppContainer />
-    </Root>
-  }
+
+export default function App(props){
+  return <Root>
+    <Provider store={store}>
+      <Network/>
+      <AppContainer />      
+    </Provider>
+  </Root>
 }

@@ -3,6 +3,8 @@ export const CHANGE_SELECTION_TYPE = 'CHANGE_SELECTION_TYPE'
 export const Task = {SET_TASK: "ADD_TASK", REMOVE_TASK: "REMOVE_TASK", CLEAR_TASK: "CLEAR_TASK"}
 export const SetObjectVideo = {NEXT_VIDEO: "NEXT_VIDEO", PREVIOUS_VIDEO: "PREVIOUS_VIDEO", SET_VIDEO: "SET_VIDEO"}
 
+export const SET_PRODUCTS = 'SET_PRODUCTS';
+
 export const AppState = {INIT: "INIT", DOWNLOAD_FIREBASE: "DOWNLOAD_FIREBASE", LOAD_YAML: "LOAD_YAML", SEARCH_PRODUCT: "SEARCH_PRODUCT", WAIT_FOR_PRODUCT: "WAIT_FOR_PRODUCT", PRODUCT_FOUND: "PRODUCT_FOUND", READY: "READY"}
 export const SelectionType = {ANY_SELECTION: "ANY_SELECTION", VISITE: "VISITE", CATALOGUE: "CATALOGUE"}
 
@@ -48,4 +50,8 @@ export const previousVideo = (videos) => {
 
 export const setVideo = (videos, index) => {
     return {type: SetObjectVideo.SET_VIDEO, videos, index}
+}
+
+export const setProducts = (products) => {
+    return {type:SET_PRODUCTS, products}
 }

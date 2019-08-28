@@ -2,35 +2,33 @@ import Zeroconf from 'react-native-zeroconf';
 
 let allProducts = [];
 
-export const connect = (callbackAdd, callbackRemove) => {
-    const zeroconf = new Zeroconf();
-    zeroconf.scan('workstation', 'tcp', 'local.');
-    zeroconf.on('resolved', (service) => {
-        let obj = {
-            name: service.name,
-            url: service.addresses
+export default class Network{
+    constructor(){
+        const zeroconf = new Zeroconf();
+        this.products = [];
+        this.close = ()=>{
+            zeroconf.stop();
+            zeroconf.removeDeviceListeners();
+            this.products = [];
         }
-        allProducts.push(obj);
-        if(callbackAdd) {
-            callbackAdd(service);
-        }
-    });
-    zeroconf.on('remove', (name) => {
-        allProducts = allProducts.filter(elem => elem.name != name);
-        if(callbackRemove) {
-            callbackRemove(name);
-        }
-    });
-    zeroconf.on('error', err => {
-        throw err;
-    });
 
-    return () => {
-        zeroconf.stop();
-        zeroconf.removeDeviceListeners();
-        allProducts = [];
+        zeroconf.scan('workstation', 'tcp', 'local.');
+        zeroconf.on('resolved', (service) => {
+            let obj = {
+                name: service.name,
+                url: service.addresses
+            }
+            this.products.push(obj);
+        });
+        zeroconf.on('remove', (name) => {
+            this.products = this.products.filter(elem => elem.name != name);
+        });
+        zeroconf.on('error', err => {
+            this.emit("error", err);
+        });
     }
 }
+
 
 export const hasInternetConnection = async () => {
     let res = await fetch("https://holusion.com")
