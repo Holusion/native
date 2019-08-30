@@ -1,11 +1,14 @@
 import React from 'react';
-import { connect} from 'react-redux'
 
-import { Container, StyleProvider, Toast } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {setData} from '../actions';
+import { connect} from 'react-redux';
+
+import { Container, Toast, Content, Spinner, Text} from 'native-base';
+import { StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import * as Config from '../../Config'
 
+import {loadFile} from "../utils/loadFile";
 
 import { IconCardComponent } from '@holusion/react-native-holusion'
 
@@ -13,47 +16,56 @@ import resources from '../../resources'
 import * as strings from '../../strings'
 
 
-
 class HomeScreen extends React.Component {
     render() {
+        if(this.state.status == "loading"){
+            return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center',}}>
+               <Spinner/> 
+                <Text>Loading...</Text>
+            </Content></Container>)
+        }
         return (
             <Container style={{flex: 1}}>
-                <StyleProvider style={customTheme}>
-                    <View style={styles.container}>
-                        <View style={styles.titleContainer}>
-                            <Text style={[styles.catchphrase, {color: Config.remoteConfig.primaryColor}]}>
-                                {Config.remoteConfig.welcomePhrase}
-                            </Text>
-                        </View>
-                        <View style= {styles.cardContainer}>
-                            <TouchableOpacity onPress={this.onCardSelected}>
-                                <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
-                            </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity onPress={this.onRemerciement} style={[styles.footerContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
-                            <View>
-                                <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
-                            </View>
+                <View style={styles.container}>
+                    <View style={styles.titleContainer}>
+                        <Text >
+                        </Text>
+                    </View>
+                    <View style= {styles.cardContainer}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("Object", {id:"pied_de_croix"})}>
+                            <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
                         </TouchableOpacity>
-                    </View>  
-                </StyleProvider>
+                    </View>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("Remerciements")} style={[styles.footerContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
+                        <View>
+                            <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>  
             </Container>
+           
         )
     }
 
     constructor(props) {
         super(props);
-        this.onCardSelected = this._onCardSelected.bind(this);
-        this.onRemerciement = this._onRemerciement.bind(this);
+        this.state= {status: "loading", config: {}};
 
     }
-
-    _onCardSelected() {
-        this.props.navigation.navigate("")
+    componentDidMount(){
+        this.load();
     }
-
-    _onRemerciement() {
-        this.props.navigation.push(navigator.remerciements.id);
+    load(){
+        this.setState({status: "loading"});
+        loadFile("data.json")
+        .then((data)=>{
+            this.props.setData(JSON.parse(data));
+            this.setState({status:"done"});
+            console.warn(JSON.parse(data));
+        })
+        .catch((err)=>{
+            this.props.navigation.navigate("Update",{error: "Application configuration is required"});
+        });
     }
 }
 
@@ -129,7 +141,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {target} = state;
-    return {target};
+    const {target, data} = state;
+    const cards = Object.keys(data).map((key)=>{
+        return {id: key, title: data[key]["title"], thumb: data[key]["thumb"]}
+    })
+    return {target, cards};
 }
-export default connect(mapStateToProps)(HomeScreen);
+export default connect(mapStateToProps, {setData})(HomeScreen);

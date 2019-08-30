@@ -11,7 +11,7 @@ class Network extends React.Component {
   constructor(props){
     super(props);
     this.netInfoHandler = ({type})=>{
-      this.props.setNetInfo(["none", "unknown"].indexOf(type) == -1 ? "online" : "offline")
+      this.props.setNetInfo(((["none", "unknown"].indexOf(type) == -1 )? "online" : "offline"));
     }
   }
   componentDidMount(){
@@ -34,7 +34,7 @@ class Network extends React.Component {
     });
     zeroconf.on('remove', (name) => {
       console.warn("Product disconnected : ", name);
-      this.props.setProducts(this.state.products.filter(elem => elem.name != name));
+      this.props.setProducts(this.props.products.filter(elem => elem.name != name));
     });
     zeroconf.on('error', err => {
       //FIXME error 

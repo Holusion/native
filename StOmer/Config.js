@@ -9,7 +9,7 @@ export let remoteConfig = {};
 export const primaryColor = "#00517d";
 export const secondaryColor = "#2fafe6"
 export const textColor = "#103040";
-export const projectName = "E_Thesaurus";
+export const projectName = "StOmer";
 
 export const dangerBackground = "#FFCCCC";
 export const dangerText = "#FF1133";

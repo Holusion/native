@@ -3,7 +3,6 @@ import React from 'react'
 import HomeScreen from "./src/screens/HomeScreen";
 import RemerciementScreen from "./src/screens/RemerciementScreen";
 import ThemeSelectorScreen from "./src/screens/ThemeSelectorScreen";
-import CatalogueScreen from "./src/screens/CatalogueScreen";
 import ObjectScreen from "./src/screens/ObjectScreen";
 import ObjectRemerciementsScreen from "./src/screens/ObjectRemerciementsScreen";
 import SetupScreen from "./src/screens/SetupScreen";
@@ -36,11 +35,6 @@ export const navigator = {
     selection: {
         id: "Selection",
         screen: ThemeSelectorScreen,
-        options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
-    },
-    catalogue: {
-        id: "Catalogue",
-        screen: CatalogueScreen,
         options: navigation => ({gesturesEnabled: false, headerStyle: headerStyle, headerRightContainerStyle: iconStyle, headerLeftContainerStyle: iconStyle, headerRight: wifiIcon(navigation), headerBackTitle: strings.back})
     },
     object: {

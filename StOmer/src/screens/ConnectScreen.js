@@ -2,8 +2,8 @@
 import React from 'react';
 import { connect} from 'react-redux'
 
-import { Container, StyleProvider, Toast, ListItem, Icon, Footer} from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Text, FlatList} from 'react-native';
+import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text} from 'native-base';
+import { StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 
 import {setActive} from "../actions";
 
@@ -14,9 +14,9 @@ class ConnectScreen extends React.Component {
         });
         let child;
         if(list.length == 0){
-            child = (<View style={{paddingTop:15}}>
+            child = (<View style={styles.noProduct}>
                 <Text>Aucun produit accessible. Vérifiez la connection réseau</Text>
-                <Button onPress={()=>this.props.navigation.back()}>Back</Button>
+                <Button primary onPress={()=>this.props.navigation.goBack()} ><Text style={{paddingHorizontal:15}}> Back </Text></Button>
                 </View>
             )
         }else{
@@ -28,16 +28,18 @@ class ConnectScreen extends React.Component {
         let footer = null;
         if(this.props.isConnected){
             footer = (<Footer>
-                Connected
+                <Button full light onPress={()=> this.props.navigation.navigate("Update")}><Text>Update local files</Text></Button>
             </Footer>)
         }
         return (
             <Container style={{flex: 1}}>
-                <View style={styles.container}>
-                    {child}
-                </View> 
-                <Footer>
-                </Footer>
+                <Content>
+                    <View style={styles.container}>
+                        {child}
+                    </View> 
+                </Content>
+                {footer}
+                
             </Container>
         )
     }
@@ -52,14 +54,14 @@ class ConnectScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        display: 'flex', 
-        flexDirection: "column", 
-        alignItems: 'center',
-        paddingTop: 15
     },
     updater: {
         
+    },
+    noProduct:{
+        paddingTop: 15,
+        alignItems: 'center',
+
     }
 });
 

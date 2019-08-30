@@ -1,19 +1,26 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation'
-import { Root, Icon, Button, Text } from 'native-base';
+import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
 import React from 'react';
 import { Provider, connect} from 'react-redux'
 
 import store from './src/store'
 import HomeScreen from "./src/screens/HomeScreen";
 import ConnectScreen from "./src/screens/ConnectScreen";
+import UpdateScreen from "./src/screens/UpdateScreen";
+import ObjectScreen from "./src/screens/ObjectScreen";
 
 import {navigator, TransitionConfiguration} from './navigator'
+
+
+
+import getTheme from './native-base-theme/components';
 
 import Network from "./Network";
 import * as strings from "./strings.json";
 
 function navigationOptions({navigation}){
   return {
+    title: navigation.routeName,
     headerRight: <NetIcon onPress={() => {navigation.navigate("Connect")}}/>, 
   }
 }
@@ -25,6 +32,14 @@ const navigation = {
   },
   Connect:{
     screen: ConnectScreen,
+    navigationOptions,
+  },
+  Update:{
+    screen: UpdateScreen,
+    navigationOptions,
+  },
+  Object:{
+    screen: ObjectScreen,
     navigationOptions,
   }
 }
@@ -50,8 +65,7 @@ const NetIcon = connect(mapStateToProps)(NetworkIcon);
 const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
-    headerLeft: null,
-    headerStyle: {height: 24, display: 'flex'}, 
+    headerStyle: {height: 34, display: 'flex'}, 
     headerBackTitle: strings.back
   }
 }
@@ -62,9 +76,11 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default function App(props){
   return <Root>
-    <Provider store={store}>
-      <Network/>
-      <AppContainer />      
-    </Provider>
+    <StyleProvider style={getTheme(/*use default platform theme*/)}>
+      <Provider store={store}>
+          <Network/>
+          <AppContainer />
+      </Provider> 
+    </StyleProvider> 
   </Root>
 }
