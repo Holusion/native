@@ -3,7 +3,7 @@ import React from 'react';
 import {setData} from '../actions';
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Spinner, Text} from 'native-base';
+import { Container, Toast, Content, Spinner, Text, Card, CardItem} from 'native-base';
 import { StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import * as Config from '../../Config'
@@ -24,6 +24,11 @@ class HomeScreen extends React.Component {
                 <Text>Loading...</Text>
             </Content></Container>)
         }
+        const cards = this.props.cards.map((item)=>{
+            return (<TouchableOpacity key={item['id']} onPress={()=>this.props.navigation.navigate("Object", {id:item['id']})}>
+                <IconCardComponent source={item['thumb']? {uri: 'file://'+item['thumb']} : resources.rightCardIcon} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
+            </TouchableOpacity>)
+        })
         return (
             <Container style={{flex: 1}}>
                 <View style={styles.container}>
@@ -32,9 +37,7 @@ class HomeScreen extends React.Component {
                         </Text>
                     </View>
                     <View style= {styles.cardContainer}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("Object", {id:"pied_de_croix"})}>
-                            <IconCardComponent source={resources.rightCardIcon} title={strings.home.rightCardTitle} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
-                        </TouchableOpacity>
+                        {cards}
                     </View>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate("Remerciements")} style={[styles.footerContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
                         <View>
@@ -43,7 +46,6 @@ class HomeScreen extends React.Component {
                     </TouchableOpacity>
                 </View>  
             </Container>
-           
         )
     }
 
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state){
     const {target, data} = state;
     const cards = Object.keys(data).map((key)=>{
-        return {id: key, title: data[key]["title"], thumb: data[key]["thumb"]}
+        return {id: key, title: data[key]["title"], thumb: data[key]["thumb"], title: data[key]['titre']}
     })
     return {target, cards};
 }

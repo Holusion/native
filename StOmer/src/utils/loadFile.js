@@ -3,8 +3,12 @@ import firebase from "react-native-firebase";
 import RNFS from 'react-native-fs';
 import yaml from 'js-yaml';
 
+import {base64ToHex} from "./convert";
+
 import {name as projectName} from "../../package.json"
 //let files = await RNFS.readDir(`${RNFS.DocumentDirectoryPath}/${projectName}`);
+
+import {delay} from "./time";
 
 export const basePath = `${RNFS.DocumentDirectoryPath}`;
 export const storagePath = `${basePath}/storage`;
@@ -23,7 +27,6 @@ export async function getFiles({onProgress=function(){}}={}){
     let data = {};
     let errors = [];
     let filelist = [
-        `${storagePath}/cache.json`,
         `${storagePath}/data.json`
     ];
     const db = firebase.firestore();
@@ -32,15 +35,7 @@ export async function getFiles({onProgress=function(){}}={}){
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const mainFolderRef = storageRef.child(projectName);
-    try{
-        cache = await RNFS.readFile(`${storagePath}/cache.json`).then(json => JSON.parse(json));
-    }catch(e){
-        if(e.code === "ENOENT"){
-            cache = {};
-        }else{
-            throw e;
-        }
-    }
+
     onProgress(` Downloading applications/${projectName}`);
     const projectsSnapshot = await collectionsRef.get();
     const projects = projectsSnapshot.docs;
@@ -50,12 +45,29 @@ export async function getFiles({onProgress=function(){}}={}){
             if(d[key].indexOf("gs://") == 0){
                 const filename =  d[key].split("/").slice(-1)[0];
                 const dest = `${storagePath}/${s.id}/${filename}`;
-                onProgress(`Downloading ${s.id}/${filename}`);
+                const ref = storage.refFromURL(d[key])
+                onProgress(`Checking out ${s.id}/${filename}`);
+                let uptodate = false;
                 try{
-                    await storage.refFromURL(d[key]).downloadFile(dest);
+                    const [localHash, {md5Hash}] = await Promise.all([RNFS.hash(dest, 'md5'), ref.getMetadata()]);
+                    if(md5Hash && localHash.toUpperCase() === base64ToHex(md5Hash)){
+                        uptodate = true;
+                    }
                 }catch(e){
-                    errors.push(e);
+                    console.warn("Uptodate check failed : ", e);
                 }
+                if(!uptodate){
+                    onProgress(`Downloading ${s.id}/${filename}`);
+                    try{
+                        await ref.downloadFile(dest);
+                    }catch(e){
+                        errors.push(e);
+                    }
+                }else{
+                    onProgress(`${s.id}/${filename} is up to date`);
+                    await delay(200);
+                }
+                
                 if(key == "ref"){
                     // Will be deleted by cleanup()
                     try{
@@ -78,22 +90,28 @@ export async function getFiles({onProgress=function(){}}={}){
         }
     }
     //Cleanup
-    onProgress("Cleaning Up")
+    onProgress("Cleaning Up");
     await cleanup(storagePath, filelist);
-    await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(data), 'utf8');
+    await Promise.all([
+        RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(data), 'utf8'),
+    ]);
     return {data, errors};
 }
+
+
 async function cleanup(dir, keep=[]){
     const localFiles = await RNFS.readDir(dir);
     for(let file of localFiles){ 
         if(file.isDirectory()){
             if(keep.filter(path => file.path.indexOf(path) == -1).length == 0){
                 console.warn("Removing folder : ", file.path);
+                RNFS.unlink(file.path);
             }else{
                 await cleanup(file.path, keep);
             }
         }else if(keep.indexOf(file.path) == -1){
             console.warn("cleanup : ", file.path);
+            RNFS.unlink(file.path);
         }
     }
 }

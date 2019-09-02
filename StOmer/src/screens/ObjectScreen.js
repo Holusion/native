@@ -1,14 +1,13 @@
 import React from 'react'
-import { Container, Content, Body, Header, H1, H2, Text, Row, Icon } from 'native-base';
+import { Container, Content, Footer, Body, Header, H1, H2, Text, Row, Icon } from 'native-base';
 
 import { View, Image, ScrollView, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
-import Carousel from 'react-native-looped-carousel'
 
 import Markdown from 'react-native-markdown-renderer'
 
-
 import {connect} from "react-redux";
 
+import Controller from "../components/Controller"
 
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
@@ -17,12 +16,6 @@ class ObjectScreen extends React.Component {
 
 
     render() {
-        // onPressIn when touched start, onPressOut when touched end
-        const controller = [<Icon type="Ionicons" name="pause" onPressIn={()=>console.warn("pause video")} onPressOut={()=>console.warn("unpause video")} />];
-        if(false) { //Prev / Next arrows
-            controller.unshift(<Icon type="Ionicons" name="skip-backward" onPress={this._onPrevious} />);
-            controller.push(<Icon type="Ionicons" name="skip-forward" onPress={this._onNext} />);
-        }
         /*
         <Carousel ref={ref => this.carousel = ref} style={[{flex: 1, width: this.state.size.width}]} autoplay={false} currentPage={store.getState().objectVideo.index} onAnimateNextPage={this.changeVideo}>
             {this.renderObjects()}
@@ -59,6 +52,10 @@ class ObjectScreen extends React.Component {
                         </Markdown>
                     </View>
                 </Content>
+
+                <Footer style={styles.controller}>
+                        <Controller />
+                </Footer>
             </Container>
         )
     }
@@ -150,7 +147,8 @@ const styles = StyleSheet.create({
     subTitle: {
         color: "#bbbbbb",
         fontSize: 24,
-        fontStyle: "italic"
+        fontStyle: "italic",
+        paddingVertical: 12
     },
     detailContainer: {
         padding: 8,
@@ -180,6 +178,15 @@ const styles = StyleSheet.create({
         color: "white",
         marginLeft: 8
     },
+    controller:{
+        position:"absolute",
+        bottom:15,
+        flex:1,
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        borderWidth:0,
+        borderColor: 'transparent',
+    }
 })
 
 export default connect(mapStateToProps)(ObjectScreen);

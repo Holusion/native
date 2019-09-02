@@ -22,7 +22,7 @@ class Network extends React.Component {
     zeroconf.on('resolved', (service) => {
         let obj = {
             name: service.name,
-            url: service.addresses
+            url: service.addresses[0]
         }
         this.props.setProducts([obj].concat(this.props.products));
       //Give some time for other products to be detected, too

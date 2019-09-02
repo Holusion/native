@@ -3,8 +3,8 @@ import React from 'react';
 import {setData} from "../actions";
 import { connect} from 'react-redux'
 
-import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text, Spinner} from 'native-base';
-import { StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text, Spinner, View} from 'native-base';
+import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import {getFiles} from "../utils/loadFile";
 
@@ -13,6 +13,7 @@ class UpdateScreen extends React.Component {
         if(!this.props.isConnected){
             return(<Container  style={styles.container}>
                 <Content contentContainerStyle={styles.content}>
+                    <Text>{this.props.navigation.getParam("error")}</Text>
                     <Text>Device is not connected to the internet</Text>
                     <Text>Please check your wifi or wired connection</Text>
                     <Button primary onPress={()=>{this.props.navigation.goBack()}} style={{marginTop:20}}><Text> Back </Text></Button>               

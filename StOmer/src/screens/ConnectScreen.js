@@ -28,7 +28,7 @@ class ConnectScreen extends React.Component {
         let footer = null;
         if(this.props.isConnected){
             footer = (<Footer>
-                <Button full light onPress={()=> this.props.navigation.navigate("Update")}><Text>Update local files</Text></Button>
+                <Button full light onPress={()=> this.props.navigation.navigate("Update")}><Text>Mettre à jour les fichiers locaux</Text></Button>
             </Footer>)
         }
         return (
