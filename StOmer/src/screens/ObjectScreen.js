@@ -40,7 +40,7 @@ class ObjectScreen extends React.Component {
                             <Text>{d['short']}</Text>
                         </View>
                         <View style={styles.imageContainer}>
-                            <Image source={{uri: `file://${d["thumb"]}`}} style={styles.image}/>
+                            <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
                         </View>
                     </View>
                     <View style={styles.textContent}>

@@ -6,6 +6,7 @@ export const SET_NETINFO = 'SET_NETINFO';
 
 export const SET_DATA = "SET_DATA";
 
+export const SET_CONFIG = "SET_CONFIG";
 
 export const setProducts = (products) => {
     return {type:SET_PRODUCTS, products}
@@ -18,4 +19,8 @@ export const setNetInfo = (status)=>{
 }
 export const setData = (data) =>{
     return {type: SET_DATA, data};
+}
+
+export const setConfig = (config) => {
+    return {type: SET_CONFIG, config}
 }

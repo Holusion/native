@@ -34,9 +34,7 @@ class ConnectScreen extends React.Component {
         return (
             <Container style={{flex: 1}}>
                 <Content>
-                    <View style={styles.container}>
-                        {child}
-                    </View> 
+                    {child}
                 </Content>
                 {footer}
                 
@@ -45,7 +43,7 @@ class ConnectScreen extends React.Component {
     }
     handlePress(item){
         this.props.setActive(item);
-        this.props.navigation.goBack();
+        this.props.navigation.navigate("Synchronize");
     }
     constructor(props) {
         super(props);

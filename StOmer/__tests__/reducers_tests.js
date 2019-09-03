@@ -28,7 +28,7 @@ describe("test reducers", function(){
     })
     describe("data",function(){
         test("can set data", function(){
-            const d = {foo:{name:"foo", status: "bar"}};
+            const d = {items:{foo:{name:"foo", status: "bar"}}};
             const s = reducers(initialState, setData(d));
             expect(s.data).toEqual(d);
         })

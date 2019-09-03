@@ -21,8 +21,11 @@ export async function loadYaml(name){
     const fileData = await loadFile(name);
     return yaml.safeLoad(fileData);
 }
+export function filename(path){
+    return path.split("/").slice(-1)[0];
+}
 
-export async function getFiles({onProgress=function(){}}={}){
+export async function getFiles({onProgress=function(){}, force=false}={}){
     let cache;
     let data = {};
     let errors = [];
@@ -37,67 +40,89 @@ export async function getFiles({onProgress=function(){}}={}){
     const mainFolderRef = storageRef.child(projectName);
 
     onProgress(` Downloading applications/${projectName}`);
+    const configSnapshot = await projectRef.get();
+    const config = configSnapshot.exists ? configSnapshot.data():{};
+
+    const [new_errors, new_files] = await makeLocal(config, {onProgress, force});
+    errors = errors.concat(new_errors);
+    filelist = filelist.concat(new_files);
+
     const projectsSnapshot = await collectionsRef.get();
     const projects = projectsSnapshot.docs;
     for (let s of projects){
         const d = data[s.id] = s.data();
-        for(let key in d){
-            if(d[key].indexOf("gs://") == 0){
-                const filename =  d[key].split("/").slice(-1)[0];
-                const dest = `${storagePath}/${s.id}/${filename}`;
-                const ref = storage.refFromURL(d[key])
-                onProgress(`Checking out ${s.id}/${filename}`);
-                let uptodate = false;
-                try{
-                    const [localHash, {md5Hash}] = await Promise.all([RNFS.hash(dest, 'md5'), ref.getMetadata()]);
-                    if(md5Hash && localHash.toUpperCase() === base64ToHex(md5Hash)){
-                        uptodate = true;
-                    }
-                }catch(e){
-                    console.warn("Uptodate check failed : ", e);
-                }
-                if(!uptodate){
-                    onProgress(`Downloading ${s.id}/${filename}`);
-                    try{
-                        await ref.downloadFile(dest);
-                    }catch(e){
-                        errors.push(e);
-                    }
-                }else{
-                    onProgress(`${s.id}/${filename} is up to date`);
-                    await delay(200);
-                }
-                
-                if(key == "ref"){
-                    // Will be deleted by cleanup()
-                    try{
-                        const fileData = await loadYaml(`${s.id}/${filename}`);
-                        console.warn("ref data : ", fileData);
-                        for(let key in fileData){
-                            console.log("set key", key.toLowerCase().replace(/\s/,"_"));
-                            d[key.toLowerCase().replace(/\s/,"_")] = fileData[key];
-                            delete d["ref"];
-                        }
-                    }catch(e){
-                        errors.push(e);
-                    }
-                   
-                }else{
-                    d[key] = dest;
-                    filelist.push(dest);
-                }
-            }
-        }
+        const [new_errors, new_files] = await makeLocal(d, {onProgress, force});
+        errors = errors.concat(new_errors);
+        filelist = filelist.concat(new_files);
     }
     //Cleanup
     onProgress("Cleaning Up");
     await cleanup(storagePath, filelist);
+    console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
     await Promise.all([
-        RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(data), 'utf8'),
+        RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify({items: data, config: config}), 'utf8'),
     ]);
-    return {data, errors};
+    return {data, config, errors};
 }
 
+async function makeLocal(d, {onProgress, force}){
+    const filelist = [];
+    const errors = [];
+    const storage = firebase.storage();
+    for(let key in d){
+        if(d[key].indexOf("gs://") == 0){
+            const ref = storage.refFromURL(d[key]);
+            const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
+            const name = filename(fullPath);
+            const dest = `${storagePath}/${fullPath}`;
+            onProgress(`Checking out ${fullPath}`);
+            let uptodate = false;
+            if(!force){
+                try{
+                    const [localHash, {md5Hash}] = await Promise.all([RNFS.hash(dest, 'md5'), ref.getMetadata()]);
+                    if(md5Hash && localHash.toUpperCase() === base64ToHex(md5Hash)){
+                        uptodate = true;
+                    }else{
+                        console.warn("Download updated version for "+dest+" : hashes mismatch")
+                    }
+                }catch(e){
+                    if(e.code != "ENOENT"){
+                        console.warn("Uptodate check failed : ", e);
+                    }
+                }
+            }
+            
+            if(!uptodate){
+                onProgress(`Downloading ${name}`);
+                try{
+                    await ref.downloadFile(dest);
+                }catch(e){
+                    errors.push(e);
+                }
+            }else{
+                onProgress(`${name} is up to date`);
+                await delay(20);
+            }
+            filelist.push(dest);
+            
+            if(key == "ref"){
+                // Will be deleted by cleanup()
+                try{
+                    const fileData = await loadYaml(`${fullPath}`);
+                    for(let key in fileData){
+                        d[key.toLowerCase().replace(/\s/,"_")] = fileData[key];
+                    }
+                }catch(e){
+                    errors.push(e);
+                }
+               
+            }else{
+                d[key] = `file://${dest}`;
+            }
+        }
+    }
+    return [errors, filelist];
+}
 
 async function cleanup(dir, keep=[]){
     const localFiles = await RNFS.readDir(dir);
@@ -105,13 +130,13 @@ async function cleanup(dir, keep=[]){
         if(file.isDirectory()){
             if(keep.filter(path => file.path.indexOf(path) == -1).length == 0){
                 console.warn("Removing folder : ", file.path);
-                RNFS.unlink(file.path);
+                await RNFS.unlink(file.path);
             }else{
                 await cleanup(file.path, keep);
             }
-        }else if(keep.indexOf(file.path) == -1){
+        } else if(keep.indexOf(file.path) == -1){
             console.warn("cleanup : ", file.path);
-            RNFS.unlink(file.path);
+            await RNFS.unlink(file.path);
         }
     }
 }

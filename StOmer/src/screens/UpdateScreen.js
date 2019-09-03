@@ -7,6 +7,7 @@ import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Conten
 import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import {getFiles} from "../utils/loadFile";
+import StatusIcon from "../components/StatusIcon";
 
 class UpdateScreen extends React.Component {
     render() {
@@ -20,22 +21,11 @@ class UpdateScreen extends React.Component {
                 </Content>
             </Container>)
         }
-        let statusIcon;
-        switch(this.state.status){
-            case "loading":
-                statusIcon = <Spinner/>
-                break;
-            case "error":
-                statusIcon = <Icon name="ios-bug"/>;
-                break;
-            case "idle":
-            default:
-                statusIcon = <Icon primary name="ios-paper-plane"/>;
-        }
         return (
             <Container>
                 <Content contentContainerStyle={styles.content}>
-                    {statusIcon}
+                    <Text>{this.props.navigation.getParam("error")}</Text>
+                    <StatusIcon status={this.state.status}/>
                     <Text>{this.state.statusText}</Text>
                     <Button primary onPress={()=>this.props.navigation.navigate("Home")}><Text>Home</Text></Button>
                 </Content>
@@ -44,18 +34,22 @@ class UpdateScreen extends React.Component {
     }
     componentDidMount(){
         this.setState({status: "loading", statusText: "Fetching Data"});
-        getFiles({onProgress:(current)=>{
-            this.setState({statusText: current});
-        }}).then(({data, errors})=>{
+        getFiles({
+            onProgress:(current)=>{
+                this.setState({statusText: current});
+            },
+            force: this.props.navigation.getParam("error")? true:false,
+        }).then(({data, config, errors})=>{
             if(errors.length == 0){
-                setData(data);
+                console.warn("SetData : ", {items:data, config})
+                this.props.setData({items:data, config});
                 return this.setState({status: "idle", statusText:"Updated data to latest version"});
             }else{
-                console.warn("There was errors : ", errors);
                 return this.setState({status: "error", statusText: errors.join("\n")})
             }
-        },(err)=>{
-            this.setState({status: "error", statusText: err});
+        }).catch((err)=>{
+            console.warn("Error : ", err);
+            this.setState({status: "error", statusText: err.toString()});
         })
     }
     constructor(props) {

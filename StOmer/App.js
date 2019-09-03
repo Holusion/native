@@ -8,7 +8,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import ConnectScreen from "./src/screens/ConnectScreen";
 import UpdateScreen from "./src/screens/UpdateScreen";
 import ObjectScreen from "./src/screens/ObjectScreen";
-
+import SynchronizeScreen from "./src/screens/SynchronizeScreen";
 import {navigator, TransitionConfiguration} from './navigator'
 
 
@@ -40,6 +40,10 @@ const navigation = {
   },
   Object:{
     screen: ObjectScreen,
+    navigationOptions,
+  },
+  Synchronize:{
+    screen:SynchronizeScreen,
     navigationOptions,
   }
 }

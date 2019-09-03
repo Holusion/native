@@ -26,7 +26,7 @@ class HomeScreen extends React.Component {
         }
         const cards = this.props.cards.map((item)=>{
             return (<TouchableOpacity key={item['id']} onPress={()=>this.props.navigation.navigate("Object", {id:item['id']})}>
-                <IconCardComponent source={item['thumb']? {uri: 'file://'+item['thumb']} : resources.rightCardIcon} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
+                <IconCardComponent source={item['thumb']? {uri: item['thumb']} : resources.rightCardIcon} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
             </TouchableOpacity>)
         })
         return (
@@ -51,22 +51,29 @@ class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state= {status: "loading", config: {}};
+
+        this.state= {status:"loading"};
+        this.props.navigation.addListener("willFocus",()=>{
+            if(this.state.status == "loading" ){
+                this.load();
+            }
+        })
 
     }
-    componentDidMount(){
-        this.load();
-    }
     load(){
+        if(0 < this.props.cards.length ) return;
         this.setState({status: "loading"});
         loadFile("data.json")
+        .then(data => JSON.parse(data))
         .then((data)=>{
-            this.props.setData(JSON.parse(data));
+            //console.warn("DATA : ", data);
+            if(!data.items) throw new Error("Data is outdated");
+            this.props.setData(data);
             this.setState({status:"done"});
-            console.warn(JSON.parse(data));
         })
         .catch((err)=>{
-            this.props.navigation.navigate("Update",{error: "Application configuration is required"});
+            console.warn("LOAD ERROR", err);
+            this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
         });
     }
 }
@@ -144,8 +151,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
     const {target, data} = state;
-    const cards = Object.keys(data).map((key)=>{
-        return {id: key, title: data[key]["title"], thumb: data[key]["thumb"], title: data[key]['titre']}
+    const cards = Object.keys(data.items).map((key)=>{
+        return {id: key, title: data.items[key]["title"], thumb: data.items[key]["thumb"], title: data.items[key]['titre']}
     })
     return {target, cards};
 }
