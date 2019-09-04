@@ -3,14 +3,14 @@ import React from 'react';
 import {setData} from '../actions';
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Spinner, Text, Card, CardItem} from 'native-base';
+import { Container, Toast, Content, Spinner, Text} from 'native-base';
 import { StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import * as Config from '../../Config'
 
 import {loadFile} from "../utils/loadFile";
 
-import { IconCardComponent } from '@holusion/react-native-holusion'
+import Card from '../components/Card';
 
 import resources from '../../resources'
 import * as strings from '../../strings'
@@ -26,7 +26,7 @@ class HomeScreen extends React.Component {
         }
         const cards = this.props.cards.map((item)=>{
             return (<TouchableOpacity key={item['id']} onPress={()=>this.props.navigation.navigate("Object", {id:item['id']})}>
-                <IconCardComponent source={item['thumb']? {uri: item['thumb']} : resources.rightCardIcon} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
+                <Card source={item['thumb']? {uri: item['thumb']} : resources.rightCardIcon} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
             </TouchableOpacity>)
         })
         return (
@@ -99,11 +99,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: 'flex', 
-        flexDirection: "column", 
         alignItems: 'center'
     },
     images: {
-        width: 200,
+        width: null,
         height: 100,
         resizeMode: 'contain',
         alignSelf: 'flex-end',
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state){
     const {target, data} = state;
     const cards = Object.keys(data.items).map((key)=>{
-        return {id: key, title: data.items[key]["title"], thumb: data.items[key]["thumb"], title: data.items[key]['titre']}
+        return {id: key, thumb: data.items[key]["thumb"], title: data.items[key]['title']}
     })
     return {target, cards};
 }

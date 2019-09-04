@@ -81,7 +81,7 @@ class SynchronizeScreen extends React.Component {
                         }
                     })
                     const body = response.json();
-                    if (response.statusCode == 200) {
+                    if (response.ok) {
                         this.setState({statusText:`${file.name} uploaded`})
                     } else {
                         errors.push(body.message)
@@ -96,7 +96,7 @@ class SynchronizeScreen extends React.Component {
             if(0 < errors.length){
                 return this.setState({status: "error", statusText: errors.join("\n")});
             }
-
+            /*
             const query = this.props.config.homeScreen ? {$not:{name:filename(this.props.config.homeScreen)}} : {};
             const response = await fetch(`${url}/playlist/`, {
                 method: "PUT",
@@ -115,6 +115,7 @@ class SynchronizeScreen extends React.Component {
             if(!response.ok){
                 return this.setState({status: "error", statusText: `Failed to deactivate items. Error ${response.status} : ${JSON.stringify(body.message)}`});
             }
+            //*/
             this.setState({status: "idle", statusText: "Synchronized!"});
             
         }).catch(e=>{

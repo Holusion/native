@@ -1,7 +1,7 @@
 import React from 'react'
-import { Container, Content, Footer, Body, Header, H1, H2, Text, Row, Icon } from 'native-base';
+import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast } from 'native-base';
 
-import { View, Image, ScrollView, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
 
 import Markdown from 'react-native-markdown-renderer'
 
@@ -9,11 +9,12 @@ import {connect} from "react-redux";
 
 import Controller from "../components/Controller"
 
+import {filename} from "../utils/loadFile";
+
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
  */
 class ObjectScreen extends React.Component {
-
 
     render() {
         /*
@@ -30,49 +31,42 @@ class ObjectScreen extends React.Component {
                 </Content>
             </Container>)
         }
+        const properties = Object.keys(d['properties']).map((key, idx)=>{
+            const value = d['properties'][key];
+            return (<View key={idx} style={styles.propStyle}>
+                <Text><Text style={{fontWeight:"bold"}}>{key} : </Text>{value}</Text>
+            </View>)
+        })
         return (
             <Container>
                 <Content contentContainerStyle={styles.content}>
                     <View style={{flexDirection:"row"}}>
                         <View style={styles.titleContainer}>
-                            <H1 style={styles.title}>{d['titre']}</H1>
-                            <H2  style={styles.subTitle}>{d['soustitre']}</H2>
-                            <Text>{d['short']}</Text>
+                            <H1 style={styles.title}>{d['title']}</H1>
+                            <H2  style={styles.subTitle}>{d['subtitle']}</H2>
+                            <Text style={styles.shortDescription}>{d['short']}</Text>
                         </View>
-                        <View style={styles.imageContainer}>
+                        <View style={styles.cartouche}>
                             <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
+                            {properties}
                         </View>
+                        
                     </View>
                     <View style={styles.textContent}>
                         <Markdown style={{text: {
                             fontSize: 24,
                             textAlign: "justify"
                         }}}>
-                            {d['texte_principal']}
+                            {d['description']}
                         </Markdown>
                     </View>
                 </Content>
 
                 <Footer style={styles.controller}>
-                        <Controller />
+                    <Controller />
                 </Footer>
             </Container>
         )
-    }
-    launchVideo(videoName) {
-        if(this.props.navigation.getParam("url")) {
-            let productUrl = this.props.navigation.getParam("url");
-    
-            network.desactiveAll(productUrl).then(elem => {
-                network.active(productUrl, `${videoName}.mp4`)
-            }).then(_ => {
-                // Log video, timestamp
-                network.play(productUrl, `${videoName}.mp4`)
-            }).catch(err => {
-                store.dispatch(actions.setErrorTask("http_request", err.message));
-            })
-        }
-
     }
 
 
@@ -103,7 +97,21 @@ class ObjectScreen extends React.Component {
         this.state = {
             size: {width, height}
         }
-
+        this.props.navigation.addListener("willFocus",()=>{
+            if(this.props.target){
+                const name = filename(this.props.data["video"])
+                fetch(`http://${this.props.target.url}/control/current/${name}`, {method: 'PUT'})
+                .then(r=>{
+                    if(!r.ok){
+                        Toast.show({
+                            text: "Failed to set current : "+r.status,
+                            duration: 2000
+                        })
+                    }
+                })
+            }
+            
+        })
         this._onNext = this._onNext.bind(this);
         this._onPrevious = this._onPrevious.bind(this);
 
@@ -112,8 +120,12 @@ class ObjectScreen extends React.Component {
 
 function mapStateToProps(state, {navigation}){
     const id = navigation.getParam("id");
-    const {data} = state;
-    return {data: data[id], raw_data: data};
+    const {data, products} = state;
+    return {
+        data: data.items[id], 
+        raw_data: data, 
+        target: products.find(p => p.active)
+    };
 }
 
 const {width, height} = Dimensions.get('window');
@@ -124,7 +136,7 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        minHeight: 200,
+        minHeight: 150,
         resizeMode: 'contain', 
     },
     textContent: {
@@ -136,9 +148,13 @@ const styles = StyleSheet.create({
     titleContainer: {
         flex:2,
     },
-    imageContainer: {
-        flex: 1,
+    cartouche:{
+        flex:1,
         justifyContent: "center",
+        marginLeft: 40,
+    },
+    propStyle:{
+        paddingVertical:5,
     },
     title: {
         paddingVertical: 24,
@@ -149,6 +165,9 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontStyle: "italic",
         paddingVertical: 12
+    },
+    shortDescription:{
+        paddingTop:15,
     },
     detailContainer: {
         padding: 8,
