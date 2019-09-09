@@ -1,22 +1,26 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation'
 import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
+import {AppState} from "react-native"
 import React from 'react';
-import { Provider, connect} from 'react-redux'
+import { Provider, connect} from 'react-redux';
 
-import store from './src/store'
-import HomeScreen from "./src/screens/HomeScreen";
-import ConnectScreen from "./src/screens/ConnectScreen";
-import UpdateScreen from "./src/screens/UpdateScreen";
-import ObjectScreen from "./src/screens/ObjectScreen";
-import SynchronizeScreen from "./src/screens/SynchronizeScreen";
-import {navigator, TransitionConfiguration} from './navigator'
+import {configureStore} from '@holusion/react-native-holusion';
+import HomeScreen from "@holusion/react-native-holusion/lib/screens/HomeScreen";
+import ConnectScreen from "@holusion/react-native-holusion/lib/screens/ConnectScreen";
+import UpdateScreen from "@holusion/react-native-holusion/lib/screens/UpdateScreen";
+import ObjectScreen from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
+import SynchronizeScreen from "@holusion/react-native-holusion/lib/screens/SynchronizeScreen";
 
 
 
 import getTheme from './native-base-theme/components';
 
-import Network from "./Network";
-import * as strings from "./strings.json";
+import netScan from "@holusion/react-native-holusion/lib/netScan";
+import {strings} from "@holusion/react-native-holusion";
+
+import {name} from "./package.json";
+
+const store = configureStore({name});
 
 function navigationOptions({navigation}){
   return {
@@ -78,13 +82,39 @@ const AppNavigator = createStackNavigator(navigation, options);
 const AppContainer = createAppContainer(AppNavigator);
 
 
-export default function App(props){
-  return <Root>
-    <StyleProvider style={getTheme(/*use default platform theme*/)}>
-      <Provider store={store}>
-          <Network/>
-          <AppContainer />
-      </Provider> 
-    </StyleProvider> 
-  </Root>
+export default class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      appState: AppState.currentState,
+    }
+  }
+  componentDidMount(){
+    AppState.addEventListener('change', this.onChange);
+    this.unsubscribe = netScan(store);
+  }
+  componentWillUnmount(){
+    AppState.removeEventListener('change', this.onChange);
+  }
+
+  onChange =  (nextAppState)=>{
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      this.unsubscribe = netScan(store);
+    }else if(this.state.appState == 'active' && nextAppState.match(/inactive|background/)){
+      this.unsubscribe();
+    }
+    this.setState({appState: nextAppState});
+  }
+  render(){
+    return <Root>
+      <StyleProvider style={getTheme(/*use default platform theme*/)}>
+        <Provider store={store}>
+            <AppContainer />
+        </Provider> 
+      </StyleProvider> 
+    </Root>
+  }
 }

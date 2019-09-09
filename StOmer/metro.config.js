@@ -4,8 +4,10 @@
  *
  * @format
  */
+const {resolve} = require("path");
 
 module.exports = {
+  projectRoot: resolve(__dirname),
   transformer: {
     getTransformOptions: async () => ({
       transform: {
