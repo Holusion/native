@@ -1,24 +1,4 @@
 #!/bin/bash
-#
-# Copyright (C) 2018 smallmuou <smallmuou@163.com>
-# 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is furnished
-# to do so, subject to the following conditions:
-# 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
 
 set -e
 
@@ -79,21 +59,12 @@ myos() {
 }
 
 #########################################
-###           GROBLE DEFINE           ###
-#########################################
-
-VERSION=2.0.0
-AUTHOR=smallmuou
-
-#########################################
 ###             ARG PARSER            ###
 #########################################
 
 usage() {
 prog=`basename $0`
 cat << EOF
-$prog version $VERSION by $AUTHOR
-
 USAGE: $prog [OPTIONS] srcfile dstpath
 
 DESCRIPTION:
@@ -132,22 +103,13 @@ shift $(($OPTIND - 1))
 ###            MAIN ENTRY             ###
 #########################################
 
-cmdcheck sips
+cmdcheck convert
 src_file=$1
 dst_path=$2
 
 # check source file
 [ ! -f "$src_file" ] && { error "The source file $src_file does not exist, please check it."; exit -1; }
 
-# check width and height 
-src_width=`sips -g pixelWidth $src_file 2>/dev/null|awk '/pixelWidth:/{print $NF}'`
-src_height=`sips -g pixelHeight $src_file 2>/dev/null|awk '/pixelHeight:/{print $NF}'`
-
-[ -z "$src_width" ] &&  { error "The source file $src_file is not a image file, please check it."; exit -1; }
-
-if [ $src_width -ne $src_height ];then
-    warn "The height and width of the source image are different, will cause image deformation."
-fi
 
 # create dst directory 
 [ ! -d "$dst_path" ] && mkdir -p "$dst_path"
@@ -202,14 +164,11 @@ do
     name=`echo $line|awk '{print $1}'`
     size=`echo $line|awk '{print $2}'`
     info "Generate $name.png ..."
-    if [ -f $srgb_profile ];then
-        sips --matchTo '/System/Library/ColorSync/Profiles/sRGB Profile.icc' -z $size $size $src_file --out $dst_path/$name.png >/dev/null 2>&1
-    else
-        sips -z $size $size $src_file --out $dst_path/$name.png >/dev/null
-    fi
+    convert "$src_file" -resize "${size}x${size}" -unsharp 1x4 "$dst_path/$name.png"
+
 done
 
-info "Congratulation. All icons for iOS/macOS/watchOS APP are generate to the directory: $dst_path."
+info "Congratulation. All icons for iOS/macOS/watchOS APP were copied to the directory: $dst_path."
 
 IFS=$OLD_IFS
 
