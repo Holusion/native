@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import StatusIcon from "../components/StatusIcon";
 
-import {filename} from "../utils/loadFile";
+import {filename} from "../files";
 
 class SynchronizeScreen extends React.Component {
     render() {

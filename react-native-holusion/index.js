@@ -8,6 +8,8 @@ import * as actions from "./lib/actions";
 import reducers from "./lib/reducers";
 import configureStore from "./lib/default_store";
 
+import strings from "./lib/strings.json";
+
 export {
   netScan,
   files,
@@ -16,4 +18,5 @@ export {
   actions,
   reducers,
   configureStore,
+  strings,
 }

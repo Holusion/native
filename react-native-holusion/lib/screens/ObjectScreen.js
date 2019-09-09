@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 
 import Controller from "../components/Controller"
 
-import {filename} from "../utils/loadFile";
+import {filename} from "../files";
 
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button

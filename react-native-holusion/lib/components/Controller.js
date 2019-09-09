@@ -4,7 +4,7 @@ import {View, Button, Icon} from "native-base";
 import {TouchableHighlight, StyleSheet} from "react-native"
 import {connect} from "react-redux";
 
-import {delay} from "../utils/time";
+import {delay} from "../time";
 
 class Controller extends React.Component {
     constructor(props){

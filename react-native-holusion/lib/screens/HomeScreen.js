@@ -6,13 +6,12 @@ import { connect} from 'react-redux';
 import { Container, Toast, Content, Spinner, Text} from 'native-base';
 import { StyleSheet, View, TouchableOpacity} from 'react-native';
 
-import * as Config from '../../Config'
 
-import {loadFile} from "../loadFile";
+import {loadFile} from "../files";
 
 import Card from '../components/Card';
 
-
+import * as strings from "../strings.json";
 
 class HomeScreen extends React.Component {
     render() {
@@ -24,7 +23,7 @@ class HomeScreen extends React.Component {
         }
         const cards = this.props.cards.map((item)=>{
             return (<TouchableOpacity key={item['id']} onPress={()=>this.props.navigation.navigate("Object", {id:item['id']})}>
-                <Card source={item['thumb']? {uri: item['thumb']} : require("../../assets/icons/catalogue.png")} title={item.title} customStyleProp={{container: {backgroundColor: Config.remoteConfig.primaryColor}}} />
+                <Card source={item['thumb']? {uri: item['thumb']} : require("../../assets/icons/catalogue.png")} title={item.title} />
             </TouchableOpacity>)
         })
         return (
@@ -37,7 +36,7 @@ class HomeScreen extends React.Component {
                     <View style= {styles.cardContainer}>
                         {cards}
                     </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("Remerciements")} style={[styles.footerContainer, {backgroundColor: Config.remoteConfig.primaryColor}]}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("Remerciements")} style={styles.footerContainer}>
                         <View>
                             <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
                         </View>
