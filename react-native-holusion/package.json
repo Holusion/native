@@ -1,10 +1,28 @@
 {
-  "name": "@holusion/react-native-holusion",
-  "version": "1.0.0-alpha.0",
+  "dependencies": {
+    "Base64": "^1.0.2",
+    "js-yaml": "^3.13.1",
+    "react-native-markdown-renderer": "^3.2.8",
+    "redux": "^4.0.4"
+  },
+  "deprecated": false,
   "description": "react native api for holusion app",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
+  "devDependencies": {
+    "@babel/core": "7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.5.5",
+    "@react-native-community/netinfo": "^4.2.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-preset-react-native": "5.0.2",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.45.0",
+    "native-base": "^2.12.1",
+    "react": "^16.8.6",
+    "react-native": "0.60.4",
+    "react-native-firebase": "^5.5.6",
+    "react-native-fs": "^2.14.1",
+    "react-native-zeroconf": "^0.11.1",
+    "react-test-renderer": "^16.8.6"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -15,31 +33,9 @@
       "/node_modules/(?!native-base)/"
     ]
   },
-  "author": "Yann DUBOIS <y.dubois@holusion.com>",
   "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.5.5",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-preset-react-native": "5.0.2",
-    "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "^0.45.0",
-    "react": "^16.8.6",
-    "react-native": "0.60.4",
-    "react-test-renderer": "^16.8.6",
-    "native-base": "^2.12.1",
-    "react-native-zeroconf": "^0.11.1",
-    "react-native-firebase": "^5.5.6",
-    "react-native-fs": "^2.14.1",
-    "@react-native-community/netinfo": "^4.2.1"
-  },
-  "dependencies": {
-    "Base64": "^1.0.2",
-    "js-yaml": "^3.13.1",
-    "react-native-markdown-renderer": "^3.2.8",
-    "redux": "^4.0.4"
-  },
+  "main": "index.js",
+  "name": "@holusion/react-native-holusion",
   "peerDependencies": {
     "react-native": "0.60.4",
     "react": "16.8.6",
@@ -48,5 +44,9 @@
     "react-native-firebase": "^5.5.6",
     "react-native-fs": "^2.14.1",
     "@react-native-community/netinfo": "^4.2.1"
-  }
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "version": "1.0.0-alpha.4"
 }
