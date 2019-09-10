@@ -25,7 +25,6 @@
 		3B81875BF8E647C1BFA8C121 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23D5B45EFAD446FEA2F10B48 /* Octicons.ttf */; };
 		446EC76FBEC64D08931E1CF2 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01FBDF0AC42242A28A187B9C /* EvilIcons.ttf */; };
 		4919AC0922964F7BA7EAD12A /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9725BF172E0E4C318BC187D0 /* AntDesign.ttf */; };
-		5B0CC7C65AD14D37BDFB916F /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 481D765E4FD14158937CA8E4 /* rubicon-icon-font.ttf */; };
 		5D5B2A775EF8D69D58667E37 /* libPods-StOmerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F04CC3A42EF203229516DAD3 /* libPods-StOmerTests.a */; };
 		62BDCD38EAAA420B9694E28C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC9FD89E884E49EFA063AD0F /* Ionicons.ttf */; };
 		65E882F49AC0488DB37BD152 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 606E38FA496645C19284B1A7 /* Roboto_medium.ttf */; };
@@ -453,7 +452,6 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				65E882F49AC0488DB37BD152 /* Roboto_medium.ttf in Resources */,
 				0FDF1E62CDAF4BF29CC510BE /* Roboto.ttf in Resources */,
-				5B0CC7C65AD14D37BDFB916F /* rubicon-icon-font.ttf in Resources */,
 				3AA9938C22F0248B00DDDE84 /* GoogleService-Info.plist in Resources */,
 				9AD87FE4661645779C6DD61F /* Fontisto.ttf in Resources */,
 				4919AC0922964F7BA7EAD12A /* AntDesign.ttf in Resources */,

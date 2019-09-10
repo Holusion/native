@@ -1,4 +1,5 @@
 platform :ios, '9.0'
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'StOmer' do
@@ -6,7 +7,6 @@ target 'StOmer' do
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
-  pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
   pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
   pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
   pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
@@ -33,12 +33,6 @@ target 'StOmer' do
   pod 'Firebase/Storage'
   pod 'Firebase/Firestore'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-  pod 'RNZeroconf', :path => '../node_modules/react-native-zeroconf'
-
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
   target 'StOmerTests' do
     inherit! :search_paths

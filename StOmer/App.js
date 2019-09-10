@@ -4,23 +4,17 @@ import {AppState} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
 
-import {configureStore} from '@holusion/react-native-holusion';
-import HomeScreen from "@holusion/react-native-holusion/lib/screens/HomeScreen";
-import ConnectScreen from "@holusion/react-native-holusion/lib/screens/ConnectScreen";
-import UpdateScreen from "@holusion/react-native-holusion/lib/screens/UpdateScreen";
-import ObjectScreen from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
-import SynchronizeScreen from "@holusion/react-native-holusion/lib/screens/SynchronizeScreen";
+import {configureStore, screens, strings, netScan } from '@holusion/react-native-holusion';
+const {HomeScreen, ConnectScreen, UpdateScreen, ObjectScreen, SynchronizeScreen} = screens;
 
 
 
 import getTheme from './native-base-theme/components';
 
-import netScan from "@holusion/react-native-holusion/lib/netScan";
-import {strings} from "@holusion/react-native-holusion";
 
 import {name} from "./package.json";
 
-const store = configureStore({name});
+const store = configureStore({projectName:name});
 
 function navigationOptions({navigation}){
   return {
