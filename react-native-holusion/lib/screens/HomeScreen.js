@@ -7,7 +7,7 @@ import { Container, Toast, Content, Spinner, Text} from 'native-base';
 import { StyleSheet, View, TouchableOpacity} from 'react-native';
 
 
-import {loadFile} from "../files";
+import {initialize} from "../files";
 
 import Card from '../components/Card';
 
@@ -55,21 +55,16 @@ class HomeScreen extends React.Component {
                 this.load();
             }
         })
-
     }
     load(){
         if(0 < this.props.cards.length ) return;
         this.setState({status: "loading"});
-        loadFile("data.json")
-        .then(data => JSON.parse(data))
-        .then((data)=>{
-            //console.warn("DATA : ", data);
-            if(!data.items) throw new Error("Data is outdated");
+        initialize(this.props.projectName)
+        .then(data=>{
             this.props.setData(data);
-            this.setState({status:"done"});
+            this.setState({status: "done"});
         })
         .catch((err)=>{
-            console.warn("LOAD ERROR", err);
             this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
         });
     }
@@ -150,6 +145,6 @@ function mapStateToProps(state){
     const cards = Object.keys(data.items).map((key)=>{
         return {id: key, thumb: data.items[key]["thumb"], title: data.items[key]['title']}
     })
-    return {target, cards};
+    return {target, cards, projectName:data.projectName};
 }
 export default connect(mapStateToProps, {setData})(HomeScreen);

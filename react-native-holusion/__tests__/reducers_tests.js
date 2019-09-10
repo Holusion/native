@@ -43,7 +43,7 @@ describe("test reducers", function(){
     })
     describe("data",function(){
         test("can set data", function(){
-            const d = {items:{foo:{name:"foo", status: "bar"}}, last_active: "foo", config: {}};
+            const d = {items:{foo:{name:"foo", status: "bar"}}, projectName:"foo", last_active: "foo", config: {}};
             const s = reducers(initialState, setData(d));
             expect(s.data).toEqual(d);
         })

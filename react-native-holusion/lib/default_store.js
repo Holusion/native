@@ -3,8 +3,9 @@
 import { createStore } from 'redux'
 import reducers from "./reducers";
 export {createStore};
-export default function configureStore({name}={}){
+export default function configureStore({projectName}={}){
     const initialState = reducers(undefined, {});
-    initialState.data.name = name;
+    if(typeof projectName !== "undefined")
+        initialState.data.projectName = projectName;
     return createStore(reducers, initialState);
 };

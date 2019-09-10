@@ -35,6 +35,7 @@ class UpdateScreen extends React.Component {
     componentDidMount(){
         this.setState({status: "loading", statusText: "Fetching Data"});
         getFiles({
+            projectName: this.props.projectName,
             onProgress:(current)=>{
                 this.setState({statusText: current});
             },
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {products, network} = state;
-    return {isConnected: network.status == "online"};
+    const {products, network, data} = state;
+    return {isConnected: network.status == "online", projectName: data.projectName};
 }
 export default connect(mapStateToProps, {setData})(UpdateScreen);
