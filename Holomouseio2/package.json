@@ -1,0 +1,36 @@
+{
+  "name": "holomouseio-lille",
+  "displayName": "Holomouseio",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@holusion/react-native-holusion": "^0.4.0",
+    "native-base": "^2.13.7",
+    "react": "16.8.6",
+    "react-native": "0.60.5",
+    "react-navigation": "^4.0.1",
+    "react-redux": "^7.1.1",
+    "react-native-zeroconf": "https://github.com/sdumetz/react-native-zeroconf.git",
+    "react-native-firebase": "^5.5.6",
+    "react-native-fs": "^2.14.1",
+    "@react-native-community/netinfo": "^4.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.6.0",
+    "@babel/runtime": "7.6.0",
+    "@react-native-community/eslint-config": "0.0.3",
+    "babel-jest": "24.9.0",
+    "eslint": "6.3.0",
+    "jest": "24.9.0",
+    "metro-react-native-babel-preset": "0.54.1",
+    "react-test-renderer": "16.8.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
