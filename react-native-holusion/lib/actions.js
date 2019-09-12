@@ -8,8 +8,6 @@ export const SET_NETINFO = 'SET_NETINFO';
 
 export const SET_DATA = "SET_DATA";
 export const SET_CONFIG = "SET_CONFIG";
-export const SET_SELECT_ITEM_ID = "SET_SELECT_ITEM_ID";
-export const SET_SELECT_CATEGORY = "SET_SELECT_CATEGORY_ID";
 
 /*
  * Products actions 
@@ -24,8 +22,8 @@ export const removeProduct = (nameOrProduct)=>{
     return {type: REMOVE_PRODUCT, name: typeof nameOrProduct === "string"? nameOrProduct: nameOrProduct.name};
 }
 
-export const setActive = (item)=>{
-    return {type: SET_ACTIVE_PRODUCT, name: typeof item ==="string"? item : item.name}
+export const setActive = (item={})=>{
+    return {type: SET_ACTIVE_PRODUCT, name: (typeof item === "string")? item : item.name}
 }
 
 /*
@@ -44,11 +42,4 @@ export const setData = (data) =>{
 
 export const setConfig = (config) => {
     return {type: SET_CONFIG, config}
-}
-
-export const selectItem = (id) => {
-    return { type: SET_SELECT_ITEM_ID, id}
-}
-export const selectCategory= (id) => {
-    return { type: SET_SELECT_CATEGORY, id}
 }

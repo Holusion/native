@@ -6,7 +6,7 @@ function Card(props) {
   const styles = props.style;
   return (
       <View style={styles.container}>
-          <Image style={styles.icon} source={props.source}/>
+          <Image key={props.source.uri} style={styles.icon} source={props.source} resizeMode="cover"/>
           <View style={styles.titleContainer}>
               <Text ellipsizeMode="tail" numberOfLines={1} style={styles.titleText}>{props.title}</Text>
           </View>

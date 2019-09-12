@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import { Icon, Button} from 'native-base';
 
-import {connectedProduct} from "../selectors";
+import {getActiveProduct} from "../selectors";
 
 class NetworkIcon extends React.Component{
     constructor(props){
@@ -17,7 +17,7 @@ class NetworkIcon extends React.Component{
   
   function mapStateToProps(state){
     return {
-      connected: (connectedProduct(state)? true : false)
+      connected: (getActiveProduct(state)? true : false)
     }
   }
   

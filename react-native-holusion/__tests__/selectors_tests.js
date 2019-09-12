@@ -1,8 +1,8 @@
 'use strict';
 
-import {setNetInfo, setData, setActive, addProduct, removeProduct, selectItem} from "../lib/actions";
+import {setNetInfo, setData, setActive, addProduct, removeProduct} from "../lib/actions";
 import reducers from "../lib/reducers";
-import {getItemsIds, getActiveItems, getSelectedItem} from "../lib/selectors";
+import {getItemsIds, getActiveItems, getSelectedItem, getActiveProduct} from "../lib/selectors";
 describe("test selectors", function(){
     const initialState = reducers(undefined,{});
     const initialStateCopy = Object.assign({}, initialState);
@@ -30,24 +30,41 @@ describe("test selectors", function(){
         
         test("filter active products",function(){
             let state = reducers(initialState, setData({
-                items,
-                selectedCategory: "foofoo"
+                items
             }));
-            expect(getActiveItems(state)).toEqual([Object.assign({id:"foo"}, items["foo"])]);
+            expect(getActiveItems(state,{selectedCategory: "foofoo"})).toEqual([Object.assign({id:"foo"}, items["foo"])]);
         })
         test("return all if selectedCategory is null", function(){
             let state = reducers(initialState, setData({
-                items,
-                selectedCategory: null
+                items
             }));
-            expect(getActiveItems(state)).toHaveProperty("length", 2);
+            expect(getActiveItems(state, {selectedCategory: null})).toHaveProperty("length", 2);
         })
     })
     describe("getSelectedItem()",function(){
         test("returns selected item",function(){
             let state = reducers(initialState, setData({items}));
-            state = reducers(state, selectItem("bar"));
-            expect(getSelectedItem(state)).toEqual(items["bar"]);
+            expect(getSelectedItem(state, {selectedId:"bar"})).toEqual(items["bar"]);
+            expect(getSelectedItem.recomputations()).toEqual(1);
+            expect(getSelectedItem(state, {selectedId:"bar"})).toEqual(items["bar"]);
+            expect(getSelectedItem.recomputations()).toEqual(1);
+
         })
+    })
+    describe("getActiveProduct()",function(){
+        let state;
+        beforeEach(function(){
+            state = reducers(initialState, addProduct({name:"foo"}));
+            state = reducers(state, addProduct({name:"bar"}));
+            state = reducers(state, addProduct({name:"baz"}));
+        })
+        test("no default", function(){
+            expect(getActiveProduct(state)).not.toBeTruthy();
+        })
+        test("can get active product",function(){
+            state = reducers(state, setActive({name: "bar"}));
+            expect(getActiveProduct(state)).toEqual({name: "bar", active: true});
+        })
+
     })
 })

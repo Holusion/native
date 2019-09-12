@@ -6,9 +6,9 @@ import { createSelector } from 'reselect'
  * Data selectors
  */
 const getData = (state)=> state.data;
-const getSelectedId = (state) => state.data.selectedId;
-const getSelectedCategory = (state) => state.data.selectedCategory;
-const getItems = (state) => state.data.items
+const getSelectedId = (state, props) => props.selectedId;
+const getSelectedCategory = (state, props) => props.selectedCategory;
+const getItems = (state) => state.data.items;
 
 export const getItemsIds = createSelector(
     [getItems],
@@ -35,7 +35,6 @@ export const getActiveItems = createSelector(
 export const getSelectedItem = createSelector(
     [getItems, getSelectedId],
     (itemsMap, id) => {
-        console.log("Search for id :", id, "in", itemsMap);
         return itemsMap[id]
     }
 )
@@ -45,7 +44,7 @@ export const getSelectedItem = createSelector(
  */
 const getProducts = (state) => state.products;
 
-export const connectedProduct = createSelector(
-    [getproducts],
+export const getActiveProduct = createSelector(
+    [getProducts],
     (products)=> products.find(p => p.active == true)
 )

@@ -40,11 +40,13 @@ describe("test reducers", function(){
             const {products} = reducers(s, removeProduct(p));
             expect(products).toHaveProperty("length", 0);
         })
-        test("can set an active product",function(){
+        test("can set and unset an active product",function(){
             const p = {name:"foobar"};
             let s = reducers(initialState, addProduct(p));
             s = reducers(s, setActive(p));
             expect(s.products).toEqual([{name: "foobar", active: true}])
+            s = reducers(s, setActive());
+            expect(s.products).toEqual([{name: "foobar", active: false}])
         })
     })
     describe("data",function(){

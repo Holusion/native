@@ -17,15 +17,15 @@ import * as strings from "../strings.json";
 class HomeScreen extends React.Component {
     render() {
         if(this.state.status == "loading"){
-            return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center',}}>
+            return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                <Spinner/> 
                 <Text>Loading...</Text>
             </Content></Container>)
         }
-        const cards = this.props.cards.map((item)=>{
-            return (<TouchableOpacity key={item['id']} onPress={()=>this.props.navigation.navigate("Object", {id:item['id']})}>
-                <Card source={item['thumb']? {uri: item['thumb']} : require("../../assets/icons/catalogue.png")} title={item.title} />
-            </TouchableOpacity>)
+        const cards = this.props.categories.map((c, index)=>{
+            return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: c})}>
+            <Card source={require("../../assets/icons/catalogue.png")} title={c} />
+        </TouchableOpacity>)
         })
         return (
             <Container style={{flex: 1}}>
@@ -49,6 +49,7 @@ class HomeScreen extends React.Component {
         super(props);
 
         this.state= {status:"loading"};
+        //FIXME bad design...
         this.props.navigation.addListener("willFocus",()=>{
             if(this.state.status == "loading" ){
                 this.load();
@@ -56,7 +57,9 @@ class HomeScreen extends React.Component {
         })
     }
     load(){
-        if(0 < this.props.cards.length ) return;
+        if(0 < this.props.categories.length ){
+            return this.setState({status: "done"})
+        }
         this.setState({status: "loading"});
         initialize(this.props.projectName)
         .then(data=>{
@@ -66,23 +69,6 @@ class HomeScreen extends React.Component {
         .catch((err)=>{
             this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
         });
-    }
-}
-
-const customTheme = {
-    'holusion.IconCardComponent': {
-        container: {
-            width: 300,
-            height: 300,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 10 },
-            shadowOpacity: 0.8,
-            shadowRadius: 10,
-        },
-        icon: {
-            width: 300 * 0.6,
-            height: 300 * 0.6
-        }
     }
 }
 
@@ -138,9 +124,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {target, data } = state;
-    const {items, config, projectName} = data;
-    const cards = getActiveItems(state);
-    return {target, cards, projectName};
+    const {data } = state;
+    const {config, projectName} = data;
+    const categories = config.categories || [];
+    return {categories, projectName};
 }
 export default connect(mapStateToProps, {setData})(HomeScreen);
