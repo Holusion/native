@@ -40,12 +40,20 @@ describe("test reducers", function(){
             const {products} = reducers(s, removeProduct(p));
             expect(products).toHaveProperty("length", 0);
         })
+        test("can set an active product",function(){
+            const p = {name:"foobar"};
+            let s = reducers(initialState, addProduct(p));
+            s = reducers(s, setActive(p));
+            expect(s.products).toEqual([{name: "foobar", active: true}])
+        })
     })
     describe("data",function(){
         test("can set data", function(){
-            const d = {items:{foo:{name:"foo", status: "bar"}}, projectName:"foo", last_active: "foo", config: {}};
+            const d = {items:{foo:{name:"foo", status: "bar"}}, projectName:"foo", selectedId: "foo", config: {}};
             const s = reducers(initialState, setData(d));
-            expect(s.data).toEqual(d);
+            expect(s.data).toHaveProperty("items", {foo:{name:"foo", status: "bar"}});
+            expect(s.data).toHaveProperty("projectName","foo");
+            expect(s.data).toHaveProperty("selectedId","foo");
         })
         test("can set only selected keys of data", function(){
             const d = {items:{foo:{name:"foo", status: "bar"}}};

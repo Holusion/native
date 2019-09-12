@@ -1,10 +1,11 @@
 import React from 'react';
 
 import {setData} from '../actions';
+import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Spinner, Text} from 'native-base';
-import { StyleSheet, View, TouchableOpacity} from 'react-native';
+import { Container, Toast, Content, Footer, Spinner, Text, View} from 'native-base';
+import { StyleSheet, TouchableOpacity} from 'react-native';
 
 
 import {initialize} from "../files";
@@ -28,7 +29,7 @@ class HomeScreen extends React.Component {
         })
         return (
             <Container style={{flex: 1}}>
-                <View style={styles.container}>
+                <Content contentContainerStyle={styles.container}>
                     <View style={styles.titleContainer}>
                         <Text >
                         </Text>
@@ -36,12 +37,10 @@ class HomeScreen extends React.Component {
                     <View style= {styles.cardContainer}>
                         {cards}
                     </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("Remerciements")} style={styles.footerContainer}>
-                        <View>
-                            <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>  
+                </Content> 
+                <Footer onPress={()=>this.props.navigation.navigate("Remerciements")}>
+                    <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
+                </Footer>
             </Container>
         )
     }
@@ -89,9 +88,6 @@ const customTheme = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        display: 'flex', 
-        alignItems: 'center'
     },
     images: {
         width: null,
@@ -114,6 +110,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         flex: 2,
         display: 'flex', 
+        flexWrap: "wrap",
         flexDirection: "row", 
         alignContent: 'center', 
         justifyContent: 'center'
@@ -141,10 +138,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {target, data} = state;
-    const cards = Object.keys(data.items).map((key)=>{
-        return {id: key, thumb: data.items[key]["thumb"], title: data.items[key]['title']}
-    })
-    return {target, cards, projectName:data.projectName};
+    const {target, data } = state;
+    const {items, config, projectName} = data;
+    const cards = getActiveItems(state);
+    return {target, cards, projectName};
 }
 export default connect(mapStateToProps, {setData})(HomeScreen);

@@ -1,4 +1,5 @@
 platform :ios, '9.0'
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'holomouseio2' do
@@ -26,6 +27,11 @@ target 'holomouseio2' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Firestore'
 
   target 'holomouseio2Tests' do
     inherit! :search_paths

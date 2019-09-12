@@ -1,11 +1,11 @@
 'use strict';
-import { SET_PRODUCTS, SET_ACTIVE, ADD_PRODUCT, REMOVE_PRODUCT} from '../actions'
+import { SET_PRODUCTS, SET_ACTIVE_PRODUCT, ADD_PRODUCT, REMOVE_PRODUCT} from '../actions'
 
 export default function products  (state = [], action) {
     switch(action.type) {
         case SET_PRODUCTS:
             return action.products;
-        case SET_ACTIVE:
+        case SET_ACTIVE_PRODUCT:
             const products = state.map(p =>{
                 if(p.name == action.name){
                     return Object.assign(p, {active: true});

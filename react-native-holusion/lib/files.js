@@ -8,6 +8,13 @@ import {base64ToHex} from "./convert";
 //let files = await RNFS.readDir(`${RNFS.DocumentDirectoryPath}/${projectName}`);
 
 
+class FileError extends Error{
+    constructor(sourceFile, message){
+        super(message);
+        this.sourceFile = sourceFile;
+    }
+}
+
 import {delay} from "./time";
 
 export const basePath = `${RNFS.DocumentDirectoryPath}`;
@@ -32,23 +39,37 @@ export function initialize(projectName){
         return data;
     })
     .catch((err)=>{
-        throw new Error(`Application configuration is required : ${err.toString()}`)
+        if(err.code == "ENOENT"){
+            throw new Error("Application is not configured yet");
+        }
+        throw new Error(`Application has an invalid configuration : ${err.toString()}`)
     });
 }
 
-export async function getFiles({projectName, onProgress=function(){}, force=false}={}){
+export async function getFiles({
+    projectName, 
+    onProgress=function(){}, 
+    force=false,
+}={}){
     let cache;
     let data = {};
     let errors = [];
     let filelist = [
         `${storagePath}/data.json`
     ];
+    if(!projectName){
+        throw new Error(`A valid projectName is required. Got ${projectName}`);
+    }
+    const credentials = await firebase.auth().signInAnonymously();
     const db = firebase.firestore();
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const mainFolderRef = storageRef.child(projectName);
+
+    //Create base directory. Does not throw if it doesn't exist
+    await RNFS.mkdir(storagePath);
 
     onProgress(` Downloading applications/${projectName}`);
     const configSnapshot = await projectRef.get();
@@ -60,20 +81,37 @@ export async function getFiles({projectName, onProgress=function(){}, force=fals
 
     const projectsSnapshot = await collectionsRef.get();
     const projects = projectsSnapshot.docs;
+    if(projects.length == 0){
+        throw new Error(`no project found in ${projectName}`);
+    }
     for (let s of projects){
         const d = data[s.id] = s.data();
         const [new_errors, new_files] = await makeLocal(d, {onProgress, force});
         errors = errors.concat(new_errors);
         filelist = filelist.concat(new_files);
     }
+
     //Cleanup
     onProgress("Cleaning Up");
-    await cleanup(storagePath, filelist);
-    console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
-    await Promise.all([
-        RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify({items: data, config: config}), 'utf8'),
-    ]);
-    return {data, config, errors};
+    try{
+        await cleanup(storagePath, filelist);
+    }catch(e){
+        throw new Error("Cleanup error :" + e.message);
+    }
+    
+    
+    //console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
+    try{
+        await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify({items: data, config: config}), 'utf8')
+    }catch(e){
+        throw new FileError(`${storagePath}/data.json`, e.message);
+    }
+    if(errors.length == 1){
+        throw errors[0]
+    }else if (1 < errors.length){
+        throw new Error(`Multiple fetch errors : ${errors.join(', ')}`);
+    }
+    return {data, config};
 }
 
 async function makeLocal(d, {onProgress, force}){
@@ -81,12 +119,12 @@ async function makeLocal(d, {onProgress, force}){
     const errors = [];
     const storage = firebase.storage();
     for(let key in d){
-        if(d[key].indexOf("gs://") == 0){
+        if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0){
             const ref = storage.refFromURL(d[key]);
             const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
             const name = filename(fullPath);
             const dest = `${storagePath}/${fullPath}`;
-            onProgress(`Checking out ${fullPath}`);
+            onProgress(`Checking out ${name}`);
             let uptodate = false;
             if(!force){
                 try{
@@ -108,10 +146,15 @@ async function makeLocal(d, {onProgress, force}){
                 try{
                     await ref.downloadFile(dest);
                 }catch(e){
-                    errors.push(e);
+                    console.warn("Download error on %s : ", name, e);
+                    if(e.code == "storage/object-not-found"){
+                        errors.push(new FileError(name, `${name} could not be found at ${ref.fullPath}`))
+                    }else{
+                        errors.push(new FileError(name, `${e.code} - ${e.message}`));
+                    }
                 }
             }else{
-                onProgress(`${name} is up to date`);
+                onProgress(`Up to date ${name}`);
                 await delay(20);
             }
             filelist.push(dest);
@@ -124,7 +167,8 @@ async function makeLocal(d, {onProgress, force}){
                         d[key.toLowerCase().replace(/\s/,"_")] = fileData[key];
                     }
                 }catch(e){
-                    errors.push(e);
+                    console.warn("loadYaml error on %s : ", fullPath, e);
+                    errors.push(new FileError(fullPath,e.message));
                 }
                
             }else{
@@ -135,8 +179,13 @@ async function makeLocal(d, {onProgress, force}){
     return [errors, filelist];
 }
 
-async function cleanup(dir, keep=[]){
-    const localFiles = await RNFS.readDir(dir);
+async function cleanup(dir=storagePath, keep=[]){
+    let localFiles;
+    try{
+        localFiles = await RNFS.readDir(dir);
+    }catch(e){
+        throw new FileError(dir,e.message);
+    }
     for(let file of localFiles){ 
         if(file.isDirectory()){
             if(keep.filter(path => file.path.indexOf(path) == -1).length == 0){

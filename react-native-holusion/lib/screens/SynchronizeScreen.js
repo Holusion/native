@@ -69,6 +69,11 @@ class SynchronizeScreen extends React.Component {
             }
             for (const file of uploads){
                 this.setState({statusText: "Uploading "+ file.name});
+                //It's a bad pattern but react-native's XMLHttpRequest implementation will randomly throw on missing file
+                if(!await RNFS.exists(file.uri)){
+                    console.warn("File ",file.uri,"does not exists");
+                    continue;
+                }
                 const form = new FormData();
                 form.append("file", file);
                 try{
@@ -79,7 +84,7 @@ class SynchronizeScreen extends React.Component {
                             'Accept': 'application/json',
                             'Content-Type': 'multipart/form-data',
                         }
-                    })
+                    });
                     const body = response.json();
                     if (response.ok) {
                         this.setState({statusText:`${file.name} uploaded`})

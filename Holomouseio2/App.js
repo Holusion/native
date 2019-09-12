@@ -1,24 +1,25 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation'
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer} from "react-navigation";
 import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
 import {AppState} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
 
-import {configureStore, screens, strings, netScan } from '@holusion/react-native-holusion';
+import {configureStore, screens, components, strings, netScan } from '@holusion/react-native-holusion';
 const {HomeScreen, ConnectScreen, UpdateScreen, ObjectScreen, SynchronizeScreen} = screens;
-
+const {NetworkIcon} = components;
 
 import getTheme from './native-base-theme/components';
 
 
 import {name} from "./package.json";
 
-const store = configureStore({name});
+const store = configureStore({projectName:name});
 
 function navigationOptions({navigation}){
   return {
     title: navigation.routeName,
-    headerRight: <NetIcon onPress={() => {navigation.navigate("Connect")}}/>, 
+    headerRight: <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>, 
   }
 }
 
@@ -44,24 +45,6 @@ const navigation = {
     navigationOptions,
   }
 }
-
-class NetworkIcon extends React.Component{
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color: this.props.connected?"green": "red"}} name="ios-wifi" /></Button>);
-  }
-}
-
-function mapStateToProps(state){
-  const {products} = state;
-  return {
-    connected: products.find(p => p.active == true)?true: false
-  }
-}
-
-const NetIcon = connect(mapStateToProps)(NetworkIcon);
 
 const options = {
   defaultNavigationOptions:{

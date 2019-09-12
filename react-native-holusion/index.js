@@ -11,7 +11,7 @@ import configureStore from "./lib/default_store";
 import strings from "./lib/strings.json";
 
 import * as screens from "./lib/screens";
-
+import * as components from "./lib/components";
 export {
   netScan,
   files,
@@ -22,4 +22,5 @@ export {
   configureStore,
   strings,
   screens,
+  components,
 }

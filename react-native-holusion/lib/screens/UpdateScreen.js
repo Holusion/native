@@ -40,17 +40,17 @@ class UpdateScreen extends React.Component {
                 this.setState({statusText: current});
             },
             force: this.props.navigation.getParam("error")? true:false,
-        }).then(({data, config, errors})=>{
+        }).then((data)=>{
             if(errors.length == 0){
-                console.warn("SetData : ", {items:data, config})
-                this.props.setData({items:data, config});
+                console.warn("SetData : ", data);
+                this.props.setData(data);
                 return this.setState({status: "idle", statusText:"Updated data to latest version"});
             }else{
                 return this.setState({status: "error", statusText: errors.join("\n")})
             }
         }).catch((err)=>{
-            console.warn("Error : ", err);
-            this.setState({status: "error", statusText: err.toString()});
+            console.warn("getFiles Error : ", err);
+            this.setState({status: "error", statusText: "Failed to update : "+err.toString()});
         })
     }
     constructor(props) {

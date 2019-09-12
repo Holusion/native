@@ -10,7 +10,6 @@ export function onUpdate(store){
   const {config} = data;
   const {default_target}= config;
   const isActive = products.find(p=>p.active)? true: false;
-  //Give some time for other products to be detected, too
   if(!isActive && default_target ){
     const target_product = products.find(p => p.name == default_target);
     if(target_product){
