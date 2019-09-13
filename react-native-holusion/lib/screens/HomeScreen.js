@@ -4,13 +4,13 @@ import {setData} from '../actions';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, View} from 'native-base';
+import { Container, Toast, Content, Footer, Spinner, Text, H1, View, Button} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
 
 import {initialize} from "../files";
 
-import Card from '../components/Card';
+import ImageCard from '../components/ImageCard';
 
 import * as strings from "../strings.json";
 
@@ -24,23 +24,32 @@ class HomeScreen extends React.Component {
         }
         const cards = this.props.categories.map((c, index)=>{
             return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: c})}>
-            <Card source={require("../../assets/icons/catalogue.png")} title={c} />
-        </TouchableOpacity>)
+                <ImageCard title={c} />
+            </TouchableOpacity>)
         })
+
+        let footer;
+        if(this.props.config.about){
+            footer = (<Footer >
+                <Button transparent onPress={()=>this.props.navigation.navigate("About")}>
+                    <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
+                </Button>
+                    
+            </Footer>)
+        }
         return (
             <Container style={{flex: 1}}>
                 <Content contentContainerStyle={styles.container}>
-                    <View style={styles.titleContainer}>
-                        <Text >
-                        </Text>
+                    <View>
+                        <H1 primary style={styles.titleContainer}>
+                            Touchez-moi pour découvrir nos collections :
+                        </H1>
                     </View>
                     <View style= {styles.cardContainer}>
                         {cards}
                     </View>
                 </Content> 
-                <Footer onPress={()=>this.props.navigation.navigate("Remerciements")}>
-                    <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
-                </Footer>
+                {footer}
             </Container>
         )
     }
@@ -73,7 +82,10 @@ class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container:{
+        flex:1,
+        flexDirection:"column",
+        alignContent: "space-around",
     },
     images: {
         width: null,
@@ -88,13 +100,11 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         flex: 1,
-        display: "flex",
-        justifyContent: 'center',
-        alignItems: 'center'
-
+        textAlign:'center',
+        paddingVertical: 70,
     },
     cardContainer: {
-        flex: 2,
+        flex: 1,
         display: 'flex', 
         flexWrap: "wrap",
         flexDirection: "row", 
@@ -118,7 +128,6 @@ const styles = StyleSheet.create({
         bottom: 32
     },
     footerButton: {
-        color: 'white', 
         fontSize: 28
     }
 });
@@ -127,6 +136,6 @@ function mapStateToProps(state){
     const {data } = state;
     const {config, projectName} = data;
     const categories = config.categories || [];
-    return {categories, projectName};
+    return {categories, projectName, config};
 }
 export default connect(mapStateToProps, {setData})(HomeScreen);

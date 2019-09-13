@@ -37,7 +37,6 @@ class ConnectScreen extends React.Component {
                     {child}
                 </Content>
                 {footer}
-                
             </Container>
         )
     }
@@ -51,11 +50,6 @@ class ConnectScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-    },
-    updater: {
-        
-    },
     noProduct:{
         paddingTop: 15,
         alignItems: 'center',
@@ -65,6 +59,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
     const {products, network, data} = state;
-    return {products, isConnected: network.status == "online", default_target: data.config.default_target};
+    return {
+        products, 
+        isConnected: network.status == "online", 
+        default_target: data.config.default_target,
+    };
 }
 export default connect(mapStateToProps, {setActive})(ConnectScreen);

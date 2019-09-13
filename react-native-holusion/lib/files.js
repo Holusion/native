@@ -73,6 +73,9 @@ export async function getFiles({
 
     onProgress(` Downloading applications/${projectName}`);
     const configSnapshot = await projectRef.get();
+    if(!configSnapshot.exists){
+        console.warn("Application has no configuration set. Using defaults.");
+    }
     const config = configSnapshot.exists ? configSnapshot.data():{};
 
     const [new_errors, new_files] = await makeLocal(config, {onProgress, force});
@@ -155,12 +158,10 @@ async function makeLocal(d, {onProgress, force}){
                 }
             }else{
                 onProgress(`Up to date ${name}`);
-                await delay(20);
             }
             filelist.push(dest);
             
             if(key == "ref"){
-                // Will be deleted by cleanup()
                 try{
                     const fileData = await loadYaml(`${fullPath}`);
                     for(let key in fileData){

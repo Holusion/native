@@ -1,12 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Image} from "react-native";
-import { connectStyle, Text } from 'native-base'
+import { View, Image} from "react-native";
+import { connectStyle, Text, Icon } from 'native-base'
 
-function Card(props) {
+
+function ImageCard(props) {
   const styles = props.style;
+  let img 
+  if(props.image) img = props.image;
+  else if(props.source) img = (<Image key={props.source.uri} style={styles.image} source={props.source} resizeMode="cover"/>);
+  else img = (<Icon style={styles.icon} name="ios-image"/>);
   return (
       <View style={styles.container}>
-          <Image key={props.source.uri} style={styles.icon} source={props.source} resizeMode="cover"/>
+          {img}
           <View style={styles.titleContainer}>
               <Text ellipsizeMode="tail" numberOfLines={1} style={styles.titleText}>{props.title}</Text>
           </View>
@@ -14,7 +19,7 @@ function Card(props) {
   );
 }
 
-const styles = {
+const cardTheme = {
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -24,7 +29,6 @@ const styles = {
         padding: 0,
         borderRadius: 8,
         backgroundColor: "transparent",
-        borderColor:"#0092dbff",
         borderWidth: 1,
     },
 
@@ -37,23 +41,22 @@ const styles = {
         justifyContent: 'center'
     },
 
-    icon: {
-      alignSelf: 'center', 
-      width: 200, 
-      height: 200, 
+    image: {
+        alignSelf: 'center', 
+        width: 200, 
+        height: 200, 
     },
-
+    icon: {
+        alignSelf: 'center', 
+        fontSize: 200,
+    },
     titleText: {
-      color:"#0092dbff",
-      width: 200,
-      textAlign: 'center',
-      fontSize: 26,
-      alignSelf: 'center'
+    width: 200,
+    textAlign: 'center',
+    fontSize: 26,
+    alignSelf: 'center'
     }
 }
 
-const markdownTitle = StyleSheet.create({
-    text: styles.titleText
-})
 
-export default connectStyle('holusion.IconCardComponent', styles)(Card);
+export default connectStyle('Holusion.ImageCard', cardTheme)(ImageCard);

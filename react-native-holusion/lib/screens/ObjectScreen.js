@@ -96,9 +96,13 @@ class ObjectScreen extends React.Component {
                     {slides}
                 </Carousel>
                 <Footer style={styles.controller}>
-                    <Button transparent primary onPress={()=>this._carousel._animatePreviousPage()}><Icon name="ios-arrow-back"/></Button>
+                    <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animatePreviousPage()}>
+                        <Icon primary large style={styles.controlIcons} name="ios-arrow-back"/>
+                        </Button>
                     <Controller />
-                    <Button onPress={()=>this._carousel._animateNextPage()}><Icon name="ios-arrow-forward"/></Button>
+                    <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animateNextPage()}>
+                        <Icon primary large style={styles.controlIcons} name="ios-arrow-forward"/>
+                        </Button>
                 </Footer>
             </Container>
         )
@@ -248,10 +252,23 @@ const styles = StyleSheet.create({
         bottom:15,
         flex:1,
         justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'transparent',
         borderWidth:0,
         borderColor: 'transparent',
-    }
+    },
+    controlButton:{
+        backgroundColor: "#ffffffcc",
+        paddingVertical: 5,
+        paddingHorizontal: 15, 
+        height:70,
+    },
+    controlIcons:{
+        fontSize: 60,
+        height: 60,
+        lineHeight: 60,
+        fontWeight: "bold"
+    },
 })
 
 export default connect(mapStateToProps)(ObjectScreen);

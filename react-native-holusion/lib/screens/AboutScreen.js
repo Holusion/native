@@ -1,0 +1,39 @@
+import React from 'react';
+
+import {setData} from '../actions';
+import { connect} from 'react-redux';
+
+import { Container, Toast, Content, Footer, Spinner, Text, H1, View} from 'native-base';
+import { StyleSheet, TouchableOpacity} from 'react-native';
+
+import Markdown from 'react-native-markdown-renderer'
+
+import {initialize} from "../files";
+
+
+
+class AboutScreen extends React.Component {
+    render() {
+        return(<Container>
+            <Content>
+            <Container>
+                <Content>
+                    <Markdown>{this.props.config.about}</Markdown>
+                </Content>
+            </Container>
+            </Content>
+        </Container>)
+    }
+
+    constructor(props) {
+        super(props);
+    }
+}
+
+
+function mapStateToProps(state){
+    const {data} = state;
+    return {config: data.config};
+}
+
+export default connect(mapStateToProps)(AboutScreen);

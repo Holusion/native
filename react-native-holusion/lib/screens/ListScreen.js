@@ -10,7 +10,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import {initialize} from "../files";
 
-import Card from '../components/Card';
+import ImageCard from '../components/ImageCard';
 
 import * as strings from "../strings.json";
 
@@ -19,7 +19,7 @@ function ListScreenContent(props){
         //Ugly hack because Images with a file:/// uri are not rendered when updated unless we restart the app
         const thumbSource = item['thumb']? {uri: item['thumb'].replace(/file:\/\/\/.*\/Documents/,"~/Documents"), scale: 1} : require("../../assets/icons/catalogue.png");
         return (<TouchableOpacity key={item['id']} onPress={()=>props.onNavigate(item['id'])}>
-                <Card source={thumbSource} title={item.title} />
+                <ImageCard source={thumbSource} title={item.title} />
         </TouchableOpacity>)
     })
     return(<Content contentContainerStyle={styles.container}>

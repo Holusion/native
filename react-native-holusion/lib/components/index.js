@@ -1,12 +1,12 @@
 'use strict';
 import Controller from "./Controller";
-import Card from "./Card";
+import ImageCard from "./ImageCard";
 import StatusIcon from "./StatusIcon";
 import NetworkIcon from "./NetworkIcon";
 
 export {
     Controller,
-    Card,
+    ImageCard,
     StatusIcon,
     NetworkIcon,
 }
