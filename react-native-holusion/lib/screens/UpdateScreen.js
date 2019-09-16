@@ -33,25 +33,27 @@ class UpdateScreen extends React.Component {
         )
     }
     componentDidMount(){
+        this.abortController = new AbortController();
         this.setState({status: "loading", statusText: "Fetching Data"});
         getFiles({
             projectName: this.props.projectName,
+            signal: this.abortController.signal,
             onProgress:(current)=>{
                 this.setState({statusText: current});
             },
             force: this.props.navigation.getParam("error")? true:false,
         }).then((data)=>{
-            if(errors.length == 0){
-                console.warn("SetData : ", data);
-                this.props.setData(data);
-                return this.setState({status: "idle", statusText:"Updated data to latest version"});
-            }else{
-                return this.setState({status: "error", statusText: errors.join("\n")})
-            }
+            if(data.aborted) return;
+            console.warn("SetData : ", data);
+            this.props.setData(data);
+            return this.setState({status: "idle", statusText:"Updated data to latest version"});
         }).catch((err)=>{
             console.warn("getFiles Error : ", err);
             this.setState({status: "error", statusText: "Failed to update : "+err.toString()});
         })
+    }
+    componentWillUnmount(){
+        if(this.abortController) this.abortController.abort();
     }
     constructor(props) {
         super(props);

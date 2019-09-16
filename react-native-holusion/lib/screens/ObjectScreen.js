@@ -5,7 +5,10 @@ import { Image, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react
 
 import Markdown from 'react-native-markdown-renderer'
 
+import PropTypes from "prop-types";
+
 import {connect} from "react-redux";
+import {getActiveItems} from "../selectors";
 
 import Controller from "../components/Controller"
 
@@ -50,24 +53,19 @@ function ObjectView(d){
     </Content>)
 }
 
+
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
  */
 class ObjectScreen extends React.Component {
     
     render() {
-        /*
-        <Carousel ref={ref => this.carousel = ref} style={[{flex: 1, width: this.state.size.width}]} autoplay={false} currentPage={store.getState().objectVideo.index} onAnimateNextPage={this.changeVideo}>
-            {this.renderObjects()}
-        </Carousel>
-        //*/
-        const d = this.props.object;
         const objects_array =Object.keys(this.props.items);
         const current_index = this.state.index;
         
         if(!this.props.items || current_index == -1){
             return(<Container>
-                <Content>
+                <Content contentContainerStyle={styles.content}>
                     <Text>No data for Id : {this.props.navigation.getParam("id")}</Text>
                     <Text>Available objects : {Object.keys(this.props.items).join(", ")}</Text>
                 </Content>
@@ -83,29 +81,34 @@ class ObjectScreen extends React.Component {
             const object = this.props.items[key] ||{};
             return (<ObjectView {...object} key={object.id} active={active_indices.indexOf(index) !== -1}/>);
         })
-
-        return (
-            <Container  onLayout={this._onLayoutDidChange}>
-                <Carousel 
-                    ref={(ref) => this._carousel = ref}
-                    style={this.state.size}
-                    currentPage={current_index}
-                    onAnimateNextPage={(p)=>this.onNextPage(p)}
-                    autoplay={false}
-                >
-                    {slides}
-                </Carousel>
-                <Footer style={styles.controller}>
-                    <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animatePreviousPage()}>
-                        <Icon primary large style={styles.controlIcons} name="ios-arrow-back"/>
-                        </Button>
-                    <Controller />
-                    <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animateNextPage()}>
-                        <Icon primary large style={styles.controlIcons} name="ios-arrow-forward"/>
-                        </Button>
-                </Footer>
-            </Container>
-        )
+        let footer;
+        if(1 < objects_array.length){
+            footer = (<Footer style={styles.controller}>
+                <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animatePreviousPage()}>
+                    <Icon primary large style={styles.controlIcons} name="ios-arrow-back"/>
+                    </Button>
+                <Controller />
+                <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animateNextPage()}>
+                    <Icon primary large style={styles.controlIcons} name="ios-arrow-forward"/>
+                    </Button>
+            </Footer>)
+        }else{
+            footer = (<Footer style={styles.controller}>
+                <Controller />
+            </Footer>)
+        }
+        return (<Container onLayout={this._onLayoutDidChange}>
+            <Carousel 
+                ref={(ref) => this._carousel = ref}
+                style={this.state.size}
+                currentPage={current_index}
+                onAnimateNextPage={(p)=>this.onNextPage(p)}
+                autoplay={false}
+            >
+                {slides}
+            </Carousel>
+            {footer}
+        </Container>)
     }
 
     onNextPage(index){
@@ -121,7 +124,7 @@ class ObjectScreen extends React.Component {
             console.warn("Index", index, "did not map to any object");
             return;
         }
-        console.warn(`onNextPage(${index}) : ${filename(object.video)}`);
+        //console.warn(`onNextPage(${index}) : ${filename(object.video)}`);
         fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
         .then(r=>{
             if(!r.ok){
@@ -136,22 +139,6 @@ class ObjectScreen extends React.Component {
         const layout = e.nativeEvent.layout;
         this.setState({ size: { width: layout.width, height: layout.height } });
     }
-    pauseVideo = () => {
-        //TODO: should send pause to the controller
-    }
-
-    unpauseVideo = () => {
-        //TODO: should send unpause to the controller
-    }
-    _onNext() {
-        this.carousel._animateNextPage();
-        store.dispatch(actions.nextVideo(store.getState().objectVideo.videos))
-    }
-
-    _onPrevious() {
-        this.carousel._animatePreviousPage();
-        store.dispatch(actions.previousVideo(store.getState().objectVideo.videos))
-    }
 
     constructor(props, context) {
         super(props, context);
@@ -164,25 +151,23 @@ class ObjectScreen extends React.Component {
         this.props.navigation.addListener("willFocus",()=>{
             this.onNextPage(this.state.index);
         })
-        this._onNext = this._onNext.bind(this);
-        this._onPrevious = this._onPrevious.bind(this);
-
     }
 }
 
 function mapStateToProps(state, {navigation}){
     const {data, products} = state;
+    console.warn("Map state to props in ObjectScreen");
     return {
         ids: Object.keys(data.items),
-        items: data.items,
-        raw_data: data, 
+        items: getActiveItems(state, {category: navigation.getParam("category")}),
         target: products.find(p => p.active)
     };
 }
 
 const styles = StyleSheet.create({
     content: {
-        marginHorizontal: 24
+        marginHorizontal: 24,
+        paddingBottom: 100,
     },
     image: {
         flex: 1,

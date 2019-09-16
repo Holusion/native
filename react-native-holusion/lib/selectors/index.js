@@ -26,7 +26,7 @@ export const getActiveItems = createSelector(
     (items, category)=>{
         if(!category) return items;
         return items.filter(i => {
-            if(i.collection) return category == i.collection;
+            if(i.theme) return category == i.theme;
             if(i.category) return category == i.category;
         })
     }

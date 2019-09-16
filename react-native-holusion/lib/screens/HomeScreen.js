@@ -18,15 +18,23 @@ class HomeScreen extends React.Component {
     render() {
         if(this.state.status == "loading"){
             return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-               <Spinner/> 
+                <Spinner/> 
                 <Text>Loading...</Text>
             </Content></Container>)
         }
-        const cards = this.props.categories.map((c, index)=>{
-            return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: c})}>
-                <ImageCard title={c} />
-            </TouchableOpacity>)
-        })
+        let cards;
+        if(this.props.categories && 0 < this.props.categories.length){
+            cards = this.props.categories.map((c, index)=>{
+                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: c})}>
+                    <ImageCard title={c} />
+                </TouchableOpacity>)
+            })
+        } else {
+            cards = [(<TouchableOpacity key={0} onPress={()=>this.props.navigation.navigate("List", {category: null})}>
+                <ImageCard title="Collection" />
+            </TouchableOpacity>)]
+        }
+        
 
         let footer;
         if(this.props.config.about){
@@ -42,7 +50,7 @@ class HomeScreen extends React.Component {
                 <Content contentContainerStyle={styles.container}>
                     <View>
                         <H1 primary style={styles.titleContainer}>
-                            Touchez-moi pour découvrir nos collections :
+                            Touchez-moi pour découvrir notre collection :
                         </H1>
                     </View>
                     <View style= {styles.cardContainer}>

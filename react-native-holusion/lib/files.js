@@ -48,6 +48,7 @@ export function initialize(projectName){
 
 export async function getFiles({
     projectName, 
+    signal /* :AbortSignal */,
     onProgress=function(){}, 
     force=false,
 }={}){
@@ -88,6 +89,7 @@ export async function getFiles({
         throw new Error(`no project found in ${projectName}`);
     }
     for (let s of projects){
+        if(signal && signal.aborted) return {aborted : true};
         const d = data[s.id] = s.data();
         const [new_errors, new_files] = await makeLocal(d, {onProgress, force});
         errors = errors.concat(new_errors);
@@ -103,18 +105,19 @@ export async function getFiles({
     }
     
     
-    //console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
-    try{
-        await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify({items: data, config: config}), 'utf8')
-    }catch(e){
-        throw new FileError(`${storagePath}/data.json`, e.message);
-    }
     if(errors.length == 1){
         throw errors[0]
     }else if (1 < errors.length){
         throw new Error(`Multiple fetch errors : ${errors.join(', ')}`);
     }
-    return {data, config};
+    //console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
+    const datastore = {items: data, config: config};
+    try{
+        await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(datastore), 'utf8')
+    }catch(e){
+        throw new FileError(`${storagePath}/data.json`, e.message);
+    }
+    return datastore;
 }
 
 async function makeLocal(d, {onProgress, force}){
@@ -169,7 +172,7 @@ async function makeLocal(d, {onProgress, force}){
                     }
                 }catch(e){
                     console.warn("loadYaml error on %s : ", fullPath, e);
-                    errors.push(new FileError(fullPath,e.message));
+                    errors.push(new FileError(fullPath,`failed to parse ${fullPath} : ${e.message}`));
                 }
                
             }else{
@@ -190,13 +193,11 @@ async function cleanup(dir=storagePath, keep=[]){
     for(let file of localFiles){ 
         if(file.isDirectory()){
             if(keep.filter(path => file.path.indexOf(path) == -1).length == 0){
-                console.warn("Removing folder : ", file.path);
                 await RNFS.unlink(file.path);
             }else{
                 await cleanup(file.path, keep);
             }
         } else if(keep.indexOf(file.path) == -1){
-            console.warn("cleanup : ", file.path);
             await RNFS.unlink(file.path);
         }
     }
