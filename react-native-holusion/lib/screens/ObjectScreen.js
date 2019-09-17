@@ -1,3 +1,4 @@
+'use strict'
 import React from 'react'
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 
@@ -84,11 +85,9 @@ class ObjectScreen extends React.Component {
             ((current_index==0)?this.props.items.length-1: current_index-1),
             ((current_index== this.props.items.length-1)?0: current_index+1)
         ]
-        slides = this.props.items.map((object, index)=>{
+        const slides = this.props.items.map((object, index)=>{
             return (<ObjectView {...object} key={object.id} active={active_indices.indexOf(index) !== -1}/>);
         })
-        let footer;
-
         return (<Container onLayout={this._onLayoutDidChange}>
             <Carousel 
                 ref={(ref) => this._carousel = ref}
@@ -123,15 +122,17 @@ class ObjectScreen extends React.Component {
             return;
         }
         //console.warn(`onNextPage(${index}) : ${object.title}`);
-        fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
-        .then(r=>{
-            if(!r.ok){
-                Toast.show({
-                    text: "Failed to set current : "+r.status,
-                    duration: 2000
-                })
-            }
-        })
+        if(this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
+            .then(r=>{
+                if(!r.ok){
+                    Toast.show({
+                        text: "Failed to set current : "+r.status,
+                        duration: 2000
+                    })
+                }
+            })
+        }
     }
     _onLayoutDidChange = (e) => {
         const layout = e.nativeEvent.layout;
@@ -201,8 +202,8 @@ const styles = StyleSheet.create({
         paddingVertical:5,
     },
     title: {
-        paddingTop: 0,
-        fontSize: 36
+        lineHeight: 40,
+        fontSize: 36,
     },
     subTitle: {
         color: "#bbbbbb",

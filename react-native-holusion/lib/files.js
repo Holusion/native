@@ -105,7 +105,9 @@ export async function getFiles({
     }
     for (let s of projects){
         if(signal && signal.aborted) return {aborted : true};
-        const d = data[s.id] = s.data();
+        const d = s.data();
+        if(d.active === false) continue;
+        data[s.id] = d;
         const [new_errors, new_files] = await makeLocal(d, {onProgress, force});
         errors = errors.concat(new_errors);
         filelist = filelist.concat(new_files);

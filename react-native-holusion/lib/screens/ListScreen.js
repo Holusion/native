@@ -60,7 +60,6 @@ class ListScreen extends React.Component {
         )
     }
     onFocus(){
-        console.warn("onFocus : fetch", this.props.config, this.props.target);
         if(this.props.config&& this.props.config.video && this.props.target){
             fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
             .then(r=>{

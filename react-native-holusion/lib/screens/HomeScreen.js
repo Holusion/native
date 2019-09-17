@@ -90,8 +90,7 @@ class HomeScreen extends React.Component {
             this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
         });
     }
-    onFocus(){
-        console.warn("onFocus : fetch", this.props.config.video, this.props.target);
+    onFocus(){        
         if(this.props.config.video && this.props.target){
             fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
             .then(r=>{
