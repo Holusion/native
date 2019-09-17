@@ -7,8 +7,9 @@ import { connect} from 'react-redux';
 import { Container, Toast, Content, Footer, Spinner, Text, View} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
+import {getActiveProduct} from "../selectors";
 
-import {initialize} from "../files";
+import {initialize, filename} from "../files";
 
 import ImageCard from '../components/ImageCard';
 
@@ -43,13 +44,13 @@ const ConnectedListScreenContent = connect(function(state, props){
     }
 })(ListScreenContent);
 
-export default class ListScreen extends React.Component {
+class ListScreen extends React.Component {
     render() {
         return (
             <Container style={{flex: 1}}>
                 <ConnectedListScreenContent 
                 selectedCategory={this.props.navigation.getParam("category")}
-                onNavigate={(id) => this.props.navigation.navigate("Object", {id})}
+                onNavigate={(id) => this.props.navigation.navigate("Object", {id, category: this.props.navigation.getParam("category")})}
                 />
 
                 <Footer onPress={()=>this.props.navigation.navigate("Remerciements")}>
@@ -58,12 +59,40 @@ export default class ListScreen extends React.Component {
             </Container>
         )
     }
-
+    onFocus(){
+        console.warn("onFocus : fetch", this.props.config, this.props.target);
+        if(this.props.config&& this.props.config.video && this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
+            .then(r=>{
+                if(!r.ok){
+                    Toast.show({
+                        text: "Failed to set current : "+r.status,
+                        duration: 2000
+                    })
+                }
+            })
+        }
+    }
+    componentDidMount(){
+        this.subscription = this.props.navigation.addListener("willFocus",()=>{
+            this.onFocus();
+        })
+    }
+    componentWillunmount(){
+        this.subscription.remove();
+    }
     constructor(props) {
         super(props);
     }
 }
 
+export default connect(function(state, props){
+    const {data} = state;
+    return {
+        config: data.config,
+        target: getActiveProduct(state)
+    }
+})(ListScreen);
 
 const styles = StyleSheet.create({
     titleContainer: {

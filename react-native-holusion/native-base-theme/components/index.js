@@ -49,6 +49,7 @@ import variable from './../variables/platform';
 
 /* custom components */
 import imageCardTheme from "./ImageCard";
+import controllerTheme from "./Controller";
 
 export default (variables /* : * */ = variable) => {
   const theme = {
@@ -57,7 +58,9 @@ export default (variables /* : * */ = variable) => {
     "Holusion.ImageCard": {
       ...imageCardTheme(variables)
     },
-
+    "Holusion.Controller": {
+      ...controllerTheme(variables)
+    },
     'NativeBase.Left': {
       ...leftTheme(variables)
     },

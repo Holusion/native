@@ -4,11 +4,12 @@ import {setData} from '../actions';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, H1, View, Button} from 'native-base';
+import { Container, Toast, Content, Footer, Spinner, Text, H1, H2, View, Button} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
+import {getActiveProduct} from "../selectors";
 
-import {initialize} from "../files";
+import {initialize, filename} from "../files";
 
 import ImageCard from '../components/ImageCard';
 
@@ -24,9 +25,9 @@ class HomeScreen extends React.Component {
         }
         let cards;
         if(this.props.categories && 0 < this.props.categories.length){
-            cards = this.props.categories.map((c, index)=>{
-                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: c})}>
-                    <ImageCard title={c} />
+            cards = this.props.categories.map(({name="??", thumb}, index)=>{
+                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: name})}>
+                    <ImageCard title={name} />
                 </TouchableOpacity>)
             })
         } else {
@@ -40,7 +41,7 @@ class HomeScreen extends React.Component {
         if(this.props.config.about){
             footer = (<Footer >
                 <Button transparent onPress={()=>this.props.navigation.navigate("About")}>
-                    <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
+                    <H2 primary style={styles.footerButton}>{strings.home.footerButton}</H2>
                 </Button>
                     
             </Footer>)
@@ -71,6 +72,7 @@ class HomeScreen extends React.Component {
             if(this.state.status == "loading" ){
                 this.load();
             }
+            this.onFocus();
         })
     }
     load(){
@@ -82,10 +84,25 @@ class HomeScreen extends React.Component {
         .then(data=>{
             this.props.setData(data);
             this.setState({status: "done"});
+            this.onFocus();
         })
         .catch((err)=>{
             this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
         });
+    }
+    onFocus(){
+        console.warn("onFocus : fetch", this.props.config.video, this.props.target);
+        if(this.props.config.video && this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
+            .then(r=>{
+                if(!r.ok){
+                    Toast.show({
+                        text: "Failed to set current : "+r.status,
+                        duration: 2000
+                    })
+                }
+            })
+        }
     }
 }
 
@@ -141,9 +158,14 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {data } = state;
+    const {data} = state;
     const {config, projectName} = data;
     const categories = config.categories || [];
-    return {categories, projectName, config};
+    return {
+        categories, 
+        projectName, 
+        config, 
+        target: getActiveProduct(state),
+    };
 }
 export default connect(mapStateToProps, {setData})(HomeScreen);

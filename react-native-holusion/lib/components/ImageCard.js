@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Image} from "react-native";
-import { connectStyle, Text, Icon } from 'native-base'
+import { Image } from "react-native";
+import { connectStyle, Text, Icon, View } from 'native-base'
 
 
 function ImageCard(props) {
@@ -51,10 +51,10 @@ const cardTheme = {
         fontSize: 200,
     },
     titleText: {
-    width: 200,
-    textAlign: 'center',
-    fontSize: 26,
-    alignSelf: 'center'
+        width: 200,
+        textAlign: 'center',
+        fontSize: 26,
+        alignSelf: 'center'
     }
 }
 

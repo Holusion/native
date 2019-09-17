@@ -22,7 +22,11 @@ const {width, height} = Dimensions.get('window');
 
 function ObjectView(d){
     if(!d.active){
-        return(<Content contentContainerStyle={styles.content}><View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View></Content>)
+        return(<Content contentContainerStyle={styles.content}>
+            <H1 style={styles.title}>{d['title']}</H1>
+            <H2  style={styles.subTitle}>{d['subtitle']}</H2>
+            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
+        </Content>)
     }
     const properties = Object.keys(d['properties']||{}).map((key, idx)=>{
         const value = d['properties'][key];
@@ -35,7 +39,7 @@ function ObjectView(d){
             <View style={styles.titleContainer}>
                 <H1 style={styles.title}>{d['title']}</H1>
                 <H2  style={styles.subTitle}>{d['subtitle']}</H2>
-                <Text style={styles.shortDescription}>{d['short']}</Text>
+                <Markdown style={{text: styles.shortDescription}}>{d['short']}</Markdown>
             </View>
             <View style={styles.cartouche}>
                 <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
@@ -43,6 +47,7 @@ function ObjectView(d){
             </View>
         </View>
         <View style={styles.textContent}>
+            <H2 style={styles.subTitle}>Plus d'informations</H2>
             <Markdown style={{text: {
                 fontSize: 24,
                 textAlign: "justify"
@@ -58,65 +63,58 @@ function ObjectView(d){
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
  */
 class ObjectScreen extends React.Component {
-    
+    get index(){
+        return this.props.items.findIndex((item)=> item.id == this.props.navigation.getParam("id"));
+    }
+
     render() {
-        const objects_array =Object.keys(this.props.items);
-        const current_index = this.state.index;
+        const current_index = this.index;
         
         if(!this.props.items || current_index == -1){
             return(<Container>
                 <Content contentContainerStyle={styles.content}>
                     <Text>No data for Id : {this.props.navigation.getParam("id")}</Text>
-                    <Text>Available objects : {Object.keys(this.props.items).join(", ")}</Text>
+                    <Text>Available objects : {this.props.items.map(i=> i.id).join(", ")}</Text>
                 </Content>
             </Container>)
         }
         //When there is more than a few object, we rapidly run into perf limitations
         const active_indices = [
             current_index, 
-            ((current_index==0)?objects_array.length-1: current_index-1),
-            ((current_index==objects_array.length-1)?0: current_index+1)
+            ((current_index==0)?this.props.items.length-1: current_index-1),
+            ((current_index== this.props.items.length-1)?0: current_index+1)
         ]
-        slides = objects_array.map((key, index)=>{
-            const object = this.props.items[key] ||{};
+        slides = this.props.items.map((object, index)=>{
             return (<ObjectView {...object} key={object.id} active={active_indices.indexOf(index) !== -1}/>);
         })
         let footer;
-        if(1 < objects_array.length){
-            footer = (<Footer style={styles.controller}>
-                <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animatePreviousPage()}>
-                    <Icon primary large style={styles.controlIcons} name="ios-arrow-back"/>
-                    </Button>
-                <Controller />
-                <Button transparent large style={styles.controlButton} onPress={()=>this._carousel._animateNextPage()}>
-                    <Icon primary large style={styles.controlIcons} name="ios-arrow-forward"/>
-                    </Button>
-            </Footer>)
-        }else{
-            footer = (<Footer style={styles.controller}>
-                <Controller />
-            </Footer>)
-        }
+
         return (<Container onLayout={this._onLayoutDidChange}>
             <Carousel 
                 ref={(ref) => this._carousel = ref}
                 style={this.state.size}
                 currentPage={current_index}
-                onAnimateNextPage={(p)=>this.onNextPage(p)}
+                onAnimateNextPage={(p)=>{
+                    if(p != this.index) this.onNextPage(p);
+                }}
                 autoplay={false}
             >
                 {slides}
             </Carousel>
-            {footer}
+            <Footer style={styles.footer}>
+                <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>
+            </Footer>
         </Container>)
     }
 
     onNextPage(index){
-        const objectId = this.props.ids[index];
-        const object = this.props.items[objectId];
-        if(index != this.state.index){
-            this.setState({index: index});
+        index = (typeof index !== "undefined")? index : this.index;
+        const object = this.props.items[index];
+        if(!object){
+            return console.warn("Object not found at index : ", index);
         }
+        this.props.navigation.setParams({id: object.id});
+
         if(!this.props.target){
             return;
         }
@@ -124,7 +122,7 @@ class ObjectScreen extends React.Component {
             console.warn("Index", index, "did not map to any object");
             return;
         }
-        //console.warn(`onNextPage(${index}) : ${filename(object.video)}`);
+        //console.warn(`onNextPage(${index}) : ${object.title}`);
         fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
         .then(r=>{
             if(!r.ok){
@@ -139,27 +137,33 @@ class ObjectScreen extends React.Component {
         const layout = e.nativeEvent.layout;
         this.setState({ size: { width: layout.width, height: layout.height } });
     }
-
     constructor(props, context) {
         super(props, context);
-        const id = props.navigation.getParam("id");
-        const index = props.ids.findIndex((o)=> o == id);
         this.state = {
-            index,
             size: {width, height}
         }
-        this.props.navigation.addListener("willFocus",()=>{
-            this.onNextPage(this.state.index);
-        })
+    }
+    componentDidMount(){
+        this.subscriptions = [
+            this.props.navigation.addListener("willFocus",()=>{
+                console.warn("willFocus");
+                this.onNextPage(this.state.index);
+            }),
+        ];
+
+    }
+    componentWillUnmount(){
+        for(let sub of this.subscriptions){
+            sub.remove();
+        }
     }
 }
 
 function mapStateToProps(state, {navigation}){
     const {data, products} = state;
-    console.warn("Map state to props in ObjectScreen");
+    const items = getActiveItems(state, {selectedCategory: navigation.getParam("category")});
     return {
-        ids: Object.keys(data.items),
-        items: getActiveItems(state, {category: navigation.getParam("category")}),
+        items,
         target: products.find(p => p.active)
     };
 }
@@ -167,6 +171,7 @@ function mapStateToProps(state, {navigation}){
 const styles = StyleSheet.create({
     content: {
         marginHorizontal: 24,
+        paddingTop: 40,
         paddingBottom: 100,
     },
     image: {
@@ -187,22 +192,28 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: "center",
         marginLeft: 40,
+        paddingTop : 0,
+        padding: 12,
+        borderWidth : 1,
+        borderColor : "#bbbbbb"
     },
     propStyle:{
         paddingVertical:5,
     },
     title: {
-        paddingVertical: 24,
-        fontSize: 32
+        paddingTop: 0,
+        fontSize: 36
     },
     subTitle: {
         color: "#bbbbbb",
         fontSize: 24,
         fontStyle: "italic",
-        paddingVertical: 12
+        paddingTop: 12,
     },
     shortDescription:{
         paddingTop:15,
+        fontSize: 24,
+        textAlign: 'justify',
     },
     detailContainer: {
         padding: 8,
@@ -232,7 +243,7 @@ const styles = StyleSheet.create({
         color: "white",
         marginLeft: 8
     },
-    controller:{
+    footer:{
         position:"absolute",
         bottom:15,
         flex:1,
@@ -242,18 +253,7 @@ const styles = StyleSheet.create({
         borderWidth:0,
         borderColor: 'transparent',
     },
-    controlButton:{
-        backgroundColor: "#ffffffcc",
-        paddingVertical: 5,
-        paddingHorizontal: 15, 
-        height:70,
-    },
-    controlIcons:{
-        fontSize: 60,
-        height: 60,
-        lineHeight: 60,
-        fontWeight: "bold"
-    },
+    
 })
 
 export default connect(mapStateToProps)(ObjectScreen);

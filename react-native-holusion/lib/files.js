@@ -65,6 +65,7 @@ export async function getFiles({
     const db = firebase.firestore();
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
+    const categoriesRef = projectRef.collection("categories");
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const mainFolderRef = storageRef.child(projectName);
@@ -79,9 +80,23 @@ export async function getFiles({
     }
     const config = configSnapshot.exists ? configSnapshot.data():{};
 
+    //Fetch config
     const [new_errors, new_files] = await makeLocal(config, {onProgress, force});
     errors = errors.concat(new_errors);
     filelist = filelist.concat(new_files);
+
+    //Fetch optionnal categories collection
+    const categoriesSnapshot = await categoriesRef.get();
+    const categories = categoriesSnapshot.docs;
+    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
+    for (let category of categories){
+        if(signal && signal.aborted) return {aborted : true};
+        const c = category.data();
+        const [new_errors, new_files] = await makeLocal(c, {onProgress, force});
+        errors = errors.concat(new_errors);
+        filelist = filelist.concat(new_files);
+        config.categories.push(c);
+    }
 
     const projectsSnapshot = await collectionsRef.get();
     const projects = projectsSnapshot.docs;

@@ -31,7 +31,6 @@ class SynchronizeScreen extends React.Component {
         }else{
             this.state = {status: "loading", statusText:"Synchronizing..."}
         }
-        
     }
 
     componentDidMount(){
@@ -41,7 +40,7 @@ class SynchronizeScreen extends React.Component {
         fetch(`${url}/playlist`)
         .then(async r =>{
             const list = await r.json();
-            const uploads = [];
+            let uploads = [];
             const errors = [];
             if(!r.ok){
                 return this.setState({status: "error", statusText: list.message});
@@ -49,24 +48,46 @@ class SynchronizeScreen extends React.Component {
             for(const key in this.props.items){
                 const item = this.props.items[key];
                 if(!item.video) continue;
-                const name = filename(item.video);
-                const distantFile = list.find((i)=> i.name == name);
-                if(!distantFile){
+                uploads.push({
+                    uri: `${item.video}`,
+                    name: filename(item.video),
+                    type: "video/mp4"
+                })
+            }
+
+            if(this.props.config.video){
+                console.warn("synchronize home video")
+                uploads.push({
+                    uri: this.props.config.video,
+                    name: filename(this.props.config.video),
+                    type:"video/mp4"
+                })
+            }
+
+            for (const category of this.props.config.categories){
+                if(category.video){
                     uploads.push({
-                        uri: `${item.video}`,
-                        name: name,
-                        type: "video/mp4"
+                        uri: category.video,
+                        name: filename(category.video),
+                        type:"video/mp4"
                     })
                 }
             }
-            if(this.props.config.homeScreen){
-                /*
-                uploads.push({
-                    uri: this.props.config.homeScreen,
-                    name: filename(this.props.config.homeScreen),
-                    type:"video/mp4"
-                }) //*/
-            }
+            //Remove existing files
+            uploads = uploads.filter((file, index)=>{
+                if(list.find((i) => i.name == file.name)){
+                    return false;
+                }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri)!= index){
+                    console.warn("keep", file.name, "for synchronization")
+                    return true;
+                }
+            })
+            //Check for duplicates
+            const dupes = uploads.filter((file, index)=>{
+                return uploads.findIndex((i)=> i.name == file.name)!= index;
+            })
+            if(dupes.length !=0) throw new Error("found duplicates : "+ dupes.join("\n"));
+            console.warn("Uploads : ", uploads);
             for (const file of uploads){
                 this.setState({statusText: "Uploading "+ file.name});
                 //It's a bad pattern but react-native's XMLHttpRequest implementation will randomly throw on missing file
@@ -89,42 +110,29 @@ class SynchronizeScreen extends React.Component {
                     if (response.ok) {
                         this.setState({statusText:`${file.name} uploaded`})
                     } else {
-                        errors.push(body.message)
+                        if(body.message){
+                            errors.push(body.message)
+                        }else{
+
+                        }
                     }
                 }catch(e){
                     console.warn(e);
-                    errors.push(e.toString());
+                    errors.push(e.message);
                 }
                 
                 
             }
             if(0 < errors.length){
+                console.warn('Errors : ', errors);
                 return this.setState({status: "error", statusText: errors.join("\n")});
             }
-            /*
-            const query = this.props.config.homeScreen ? {$not:{name:filename(this.props.config.homeScreen)}} : {};
-            const response = await fetch(`${url}/playlist/`, {
-                method: "PUT",
-                headers:{
-                    "Content-Type":"application/json", 
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({
-                    query: query,
-                    modifier:{
-                        $set:{active: false }
-                    }
-                })
-            })
-            const body = await response.json();
-            if(!response.ok){
-                return this.setState({status: "error", statusText: `Failed to deactivate items. Error ${response.status} : ${JSON.stringify(body.message)}`});
-            }
-            //*/
+
             this.setState({status: "idle", statusText: "Synchronized!"});
             
         }).catch(e=>{
-            this.setState({status: "error", statusText: e.toString()});
+            console.warn("Caught error : ", e);
+            this.setState({status: "error", statusText: "Error : "+e.message});
         })
     }
 }

@@ -18,7 +18,12 @@ class AboutScreen extends React.Component {
             <Content>
             <Container>
                 <Content>
-                    <Markdown>{this.props.config.about}</Markdown>
+                    <Markdown style={{text: {
+                        fontSize: 24,
+                        textAlign: "justify"
+                    }}}>
+                        {this.props.config.about}
+                    </Markdown>
                 </Content>
             </Container>
             </Content>
