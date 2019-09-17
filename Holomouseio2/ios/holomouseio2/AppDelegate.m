@@ -17,7 +17,7 @@
 {
   [FIRApp configure];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] in	itWithBridge:bridge
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Holomouseio"
                                             initialProperties:nil];
 
