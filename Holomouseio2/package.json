@@ -9,7 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "1.0.0-alpha.4",
+    "@holusion/react-native-holusion": "1.0.0-beta.0",
     "@react-native-community/netinfo": "^4.2.1",
     "native-base": "^2.13.7",
     "react": "16.8.6",
@@ -18,7 +18,7 @@
     "react-native-fs": "^2.14.1",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-vector-icons": "^6.4.2",
-    "react-native-zeroconf": "https://github.com/sdumetz/react-native-zeroconf.git",
+    "react-native-zeroconf": "0.11.2",
     "react-navigation": "^4.0.1",
     "react-navigation-stack": "^1.5.4",
     "react-redux": "^7.1.1",
