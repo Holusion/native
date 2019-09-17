@@ -56,7 +56,6 @@ class SynchronizeScreen extends React.Component {
             }
 
             if(this.props.config.video){
-                console.warn("synchronize home video")
                 uploads.push({
                     uri: this.props.config.video,
                     name: filename(this.props.config.video),
@@ -78,7 +77,8 @@ class SynchronizeScreen extends React.Component {
                 if(list.find((i) => i.name == file.name)){
                     return false;
                 }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri)!= index){
-                    console.warn("keep", file.name, "for synchronization")
+                    return false;
+                }else{
                     return true;
                 }
             })

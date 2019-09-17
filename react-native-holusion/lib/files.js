@@ -219,3 +219,23 @@ async function cleanup(dir=storagePath, keep=[]){
         }
     }
 }
+
+export function dedupeList(uploads, list=[]){
+    // Remove existing files
+    const filteredUploads = uploads.filter((file, index)=>{
+        if(list.findIndex((i) => i.name == file.name) !== -1) {
+            return false;
+        }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri)!= index){
+            return false;
+        }else{
+            return true;
+        }
+    })
+    //Check for duplicates
+    const dupes = filteredUploads.filter((file, index)=>{
+        return filteredUploads.findIndex((i)=> i.name == file.name)!= index;
+    })
+    if(dupes.length !=0) throw new Error("found duplicates : "+ dupes.map(d=>d.name).join("\n"));
+
+    return filteredUploads;
+}
