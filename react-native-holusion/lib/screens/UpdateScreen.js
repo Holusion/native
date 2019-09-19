@@ -6,7 +6,7 @@ import { connect} from 'react-redux'
 import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text, Spinner, View} from 'native-base';
 import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
-import {getFiles} from "../files";
+import {getFiles, FileError} from "../files";
 import StatusIcon from "../components/StatusIcon";
 
 class UpdateScreen extends React.Component {
@@ -48,8 +48,13 @@ class UpdateScreen extends React.Component {
             this.props.setData(data);
             return this.setState({status: "idle", statusText:"Updated data to latest version"});
         }).catch((err)=>{
-            console.warn("getFiles Error : ", err);
-            this.setState({status: "error", statusText: "Failed to update : "+err.toString()});
+            console.warn("getFiles Error : ", err.message, err.sourceFile);
+            if(err instanceof FileError){
+                this.setState({status: "error", statusText: `Error on ${err.sourceFile} : ${err.message}`});
+            }else{
+                this.setState({status: "error", statusText: `Failed to update: ${err.toString()}`});
+            }
+            
         })
     }
     componentWillUnmount(){

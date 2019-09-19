@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import StatusIcon from "../components/StatusIcon";
 
-import {filename} from "../files";
+import {filename, dedupeList} from "../files";
 
 class SynchronizeScreen extends React.Component {
     render() {
@@ -72,23 +72,10 @@ class SynchronizeScreen extends React.Component {
                     })
                 }
             }
-            //Remove existing files
-            uploads = uploads.filter((file, index)=>{
-                if(list.find((i) => i.name == file.name)){
-                    return false;
-                }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri)!= index){
-                    return false;
-                }else{
-                    return true;
-                }
-            })
-            //Check for duplicates
-            const dupes = uploads.filter((file, index)=>{
-                return uploads.findIndex((i)=> i.name == file.name)!= index;
-            })
-            if(dupes.length !=0) throw new Error("found duplicates : "+ dupes.join("\n"));
-            console.warn("Uploads : ", uploads);
-            for (const file of uploads){
+
+            //Can throw an error but we don't want to catch it here
+            const unique_uploads = dedupeList(uploads, list);
+            for (const file of unique_uploads){
                 this.setState({statusText: "Uploading "+ file.name});
                 //It's a bad pattern but react-native's XMLHttpRequest implementation will randomly throw on missing file
                 if(!await RNFS.exists(file.uri)){

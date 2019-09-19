@@ -5,10 +5,8 @@ import yaml from 'js-yaml';
 
 import {base64ToHex} from "./convert";
 
-//let files = await RNFS.readDir(`${RNFS.DocumentDirectoryPath}/${projectName}`);
 
-
-class FileError extends Error{
+export class FileError extends Error{
     constructor(sourceFile, message){
         super(message);
         this.sourceFile = sourceFile;
@@ -137,7 +135,83 @@ export async function getFiles({
     return datastore;
 }
 
-async function makeLocal(d, {onProgress, force}){
+
+export async function watchFiles({
+    projectName, 
+    dispatch,
+    onProgress=function(){},
+}={}){
+    let cache;
+    let errors = [];
+    let filelist = [
+        `${storagePath}/data.json`
+    ];
+    let unsubscribes = [];
+    if(!projectName){
+        throw new Error(`A valid projectName is required. Got ${projectName}`);
+    }
+    const credentials = await firebase.auth().signInAnonymously();
+    const db = firebase.firestore();
+
+    const projectRef = db.collection("applications").doc(projectName);
+    const collectionsRef = projectRef.collection("projects");
+    const categoriesRef = projectRef.collection("categories");
+
+    const storage = firebase.storage();
+    const storageRef = storage.ref();
+    const mainFolderRef = storageRef.child(projectName);
+
+        //Create base directory. Does not throw if it doesn't exist
+    await RNFS.mkdir(storagePath);
+
+    unsubscribes.push(projectRef.onSnapshot({
+        error: (e) => console.warn(e),
+        next: async (configSnapshot) => {
+            if(!configSnapshot.exists){
+                console.warn("Application has no configuration set. Using defaults.");
+            }
+
+            const config = configSnapshot.exists ? configSnapshot.data():{};
+            await makeLocal(config);
+            const categoriesSnapshot = await categoriesRef.get();
+            const categories = categoriesSnapshot.docs;
+            config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
+            for (let category of categories){
+                const c = category.data();
+                const [new_errors, new_files] = await makeLocal(c);
+                errors = errors.concat(new_errors);
+                filelist = filelist.concat(new_files);
+                config.categories.push(c);
+            }
+            dispatch({config});
+            onProgress("Updated config to :", config);
+        },
+      }))
+
+    unsubscribes.push(collectionsRef.onSnapshot({
+        error: (e)=> console.warn(e),
+        next: async projectsSnapshot =>{
+            const items = {};
+            const projects = projectsSnapshot.docs;
+            if(projects.length == 0){
+                throw new Error(`no project found in ${projectName}`);
+            }
+            for (let s of projects){
+                const d = s.data();
+                if(d.active === false) continue;
+                items[s.id] = d;
+                await makeLocal(d);
+            }
+            dispatch({items});
+            onProgress("Updated items to : ", items);
+        }
+    }))
+    return ()=>{
+        unsubscribes.forEach(fn=> fn());
+    }
+}
+
+async function makeLocal(d, {onProgress=function(){}, force=false}={}){
     const filelist = [];
     const errors = [];
     const storage = firebase.storage();
