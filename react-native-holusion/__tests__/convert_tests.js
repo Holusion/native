@@ -1,6 +1,6 @@
 'use strict';
 
-import {base64ToHex} from "../lib/convert";
+import {base64ToHex, normalizeAngle} from "../lib/convert";
 
 
 describe("base64ToHex()",function(){
@@ -12,4 +12,28 @@ describe("base64ToHex()",function(){
             expect(base64ToHex(f[0])).toBe(f[1]);
         })
     })
+})
+
+describe("normalizeAngle()", function(){
+    [
+        [0, 0],
+        [360, 0],
+        [180, 180],
+        [-180, 180],
+        [-45, 315],
+        [720, 0]
+    ].forEach(function(f){
+        test(`normalizeAngle(${f[0]}) == ${f[1]}`,function(){
+            expect(normalizeAngle(f[0])).toBe(f[1]);
+        })
+    });
+    [
+        [0, 0],
+        [2*Math.PI, 0],
+        [-Math.PI, Math.PI],
+    ].forEach(function(f){
+        test(`normalizeAngle(${f[0]}, 2π) == ${f[1]}`,function(){
+            expect(normalizeAngle(f[0], 2*Math.PI)).toBe(f[1],8);
+        })
+    });
 })

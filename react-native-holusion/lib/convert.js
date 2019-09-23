@@ -14,3 +14,8 @@ export function base64ToHex(base64){
   }
   return HEX.toUpperCase();
 }
+
+
+export function normalizeAngle(d, degrees=360){
+  return (d < 0) ? degrees - (Math.abs(d) % degrees) : d % degrees;
+}
