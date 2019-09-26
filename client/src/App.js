@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 
 import 'bootstrap';
 
@@ -50,9 +50,16 @@ function App(props) {
         <div className="wrapper">
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
+            <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
+            <Route path="/projects/:project" render={props => {
+              console.log(props.match)
+              return (<li><Link className={`nav-link${props.match.isExact?" active":""}`} to={props.match.url}>&gt; {props.match.params.project}</Link></li>)
+            }}/>
+            <Route path="/projects/:project/:item" render={props => {
+              return (<li><span className="nav-link active">&gt; {props.match.params.item}</span></li>)
+            }}/>
           </ul>
           <button onClick={signOut} className="nav-link btn btn-outline-secondary text-light" to="/">Sign out</button>
           </nav>

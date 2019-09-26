@@ -6,7 +6,6 @@ import { useDownloadURL } from 'react-firebase-hooks/storage';
 
 export default function BackgroundImage(props){
   const firebase = useContext(FirebaseContext);
-  console.log("Source : ", props.source);
   const [value, loading, error] = useDownloadURL(
     firebase.storage().refFromURL(props.source)
   );

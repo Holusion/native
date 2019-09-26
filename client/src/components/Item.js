@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 
 import { useDocument } from 'react-firebase-hooks/firestore';
@@ -10,6 +10,7 @@ import ErrorMessage from "./ErrorMessage";
 import Loader from "./Loader";
 
 function FormInput(props){
+  
   return(<div className="form-group row">
     <label htmlFor={props.name} className="col-sm-2 col-form-label">{props.title? props.title : props.name} : </label>
     <div className="col-sm-10">
@@ -17,10 +18,20 @@ function FormInput(props){
     </div>
   </div>)
 }
+
 function FormTextArea(props){
   return(<div className="form-group">
     <label htmlFor={props.name} >{props.title? props.title : props.name}</label>
-    <textarea type="text" className="form-control" name={props.name} rows="4" defaultValue={props.value}></textarea>
+    <textarea type="text" className="form-control" name={props.name} rows="4" defaultValue={props.value} placeholder={props.placeholder || "..."}></textarea>
+  </div>)
+}
+
+function FormSelector(props){
+  return(<div className="form-group">
+    <label htmlFor={props.name} className="col-sm-2 col-form-label" >{props.title? props.title : props.name}</label>
+    <select name={props.name} className="col-sm-10 form-control custom-select" defaultValue={props.value}>
+      {props.items.map(item=> <option key={item.path} value={item.path}>{item.name}</option>)}
+    </select>
   </div>)
 }
 
@@ -35,6 +46,7 @@ function TitleFormInput(props){
 
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
+  const [medias, setMedias] = useState({images:[], videos:[]});
   const project_id = props.match.params.project;
   const item_id = props.match.params.item;
   const firebase = useContext(FirebaseContext);
@@ -44,13 +56,39 @@ export default function Item(props){
   );
   const data = (value)? value.data(): {};
   data.links = data.links || [];
-  if(value)  console.log("Value : ", value.data());
+  //if(value)  console.log("Value : ", value.data());
+
+  useEffect(()=>{
+    const storageRef = firebase.storage().ref();
+    storageRef.child("Egger").listAll().then(files=>{
+      const videos = [];
+      const images = [];
+      const items = files.items.map(item => {return {
+        deleted: item.authWrapper.deleted, 
+        path: `gs://${item.location.bucket}/${item.location.path}`,
+        name: item.location.path,
+      }});
+
+      for (let item of items){
+        if(item.deleted) continue;
+        if(/.*\.mp4$/i.test(item.path)){
+          videos.push(item);
+        }else if(/.*\.(?:png|jpg)$/i.test(item.path)) {
+          images.push(item);
+        }
+      }
+      setMedias({images, videos});
+    }).catch(e=>console.error(e))
+  },[firebase]);
+
+
+
   function handleChange(e){
     e.preventDefault();
     const form = e.target;
     const obj = {links:[]};
     setSubmit(true);
-    ["image", "video", "title", "description"].forEach(function(key){
+    ["image", "video", "title", "subtitle", "description"].forEach(function(key){
       if(form[key].value){
         obj[key] = form[key].value;
       }
@@ -73,33 +111,40 @@ export default function Item(props){
       })
     }
     console.info("Set document to : ", obj);
+    //*
     ref.set(obj)
     .catch(e=>alert(e))
     .then(()=>setSubmit(false))
+    //*/
   }
 
   return(<div className="base">
     {error && <ErrorMessage message={error.toString()}/>}
-    {loading && <Loader/>}
-    {data && <React.Fragment>
+    {(loading || medias.images.length === 0 ) && <Loader/>}
+    {data && medias.images.length !== 0 && <React.Fragment>
       <form className="conf p-4" onSubmit={handleChange}>
         <fieldset disabled={submitting}>
-          <FormInput name="image" value={data.image}/>
-          <FormInput name="video" value={data.video}/>
+          <FormSelector name="image" value={data.image} items={medias.images}/>
+          <FormSelector name="video" value={data.video} items={medias.videos}/>
           <h3>Description longue :</h3>
+          <small id="passwordHelpBlock" className="form-text text-muted">
+            Si la description est vide, l'image s'affichera en pleine largeur
+          </small>
           <div className="form-group pl-3">
-            <FormInput name="title" value={data.title}/>
-            <FormTextArea name="description" value={data.description}/>
+            <FormInput name="title" title="Titre" value={data.title}/>
+            <FormInput name="subtitle" title="Sous-Titre" value={data.subtitle}/>
+            <FormTextArea name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
+
             <small id="passwordHelpBlock" className="form-text text-muted">
-              Si la description est vide, l'image s'affichera en pleine largeur
+              Description au format <a target="_blank" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
             </small>
           </div>
           <h3>Liens </h3>
-            <small id="passwordHelpBlock" className="form-text text-muted">
+            <small className="form-text text-muted">
               Pour supprimer un lien, vider son nom et sauvegarder
             </small>
           <div className="form-group pl-3">
-            {(data.links || []).map((link, index)=>{
+            {0 < data.links.length && data.links.map((link, index)=>{
               return(<div className="form-group" key={index}>
                 <div className="row">
                   <div className="col-sm-10">
@@ -117,6 +162,7 @@ export default function Item(props){
                 </div>
               </div>)
             })}
+            {(!data.links || 0 == data.links.length) && <small className="form-text text-dark text-right">Aucun lien actif sur cet objet</small>}
             <div className="form-group">
               <h4>Ajouter un lien:</h4>
               <small id="passwordHelpBlock" className="form-text text-muted">
