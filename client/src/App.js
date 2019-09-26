@@ -1,9 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import 'bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import logo from './logo.svg';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Projects from "./components/Projects";
 import Project from "./components/Project";
 import Item from "./components/Item";
@@ -22,6 +26,7 @@ const firebaseAppAuth = firebaseApp.auth();const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+
 function App(props) {
   const {
     user,
@@ -35,7 +40,7 @@ function App(props) {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>Please sign in.</p>
-          <button onClick={signInWithGoogle}>Sign in with Google</button>
+          <button className="btn btn-primary" onClick={signInWithGoogle}>Sign in with Google</button>
         </header>
       </div>
     );
@@ -43,16 +48,18 @@ function App(props) {
     return(<FirebaseContext.Provider value={firebaseApp}>
       <Router>
         <div className="wrapper">
-          <nav className="navbar">
-          <button onClick={signOut}>Sign out</button>
-          <li>
-              <Link to="/">Home</Link>
-          </li>
+          <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
+          </ul>
+          <button onClick={signOut} className="nav-link btn btn-outline-secondary text-light" to="/">Sign out</button>
           </nav>
           <div className="content">
-          <Route path="/" exact component={Projects} />
-          <Route path="/projects/:project" exact component={Project} />
-          <Route path="/projects/:project/:item" exact component={Item} />
+            <Route path="/" exact component={Projects} />
+            <Route path="/projects/:project" exact component={Project} />
+            <Route path="/projects/:project/:item" exact component={Item} />
           </div>
         </div>
       </Router>

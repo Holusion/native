@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useCollection } from 'react-firebase-hooks/firestore';
 import FirebaseContext from "../context";
 
+import ErrorMessage from "./ErrorMessage";
+import Loader from "./Loader";
 
 export default function Projects(props){
   const firebase = useContext(FirebaseContext);
@@ -11,17 +13,17 @@ export default function Projects(props){
     firebase.firestore().collection('applications')
   )
   return(<div className="container">
-    {error && <strong>Error: {JSON.stringify(error)}</strong>}
-    {loading && <span>Collection: Loading...</span>}
+    {error && <ErrorMessage message={error.toString()}/>}
+    {loading && <Loader/>}
     {value && (<React.Fragment>
-      <h1>Applications : </h1>
-      <div style={{align:"left"}}>
+      <h1 className="text-primary">Applications : </h1>
+      <ul className="list-group">
         {value.docs.map(doc => (
-          <div key={doc.id} >
+          <li className="list-group-item" key={doc.id} >
             <Link to={`/projects/${doc.id}`}>{doc.id}</Link>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
         
     </React.Fragment>)}
   </div>)

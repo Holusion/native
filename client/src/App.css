@@ -25,19 +25,6 @@
   color: #09d3ac;
 }
 
-.navbar{
-  display:flex;
-  justify-content: center;
-  padding : 4px;
-}
-
-.content{
-  margin: auto;
-}
-.content .container{
-  margin: auto;
-  max-width: 1200px;
-}
 
 .ipad-screen-outline{
   /* logical ipad size is : 768 x 1024 */
