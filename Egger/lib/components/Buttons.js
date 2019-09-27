@@ -5,7 +5,7 @@ import {Icon, Text} from "native-base";
 import {TouchableOpacity} from "react-native";
 
 export default function Buttons(props){
-    const buttons = (props.items || []).map((item)=>{
+    const buttons = (props.items || []).map((item, index)=>{
         const color = item.color || "#333333ff"
         const fontSize = 24;
         const style = {
@@ -22,9 +22,9 @@ export default function Buttons(props){
             top: (typeof item.y == "number")? item.y : parseInt(item.y)
         }
 
-        return (<TouchableOpacity key={item.id} style={style} onPress={()=> props.onPress(item.name)}>
+        return (<TouchableOpacity key={index} style={style} onPress={()=> props.onPress(item.name)}>
             <Icon name="zoom-in" type="MaterialIcons" style={{color, fontSize}}></Icon>
-            <Text style={{color, fontSize}} numberOfLines={2}>{item.name}</Text>
+            <Text style={{color, fontSize}} numberOfLines={2}>{item.title || item.name}</Text>
         </TouchableOpacity>)
     })
     return (<React.Fragment>

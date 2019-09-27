@@ -19,7 +19,6 @@ class GeneralViewScreen extends React.Component {
             <Container style={{flex: 1}}>
                 <ImageBackground source={{uri: this.props.data.image}} style={{width: '100%', height: '100%'}} >
                     <Buttons items={this.props.data["links"]} onPress={(id)=>{
-                        console.warn("Navigate to group id : ", id);
                         this.props.navigation.navigate("GroupView", {id})
                         }}/>
                 </ImageBackground>
@@ -40,13 +39,22 @@ class GeneralViewScreen extends React.Component {
         }
     }
     componentDidMount(){
-        this.subscription = this.props.navigation.addListener("willFocus",()=>{
+        const willFocusSubscribe = this.props.navigation.addListener("willFocus",()=>{
             this.onFocus();
-        })
+        });
+        const willBlurSubscribe = this.props.navigation.addListener("willBlur",()=>{
+            if(this.abortController) this.abortController.abort();
+        });
+        this.unsubscribe = () =>{
+            willFocusSubscribe.remove();
+            willBlurSubscribe.remove();
+        }
     }
-    componentWillunmount(){
-        this.subscription.remove();
+    componentWillUnmount(){
+        if(this.abortController) this.abortController.abort();
+        this.unsubscribe();
     }
+
     constructor(props) {
         super(props);
     }

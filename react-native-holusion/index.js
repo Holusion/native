@@ -12,6 +12,7 @@ import strings from "./lib/strings.json";
 
 import * as screens from "./lib/screens";
 import * as components from "./lib/components";
+import * as selectors from "./lib/selectors";
 export {
   netScan,
   files,
@@ -23,4 +24,5 @@ export {
   strings,
   screens,
   components,
+  selectors,
 }

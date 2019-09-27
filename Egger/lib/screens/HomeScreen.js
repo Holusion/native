@@ -19,7 +19,7 @@ class HomeScreen extends React.Component {
             </Content></Container>)
         }
         return (
-            <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={()=>this.props.navigation.navigate("GeneralView")}>
+            <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={()=>this.props.navigation.navigate("GroupView", {id:"general"})}>
                 <ImageBackground source={require('../../assets/Ecran_titre.png')} style={{width: '100%', height: '100%'}} >
             </ImageBackground>
             </TouchableOpacity>
@@ -32,7 +32,11 @@ class HomeScreen extends React.Component {
 
     }
     componentDidMount(){
-        watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)});
+        this.unsubscribe = watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)})
+        .catch(e => console.warn("can't watch files for changes : ",e))
+    }
+    componentWillUnmount(){
+        if(this.unsubscribe)this.unsubscribe();
     }
     onFocus(){        
         if(this.props.config.video && this.props.target){

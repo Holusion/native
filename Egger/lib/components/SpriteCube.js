@@ -2,13 +2,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View } from 'native-base';
-import { Animated, Easing, PanResponder, Dimensions } from 'react-native';
+import { StyleSheet, Animated, Easing, PanResponder, Dimensions } from 'react-native';
 
 import {convert, time} from "@holusion/react-native-holusion";
 
 const WIDTH = Dimensions.get('window').width;
+/* keep in mind an ipad has a 2x multiplier so divide the real resolution! */
 const SPRITE_WIDTH = 200;
-const FRAMES = 45;
+const SPRITE_HEIGHT = 100;
+const INTERNAL_PADDING = 40;
+
+const FRAMES = 90;
+const COLUMNS = 10;
 const DIVIDER = 4;
 
 const IDLE_SPEED = 100;
@@ -56,12 +61,14 @@ export default class SpriteCube extends React.Component{
         if(this.abortController){
             this.abortController.abort();
         }
-        this.abortController = new AbortController();
+        const abortController = this.abortController = new AbortController();
+        const timeout = setTimeout(()=>abortController.abort(), 200);
         //${this.props.target.uri}
         fetch(`http://${this.props.target.url}:3004/d${val}`, {method: "GET", signal: this.abortController.signal}).then(r=>{
             if(!r.ok){
                 console.warn(r.status);
             }
+            clearTimeout(timeout);
             this.abortController = null;
         }).catch((err)=>{
             if (err.name === 'AbortError') {
@@ -76,7 +83,7 @@ export default class SpriteCube extends React.Component{
     handlePanResponderStart(){
         this.active = true;
         this.last_dx = 0;
-        this.offset = - this.state.frame._value/SPRITE_WIDTH;
+        this.offset = this.state.frame._value;
     }
     handlePanResponderMove(e, gestureState){
         if( 0.1 < Math.abs(gestureState.vx)){
@@ -102,17 +109,39 @@ export default class SpriteCube extends React.Component{
     }
     move(dx){
         const clamped = convert.normalizeAngle(dx/DIVIDER);
-        this.state.frame.setValue(-SPRITE_WIDTH*((Math.round(clamped)+ this.offset) % FRAMES));
+        this.state.frame.setValue(((Math.round(clamped)+ this.offset) % FRAMES));
         //this.refImage.setNativeProps({style: this.cubeStyle});
     }
 
     render(){
-        return(<View style={{overflow:'hidden', width: 200, height: 150, position: "absolute", bottom: 10, left: WIDTH/2-100, zIndex: 10}}>
-        <Animated.Image ref={component => this.refImage = component} style={{transform: [{translateX: this.state.frame}], width:200*46, height: 150}} source={require('../../assets/cube-sprite.png')} {...this.panResponder.panHandlers}/>
-    </View>)
+        //*
+        const pos_x = Animated.modulo(this.state.frame, COLUMNS);
+        const tr_x = Animated.multiply(pos_x, -SPRITE_WIDTH);
+        const pos_y = Animated.subtract(this.state.frame, pos_x);
+        const tr_y = Animated.multiply(pos_y, -SPRITE_HEIGHT/COLUMNS);
+        //*/
+        return(<View style={styles.container} {...this.panResponder.panHandlers}>
+            <View style={styles.content}>
+                <Animated.Image ref={component => this.refImage = component} style={{transform: [{translateX: tr_x}, {translateY:tr_y}], width:SPRITE_WIDTH*COLUMNS, height: SPRITE_HEIGHT*(FRAMES/COLUMNS)}} source={require('../../assets/sprite.png')} />       
+            </View>
+        </View>)
     }
 }
-
+const styles = StyleSheet.create({
+    container:{
+        zIndex: 100,
+        overflow:'hidden', 
+        position: "absolute", 
+        padding: INTERNAL_PADDING,
+        bottom: 10, 
+        left: WIDTH/2+INTERNAL_PADDING-SPRITE_WIDTH,
+    },
+    content:{
+        width: SPRITE_WIDTH, 
+        height: SPRITE_HEIGHT,
+        overflow:'hidden', 
+    }
+})
 SpriteCube.propTypes = {
     target: PropTypes.shape({uri: PropTypes.string }),
 }

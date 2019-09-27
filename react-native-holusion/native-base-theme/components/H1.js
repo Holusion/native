@@ -9,6 +9,9 @@ export default (variables /* : * */ = variable) => {
     lineHeight: variables.lineHeightH1,
     '.primary':{
       color: variables.brandPrimary
+    },
+    '.secondary':{
+      color: variables.brandSecondary
     }
   };
 

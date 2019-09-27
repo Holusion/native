@@ -1,9 +1,12 @@
 import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from "react-navigation";
+import {createAppContainer, NavigationActions} from "react-navigation";
 import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
 import {AppState, StatusBar, Image} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
+
+import UserInactivity from 'react-native-user-inactivity';
+
 
 import {configureStore, screens, components, strings, netScan } from '@holusion/react-native-holusion';
 
@@ -57,7 +60,7 @@ const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
     headerStyle: {height: 34, display: 'flex'}, 
-    headerTitle: (<Image source={require("./assets/logo_long.jpg")} resizeMode='contain' style={{transform:[{scale:0.5}], padding: 0}}></Image>),
+    headerTitle: (<Image source={require("./assets/logo_long.jpg")} resizeMode='contain' style={{height:33, position:"absolute", top:-1, padding: 0}}></Image>),
     headerBackTitle: "Retour",
   }
 }
@@ -92,12 +95,28 @@ export default class App extends React.Component{
     }
     this.setState({appState: nextAppState});
   }
+  onInactive = (status)=>{
+    if(status) return;
+    const activeRoute = this._navigator.state.nav.routes.slice(-1)[0].routeName;
+    if(["Synchronize", "Update", "Connect"].indexOf(activeRoute) != -1){
+      return;
+    }else{
+      console.warn(activeRoute);
+    }
+    this._navigator.dispatch(NavigationActions.navigate({
+      routeName:"Home",
+      params:{},
+    }))
+    //*/
+  }
   render(){
     return <Root>
        <StatusBar hidden={true} />
       <StyleProvider style={getTheme(variables)}>
         <Provider store={store}>
-            <AppContainer />
+          <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
+            <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
+          </UserInactivity>
         </Provider> 
       </StyleProvider> 
     </Root>

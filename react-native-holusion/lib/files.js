@@ -27,6 +27,7 @@ export async function loadYaml(name){
     return yaml.safeLoad(fileData);
 }
 export function filename(path){
+    if(typeof path !=="string") throw new Error(`path must be a string. Got ${typeof path}`);
     return path.split("/").slice(-1)[0];
 }
 
@@ -84,8 +85,14 @@ export async function getFiles({
     filelist = filelist.concat(new_files);
 
     //Fetch optionnal categories collection
-    const categoriesSnapshot = await categoriesRef.get();
-    const categories = categoriesSnapshot.docs;
+    let categories = [];
+    try{
+        const categoriesSnapshot = await categoriesRef.get();
+        categories = categoriesSnapshot.docs;
+    }catch(e){
+        //Ignore missing categories
+    }
+   
     config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
     for (let category of categories){
         if(signal && signal.aborted) return {aborted : true};
@@ -95,7 +102,6 @@ export async function getFiles({
         filelist = filelist.concat(new_files);
         config.categories.push(c);
     }
-
     const projectsSnapshot = await collectionsRef.get();
     const projects = projectsSnapshot.docs;
     if(projects.length == 0){
@@ -155,67 +161,97 @@ export async function watchFiles({
 
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
-    const categoriesRef = projectRef.collection("categories");
 
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const mainFolderRef = storageRef.child(projectName);
 
-        //Create base directory. Does not throw if it doesn't exist
+        //Create base directory. Does not throw if it does exist
     await RNFS.mkdir(storagePath);
 
-    unsubscribes.push(projectRef.onSnapshot({
-        error: (e) => console.warn(e),
-        next: async (configSnapshot) => {
-            if(!configSnapshot.exists){
-                console.warn("Application has no configuration set. Using defaults.");
-            }
+    let abortConfig;
 
-            const config = configSnapshot.exists ? configSnapshot.data():{};
-            await makeLocal(config);
-            const categoriesSnapshot = await categoriesRef.get();
-            const categories = categoriesSnapshot.docs;
-            config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
-            for (let category of categories){
-                const c = category.data();
-                const [new_errors, new_files] = await makeLocal(c);
-                errors = errors.concat(new_errors);
-                filelist = filelist.concat(new_files);
-                config.categories.push(c);
-            }
-            dispatch({config});
-            onProgress("Updated config to :", config);
+    unsubscribes.push(projectRef.onSnapshot(
+        (configSnapshot)=>{
+            if(abortConfig) abortConfig.abort(); //Cancel any previous run
+            abortConfig = new AbortController();
+            onConfigSnapshot(configSnapshot, {signal: abortConfig.signal, onProgress, projectRef, dispatch})
+            
         },
-      }))
-
-    unsubscribes.push(collectionsRef.onSnapshot({
-        error: (e)=> console.warn(e),
-        next: async projectsSnapshot =>{
-            const items = {};
-            const projects = projectsSnapshot.docs;
-            if(projects.length == 0){
-                throw new Error(`no project found in ${projectName}`);
-            }
-            for (let s of projects){
-                const d = s.data();
-                if(d.active === false) continue;
-                items[s.id] = d;
-                await makeLocal(d);
-            }
-            dispatch({items});
-            onProgress("Updated items to : ", items);
-        }
-    }))
+        (e) => onProgress("Can't get project snapshot for "+projectName+" :", e)
+      ))
+    let abortProject;
+    unsubscribes.push(collectionsRef.onSnapshot(
+        (projectSnapshot)=>{
+            if(abortProject) abortProject.abort();
+            abortProject = new AbortController();
+            onProjectSnapshot(projectSnapshot, {signal: abortProject.signal, onProgress, projectRef, dispatch});
+        },
+        (e) => onProgress("Can't get project snapshot for "+projectName+" :", e)
+    ))
     return ()=>{
         unsubscribes.forEach(fn=> fn());
     }
 }
 
-async function makeLocal(d, {onProgress=function(){}, force=false}={}){
+
+async function onConfigSnapshot(configSnapshot, {signal, onProgress, projectRef, dispatch}) {
+    const categoriesRef = projectRef.collection("categories");
+    if(!configSnapshot.exists){
+        console.warn("Application has no configuration set. Using defaults.");
+    }
+    const config = configSnapshot.exists ? configSnapshot.data():{};
+    try{
+        await makeLocal(config);
+    }catch(e){
+        return onProgress("Failed to fetch config resources : ", e);
+    }
+    if(signal && signal.aborted) return //Don't do nothing on abort
+    let categories = [];
+    try{
+        const categoriesSnapshot = await categoriesRef.get();
+        categories = categoriesSnapshot.docs;
+    }catch(e){
+        //Ignore becasue it's sometimes OK to not have a categories collection
+        //onProgress("Failed to get categories snapshot", e);
+    }
+    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
+    for (let category of categories){
+        const c = category.data();
+        const [new_errors, new_files] = await makeLocal(c);
+        if(signal && signal.aborted) return;
+        errors = errors.concat(new_errors);
+        filelist = filelist.concat(new_files);
+        config.categories.push(c);
+    }
+    if(signal && signal.aborted) return
+    dispatch({config});
+    onProgress("Updated config to :", config);
+}
+
+async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectRef, dispatch}){
+    const items = {};
+    const projects = projectsSnapshot.docs;
+    if(projects.length == 0){
+        throw new Error(`no project found in ${projectRef.id}`);
+    }
+    for (let s of projects){
+        const d = s.data();
+        if(d.active === false) continue;
+        items[s.id] = d;
+        await makeLocal(d);
+        if(signal && signal.aborted) return
+    }
+    dispatch({items});
+    onProgress("Updated items to : ", items);
+}
+
+async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
     const filelist = [];
     const errors = [];
     const storage = firebase.storage();
     for(let key in d){
+        if(signal && signal.aborted) return;
         if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0){
             const ref = storage.refFromURL(d[key]);
             const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
@@ -297,9 +333,9 @@ async function cleanup(dir=storagePath, keep=[]){
 export function dedupeList(uploads, list=[]){
     // Remove existing files
     const filteredUploads = uploads.filter((file, index)=>{
-        if(list.findIndex((i) => i.name == file.name) !== -1) {
+        if(list.findIndex((i) => i.name == file.name &&(!file.hash || file.hash == (i.conf || {}).md5)) !== -1) {
             return false;
-        }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri)!= index){
+        }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri )!= index){
             return false;
         }else{
             return true;
@@ -313,3 +349,58 @@ export function dedupeList(uploads, list=[]){
 
     return filteredUploads;
 }
+
+export async function uploadFile(url, file){
+    //It's a bad pattern but react-native's XMLHttpRequest implementation will randomly throw on missing file
+    if(!await RNFS.exists(file.uri)){
+        console.warn("File ",file.uri,"does not exists");
+        throw new FileError(file.uri, "File does not exists");
+    }
+    const form = new FormData();
+    form.append("file", file);
+    try{
+        let response = await fetch(`${url}/medias`, {
+            body: form,
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        let body = await response.json();
+        if (!response.ok) {
+            if(body.message){
+                console.warn("Body : ", body);
+                throw new FileError(file.uri, (typeof body.message == 'object')? JSON.stringify(body.message): body.message);
+            }else{
+                throw new FileError(file.uri, response.statusText);
+            }
+        }
+        const hash = await RNFS.hash(file.uri, 'md5');
+        response = await fetch(`${url}/playlist`, {
+            method: "PUT",
+            headers:{
+                'Accept': 'application/json',
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                query:{name: file.name},
+                modifier:{ $set:{
+                    conf:{md5: hash}
+                }},
+            })
+        });
+        body = await response.json();
+        if (!response.ok) {
+            if(body.message){
+                console.warn("Body : ", body);
+                throw new FileError(file.uri, (typeof body.message == 'object')? JSON.stringify(body.message): body.message);
+            }else{
+                throw new FileError(file.uri, response.statusText);
+            }
+        }
+    }catch(e){
+        throw new FileError(file.uri, e.message);
+    }
+}
+
