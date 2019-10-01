@@ -25,8 +25,8 @@ export default function Project(props){
       return;
     }
     setSubmit(true);
-    console.info("create project with name : ", name);
-    ref.document(name).set({title:name})
+    console.info("create project in "+project_id+" with name : ", name);
+    ref.doc(name).set({title:name})
     .catch((e)=>alert(e))
     .then(()=>{
       setSubmit(false);
@@ -52,7 +52,7 @@ export default function Project(props){
               </div>
               <input disabled={submitting} type="text" className="form-control" id="inlineFormInputGroupUsername2" name="project-name" placeholder="Name"/>
               <div className="input-group-append">
-                <button disabled={submitting} className="btn btn-outline-secondary" type="submit">Créer</button>
+                <button disabled={submitting} className="btn btn-outline-secondary">Créer</button>
                 {submitting && <div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div>}
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
-
+import Octicon, {Trashcan} from '@primer/octicons-react'
 import { useDocument } from 'react-firebase-hooks/firestore';
 
 import FirebaseContext from "../context";
@@ -10,11 +10,10 @@ import ErrorMessage from "./ErrorMessage";
 import Loader from "./Loader";
 
 function FormInput(props){
-  
   return(<div className="form-group row">
     <label htmlFor={props.name} className="col-sm-2 col-form-label">{props.title? props.title : props.name} : </label>
     <div className="col-sm-10">
-      <input className="form-control" type={props.type? props.type : "text"} name={props.name} defaultValue={props.value}></input>
+      <input className="form-control" type={props.type? props.type : "text"} name={props.name} value={props.value||""} onChange={props.onChange}></input>
     </div>
   </div>)
 }
@@ -22,14 +21,15 @@ function FormInput(props){
 function FormTextArea(props){
   return(<div className="form-group">
     <label htmlFor={props.name} >{props.title? props.title : props.name}</label>
-    <textarea type="text" className="form-control" name={props.name} rows="4" defaultValue={props.value} placeholder={props.placeholder || "..."}></textarea>
+    <textarea type="text" className="form-control" name={props.name} rows="4" value={props.value} onChange={props.onChange} placeholder={props.placeholder || "..."}></textarea>
   </div>)
 }
 
 function FormSelector(props){
   return(<div className="form-group">
     <label htmlFor={props.name} className="col-sm-2 col-form-label" >{props.title? props.title : props.name}</label>
-    <select name={props.name} className="col-sm-10 form-control custom-select" defaultValue={props.value}>
+    <select name={props.name} className="col-sm-10 form-control custom-select" value={props.value} onChange={props.onChange}>
+      <option key="0" value="">Vide</option>
       {props.items.map(item=> <option key={item.path} value={item.path}>{item.name}</option>)}
     </select>
   </div>)
@@ -37,11 +37,25 @@ function FormSelector(props){
 
 function TitleFormInput(props){
   return(<div className="input-group mb-3">
-  <div className="input-group-prepend">
-    <span className="input-group-text" id={props.name}>{props.title? props.title : props.name}</span>
-  </div>
-  <input type={props.type? props.type : "text"} name={props.name} className="form-control" aria-label="Sizing example input" aria-describedby={props.name} defaultValue={props.value} />
+    <div className="input-group-prepend">
+      <span className="input-group-text" style={{minWidth:60, textAlign: "right"}}id={props.name}>{props.title? props.title : props.name}</span>
+    </div>
+    <input type={props.type? props.type : "text"} name={props.name} className="form-control" aria-label="Sizing example input" aria-describedby={props.name} value={props.value} onChange={props.onChange} />
   </div>)
+}
+
+function AddLink(props){
+  const [name, setName] = useState("");
+
+  return <div className="input-group">
+    <div className="input-group-prepend">
+      <span className="input-group-text" id="add_link">Ajouter</span>
+    </div>
+    <input type={props.type? props.type : "text"} name="linkadd_name" className="form-control" aria-label="Sizing example input" aria-describedby="add_link" value={name} onChange={(e)=>setName(e.target.value)} />
+    <div className="input-group-append">
+      <button className="btn btn-outline-secondary" onClick={()=>{props.handleSubmit(name);setName("")}}>Send</button>
+    </div>
+  </div>
 }
 
 export default function Item(props){
@@ -56,7 +70,6 @@ export default function Item(props){
   );
   const data = (value)? value.data(): {};
   data.links = data.links || [];
-  //if(value)  console.log("Value : ", value.data());
 
   useEffect(()=>{
     const storageRef = firebase.storage().ref();
@@ -83,38 +96,43 @@ export default function Item(props){
 
 
 
+  function handleAddLink(name){
+    const links = [{name, x:0, y:0, color:"#000000"}];
+    if(Array.isArray(data.links)){
+      links.unshift( ...data.links);
+    }
+
+    console.log("Add links : ", links);
+    setSubmit(true);
+    ref.set({links}, {merge: true})
+    .catch(e=>alert(e))
+    .then(()=>setSubmit(false));
+  }
+  function handleRemoveLink(index){
+    const link = data.links[index];
+    if(window.confirm(`Supprimer le lien vers ${link.name}?`)){
+      const links = [].concat(data.links);
+      links.splice(index,1);
+      ref.set({links}, {merge: true})
+      .catch(e=>alert(e));
+    }
+  }
+  
   function handleChange(e){
     e.preventDefault();
-    const form = e.target;
-    const obj = {links:[]};
+    const target = e.target;
+    let obj = {};
+    const m = /^link_(\d+)_(\w+)/.exec(target.name)
+    if(m){
+      obj.links = [].concat(data.links);
+      obj.links[m[1]][m[2]] = target.value;
+    }else{
+      obj = Object.assign({[target.name]:target.value});
+    }
     setSubmit(true);
-    ["image", "video", "title", "subtitle", "description"].forEach(function(key){
-      if(form[key].value){
-        obj[key] = form[key].value;
-      }
-    })
-    for(let index=0; index < data.links.length; index++){
-      if(!form[`link_${index}_name`].value) continue;
-      obj.links.push({
-        name: form[`link_${index}_name`].value,
-        x: form[`link_${index}_x`].value,
-        y: form[`link_${index}_y`].value,
-        color: form[`link_${index}_color`].value,
-      })
-    }
-    if(form[`linkadd_name`].value){
-      obj.links.push({
-        name: form[`linkadd_name`].value,
-        x: form[`linkadd_x`].value,
-        y: form[`linkadd_y`].value,
-        color: form[`linkadd_color`].value,
-      })
-    }
-    console.info("Set document to : ", obj);
-    //*
-    ref.set(obj)
+    ref.set(obj, {merge: true})
     .catch(e=>alert(e))
-    .then(()=>setSubmit(false))
+    .then(()=>setSubmit(false));
     //*/
   }
 
@@ -122,67 +140,64 @@ export default function Item(props){
     {error && <ErrorMessage message={error.toString()}/>}
     {(loading || medias.images.length === 0 ) && <Loader/>}
     {data && medias.images.length !== 0 && <React.Fragment>
-      <form className="conf p-4" onSubmit={handleChange}>
-        <fieldset disabled={submitting}>
-          <FormSelector name="image" value={data.image} items={medias.images}/>
-          <FormSelector name="video" value={data.video} items={medias.videos}/>
+      <form className="conf p-4" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
+        {submitting && <div className="spinner-border pl-2" style={{position:"fixed", bottom:60, left:10, opacity:0.8}} role="status"><span className="sr-only">Loading...</span></div>}
+        <fieldset disabled={false}>
+          
+          <FormSelector onChange={handleChange} name="image" value={data.image} items={medias.images}/>
+          <FormSelector onChange={handleChange} name="video" value={data.video} items={medias.videos}/>
+
           <h3>Description longue :</h3>
           <small id="passwordHelpBlock" className="form-text text-muted">
             Si la description est vide, l'image s'affichera en pleine largeur
           </small>
           <div className="form-group pl-3">
-            <FormInput name="title" title="Titre" value={data.title}/>
-            <FormInput name="subtitle" title="Sous-Titre" value={data.subtitle}/>
-            <FormTextArea name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
+            <FormInput onChange={handleChange} name="title" title="Titre" value={data.title}/>
+            <FormInput onChange={handleChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
+            <FormTextArea onChange={handleChange} name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
 
             <small id="passwordHelpBlock" className="form-text text-muted">
               Description au format <a target="_blank" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
             </small>
           </div>
+
+
           <h3>Liens </h3>
-            <small className="form-text text-muted">
-              Pour supprimer un lien, vider son nom et sauvegarder
-            </small>
           <div className="form-group pl-3">
             {0 < data.links.length && data.links.map((link, index)=>{
               return(<div className="form-group" key={index}>
-                <div className="row">
-                  <div className="col-sm-10">
-                    <TitleFormInput name={`link_${index}_name`} title="Bât" value={link.name} />
+                <div className="input-group mb-2">
+                  <div className="input-group-prepend">
+                    <button className="btn btn-outline-secondary" type="button" onClick={()=>handleRemoveLink(index)}><Octicon icon={Trashcan}/></button>
                   </div>
-                  <div className="col-sm-2">
-                    <Link to={`/projects/${project_id}/${link.name}`}>Voir</Link>
+                  <input disabled readOnly type="text"  className="form-control" value={link.name}/>
+                  <div className="input-group-append">
+                    <Link to={`/projects/${project_id}/${link.name}`} className="btn btn-outline-primary text-primary">Voir</Link>
                   </div>
                 </div>
                 
                 <div className="form-group pl-3">
-                  <FormInput name={`link_${index}_x`} title="x" type="number"   value={link.x}/>
-                  <FormInput name={`link_${index}_y`} title="y" type="number"   value={link.y}/>
-                  <FormInput name={`link_${index}_color`} title="color" type="text" value={link.color}/>
+                  <TitleFormInput onChange={handleChange} name={`link_${index}_title`} title="Titre" placeholder="nom du lien (par défaut)" value={link.title} />
+                  <TitleFormInput onChange={handleChange} name={`link_${index}_x`} title="x" type="number"   value={link.x}/>
+                  <TitleFormInput onChange={handleChange} name={`link_${index}_y`} title="y" type="number"   value={link.y}/>
+                  <TitleFormInput onChange={handleChange} name={`link_${index}_color`} title="color" type="text" value={link.color}/>
                 </div>
               </div>)
             })}
+
+
             {(!data.links || 0 == data.links.length) && <small className="form-text text-dark text-right">Aucun lien actif sur cet objet</small>}
             <div className="form-group">
               <h4>Ajouter un lien:</h4>
               <small id="passwordHelpBlock" className="form-text text-muted">
-                Remplir les champs suivants et sauvegarder pour ajouter un lien
+                Remplir ce champ et sauvegarder pour ajouter un lien
               </small>
               <div className="col-sm-10">
-                <TitleFormInput name={`linkadd_name`} title="Bât" value="" />
+                <AddLink handleSubmit={handleAddLink}/>
               </div>
               
-              <div className="form-group pl-3">
-                  <FormInput name={`linkadd_x`} title="x" type="number"   value={0}/>
-                  <FormInput name={`linkadd_y`} title="y" type="number"   value={0}/>
-                  <FormInput name={`linkadd_color`} title="color" type="text" value=""/>
-              </div>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary d-flex align-items-center justify-content-center" style={{width:120}}>
-            {submitting || "SUBMIT"}
-            {submitting && <div className="spinner-border pl-2" role="status"><span className="sr-only">Loading...</span></div>}
-          </button>
         </fieldset>
       </form>
       <div className="screen py-4">

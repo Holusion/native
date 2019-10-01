@@ -22,15 +22,19 @@ import FirebaseContext from "./context";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-const firebaseAppAuth = firebaseApp.auth();const providers = {
+const firebaseAppAuth = firebaseApp.auth();
+const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
+  signInWithEmailAndPassword: new firebase.auth.EmailAuthProvider(),
 };
 
 
 function App(props) {
   const {
     user,
-    signOut,
+    signOut,  
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
     signInWithGoogle,
   } = props;
   //console.warn("User : ", user);
@@ -39,8 +43,12 @@ function App(props) {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>Please sign in.</p>
-          <button className="btn btn-primary" onClick={signInWithGoogle}>Sign in with Google</button>
+          <p>Veuillez vous authentifier</p>
+          <div class="btn-group" role="group" aria-label="...">
+            <button className="btn btn-outline-primary" onClick={signInWithGoogle}>Email google</button>
+            <button className="btn btn-outline-primary" onClick={signInWithEmailAndPassword}>Authentification</button>
+            <button className="btn btn-outline-primary" onClick={createUserWithEmailAndPassword}>Créer un compte</button>
+          </div>
         </header>
       </div>
     );
@@ -54,7 +62,6 @@ function App(props) {
               <Link className="nav-link" to="/">Home</Link>
             </li>
             <Route path="/projects/:project" render={props => {
-              console.log(props.match)
               return (<li><Link className={`nav-link${props.match.isExact?" active":""}`} to={props.match.url}>&gt; {props.match.params.project}</Link></li>)
             }}/>
             <Route path="/projects/:project/:item" render={props => {
@@ -64,7 +71,7 @@ function App(props) {
           <button onClick={signOut} className="nav-link btn btn-outline-secondary text-light" to="/">Sign out</button>
           </nav>
           <div className="content">
-            <Route path="/" exact component={Projects} />
+            <Route path="/" exact render={(routeProps)=> <Projects user={user} {...routeProps}/>} />
             <Route path="/projects/:project" exact component={Project} />
             <Route path="/projects/:project/:item" exact component={Item} />
           </div>

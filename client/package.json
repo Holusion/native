@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootstrap": "^4.3.1",
     "firebase": "^6.6.2",
+    "@primer/octicons-react": "^9.1.1",
+    "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
     "react": "^16.9.0",

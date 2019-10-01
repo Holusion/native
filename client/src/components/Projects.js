@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import { Link } from "react-router-dom";
 
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import FirebaseContext from "../context";
 
 import ErrorMessage from "./ErrorMessage";
@@ -10,8 +11,10 @@ import Loader from "./Loader";
 export default function Projects(props){
   const firebase = useContext(FirebaseContext);
   const [value, loading, error] = useCollection(
-    firebase.firestore().collection('applications')
+    firebase.firestore().collection('applications').where("contributors", "array-contains", props.user.uid)
   )
+
+  console.log("User : ", props.user);
   return(<div className="container">
     {error && <ErrorMessage message={error.toString()}/>}
     {loading && <Loader/>}
