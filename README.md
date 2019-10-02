@@ -6,51 +6,20 @@ Lancez la commande suivante :
 
 ```
 react-native init <project-name>
-```
 
-### Dépendances :
+cd <project-name>
+npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
+      "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" \
+    "react-native-zeroconf" \
+    "react-navigation" "react-navigation-stack"  \
+    "react-redux"
+(cd ios && pod install)
 
-A ajouter au package.json
 
-```json
-  //package.json, toujours préférer une version de react native récente
-  "dependencies": {
-    "react": "16.8.6",
-    "react-native": "0.60.4",
-    "@holusion/react-native-holusion": "^0.4.0",
-    "events": "^3.0.0",
-    "markdown-it-attrs": "^2.3.2",
-    "native-base": "^2.12.1",
-    "react-native-fs": "^2.12.1",
-    "react-native-gesture-handler": "^1.0.10",
-    "react-native-markdown-renderer": "^3.2.8",
-    "react-native-share": "^1.1.3",
-    "react-native-vector-icons": "^6.4.2",
-    "react-native-video": "^4.4.1",
-    "react-native-zeroconf": "^0.9.0",
-    "react-navigation": "^3.11.0",
-    "react-navigation-redux-helpers": "^2.0.6",
-    "react-native-firebase": "^5.5.6"
-  },
-  "devDependencies": {
-    "@babel/core": "7.5.5",
-    "@babel/runtime": "7.5.5",
-    "@react-native-community/eslint-config": "0.0.3",
-    "babel-jest": "24.8.0",
-    "eslint": "6.1.0",
-    "jest": "24.8.0",
-    "metro-react-native-babel-preset": "0.54.1",
-    "react-test-renderer": "16.8.6"
-  }
-```
-
-puis
-
-```sh
-react-native link
-cd ios
-pod update
-pod install
+# editer info.plist avec les "Font" de react-native-vector-icons : 
+#  https://github.com/oblador/react-native-vector-icons
+# Initialiser Firebase 
+#  https://rnfirebase.io/docs/v5.x.x/installation/ios
 ```
 
 Ouvrez le projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
@@ -59,14 +28,6 @@ puis dans l'onglet Signing, sélectionnez le compte Holusion. Faire de même dan
 Ajoutez le fichier GoogleService-Info.plist (File> Add file to)
 
 Pensez à changer les quelques paramètre permettant de forcer le build sur Ipad et de forcer le landscape.
-
-Lancez le build. Une erreur devrait apparaître. Cliquez sur l'erreur, un fichier va alors s'ouvrir, il suffit de remplacer la ligne provoquant l'erreur par : 
-
-```
-return NULL;
-```
-
-source: https://github.com/facebook/react-native/issues/16106
 
 Puis lancez le build.
 
