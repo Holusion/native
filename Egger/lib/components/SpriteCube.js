@@ -1,10 +1,13 @@
 'use strict';
 import React from "react";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
 import { View } from 'native-base';
 import { StyleSheet, Animated, Easing, PanResponder, Dimensions } from 'react-native';
 
-import {convert, time} from "@holusion/react-native-holusion";
+import {convert, time, selectors} from "@holusion/react-native-holusion";
+
+const {getActiveProduct} = selectors;
 
 const WIDTH = Dimensions.get('window').width;
 /* keep in mind an ipad has a 2x multiplier so divide the real resolution! */
@@ -18,11 +21,11 @@ const DIVIDER = 4;
 
 const IDLE_SPEED = 100;
 
-export default class SpriteCube extends React.Component{
+class SpriteCube extends React.Component{
+    static last_direction = 1;
     constructor(props){
         super(props);
         this.offset = 0;
-        this.last_direction = 1;
         this.last_dx = 0;
         this._handleIdle = this.handleIdle.bind(this);
         this.state = {
@@ -45,6 +48,7 @@ export default class SpriteCube extends React.Component{
     componentDidMount(){
         this.active = false;
         this.handleIdle();
+        this.sendChange(4*this.last_direction, {angular: false});
     }
     componentWillUnmount(){
         this.active = true; //Will stop the handleIdle callback
@@ -55,25 +59,23 @@ export default class SpriteCube extends React.Component{
     /*
      * Network changes notifier
      */
-    sendChange(val){
+    sendChange(val, {angular=true}={}){
         //console.warn("sendChange : ", val);
         if(!this.props.target) return;
         if(this.abortController){
             this.abortController.abort();
         }
         const abortController = this.abortController = new AbortController();
-        const timeout = setTimeout(()=>abortController.abort(), 200);
+        const timeout = setTimeout(()=>{console.warn("abort request");abortController.abort()}, 200);
         //${this.props.target.uri}
-        fetch(`http://${this.props.target.url}:3004/d${val}`, {method: "GET", signal: this.abortController.signal}).then(r=>{
+        fetch(`http://${this.props.target.url}:3004/${angular?'d':'m'}${val}`, {method: "GET", signal: this.abortController.signal}).then(r=>{
             if(!r.ok){
-                console.warn(r.status);
+                console.warn("Fetch sendChange failed : ",r.status);
             }
             clearTimeout(timeout);
             this.abortController = null;
         }).catch((err)=>{
-            if (err.name === 'AbortError') {
-                return;
-            }
+            if (err.name === 'AbortError') return;
             console.warn("Fetch rejected : ",err.message);
         })
     }
@@ -84,10 +86,11 @@ export default class SpriteCube extends React.Component{
         this.active = true;
         this.last_dx = 0;
         this.offset = this.state.frame._value;
+        this.sendChange(0); // Completely stop
     }
     handlePanResponderMove(e, gestureState){
         if( 0.1 < Math.abs(gestureState.vx)){
-            this.last_direction =  Math.sign(gestureState.vx);
+            SpriteCube.last_direction =  Math.sign(gestureState.vx);
         }
         this.accumulator.add(gestureState.dx - this.last_dx);
         this.last_dx = gestureState.dx;
@@ -97,13 +100,13 @@ export default class SpriteCube extends React.Component{
         this.active = false;
         //this.idle_dx = 0
         //this.offset = - this.state.frame._value/SPRITE_WIDTH;
-        const duration = ((0 < this.last_direction)? this.frame : 360 - this.frame)* IDLE_SPEED;
+        const duration = ((0 < SpriteCube.last_direction)? this.frame : 360 - this.frame)* IDLE_SPEED;
         requestAnimationFrame(this._handleIdle);
     }
 
     handleIdle(){
         if(this.active) return;
-        this.last_dx += this.last_direction;
+        this.last_dx += SpriteCube.last_direction;
         this.move(this.last_dx);
         requestAnimationFrame(this._handleIdle);
     }
@@ -114,6 +117,7 @@ export default class SpriteCube extends React.Component{
     }
 
     render(){
+        if(!this.props.target) return null;
         //*
         const pos_x = Animated.modulo(this.state.frame, COLUMNS);
         const tr_x = Animated.multiply(pos_x, -SPRITE_WIDTH);
@@ -145,3 +149,10 @@ const styles = StyleSheet.create({
 SpriteCube.propTypes = {
     target: PropTypes.shape({uri: PropTypes.string }),
 }
+
+export default connect(function(state, props){
+    const {data} = state;
+    return {
+        target: getActiveProduct(state)
+    }
+})(SpriteCube);

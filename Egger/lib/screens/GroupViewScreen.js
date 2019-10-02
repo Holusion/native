@@ -13,8 +13,6 @@ const {filename} = files;
 
 import Buttons from "../components/Buttons";
 
-import Cube from "../components/Cube";
-import SpriteCube from "../components/SpriteCube";
 import Markdown from "../components/Markdown";
 
 class GroupViewScreen extends React.Component {
@@ -31,7 +29,7 @@ class GroupViewScreen extends React.Component {
 
         return(<Container style={{flex:1, display:"flex", flexDirection:"row"}}>
             <View style={styles.imageWithDescription}>
-                <ImageBackground resizeMode= 'cover' source={source} style={{width: '100%', height: '100%'}} >
+                <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
                     <H1 primary style={styles.title}>{this.props.data["title"]}</H1>
                     <H2 secondary style={styles.subtitle}>{this.props.data["subtitle"]}</H2>
                     <Buttons items={this.props.data["links"] || []} onPress={(id)=>this.props.navigation.push("GroupView", {id})}/>
@@ -43,7 +41,6 @@ class GroupViewScreen extends React.Component {
                 </View>
                 
             </Content>
-            <SpriteCube target={this.props.target}/>
         </Container>)
     }
     renderFullWidth(){
@@ -54,7 +51,6 @@ class GroupViewScreen extends React.Component {
                     <H1 primary style={styles.title}>{this.props.data["title"]}</H1>
                     <H2 secondary style={styles.subtitle}>{this.props.data["subtitle"]}</H2>
                     <Buttons items={this.props.data["links"] || []} onPress={(id)=>this.props.navigation.push("GroupView", {id})}/>
-                    <SpriteCube target={this.props.target}/>
                 </ImageBackground>
             </Container>
         )

@@ -8,7 +8,7 @@ import { StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 
 import {getActiveProduct} from "@holusion/react-native-holusion/lib/selectors";
 
-import {watchFiles, filename} from "@holusion/react-native-holusion/lib/files";
+import {watchFiles, filename, signIn, initialize} from "@holusion/react-native-holusion/lib/files";
 
 class HomeScreen extends React.Component {
     render() {
@@ -32,15 +32,44 @@ class HomeScreen extends React.Component {
 
     }
     componentDidMount(){
-        this.unsubscribe = watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)})
-        .catch(e => console.warn("can't watch files for changes : ",e))
+        signIn("user@dev.holusion.net", "KsrVjGDm")
+        .then (()=>{
+            return watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)})
+        }, (e)=>{
+            console.warn("Failed to sign-in : using local data");
+            return initialize().then((data)=>{
+                this.props.setData(data);
+            })
+        })        
+        .catch(e=>{
+            console.error("Failed to initialize data : ", e);
+            return function(){}
+        })
+        .then((unwatch)=>{
+            const willFocusSubscribe = this.props.navigation.addListener("willFocus", ()=>{
+                this.onFocus();
+            });
+            const willBlurSubscribe = this.props.navigation.addListener("willBlur", ()=>{
+                if(this.abortController) this.abortController.abort();
+            });
+    
+            this.unsubscribe = () => {
+                willFocusSubscribe.remove();
+                willBlurSubscribe.remove();
+                unwatch();
+            }
+        })
+
     }
     componentWillUnmount(){
-        if(this.unsubscribe)this.unsubscribe();
+        if(this.unsubscribe) this.unsubscribe();
     }
-    onFocus(){        
-        if(this.props.config.video && this.props.target){
-            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
+
+    onFocus(){
+        if(this.abortController) this.abortController.abort();
+        this.abortController = new AbortController();        
+        if(this.props.config && this.props.config.video && this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT', signal: this.abortController.signal})
             .then(r=>{
                 if(!r.ok){
                     Toast.show({

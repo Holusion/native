@@ -9,7 +9,7 @@ export default function Markdown(props){
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 18,
+        fontSize: 18
     },
     heading1:{
         color: theme.brandPrimary,

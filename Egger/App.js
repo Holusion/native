@@ -16,9 +16,13 @@ import getTheme from '@holusion/react-native-holusion/native-base-theme/componen
 import getVariables from "./theme.js"
 
 import HomeScreen from "./lib/screens/HomeScreen";
-import GeneralViewScreen from "./lib/screens/GeneralViewScreen";
 import GroupViewScreen from "./lib/screens/GroupViewScreen";
 import {name, displayName} from "./package.json";
+
+
+
+
+import SpriteCube from "./lib/components/SpriteCube";
 
 const store = configureStore({projectName:name});
 
@@ -45,10 +49,6 @@ const navigation = {
   Update: default_navigation.Update,
   Synchronize: default_navigation.Synchronize,
   Connect: default_navigation.Connect,
-  GeneralView: {
-    screen: GeneralViewScreen,
-    navigationOptions,
-  },
   GroupView: {
     screen: GroupViewScreen,
     navigationOptions,
@@ -78,6 +78,7 @@ export default class App extends React.Component{
   }
   componentDidMount(){
     AppState.addEventListener('change', this.onChange);
+    //ScreenBrightness.setBrightness(1);
     this.unsubscribe = netScan(store);
   }
   componentWillUnmount(){
@@ -96,17 +97,18 @@ export default class App extends React.Component{
     this.setState({appState: nextAppState});
   }
   onInactive = (status)=>{
-    if(status) return;
-    const activeRoute = this._navigator.state.nav.routes.slice(-1)[0].routeName;
-    if(["Synchronize", "Update", "Connect"].indexOf(activeRoute) != -1){
-      return;
-    }else{
-      console.warn(activeRoute);
+    let activeRoute = this._navigator.state.nav.routes.slice(-1)[0].routeName
+    if(status){
+      //ScreenBrightness.setBrightness(0.4);
+    }else if(["Synchronize", "Update", "Connect"].indexOf(activeRoute) == -1){
+      //ScreenBrightness.setBrightness(1);
+      this._navigator.dispatch(NavigationActions.navigate({
+        routeName:"Home",
+        params:{},
+      }))
     }
-    this._navigator.dispatch(NavigationActions.navigate({
-      routeName:"Home",
-      params:{},
-    }))
+   
+    
     //*/
   }
   render(){
@@ -116,6 +118,7 @@ export default class App extends React.Component{
         <Provider store={store}>
           <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
             <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
+            <SpriteCube />
           </UserInactivity>
         </Provider> 
       </StyleProvider> 
