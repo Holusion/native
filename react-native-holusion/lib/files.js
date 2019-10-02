@@ -45,6 +45,10 @@ export function initialize(projectName){
     });
 }
 
+export async function signIn(mail, password){
+    return await firebase.auth().signInWithEmailAndPassword(mail, password);
+}
+
 export async function getFiles({
     projectName, 
     signal /* :AbortSignal */,
@@ -60,7 +64,6 @@ export async function getFiles({
     if(!projectName){
         throw new Error(`A valid projectName is required. Got ${projectName}`);
     }
-    const credentials = await firebase.auth().signInAnonymously();
     const db = firebase.firestore();
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
@@ -133,14 +136,25 @@ export async function getFiles({
     }
     //console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
     const datastore = {items: data, config: config};
+    await saveDataFile(datastore);
+    return datastore;
+}
+
+async function saveDataFile(data){
+    let old_data;
+    try{
+        old_data = await initialize();
+    }catch(e){
+        console.warn("initialize error : ",e);
+        old_data = {};
+    }
+    const datastore = Object.assign(old_data, data);
     try{
         await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(datastore), 'utf8')
     }catch(e){
         throw new FileError(`${storagePath}/data.json`, e.message);
     }
-    return datastore;
 }
-
 
 export async function watchFiles({
     projectName, 
@@ -149,14 +163,11 @@ export async function watchFiles({
 }={}){
     let cache;
     let errors = [];
-    let filelist = [
-        `${storagePath}/data.json`
-    ];
     let unsubscribes = [];
     if(!projectName){
         throw new Error(`A valid projectName is required. Got ${projectName}`);
     }
-    const credentials = await firebase.auth().signInAnonymously();
+    
     const db = firebase.firestore();
 
     const projectRef = db.collection("applications").doc(projectName);
@@ -169,8 +180,14 @@ export async function watchFiles({
         //Create base directory. Does not throw if it does exist
     await RNFS.mkdir(storagePath);
 
-    let abortConfig;
+    try{
+        const initial_data = await initialize();
+        dispatch(initial_data);
+    }catch(e){
+        console.warn("No initial data");
+    }
 
+    let abortConfig;
     unsubscribes.push(projectRef.onSnapshot(
         (configSnapshot)=>{
             if(abortConfig) abortConfig.abort(); //Cancel any previous run
@@ -221,10 +238,10 @@ async function onConfigSnapshot(configSnapshot, {signal, onProgress, projectRef,
         const [new_errors, new_files] = await makeLocal(c);
         if(signal && signal.aborted) return;
         errors = errors.concat(new_errors);
-        filelist = filelist.concat(new_files);
         config.categories.push(c);
     }
     if(signal && signal.aborted) return
+    await saveDataFile({config});
     dispatch({config});
     onProgress("Updated config to :", config);
 }
@@ -242,6 +259,7 @@ async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectR
         await makeLocal(d);
         if(signal && signal.aborted) return
     }
+    await saveDataFile({items});
     dispatch({items});
     onProgress("Updated items to : ", items);
 }
