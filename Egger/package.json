@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^1.0.0-beta.1",
+    "@holusion/react-native-holusion": "^1.0.0-beta.2",
     "@react-native-community/netinfo": "^4.2.1",
     "native-base": "^2.13.8",
     "react": "16.8.6",
