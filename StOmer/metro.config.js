@@ -4,10 +4,12 @@
  *
  * @format
  */
+
 const {resolve} = require("path");
 
 module.exports = {
-  projectRoot: resolve(__dirname),
+  resolver:{
+  },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
@@ -16,4 +18,7 @@ module.exports = {
       },
     }),
   },
+  watchFolders:[
+    resolve(__dirname, "node_modules/@holusion/react-native-holusion"),
+  ],
 };

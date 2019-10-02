@@ -1,68 +1,35 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation'
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer} from "react-navigation";
 import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
-import {AppState} from "react-native"
+import {AppState, StatusBar} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
 
-import {configureStore, screens, strings, netScan } from '@holusion/react-native-holusion';
-const {HomeScreen, ConnectScreen, UpdateScreen, ObjectScreen, SynchronizeScreen} = screens;
+import {configureStore, screens, components, strings, netScan } from '@holusion/react-native-holusion';
 
+const {NetworkIcon} = components;
 
+import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
+import getVariables from "./theme.js"
 
-import getTheme from './native-base-theme/components';
-
-
-import {name} from "./package.json";
+import {name, displayName} from "./package.json";
 
 const store = configureStore({projectName:name});
 
+function makeTitle(navigation){
+  const category  = navigation.getParam("category");
+  if(category) return category;
+  return displayName;
+}
+
 function navigationOptions({navigation}){
   return {
-    title: navigation.routeName,
-    headerRight: <NetIcon onPress={() => {navigation.navigate("Connect")}}/>, 
+    title: makeTitle(navigation),
+    headerRight: <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>, 
   }
 }
 
-const navigation = {
-  Home: {
-    screen: HomeScreen,
-    navigationOptions,
-  },
-  Connect:{
-    screen: ConnectScreen,
-    navigationOptions,
-  },
-  Update:{
-    screen: UpdateScreen,
-    navigationOptions,
-  },
-  Object:{
-    screen: ObjectScreen,
-    navigationOptions,
-  },
-  Synchronize:{
-    screen:SynchronizeScreen,
-    navigationOptions,
-  }
-}
-
-class NetworkIcon extends React.Component{
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color: this.props.connected?"green": "red"}} name="ios-wifi" /></Button>);
-  }
-}
-
-function mapStateToProps(state){
-  const {products} = state;
-  return {
-    connected: products.find(p => p.active == true)?true: false
-  }
-}
-
-const NetIcon = connect(mapStateToProps)(NetworkIcon);
+const navigation = screens.getDefaultNavigator({navigationOptions});
 
 const options = {
   defaultNavigationOptions:{
@@ -104,7 +71,8 @@ export default class App extends React.Component{
   }
   render(){
     return <Root>
-      <StyleProvider style={getTheme(/*use default platform theme*/)}>
+       <StatusBar hidden={true} />
+      <StyleProvider style={getTheme(getVariables())}>
         <Provider store={store}>
             <AppContainer />
         </Provider> 
