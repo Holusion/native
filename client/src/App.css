@@ -28,7 +28,7 @@
 
 .ipad-screen-outline{
   /* logical ipad size is : 768 x 1024 */
-  position:fixed;
+  position:relative;
   box-sizing: content-box;
   width: var(--ipad-width);
   height: var(--ipad-height);

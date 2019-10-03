@@ -4,6 +4,7 @@ import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
+
 const converter = new Showdown.Converter({
   tables: true,
   simplifiedAutoLink: true,
@@ -13,11 +14,8 @@ const converter = new Showdown.Converter({
 
 export function MarkdownInput(props){
   const [value, setValue] = useState(props.value);
-  const [selectedTab, setSelectedTab]= useState("write");
-  console.info("Render markdown with : ", props.value);
-  return (<div className="form-group">
-  <label htmlFor={props.name} >{props.title? props.title : props.name}</label>
-  <ReactMde
+  const [selectedTab, setSelectedTab]= useState("preview");
+  return (<ReactMde
     name={props.name}
     value={value}
     onChange={(val)=>{
@@ -29,8 +27,7 @@ export function MarkdownInput(props){
     generateMarkdownPreview={markdown =>
       Promise.resolve(converter.makeHtml(markdown))
     }
-  />
-</div>)
+  />)
 }
 
 

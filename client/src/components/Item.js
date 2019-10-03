@@ -11,6 +11,7 @@ import Loader from "./Loader";
 
 import {FormInput, FormTextArea, FormSelector, TitleFormInput, AddLink, MarkdownInput} from "./Inputs";
 
+import "./markdown.css";
 
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
@@ -104,30 +105,15 @@ export default function Item(props){
     //*/
   }
 
-  return(<div className="base">
+  return(<div className="p-4">
     {error && <ErrorMessage message={error.toString()}/>}
     {(loading || medias.images.length === 0 ) && <Loader/>}
-    {data && medias.images.length !== 0 && <React.Fragment>
-      <form className="conf p-4" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
+    {data && medias.images.length !== 0 && <form className="base  d-flex flex-wrap justify-content-between" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
+      <div className="pr-3" style={{minWidth:400}}>
         {submitting && <div className="spinner-border pl-2" style={{position:"fixed", bottom:60, left:10, opacity:0.8}} role="status"><span className="sr-only">Loading...</span></div>}
-        <fieldset disabled={false}>
-          
+        <fieldset style={{minWidth:400}} disabled={false}>
           <FormSelector onChange={onChange} name="image" value={data.image} items={medias.images}/>
           <FormSelector onChange={onChange} name="video" value={data.video} items={medias.videos}/>
-
-          <h3>Description longue :</h3>
-          <small id="passwordHelpBlock" className="form-text text-muted">
-            Si la description est vide, l'image s'affichera en pleine largeur
-          </small>
-          <div className="form-group pl-3">
-            <FormInput onChange={onChange} name="title" title="Titre" value={data.title}/>
-            <FormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
-            <MarkdownInput handleChange={handleChange} name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
-            <small id="passwordHelpBlock" className="form-text text-muted">
-              Description au format <a target="_blank" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
-            </small>
-          </div>
-
 
           <h3>Liens </h3>
           <div className="form-group pl-3">
@@ -162,17 +148,41 @@ export default function Item(props){
               <div className="col-sm-10">
                 <AddLink handleSubmit={handleAddLink}/>
               </div>
-              
             </div>
           </div>
         </fieldset>
-      </form>
-      <div className="screen py-4">
+      </div> 
+      <div >
         <div className="ipad-screen-outline">
-          {data.image && <BackgroundImage source={data.image}/>}
-          <div className="ipad-screen-title">Cette image n'affiche ni titre ni lien ni description...</div>
+          <div className="d-flex align-content-stretch" style={{height:"100%"}}>
+            <div style={{width:"66%", position:"relative", zIndex: 1}}>
+              <div style={{width:"100%",paddingTop:"var(--ipad-height)", position:"absolute", zIndex: -1}}>
+              {data.image && <BackgroundImage source={data.image}/>}
+              </div>
+              
+              <div className="ipad-screen-title">
+              <TitleFormInput onChange={onChange} name="title" title="Titre" value={data.title}/>
+              </div>
+              <div className="ipad-screen-subtitle">
+                <TitleFormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
+              </div>
+            </div>
+            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1}} className="d-flex flex-column">
+            <small id="passwordHelpBlock" className="form-text text-muted">
+              Si la description est vide, l'image s'affichera en pleine largeur
+            </small>
+              <MarkdownInput handleChange={handleChange} name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
+              <small id="passwordHelpBlock" className="form-text text-muted">
+                Description au format <a target="_blank" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
+              </small>
+            </div>
+          </div>
+          
+          
+          
+         
         </div>
       </div>
-    </React.Fragment>}
+    </form>}
   </div>)
 }
