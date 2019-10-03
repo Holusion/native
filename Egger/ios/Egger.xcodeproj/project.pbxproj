@@ -17,6 +17,14 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* EggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* EggerTests.m */; };
 		3A79BAF6233263C700CD3420 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAF5233263C700CD3420 /* GoogleService-Info.plist */; };
+		3A79BB022344ABC000CD3420 /* MetaPro-Normal.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFA2344ABBF00CD3420 /* MetaPro-Normal.otf */; };
+		3A79BB032344ABC000CD3420 /* MetaPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFB2344ABBF00CD3420 /* MetaPro-Black.otf */; };
+		3A79BB042344ABC000CD3420 /* MetaPro-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFC2344ABBF00CD3420 /* MetaPro-BlackItalic.otf */; };
+		3A79BB052344ABC000CD3420 /* MetaPro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFD2344ABBF00CD3420 /* MetaPro-Medium.otf */; };
+		3A79BB062344ABC000CD3420 /* MetaPro-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFE2344ABC000CD3420 /* MetaPro-MediumItalic.otf */; };
+		3A79BB072344ABC000CD3420 /* MetaPro-NormalItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BAFF2344ABC000CD3420 /* MetaPro-NormalItalic.otf */; };
+		3A79BB082344ABC000CD3420 /* MetaPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BB002344ABC000CD3420 /* MetaPro-Bold.otf */; };
+		3A79BB092344ABC000CD3420 /* MinionPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A79BB012344ABC000CD3420 /* MinionPro-Regular.otf */; };
 		45BEDE036957DABD7A195561 /* libPods-Egger-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADC0A15AB33A8DCD3FAAEA2 /* libPods-Egger-tvOSTests.a */; };
 		716793F38341B75CAEA0B53D /* libPods-Egger.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94ACBC3D0EB3C63B8233A95C /* libPods-Egger.a */; };
 		C6AAF581DC0418FD3654A919 /* libPods-EggerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05B440997016FB6D2BD4F32B /* libPods-EggerTests.a */; };
@@ -58,6 +66,14 @@
 		2D02E47B1E0B4A5D006451C7 /* Egger-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Egger-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Egger-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Egger-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A79BAF5233263C700CD3420 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3A79BAFA2344ABBF00CD3420 /* MetaPro-Normal.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-Normal.otf"; path = "../assets/fonts/MetaPro-Normal.otf"; sourceTree = "<group>"; };
+		3A79BAFB2344ABBF00CD3420 /* MetaPro-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-Black.otf"; path = "../assets/fonts/MetaPro-Black.otf"; sourceTree = "<group>"; };
+		3A79BAFC2344ABBF00CD3420 /* MetaPro-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-BlackItalic.otf"; path = "../assets/fonts/MetaPro-BlackItalic.otf"; sourceTree = "<group>"; };
+		3A79BAFD2344ABBF00CD3420 /* MetaPro-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-Medium.otf"; path = "../assets/fonts/MetaPro-Medium.otf"; sourceTree = "<group>"; };
+		3A79BAFE2344ABC000CD3420 /* MetaPro-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-MediumItalic.otf"; path = "../assets/fonts/MetaPro-MediumItalic.otf"; sourceTree = "<group>"; };
+		3A79BAFF2344ABC000CD3420 /* MetaPro-NormalItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-NormalItalic.otf"; path = "../assets/fonts/MetaPro-NormalItalic.otf"; sourceTree = "<group>"; };
+		3A79BB002344ABC000CD3420 /* MetaPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MetaPro-Bold.otf"; path = "../assets/fonts/MetaPro-Bold.otf"; sourceTree = "<group>"; };
+		3A79BB012344ABC000CD3420 /* MinionPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MinionPro-Regular.otf"; path = "../assets/fonts/MinionPro-Regular.otf"; sourceTree = "<group>"; };
 		3ADC0A15AB33A8DCD3FAAEA2 /* libPods-Egger-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Egger-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DB845C6193061BFB9F7F99C /* libPods-Egger-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Egger-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5F927101E8068DDB2B986A /* Pods-Egger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Egger.debug.xcconfig"; path = "Target Support Files/Pods-Egger/Pods-Egger.debug.xcconfig"; sourceTree = "<group>"; };
@@ -161,6 +177,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3A79BAFB2344ABBF00CD3420 /* MetaPro-Black.otf */,
+				3A79BAFC2344ABBF00CD3420 /* MetaPro-BlackItalic.otf */,
+				3A79BB002344ABC000CD3420 /* MetaPro-Bold.otf */,
+				3A79BAFD2344ABBF00CD3420 /* MetaPro-Medium.otf */,
+				3A79BAFE2344ABC000CD3420 /* MetaPro-MediumItalic.otf */,
+				3A79BAFA2344ABBF00CD3420 /* MetaPro-Normal.otf */,
+				3A79BAFF2344ABC000CD3420 /* MetaPro-NormalItalic.otf */,
+				3A79BB012344ABC000CD3420 /* MinionPro-Regular.otf */,
 				3A79BAF5233263C700CD3420 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Egger */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -347,6 +371,14 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3A79BAF6233263C700CD3420 /* GoogleService-Info.plist in Resources */,
+				3A79BB022344ABC000CD3420 /* MetaPro-Normal.otf in Resources */,
+				3A79BB032344ABC000CD3420 /* MetaPro-Black.otf in Resources */,
+				3A79BB042344ABC000CD3420 /* MetaPro-BlackItalic.otf in Resources */,
+				3A79BB052344ABC000CD3420 /* MetaPro-Medium.otf in Resources */,
+				3A79BB062344ABC000CD3420 /* MetaPro-MediumItalic.otf in Resources */,
+				3A79BB072344ABC000CD3420 /* MetaPro-NormalItalic.otf in Resources */,
+				3A79BB082344ABC000CD3420 /* MetaPro-Bold.otf in Resources */,
+				3A79BB092344ABC000CD3420 /* MinionPro-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

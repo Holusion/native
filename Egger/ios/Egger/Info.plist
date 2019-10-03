@@ -41,6 +41,11 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>MetaPro-NormalItalic.otf</string>
+		<string>MetaPro-Normal.otf</string>
+		<string>MetaPro-MediumItalic.otf</string>
+		<string>MetaPro-Medium.otf</string>
+		<string>MetaPro-Bold.otf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
