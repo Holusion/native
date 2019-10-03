@@ -44,7 +44,7 @@ function App(props) {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>Veuillez vous authentifier</p>
-          <div class="btn-group" role="group" aria-label="...">
+          <div className="btn-group" role="group" aria-label="...">
             <button className="btn btn-outline-primary" onClick={signInWithGoogle}>Email google</button>
             <button className="btn btn-outline-primary" onClick={signInWithEmailAndPassword}>Authentification</button>
             <button className="btn btn-outline-primary" onClick={createUserWithEmailAndPassword}>Créer un compte</button>
