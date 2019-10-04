@@ -330,5 +330,8 @@ export default {
       rightInset: 44,
       bottomInset: 21
     }
-  }
+  },
+  // Custom variables
+  fontFamilyH1: this.titleFontfamily,
+  fontFamilyH2: this.titleFontfamily,
 };

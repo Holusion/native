@@ -50,17 +50,18 @@ import variable from './../variables/platform';
 /* custom components */
 import imageCardTheme from "./ImageCard";
 import controllerTheme from "./Controller";
-
+import markdownTheme from "./Markdown";
 export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
-
+    /* Holusion custom components */
     "Holusion.ImageCard": {
       ...imageCardTheme(variables)
     },
     "Holusion.Controller": {
       ...controllerTheme(variables)
     },
+    /* Nativebase components */
     'NativeBase.Left': {
       ...leftTheme(variables)
     },

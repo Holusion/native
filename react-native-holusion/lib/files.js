@@ -180,13 +180,6 @@ export async function watchFiles({
         //Create base directory. Does not throw if it does exist
     await RNFS.mkdir(storagePath);
 
-    try{
-        const initial_data = await initialize();
-        dispatch(initial_data);
-    }catch(e){
-        console.warn("No initial data");
-    }
-
     let abortConfig;
     unsubscribes.push(projectRef.onSnapshot(
         (configSnapshot)=>{
@@ -270,7 +263,7 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
     const storage = firebase.storage();
     for(let key in d){
         if(signal && signal.aborted) return;
-        if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0){
+        if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0 && !d[key].endsWith("/")){
             const ref = storage.refFromURL(d[key]);
             const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
             const name = filename(fullPath);
