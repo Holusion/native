@@ -3,12 +3,17 @@
   display:flex;
   flex-direction: column;
   justify-items: stretch;
+  max-height: calc(100% - 20px);
 }
 textarea.mde-text {
   flex-grow: 1;
 } 
 .react-mde .grip{
   background: none;
+}
+.mde-preview .mde-preview-content{
+  overflow-y: auto;
+  max-height: 100%;
 }
 .mde-preview .mde-preview-content h1{
   color: #e31937;

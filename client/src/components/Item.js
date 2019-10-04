@@ -13,6 +13,7 @@ import {FormInput, FormTextArea, FormSelector, TitleFormInput, AddLink, Markdown
 
 import "./markdown.css";
 
+
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
   const [medias, setMedias] = useState({images:[], videos:[]});
@@ -167,7 +168,7 @@ export default function Item(props){
                 <TitleFormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
               </div>
             </div>
-            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1}} className="d-flex flex-column">
+            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1, maxHeight:"100%"}} className="d-flex flex-column">
             <small id="passwordHelpBlock" className="form-text text-muted">
               Si la description est vide, l'image s'affichera en pleine largeur
             </small>
