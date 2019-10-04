@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     heading1:{
+        fontFamily: theme.fontFamilyH1,
         color: theme.brandPrimary,
         fontSize: 28,
     },
     heading2:{
+        fontFamily: theme.fontFamilyH2,
         color: theme.brandSecondary,
         fontSize: 24,
     }
-})
+});

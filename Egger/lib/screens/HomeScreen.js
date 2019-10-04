@@ -31,20 +31,22 @@ class HomeScreen extends React.Component {
         super(props);
 
     }
+
     componentDidMount(){
-        signIn("user@dev.holusion.net", "KsrVjGDm")
-        .then (()=>{
-            return watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)})
-        }, (e)=>{
-            console.warn("Failed to sign-in : using local data");
-            return initialize().then((data)=>{
-                this.props.setData(data);
-            })
-        })        
-        .catch(e=>{
-            console.error("Failed to initialize data : ", e);
-            return function(){}
+        initialize()
+        .then((data)=>{
+            this.props.setData(data);
         })
+        .catch(e=>{
+            console.warn("Failed to initialize data : ", e);
+            Toast.show({
+                text: "(info) Pas d'accès internet",
+                duration: 2000,
+            })
+            return;
+        })
+        .then(()=>signIn("user@dev.holusion.net", "KsrVjGDm"))
+        .then (()=>watchFiles({projectName: this.props.projectName, onProgress: console.warn, dispatch: this.props.setData.bind(this)}))
         .then((unwatch)=>{
             const willFocusSubscribe = this.props.navigation.addListener("willFocus", ()=>{
                 this.onFocus();
@@ -59,8 +61,14 @@ class HomeScreen extends React.Component {
                 unwatch();
             }
         })
-
+        .catch((e)=>{
+            Toast.show({
+                text: "(info) Pas d'accès internet",
+                duration: 2000,
+            })
+        })
     }
+
     componentWillUnmount(){
         if(this.unsubscribe) this.unsubscribe();
     }

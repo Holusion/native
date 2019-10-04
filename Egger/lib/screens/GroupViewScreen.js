@@ -15,6 +15,8 @@ import Buttons from "../components/Buttons";
 
 import Markdown from "../components/Markdown";
 
+import {theme} from "../../theme";
+
 class GroupViewScreen extends React.Component {
     render() {
         //console.warn("id : ", this.props.navigation.getParam("id"), "data : ", this.props.data);
@@ -37,7 +39,7 @@ class GroupViewScreen extends React.Component {
             </View>
             <Content contentContainerStyle={styles.contentWithDescription}>
                 <View style={styles.contentView}>
-                    <Markdown>{this.props.data['description']}</Markdown>
+                    <Markdown style={styles.markdown}>{this.props.data['description']}</Markdown>
                 </View>
                 
             </Content>
@@ -104,7 +106,9 @@ const styles = StyleSheet.create({
         flex: 1,
         zIndex: 1,
         padding: 10,
+        paddingBottom: 80,
         backgroundColor: "#f1f1f1",
+        minHeight:"100%",
     },
     title:{
         paddingTop: 30,
