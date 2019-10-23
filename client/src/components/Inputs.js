@@ -33,8 +33,8 @@ export function MarkdownInput(props){
 
 export function FormInput(props){
   return(<div className="form-group row">
-    <label htmlFor={props.name} className="col-sm-2 col-form-label">{props.title? props.title : props.name} : </label>
-    <div className="col-sm-10">
+    <label htmlFor={props.name} className="col-sm-4 col-md-3 col-lg-2 col-form-label">{props.title? props.title : props.name} : </label>
+    <div className="col-sm-8 col-md-9 col-lg-10">
       <input className="form-control" type={props.type? props.type : "text"} name={props.name} value={props.value||""} onChange={props.onChange}></input>
     </div>
   </div>)
@@ -49,8 +49,8 @@ export function FormTextArea(props){
 
 export function FormSelector(props){
   return(<div className="form-group">
-    <label htmlFor={props.name} className="col-sm-2 col-form-label" >{props.title? props.title : props.name}</label>
-    <select name={props.name} className="col-sm-10 form-control custom-select" value={props.value} onChange={props.onChange}>
+    <label htmlFor={props.name} className="col-sm-4 col-md-3 col-lg-2 col-form-label" >{props.title? props.title : props.name}</label>
+    <select name={props.name} className="col-sm-8 col-md-9 col-lg-10 form-control custom-select" value={props.value} onChange={props.onChange}>
       <option key="0" value="">Vide</option>
       {props.items.map(item=> <option key={item.path} value={item.path}>{item.name}</option>)}
     </select>

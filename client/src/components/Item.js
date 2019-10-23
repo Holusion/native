@@ -9,9 +9,11 @@ import BackgroundImage from "./BackgroundImage";
 import ErrorMessage from "./ErrorMessage";
 import Loader from "./Loader";
 
+
 import {FormInput, FormTextArea, FormSelector, TitleFormInput, AddLink, MarkdownInput} from "./Inputs";
 
 import "./markdown.css";
+import StorageImage from "./StorageImage";
 
 
 export default function Item(props){
@@ -110,10 +112,12 @@ export default function Item(props){
     {error && <ErrorMessage message={error.toString()}/>}
     {(loading || medias.images.length === 0 ) && <Loader/>}
     {data && medias.images.length !== 0 && <form className="base  d-flex flex-wrap justify-content-between" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
-      <div className="pr-3" style={{minWidth:400}}>
+      <div className="pr-3 flex-grow-1" style={{minWidth:400}}>
         {submitting && <div className="spinner-border pl-2" style={{position:"fixed", bottom:60, left:10, opacity:0.8}} role="status"><span className="sr-only">Loading...</span></div>}
-        <fieldset style={{minWidth:400}} disabled={false}>
-          <FormSelector onChange={onChange} name="image" value={data.image} items={medias.images}/>
+        
+        <fieldset disabled={false}>
+          <FormSelector onChange={onChange} name="image" title="Image" value={data.image} items={medias.images}/>
+          <FormSelector onChange={onChange} name="thumb" title="Miniature" value={data.thumb} items={medias.images}/>
           <FormSelector onChange={onChange} name="video" value={data.video} items={medias.videos}/>
 
           <h3>Liens </h3>
@@ -156,31 +160,45 @@ export default function Item(props){
       <div >
         <div className="ipad-screen-outline">
           <div className="d-flex align-content-stretch" style={{height:"100%"}}>
-            <div style={{width:"66%", position:"relative", zIndex: 1}}>
-              <div style={{width:"100%",paddingTop:"var(--ipad-height)", position:"absolute", zIndex: -1}}>
-              {data.image && <BackgroundImage source={data.image}/>}
+            <div style={{width:"66%", position:"relative", zIndex: 1, overflow: "auto"}}>
+              {data.image &&  <div style={{width:"100%",height:"var(--ipad-height)", position:"absolute", zIndex: -1, overflow:"auto"}}>
+                {data.image && <BackgroundImage source={data.image}/>}
+                <div style={{position:"absolute", bottom:0}}>
+                  <small id="passwordHelpBlock" className="form-text text-muted">
+                    Enlever l'image pour définir une description longue
+                  </small>
+                </div>
+              </div>}
+              <div>
+                <div className="ipad-screen-title">
+                <TitleFormInput onChange={onChange} name="title" title="Titre" value={data.title}/>
+                </div>
+                <div className="ipad-screen-subtitle">
+                  <TitleFormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
+                </div>
+                {data.image || <FormTextArea onChange={onChange} name="abstract" title="Abstract" value={data.abstract} placeholder="pas d'abstract"/>}
               </div>
-              
-              <div className="ipad-screen-title">
-              <TitleFormInput onChange={onChange} name="title" title="Titre" value={data.title}/>
-              </div>
-              <div className="ipad-screen-subtitle">
-                <TitleFormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
-              </div>
+              {data.image ||<div style={{}}>
+                <div style={{}}>
+                  <MarkdownInput handleChange={handleChange} name="mainText" title="Cartouche" value={data.mainText} placeholder="Pas de texte"/>
+                  <small id="passwordHelpBlock" className="form-text text-muted">
+                    Description au format <a target="_blank" rel="noopener noreferrer" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
+                  </small>
+                </div>
+              </div>}
+             
             </div>
-            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1, maxHeight:"100%"}} className="d-flex flex-column">
+            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1, overflow:"auto"}} className="d-flex flex-column">
+            {data.thumb && <StorageImage source={data.thumb}/>}
             <small id="passwordHelpBlock" className="form-text text-muted">
               Si la description est vide, l'image s'affichera en pleine largeur
             </small>
               <MarkdownInput handleChange={handleChange} name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
               <small id="passwordHelpBlock" className="form-text text-muted">
-                Description au format <a target="_blank" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
+                Description au format <a target="_blank" rel="noopener noreferrer" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
               </small>
             </div>
           </div>
-          
-          
-          
          
         </div>
       </div>

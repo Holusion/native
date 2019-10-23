@@ -12,8 +12,7 @@ textarea.mde-text {
   background: none;
 }
 .mde-preview .mde-preview-content{
-  overflow-y: auto;
-  max-height: 100%;
+  /* markdown preview*/
 }
 .mde-preview .mde-preview-content h1{
   color: #e31937;
