@@ -54,14 +54,16 @@ class Controller extends React.Component {
           outputRange: [1, 2]
         });
 
-        const content = [(<AnimatedButton key="ctrl" onPressIn={this._onPressIn} onPressOut={this._onPressOut} large style={{
-            transform:[{scale: size}],
-            zIndex:2,
-            padding:5, 
-            borderRadius:45, 
-        }} >
-            <Icon large type="Ionicons" name="pause" style={styles.icon} />
-        </AnimatedButton>)];
+        const content = [
+            (<AnimatedButton primary key="ctrl" onPressIn={this._onPressIn} onPressOut={this._onPressOut} large style={{
+                transform:[{scale: size}],
+                zIndex:2,
+                padding:5, 
+                borderRadius:45,
+            }} >
+                <Icon large primary type="Ionicons" name="pause" style={styles.icon} />
+            </AnimatedButton>)
+        ];
 
         if(this.props.multi){
             content.unshift((<Button key="prev" transparent large style={styles.controlButton} onPressIn={()=>this.props.prev()}>

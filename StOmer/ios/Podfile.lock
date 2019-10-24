@@ -170,7 +170,7 @@ PODS:
   - React-jsinspector (0.60.5)
   - react-native-netinfo (4.2.1):
     - React
-  - react-native-zeroconf (0.11.1):
+  - react-native-zeroconf (0.11.2):
     - React
   - React-RCTActionSheet (0.60.5):
     - React-Core (= 0.60.5)
@@ -356,7 +356,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 90ad2f9db09513fc763bc757fdc3c4ff8bde2a30
   React-jsinspector: e08662d1bf5b129a3d556eb9ea343a3f40353ae4
   react-native-netinfo: c49569600a0b435767cc1d97c6c4fb090a49d7de
-  react-native-zeroconf: 8f28c30e7de8f63c1317ae5f719d1f106dd35d25
+  react-native-zeroconf: 3bd974ae834f07c407ad184e35a1758ba9a013cb
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
   React-RCTAnimation: 359ba1b5690b1e87cc173558a78e82d35919333e
   React-RCTBlob: 5e2b55f76e9a1c7ae52b826923502ddc3238df24

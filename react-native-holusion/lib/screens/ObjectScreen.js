@@ -29,31 +29,23 @@ function ObjectView(d){
             <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
         </Content>)
     }
-    const properties = Object.keys(d['properties']||{}).map((key, idx)=>{
-        const value = d['properties'][key];
-        return (<View key={idx} style={styles.propStyle}>
-            <Text><Text style={{fontWeight:"bold"}}>{key} : </Text>{value}</Text>
-        </View>)
-    })
+
     return(<Content contentContainerStyle={styles.content}>
         <View style={{flexDirection:"row"}}>
             <View style={styles.titleContainer}>
-                <H1 style={styles.title}>{d['title']}</H1>
-                <H2  style={styles.subTitle}>{d['subtitle']}</H2>
-                <Markdown style={{text: styles.shortDescription}}>{d['short']}</Markdown>
+                <H1 primary style={styles.title}>{d['title']}</H1>
+                <H2 style={styles.subTitle}>{d['subtitle']}</H2>
+                <Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>
             </View>
             <View style={styles.cartouche}>
                 <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
-                {properties}
+                <Markdown >{d['description']}</Markdown>
             </View>
         </View>
         <View style={styles.textContent}>
             <H2 style={styles.subTitle}>Plus d'informations</H2>
-            <Markdown style={{text: {
-                fontSize: 24,
-                textAlign: "justify"
-            }}}>
-                {d['description']}
+            <Markdown>
+                {d['mainText']}
             </Markdown>
         </View>
     </Content>)
@@ -203,17 +195,14 @@ const styles = StyleSheet.create({
     },
     title: {
         lineHeight: 40,
-        fontSize: 36,
     },
     subTitle: {
         color: "#bbbbbb",
-        fontSize: 24,
         fontStyle: "italic",
         paddingTop: 12,
     },
     shortDescription:{
         paddingTop:15,
-        fontSize: 24,
         textAlign: 'justify',
     },
     detailContainer: {
@@ -240,7 +229,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     detailText: {
-        fontSize: 24,
         color: "white",
         marginLeft: 8
     },
