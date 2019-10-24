@@ -6,7 +6,7 @@ import { connect} from 'react-redux';
 import { Container, Toast, Content, Footer, Spinner, Text, H1, View} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
-import Markdown from 'react-native-markdown-renderer'
+import Markdown from '../components/Markdown'
 
 import {initialize} from "../files";
 

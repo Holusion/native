@@ -61,6 +61,9 @@ export default (variables /* : * */ = variable) => {
     "Holusion.Controller": {
       ...controllerTheme(variables)
     },
+    "Holusion.Markdown": {
+      ...markdownTheme(variables)
+    },
     /* Nativebase components */
     'NativeBase.Left': {
       ...leftTheme(variables)

@@ -96,7 +96,9 @@ export async function getFiles({
         //Ignore missing categories
     }
    
-    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
+    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{
+        return (typeof c === "string")? {name: c} : c;
+    }) : [];
     for (let category of categories){
         if(signal && signal.aborted) return {aborted : true};
         const c = category.data();
@@ -145,7 +147,7 @@ async function saveDataFile(data){
     try{
         old_data = await initialize();
     }catch(e){
-        console.warn("initialize error : ",e);
+        console.warn("initialize error : ",e.message);
         old_data = {};
     }
     const datastore = Object.assign(old_data, data);
@@ -225,7 +227,9 @@ async function onConfigSnapshot(configSnapshot, {signal, onProgress, projectRef,
         //Ignore becasue it's sometimes OK to not have a categories collection
         //onProgress("Failed to get categories snapshot", e);
     }
-    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{return {name: c}}) : [];
+    config.categories = (Array.isArray(config.categories))? config.categories.map(c =>{
+        return (typeof c === "string")? {name: c} : c;
+    }) : [];
     for (let category of categories){
         const c = category.data();
         const [new_errors, new_files] = await makeLocal(c);
@@ -236,7 +240,7 @@ async function onConfigSnapshot(configSnapshot, {signal, onProgress, projectRef,
     if(signal && signal.aborted) return
     await saveDataFile({config});
     dispatch({config});
-    onProgress("Updated config to :", config);
+    onProgress("Updated configuration");
 }
 
 async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectRef, dispatch}){
@@ -254,12 +258,12 @@ async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectR
     }
     await saveDataFile({items});
     dispatch({items});
-    onProgress("Updated items to : ", items);
+    onProgress("Updated item collections");
 }
 
 async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
-    const filelist = [];
-    const errors = [];
+    let filelist = [];
+    let errors = [];
     const storage = firebase.storage();
     for(let key in d){
         if(signal && signal.aborted) return;
@@ -280,17 +284,17 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
                     }
                 }catch(e){
                     if(e.code != "ENOENT"){
-                        console.warn("Uptodate check failed : ", e);
+                        console.warn("Uptodate check failed : ", e.message);
                     }
                 }
             }
             
             if(!uptodate){
-                onProgress(`Downloading ${name}`);
+                onProgress(`Downloading ${fullPath}`);
                 try{
                     await ref.downloadFile(dest);
                 }catch(e){
-                    console.warn("Download error on %s : ", name, e);
+                    console.warn("Download error on %s : ", fullPath, e.message);
                     if(e.code == "storage/object-not-found"){
                         errors.push(new FileError(name, `${name} could not be found at ${ref.fullPath}`))
                     }else{
@@ -309,13 +313,17 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
                         d[key.toLowerCase().replace(/\s/,"_")] = fileData[key];
                     }
                 }catch(e){
-                    console.warn("loadYaml error on %s : ", fullPath, e);
+                    console.warn("loadYaml error on %s : ", fullPath, e.message);
                     errors.push(new FileError(fullPath,`failed to parse ${fullPath} : ${e.message}`));
                 }
                
             }else{
                 d[key] = `file://${dest}`;
             }
+        }else if(typeof d[key] === "object"){
+            const [new_errors, new_filelist] = await makeLocal(d[key]);
+            errors = errors.concat(new_errors);
+            filelist = filelist.concat(new_filelist);
         }
     }
     return [errors, filelist];
@@ -344,7 +352,8 @@ async function cleanup(dir=storagePath, keep=[]){
 export function dedupeList(uploads, list=[]){
     // Remove existing files
     const filteredUploads = uploads.filter((file, index)=>{
-        if(list.findIndex((i) => i.name == file.name &&(!file.hash || file.hash == (i.conf || {}).md5)) !== -1) {
+        const idx = list.findIndex((i) => i.name == file.name &&(!file.mtime || file.mtime == (i.conf || {}).mtime));
+        if(idx !== -1) {
             return false;
         }else if(uploads.findIndex((i)=> i.name == file.name && i.uri == file.uri )!= index){
             return false;
@@ -387,27 +396,27 @@ export async function uploadFile(url, file){
                 throw new FileError(file.uri, response.statusText);
             }
         }
-        const hash = await RNFS.hash(file.uri, 'md5');
-        response = await fetch(`${url}/playlist`, {
-            method: "PUT",
-            headers:{
-                'Accept': 'application/json',
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                query:{name: file.name},
-                modifier:{ $set:{
-                    conf:{md5: hash}
-                }},
-            })
-        });
-        body = await response.json();
-        if (!response.ok) {
-            if(body.message){
-                console.warn("Body : ", body);
-                throw new FileError(file.uri, (typeof body.message == 'object')? JSON.stringify(body.message): body.message);
-            }else{
-                throw new FileError(file.uri, response.statusText);
+        if(file.mtime){
+            response = await fetch(`${url}/playlist`, {
+                method: "PUT",
+                headers:{
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    query:{name: file.name},
+                    modifier:{ $set:{
+                        conf:{mtime: file.mtime}
+                    }},
+                })
+            });
+            body = await response.json();
+            if (!response.ok) {
+                if(body.message){
+                    throw new FileError(file.uri, (typeof body.message == 'object')? JSON.stringify(body.message): body.message);
+                }else{
+                    throw new FileError(file.uri, `Failed to get ${url}/playlist : ${response.statusText}`);
+                }
             }
         }
     }catch(e){

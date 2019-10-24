@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import {getActiveProduct} from "../selectors";
 
-import {initialize, filename} from "../files";
+import {initialize, signIn, watchFiles, filename} from "../files";
 
 import ImageCard from '../components/ImageCard';
 
@@ -17,7 +17,7 @@ import * as strings from "../strings.json";
 
 class HomeScreen extends React.Component {
     render() {
-        if(this.state.status == "loading"){
+        if(!this.props.config){
             return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <Spinner/> 
                 <Text>Loading...</Text>
@@ -25,9 +25,9 @@ class HomeScreen extends React.Component {
         }
         let cards;
         if(this.props.categories && 0 < this.props.categories.length){
-            cards = this.props.categories.map(({name="??", thumb}, index)=>{
-                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: name})}>
-                    <ImageCard title={name} />
+            cards = this.props.categories.map((item, index)=>{
+                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: item.name})}>
+                    <ImageCard title={item.name} source={item.thumb?{uri: item.thumb}: null}/>
                 </TouchableOpacity>)
             })
         } else {
@@ -51,7 +51,7 @@ class HomeScreen extends React.Component {
                 <Content contentContainerStyle={styles.container}>
                     <View>
                         <H1 primary style={styles.titleContainer}>
-                            Touchez-moi pour découvrir notre collection :
+                            Touchez-moi pour découvrir une collection :
                         </H1>
                     </View>
                     <View style= {styles.cardContainer}>
@@ -66,33 +66,71 @@ class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state= {status:"loading"};
-        //FIXME bad design...
-        this.props.navigation.addListener("willFocus",()=>{
-            if(this.state.status == "loading" ){
-                this.load();
-            }
-            this.onFocus();
-        })
     }
-    load(){
-        if(0 < this.props.categories.length ){
-            return this.setState({status: "done"})
-        }
-        this.setState({status: "loading"});
-        initialize(this.props.projectName)
-        .then(data=>{
+
+    componentDidMount(){
+        initialize()
+        .then((data)=>{
             this.props.setData(data);
-            this.setState({status: "done"});
-            this.onFocus();
         })
-        .catch((err)=>{
-            this.props.navigation.navigate("Update",{error: "Application configuration is required : "+err.toString()});
-        });
+        .catch(e=>{
+            console.warn("Failed to initialize data : ", e.message);
+            Toast.show({
+                text: "(info) Données locales absentes",
+                duration: 2000,
+            })
+            return;
+        })
+        .then(()=>{
+            if(this.props.userName){ 
+                return signIn(this.props.userName, this.props.password);
+            } else {
+                return Promise.reject(new Error ("can't sign in : no credentials"));
+            }
+        })
+        .then (()=>watchFiles({
+            projectName: this.props.projectName, 
+            onProgress: (...messages) => {
+                console.warn("watchFiles Progress : ", messages);
+                Toast.show({
+                    text: messages.join(" "),
+                    duration: 2000,
+                })
+            }, 
+            dispatch: this.props.setData.bind(this),
+        }))
+        .then((unwatch)=>{
+            const willFocusSubscribe = this.props.navigation.addListener("willFocus", ()=>{
+                this.onFocus();
+            });
+            const willBlurSubscribe = this.props.navigation.addListener("willBlur", ()=>{
+                if(this.abortController) this.abortController.abort();
+            });
+    
+            this.unsubscribe = () => {
+                willFocusSubscribe.remove();
+                willBlurSubscribe.remove();
+                unwatch();
+            }
+        })
+        .catch((e)=>{
+            console.warn("no internet access : ", e.message);
+            Toast.show({
+                text: "(info) Pas d'accès internet",
+                duration: 2000,
+            })
+        })
     }
-    onFocus(){        
-        if(this.props.config.video && this.props.target){
-            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
+
+    componentWillUnmount(){
+        if(this.unsubscribe) this.unsubscribe();
+    }
+
+    onFocus(){
+        if(this.abortController) this.abortController.abort();
+        this.abortController = new AbortController();        
+        if(this.props.config && this.props.config.video && this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT', signal: this.abortController.signal})
             .then(r=>{
                 if(!r.ok){
                     Toast.show({
@@ -158,11 +196,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
     const {data} = state;
-    const {config, projectName} = data;
+    const {config, projectName, userName, password} = data;
     const categories = config.categories || [];
     return {
         categories, 
-        projectName, 
+        projectName,
+        userName,
+        password,
         config, 
         target: getActiveProduct(state),
     };

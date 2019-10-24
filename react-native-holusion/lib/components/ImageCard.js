@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { Image } from "react-native";
 import { connectStyle, Text, Icon, View } from 'native-base'
 
@@ -9,16 +10,23 @@ function ImageCard(props) {
   if(props.image) img = props.image;
   else if(props.source) img = (<Image key={props.source.uri} style={styles.image} source={props.source} resizeMode="cover"/>);
   else img = (<Icon style={styles.icon} name="ios-image"/>);
+  (typeof props.title == "string") || console.warn("Invalid title :", props.title);
+  const title = (typeof props.title == "string")? props.title : "--";
   return (
       <View style={styles.container}>
           {img}
           <View style={styles.titleContainer}>
-              <Text ellipsizeMode="tail" numberOfLines={1} style={styles.titleText}>{props.title}</Text>
+              <Text ellipsizeMode="tail" numberOfLines={1} style={styles.titleText}>{title}</Text>
           </View>
       </View>
   );
 }
-
+ImageCard.propTypes = {
+    image: PropTypes.object,
+    source: PropTypes.shape({uri: PropTypes.string}),
+    title: PropTypes.string,
+    style: PropTypes.object,
+}
 const cardTheme = {
     container: {
         display: 'flex',

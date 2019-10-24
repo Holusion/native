@@ -82,15 +82,17 @@ class SynchronizeScreen extends React.Component {
                 }
             }
 
-            this.setState({statusText: "Getting hash sums"});
+            this.setState({statusText: "Getting modification time"});
             //Can throw an error but we don't want to catch it here
-            const uploads_with_hashes = [];
+            const uploads_with_mtime = [];
             //Don't parallelize : it cause iOS to crash the app
             for (let upload of uploads){
-                uploads_with_hashes.push(Object.assign({hash: await RNFS.hash(upload.uri, 'md5')}, upload))
+                const stat = await RNFS.stat(upload.uri);
+
+                uploads_with_mtime.push(Object.assign({mtime:stat.mtime}, upload))
             }
 
-            const unique_uploads = dedupeList(uploads_with_hashes, list);
+            const unique_uploads = dedupeList(uploads_with_mtime, list);
             this.setState({statusText: "Uploading files"});
             for (const file of unique_uploads){
                 try{

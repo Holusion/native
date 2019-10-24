@@ -1,7 +1,7 @@
 'use strict';
 import { SET_DATA, SET_CONFIG} from '../actions'
 
-export default function data(state = {items:{},config:{}, projectName:null, selectedId: null, selectedCategory:null}, action) {
+export default function data(state = {items:{},config:{}, projectName:null, userName: null, password: null}, action) {
     switch(action.type) {
         case SET_DATA:
             return Object.assign({}, state, action.data);

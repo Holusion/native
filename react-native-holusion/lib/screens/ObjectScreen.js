@@ -4,7 +4,7 @@ import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon
 
 import { Image, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
 
-import Markdown from 'react-native-markdown-renderer'
+import Markdown from '../components/Markdown'
 
 import PropTypes from "prop-types";
 
