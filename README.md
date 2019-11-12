@@ -83,3 +83,9 @@ source : https://rnfirebase.io/docs/v5.x.x/installation/ios
 
 La bibliothèque utiliser pour afficher du texte markdown n'est plus maintenu : https://github.com/mientjan/react-native-markdown-renderer/issues/115
 Il faudra probablement penser à trouver une autre solution lors de la prchaine grosse mise à jour de React
+
+### Synchroniser react-native-holusion
+
+react-native ne fonctionne pas avec npm link. Pour éviter de devoir publier une version à chaque fois, on utilise rsync :
+
+    rsync -a --exclude node_modules react-native-holusion/ StOmer/node_modules/\@holusion/react-native-holusion
