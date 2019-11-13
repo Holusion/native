@@ -1,8 +1,22 @@
 import React, {useState} from "react";
-
+import PropTypes from "prop-types";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
+
 import "react-mde/lib/styles/css/react-mde-all.css";
+import "./markdown.css";
+
+
+const BasePropTypes = {
+  title: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+}
+const BaseDefaultProps = {
+  value: "",
+}
 
 
 const converter = new Showdown.Converter({
@@ -39,6 +53,8 @@ export function FormInput(props){
     </div>
   </div>)
 }
+FormInput.propTypes = BasePropTypes;
+FormInput.defaultProps = BaseDefaultProps;
 
 export function FormTextArea(props){
   return(<div className="form-group">
@@ -46,6 +62,8 @@ export function FormTextArea(props){
     <textarea type="text" className="form-control" name={props.name} rows="4" value={props.value} onChange={props.onChange} placeholder={props.placeholder || "..."}></textarea>
   </div>)
 }
+FormTextArea.propTypes = BasePropTypes;
+FormTextArea.defaultProps = BaseDefaultProps;
 
 export function FormSelector(props){
   return(<div className="form-group">
@@ -56,6 +74,8 @@ export function FormSelector(props){
     </select>
   </div>)
 }
+FormSelector.toStringpropTypes = BasePropTypes;
+FormSelector.defaultProps = BaseDefaultProps;
 
 export function TitleFormInput(props){
   return(<div className="input-group mb-3">
@@ -65,6 +85,8 @@ export function TitleFormInput(props){
     <input type={props.type? props.type : "text"} name={props.name} className="form-control" aria-label="Sizing example input" aria-describedby={props.name} value={props.value} onChange={props.onChange} />
   </div>)
 }
+TitleFormInput.propTypes = BasePropTypes;
+TitleFormInput.defaultProps = BaseDefaultProps;
 
 export function AddLink(props){
   const [name, setName] = useState("");

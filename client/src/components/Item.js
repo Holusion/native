@@ -1,20 +1,20 @@
 import React, {useContext, useState, useEffect} from "react";
+import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import Octicon, {Trashcan} from '@primer/octicons-react'
 import { useDocument } from 'react-firebase-hooks/firestore';
 
 import FirebaseContext from "../context";
 
-import BackgroundImage from "./BackgroundImage";
 import ErrorMessage from "./ErrorMessage";
 import Loader from "./Loader";
 
 
-import {FormInput, FormTextArea, FormSelector, TitleFormInput, AddLink, MarkdownInput} from "./Inputs";
+import {FormSelector, TitleFormInput, AddLink} from "./Inputs";
 
-import "./markdown.css";
-import StorageImage from "./StorageImage";
 
+import WikiLayout from "./layouts/Wiki";
+import QALayout from "./layouts/QA";
 
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
@@ -22,12 +22,21 @@ export default function Item(props){
   const project_id = props.match.params.project;
   const item_id = props.match.params.item;
   const firebase = useContext(FirebaseContext);
-  const ref =firebase.firestore().doc(`applications/${project_id}/projects/${item_id}`);
-  const [value, loading, error] = useDocument(
-    ref
+  const itemRef = firebase.firestore().doc(`applications/${project_id}/projects/${item_id}`);
+  const [itemDataDoc, loadingItem, errorItem] = useDocument(
+    itemRef
   );
-  const data = (value)? value.data(): {};
+  const projectRef = firebase.firestore().doc(`applications/${project_id}`);
+  const [projectDataDoc, loadingProject, errorProject] = useDocument(
+    projectRef
+  );
+  
+  const loading = loadingItem || loadingProject;
+  const error = errorItem || errorProject;
+  const data = (!loadingItem && itemDataDoc)? itemDataDoc.data(): {};
   data.links = data.links || [];
+
+  const projectData = (!loadingProject && projectDataDoc)? projectDataDoc.data(): {};
 
   useEffect(()=>{
     const storageRef = firebase.storage().ref();
@@ -70,7 +79,7 @@ export default function Item(props){
 
     console.log("Add links : ", links);
     setSubmit(true);
-    ref.set({links}, {merge: true})
+    itemRef.set({links}, {merge: true})
     .catch(e=>alert(e))
     .then(()=>setSubmit(false));
   }
@@ -80,7 +89,7 @@ export default function Item(props){
     if(window.confirm(`Supprimer le lien vers ${link.name}?`)){
       const links = [].concat(data.links);
       links.splice(index,1);
-      ref.set({links}, {merge: true})
+      itemRef.set({links}, {merge: true})
       .catch(e=>alert(e));
     }
   }
@@ -102,16 +111,26 @@ export default function Item(props){
     //console.info("Submit changes : ", obj);
     //*
     setSubmit(true);
-    ref.set(obj, {merge: true})
+    itemRef.set(obj, {merge: true})
     .catch(e=>alert(e))
     .then(()=>setSubmit(false));
     //*/
+  }
+  let screen = null;
+  if(loading){
+    screen = null;
+  }else if (!projectData.layout || projectData.layout.toLowerCase() == "wiki"){
+    screen = (<WikiLayout data={data} handleChange={handleChange}/>)
+  }else if(projectData.layout.toLowerCase() == "qa"){
+    screen= (<QALayout data={data} handleChange={handleChange}/>)
+  }else{
+    console.error("Invalid data layout : ", data.layout)
   }
 
   return(<div className="p-4">
     {error && <ErrorMessage message={error.toString()}/>}
     {(loading || !medias.loaded ) && <Loader/>}
-    {data && medias.images.length !== 0 && <form className="base  d-flex flex-wrap justify-content-between" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
+    {data && medias.loaded && <form className="base  d-flex flex-wrap justify-content-between" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
       <div className="pr-3 flex-grow-1" style={{minWidth:400}}>
         {submitting && <div className="spinner-border pl-2" style={{position:"fixed", bottom:60, left:10, opacity:0.8}} role="status"><span className="sr-only">Loading...</span></div>}
         
@@ -119,6 +138,7 @@ export default function Item(props){
           <FormSelector onChange={onChange} name="image" title="Image" value={data.image} items={medias.images}/>
           <FormSelector onChange={onChange} name="thumb" title="Miniature" value={data.thumb} items={medias.images}/>
           <FormSelector onChange={onChange} name="video" value={data.video} items={medias.videos}/>
+          {Array.isArray(projectData.categories) && ( <FormSelector onChange={onChange} name="category" value={data.category} items={projectData.categories}/>)}
 
           <h3>Liens </h3>
           <div className="form-group pl-3">
@@ -158,50 +178,15 @@ export default function Item(props){
         </fieldset>
       </div> 
       <div >
-        <div className="ipad-screen-outline">
-          <div className="d-flex align-content-stretch" style={{height:"100%"}}>
-            <div style={{width:"66%", position:"relative", zIndex: 1, overflow: "auto"}}>
-              {data.image &&  <div style={{width:"100%",height:"var(--ipad-height)", position:"absolute", zIndex: -1, overflow:"auto"}}>
-                {data.image && <BackgroundImage source={data.image}/>}
-                <div style={{position:"absolute", bottom:0}}>
-                  <small id="passwordHelpBlock" className="form-text text-muted">
-                    Enlever l'image pour définir une description longue
-                  </small>
-                </div>
-              </div>}
-              <div>
-                <div className="ipad-screen-title">
-                <TitleFormInput onChange={onChange} name="title" title="Titre" value={data.title}/>
-                </div>
-                <div className="ipad-screen-subtitle">
-                  <TitleFormInput onChange={onChange} name="subtitle" title="Sous-Titre" value={data.subtitle}/>
-                </div>
-                {data.image || <FormTextArea onChange={onChange} name="abstract" title="Abstract" value={data.abstract} placeholder="pas d'abstract"/>}
-              </div>
-              {data.image ||<div style={{}}>
-                <div style={{}}>
-                  <MarkdownInput handleChange={handleChange} name="mainText" title="Cartouche" value={data.mainText} placeholder="Pas de texte"/>
-                  <small id="passwordHelpBlock" className="form-text text-muted">
-                    Description au format <a target="_blank" rel="noopener noreferrer" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
-                  </small>
-                </div>
-              </div>}
-             
-            </div>
-            <div style={{width:"34%", background:"#cccccc", position:"relative", zIndex: 1, overflow:"auto"}} className="d-flex flex-column">
-            {data.thumb && <StorageImage source={data.thumb}/>}
-            <small id="passwordHelpBlock" className="form-text text-muted">
-              Si la description est vide, l'image s'affichera en pleine largeur
-            </small>
-              <MarkdownInput handleChange={handleChange} name="description" title="Cartouche" value={data.description} placeholder="Pas de cartouche (image pleine page)"/>
-              <small id="passwordHelpBlock" className="form-text text-muted">
-                Description au format <a target="_blank" rel="noopener noreferrer" href="https://www.markdownguide.org/basic-syntax/">&lt;markdown&gt;</a>
-              </small>
-            </div>
-          </div>
-         
-        </div>
+        {screen}
       </div>
     </form>}
   </div>)
+}
+
+Item.propTypes = {
+  match : PropTypes.shape({params:PropTypes.shape({
+    project: PropTypes.string.isRequired,
+    item: PropTypes.string.isRequired,
+  }).isRequired}).isRequired,
 }
