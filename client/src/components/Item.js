@@ -18,7 +18,7 @@ import StorageImage from "./StorageImage";
 
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
-  const [medias, setMedias] = useState({images:[], videos:[]});
+  const [medias, setMedias] = useState({images:[], videos:[], loaded: false});
   const project_id = props.match.params.project;
   const item_id = props.match.params.item;
   const firebase = useContext(FirebaseContext);
@@ -56,7 +56,7 @@ export default function Item(props){
           images.push(item);
         }
       }
-      setMedias({images, videos});
+      setMedias({images, videos, loaded: true});
     }).catch(e=>console.error(e))
   },[firebase, project_id]);
 
@@ -110,7 +110,7 @@ export default function Item(props){
 
   return(<div className="p-4">
     {error && <ErrorMessage message={error.toString()}/>}
-    {(loading || medias.images.length === 0 ) && <Loader/>}
+    {(loading || !medias.loaded ) && <Loader/>}
     {data && medias.images.length !== 0 && <form className="base  d-flex flex-wrap justify-content-between" style={{position:"relative"}} onSubmit={(e)=> e.preventDefault()}>
       <div className="pr-3 flex-grow-1" style={{minWidth:400}}>
         {submitting && <div className="spinner-border pl-2" style={{position:"fixed", bottom:60, left:10, opacity:0.8}} role="status"><span className="sr-only">Loading...</span></div>}
