@@ -16,6 +16,20 @@ import {FormSelector, TitleFormInput, AddLink} from "./Inputs";
 import WikiLayout from "./layouts/Wiki";
 import QALayout from "./layouts/QA";
 
+function mapStorageFolder(ref){
+  return ref.listAll().then(res=>{
+    console.info("listAll : ", res);
+    const ops = [];
+    ops.push(...res.prefixes.map(mapStorageFolder));
+    ops.push(Promise.resolve(res.items.map(item => {return {
+      deleted: item.authWrapper.deleted, 
+      path: `gs://${item.location.bucket}/${item.location.path}`,
+      name: item.location.path,
+    }})));
+    return Promise.all(ops);
+  }).then(a=> a.flat());
+}
+
 export default function Item(props){
   const [submitting, setSubmit] = useState(false);
   const [medias, setMedias] = useState({images:[], videos:[], loaded: false});
@@ -45,17 +59,13 @@ export default function Item(props){
     projectRef.get().then(p=>{
       if(!p.exists) throw new Error("Project doesn't exist");
       const data = p.data();
-      if(!data.repo) return storageRef.child(project_id).listAll()
-      else return firebase.storage().refFromURL(data.repo).listAll()
+      if(!data.repo) return mapStorageFolder(storageRef.child(project_id))
+      else return mapStorageFolder(firebase.storage().refFromURL(data.repo))
     })
-    .then(files=>{
+    .then(items=>{
+      console.log(items);
       const videos = [];
       const images = [];
-      const items = files.items.map(item => {return {
-        deleted: item.authWrapper.deleted, 
-        path: `gs://${item.location.bucket}/${item.location.path}`,
-        name: item.location.path,
-      }});
 
       for (let item of items){
         if(item.deleted) continue;
