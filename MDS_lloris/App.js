@@ -1,6 +1,6 @@
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer, NavigationActions} from "react-navigation";
-import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
+import { Root, Icon, Button, Text, Title, StyleProvider } from 'native-base';
 import {AppState, StatusBar, Image} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
@@ -18,11 +18,15 @@ import getVariables from "./theme.js"
 import {name, displayName} from "./package.json";
 
 
+import {objectScreenVithView} from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
 
+import QuestionScreen from "./lib/screens/QuestionScreen";
+import HomeScreen from "./lib/screens/HomeScreen";
+import ListScreen from "./lib/screens/ListScreen";
+import ObjectScreen from "./lib/screens/ObjectScreen"
+import ConnectScreen from "./lib/screens/ConnectScreen";
 
-import SpriteCube from "./lib/components/SpriteCube";
-
-const store = configureStore({projectName:name});
+const store = configureStore({projectName:name, userName: "user@dev.holusion.net", password: "KsrVjGDm"});
 
 const variables = getVariables();
 
@@ -34,24 +38,53 @@ function makeTitle(navigation){
 
 function navigationOptions({navigation}){
   return {
-    headerRight: <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>, 
+    headerRight: <NetworkIcon onPress={() => {navigation.navigate("Connect")}} colors={{on:"#034EA2FF", off: "red"}}/>, 
   }
+}
+
+function headerTitle(txt){
+  return (<Title style={{color:"white", fontSize:30, marginTop: -8, fontFamily: "Oswald"}}>{txt}</Title>)
 }
 
 const default_navigation = screens.getDefaultNavigator({navigationOptions});
 const navigation = {
-  Home:default_navigation.Home,
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: navigation=> Object.assign(navigationOptions(navigation), {headerTitle: headerTitle("SOUHAITEZ-VOUS POSER UNE QUESTION A HUGO LLORIS?")}),
+  },
   Update: default_navigation.Update,
   Synchronize: default_navigation.Synchronize,
-  Connect: default_navigation.Connect,
+  Connect: {
+    screen: ConnectScreen,
+    navigationOptions,
+  },
+  List: {
+    screen: ListScreen,
+    navigationOptions: navigation=> Object.assign(navigationOptions(navigation), {headerTitle: headerTitle("CHOISISSEZ LE THEME DE VOTRE QUESTION")}),
+  },
+  Object: {
+    screen: ObjectScreen,
+    navigationOptions: navigation=> Object.assign(navigationOptions(navigation), {headerTitle: null, headerStyle:{backgroundColor: 'transparent'}}),
+  },
+  Question: {
+    screen: QuestionScreen,
+    navigationOptions,
+  },
 }
 
 
 const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
-    headerStyle: {height: 34, display: 'flex'}, 
-    headerTitle: (<Image source={require("./assets/icon-76.png")} resizeMode='contain' style={{height:33, position:"absolute", top:-1, padding: 0}}></Image>),
+    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: 'black',
+      zIndex: 100,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+    },
+    headerTitle: null,
     headerBackTitle: "Retour",
   }
 }
@@ -109,7 +142,6 @@ export default class App extends React.Component{
         <Provider store={store}>
           <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
             <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
-            <SpriteCube />
           </UserInactivity>
         </Provider> 
       </StyleProvider> 

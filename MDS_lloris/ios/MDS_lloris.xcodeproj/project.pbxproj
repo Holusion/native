@@ -12,6 +12,8 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3A5F3F2D23852C97005C71C9 /* Oswald-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F3F2C23852C96005C71C9 /* Oswald-Regular.otf */; };
+		3A5F3F2F23852CA3005C71C9 /* Circular Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F3F2E23852CA2005C71C9 /* Circular Book.ttf */; };
 		3AD64F81237BFE2D00DEA231 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AD64F80237BFE2C00DEA231 /* GoogleService-Info.plist */; };
 		573E6C288035AC31732BAE93 /* libPods-MDS_lloris.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC585554807E9E39A88D78A /* libPods-MDS_lloris.a */; };
 		CAE13304239493C8E6D765D4 /* libPods-MDS_llorisTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A5F85C5C210BEE7650C2583 /* libPods-MDS_llorisTests.a */; };
@@ -42,6 +44,8 @@
 		29181A4BEBB311978622F446 /* Pods-MDS_lloris.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDS_lloris.debug.xcconfig"; path = "Target Support Files/Pods-MDS_lloris/Pods-MDS_lloris.debug.xcconfig"; sourceTree = "<group>"; };
 		3838CC474FA9EB0F5FC2F173 /* Pods-MDS_lloris-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDS_lloris-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-MDS_lloris-tvOSTests/Pods-MDS_lloris-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		38D9E7929C58A4958C532709 /* Pods-MDS_lloris-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDS_lloris-tvOS.release.xcconfig"; path = "Target Support Files/Pods-MDS_lloris-tvOS/Pods-MDS_lloris-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		3A5F3F2C23852C96005C71C9 /* Oswald-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.otf"; sourceTree = "<group>"; };
+		3A5F3F2E23852CA2005C71C9 /* Circular Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Circular Book.ttf"; sourceTree = "<group>"; };
 		3AD64F80237BFE2C00DEA231 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		534A70D155BD39EF83CFE6CF /* Pods-MDS_lloris-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDS_lloris-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-MDS_lloris-tvOS/Pods-MDS_lloris-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6A5F85C5C210BEE7650C2583 /* libPods-MDS_llorisTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MDS_llorisTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +134,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3A5F3F2E23852CA2005C71C9 /* Circular Book.ttf */,
+				3A5F3F2C23852C96005C71C9 /* Oswald-Regular.otf */,
 				3AD64F80237BFE2C00DEA231 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* MDS_lloris */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -261,6 +267,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A5F3F2F23852CA3005C71C9 /* Circular Book.ttf in Resources */,
+				3A5F3F2D23852C97005C71C9 /* Oswald-Regular.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3AD64F81237BFE2D00DEA231 /* GoogleService-Info.plist in Resources */,
