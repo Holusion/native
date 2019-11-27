@@ -18,7 +18,6 @@ import QALayout from "./layouts/QA";
 
 function mapStorageFolder(ref){
   return ref.listAll().then(res=>{
-    console.info("listAll : ", res);
     const ops = [];
     ops.push(...res.prefixes.map(mapStorageFolder));
     ops.push(Promise.resolve(res.items.map(item => {return {

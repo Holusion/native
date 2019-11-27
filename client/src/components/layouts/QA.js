@@ -22,7 +22,7 @@ export default function QALayout({data, handleChange}){
   }else{
     links=(<div>
       <span className="text-muted">Pas de lien : Page de réponse</span>
-      <FormInput type="number" title="durée" name="duration" value={data.duration}/>
+      <FormInput type="number" title="durée (s)" name="duration" value={data.duration} onChange={onChange}/>
     </div>)
   }
   

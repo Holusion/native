@@ -111,6 +111,7 @@ export default function Project(props){
       <div className="container">
         <h1>Projet: </h1>
         <TitleFormInput onChange={onProjectChange} title="Repository"  name="repo" value={projectData.repo || ""} />
+        <TitleFormInput onChange={onProjectChange} title="Video"  name="video" value={projectData.video || ""} />
         <TitleFormInput onChange={onProjectChange} title="Layout"  name="layout" value={projectData.layout || ""}/>
       </div>
       <div className="container">
