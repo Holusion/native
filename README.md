@@ -14,12 +14,6 @@ npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "nativ
     "react-navigation" "react-navigation-stack"  \
     "react-redux"
 (cd ios && pod install)
-
-
-# editer info.plist avec les "Font" de react-native-vector-icons : 
-#  https://github.com/oblador/react-native-vector-icons
-# Initialiser Firebase 
-#  https://rnfirebase.io/docs/v5.x.x/installation/ios
 ```
 
 Ouvrez le projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
@@ -27,38 +21,41 @@ puis dans l'onglet Signing, sélectionnez le compte Holusion. Faire de même dan
 
 Ajoutez le fichier GoogleService-Info.plist (File> Add file to)
 
+Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) dans `Info.plist`. Copier les lignes : 
+```
+<key>UIAppFonts</key>
+<array>
+    <string>AntDesign.ttf</string>
+    <string>Entypo.ttf</string>
+    <string>EvilIcons.ttf</string>
+    <string>Feather.ttf</string>
+    <string>FontAwesome.ttf</string>
+    <string>FontAwesome5_Brands.ttf</string>
+    <string>FontAwesome5_Regular.ttf</string>
+    <string>FontAwesome5_Solid.ttf</string>
+    <string>Foundation.ttf</string>
+    <string>Ionicons.ttf</string>
+    <string>MaterialIcons.ttf</string>
+    <string>MaterialCommunityIcons.ttf</string>
+    <string>SimpleLineIcons.ttf</string>
+    <string>Octicons.ttf</string>
+    <string>Zocial.ttf</string>
+</array>
+```
 Pensez à changer les quelques paramètre permettant de forcer le build sur Ipad et de forcer le landscape.
+
+
+Initialiser [Firebase](https://rnfirebase.io/docs/v5.x.x/installation/ios)
 
 Puis lancez le build.
 
-## Fichiers remarquable
+## Fichiers importants
 
 Ils faut copier ces fichiers au travers des différents projets :
 
-- assets/
-- src/
 - App.js
-- Config.js
-- navigator.js
-- string.json
-- resources.js
-- GoogleService-Info.plist
 - index.js
-
-Certains fichiers permettent de configurer plus en profondeur le projet :
-
-### Config.js
-
-Ce fichier stock différentes valeurs concernant le projet, par exemple les couleurs principales, secondaires et de texte sont inscrientt ici.
-On peut aussi y indiquer le nom du projet (important pour que Firebase puisse retrouver les fichiers associés)
-
-### strings.js
-
-Ce fichier contient toutes les chaines de caractères statique du projet, Il est plus facile alors de changer une zone de texte grâce à ce fichier.
-
-## navigator.js
-
-Ce fichier contient la configuration des écrans, on y retrouver leur identifiant, leur composant associé et leurs options (voir la doc de react-navigation pour plus d'informations concernant les options).
+- theme.js
 
 ## Troubleshooting
 
