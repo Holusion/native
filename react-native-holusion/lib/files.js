@@ -267,7 +267,7 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
     const storage = firebase.storage();
     for(let key in d){
         if(signal && signal.aborted) return;
-        if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0 && !d[key].endsWith("/")){
+        if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0 && !d[key].endsWith("/") && key !== 'repo'){
             const ref = storage.refFromURL(d[key]);
             const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
             const name = filename(fullPath);
@@ -295,6 +295,7 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
                     await ref.downloadFile(dest);
                 }catch(e){
                     console.warn("Download error on %s : ", fullPath, e.message);
+                    if(e.code )
                     if(e.code == "storage/object-not-found"){
                         errors.push(new FileError(name, `${name} could not be found at ${ref.fullPath}`))
                     }else{

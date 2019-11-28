@@ -238,11 +238,11 @@ export default {
   },
 
   // Line Height
-  buttonLineHeight: 19,
-  lineHeightH1: 32,
-  lineHeightH2: 27,
-  lineHeightH3: 22,
-  lineHeight: platform === PLATFORM.IOS ? 20 : 24,
+  get buttonLineHeight(){ return this.buttonTextSize},
+  get lineHeightH1(){ return this.fontSizeH1},
+  get lineHeightH1(){ return this.fontSizeH2},
+  get lineHeightH1(){ return this.fontSizeH3},
+  get lineHeight(){return this.fontSizeBase},
   listItemSelected: platform === PLATFORM.IOS ? '#007aff' : '#3F51B5',
 
   // List

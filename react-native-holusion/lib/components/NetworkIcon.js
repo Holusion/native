@@ -11,7 +11,13 @@ class NetworkIcon extends React.Component{
       super(props);
     }
     render(){
-      return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color: this.props.connected?"green": "red"}} name="ios-wifi" /></Button>);
+      let color;
+      if(this.props.connected){
+        color = (this.props.colors)? this.props.colors.on: "green";
+      }else{
+        color= (this.props.colors)? this.props.colors.off: "red";
+      }
+      return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color}} name="ios-wifi" /></Button>);
     }
   }
   

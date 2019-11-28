@@ -2,9 +2,8 @@
 import React from 'react'
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 
-import { Image, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-import Markdown from '../components/Markdown'
 
 import PropTypes from "prop-types";
 
@@ -21,35 +20,7 @@ import Carousel from 'react-native-looped-carousel';
 const {width, height} = Dimensions.get('window');
 
 
-function ObjectView(d){
-    if(!d.active){
-        return(<Content contentContainerStyle={styles.content}>
-            <H1 style={styles.title}>{d['title']}</H1>
-            <H2  style={styles.subTitle}>{d['subtitle']}</H2>
-            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
-        </Content>)
-    }
-
-    return(<Content contentContainerStyle={styles.content}>
-        <View style={{flexDirection:"row"}}>
-            <View style={styles.titleContainer}>
-                <H1 primary style={styles.title}>{d['title']}</H1>
-                <H2 style={styles.subTitle}>{d['subtitle']}</H2>
-                <Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>
-            </View>
-            <View style={styles.cartouche}>
-                <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
-                <Markdown >{d['description']}</Markdown>
-            </View>
-        </View>
-        <View style={styles.textContent}>
-            <H2 style={styles.subTitle}>Plus d'informations</H2>
-            <Markdown>
-                {d['mainText']}
-            </Markdown>
-        </View>
-    </Content>)
-}
+import ObjectView from "../components/ObjectView";
 
 
 /**
@@ -57,17 +28,18 @@ function ObjectView(d){
  */
 class ObjectScreen extends React.Component {
     get index(){
-        return this.props.items.findIndex((item)=> item.id == this.props.navigation.getParam("id"));
+        return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> item.id == this.props.navigation.getParam("id")) : -1;
     }
 
     render() {
+        const View_component = this.props.component || ObjectView;
         const current_index = this.index;
         
         if(!this.props.items || current_index == -1){
             return(<Container>
                 <Content contentContainerStyle={styles.content}>
                     <Text>No data for Id : {this.props.navigation.getParam("id")}</Text>
-                    <Text>Available objects : {this.props.items.map(i=> i.id).join(", ")}</Text>
+                    <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
                 </Content>
             </Container>)
         }
@@ -78,7 +50,7 @@ class ObjectScreen extends React.Component {
             ((current_index== this.props.items.length-1)?0: current_index+1)
         ]
         const slides = this.props.items.map((object, index)=>{
-            return (<ObjectView {...object} key={object.id} active={active_indices.indexOf(index) !== -1}/>);
+            return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
         })
         return (<Container onLayout={this._onLayoutDidChange}>
             <Carousel 
@@ -139,7 +111,6 @@ class ObjectScreen extends React.Component {
     componentDidMount(){
         this.subscriptions = [
             this.props.navigation.addListener("willFocus",()=>{
-                console.warn("willFocus");
                 this.onNextPage(this.state.index);
             }),
         ];
@@ -167,71 +138,6 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 100,
     },
-    image: {
-        flex: 1,
-        minHeight: 150,
-        resizeMode: 'contain', 
-    },
-    textContent: {
-        paddingTop: 24,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
-    },
-    titleContainer: {
-        flex:2,
-    },
-    cartouche:{
-        flex:1,
-        justifyContent: "center",
-        marginLeft: 40,
-        paddingTop : 0,
-        padding: 12,
-        borderWidth : 1,
-        borderColor : "#bbbbbb"
-    },
-    propStyle:{
-        paddingVertical:5,
-    },
-    title: {
-        lineHeight: 40,
-    },
-    subTitle: {
-        color: "#bbbbbb",
-        fontStyle: "italic",
-        paddingTop: 12,
-    },
-    shortDescription:{
-        paddingTop:15,
-        textAlign: 'justify',
-    },
-    detailContainer: {
-        padding: 8,
-        width: "100%",
-        display: "flex",
-        marginTop: 16,
-        borderRadius: 24,
-        flexDirection: 'row',
-        shadowColor: "#000", 
-        shadowOffset: {
-            width: 1, 
-            height: 2
-        }, 
-        shadowOpacity: 0.4, 
-        shadowRadius: 5,
-    },
-    detailIcon: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    detailText: {
-        color: "white",
-        marginLeft: 8
-    },
     footer:{
         position:"absolute",
         bottom:15,
@@ -244,5 +150,10 @@ const styles = StyleSheet.create({
     },
     
 })
-
-export default connect(mapStateToProps)(ObjectScreen);
+const ObjectScreenConnected = connect(mapStateToProps)(ObjectScreen);
+export function objectScreenVithView(ViewComponent){
+    return function ObjectScreenWithView(props){
+        return (<ObjectScreenConnected component={ViewComponent} {...props}/>);
+    }
+}
+export default ObjectScreenConnected;
