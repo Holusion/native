@@ -8,13 +8,18 @@ import { StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 import {setActive} from "@holusion/react-native-holusion/lib/actions";
 
 class ConnectScreen extends React.Component {
+    onCodeChange(value){
+        if(value === "052014"){
+            this.setState({authorized: true});
+        }
+    }
     render() {
         if(!this.state.authorized){
             return(<Container style={styles.container}>
                 <Form>
                 <Item floatingLabel>
                     <Label>Code</Label>
-                    <Input />
+                    <Input keyboardType="number-pad" style={{color:"white"}} onChangeText={this.onCodeChange.bind(this)}/>
                 </Item>
                 
                 </Form>
@@ -33,8 +38,8 @@ class ConnectScreen extends React.Component {
             )
         }else{
             child = <FlatList data={list} renderItem={({item}) => (<ListItem style={{justifyContent:"center", flex:1}} onPress={this.handlePress.bind(this, item)} selected={(item.active)?true:false}>
-                <Text >{item.name+((this.props.default_target == item.name)?"(default)":"")}</Text>
-                <Icon style={{marginLeft:16}} name="ios-arrow-forward"/>
+                <Text style={{color: "white"}}>{item.name+((this.props.default_target == item.name)?"(default)":"")}</Text>
+                <Icon style={{marginLeft:16, color: "white"}} name="ios-arrow-forward"/>
             </ListItem>)} keyExtractor={item=>item.name}/>
         }
         let footer = null;

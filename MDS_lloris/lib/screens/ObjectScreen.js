@@ -17,7 +17,7 @@ function LinksView(props){
     let links;
     function navigateTo(id){
         //console.warn("Navigate to : ", id);
-        props.navigation.push("Question", {id});
+        props.navigation.navigate("Question", {id});
     }
     if(!props.active){
         links = (<Spinner primary/>)
@@ -48,7 +48,9 @@ class ObjectScreen extends React.Component {
     get index(){
         return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> item.id == this.props.navigation.getParam("id")) : -1;
     }
-
+    get item(){
+        return (this.index != -1)? this.props.items[this.index]: null;
+    }
     render() {
         const current_index = this.index;
         
@@ -63,7 +65,7 @@ class ObjectScreen extends React.Component {
         
         return (<Container onLayout={this._onLayoutDidChange}>
             <ImageBackground source={require('../../assets/02_Background.png')} style={{width: "100%", height: "100%", resizeMode: "contain"}} >
-                <LinksView {...this.props.items[current_index]} navigation={this.props.navigation} active/>
+                <LinksView {...this.item} navigation={this.props.navigation} active/>
             </ImageBackground>
         </Container>)
     }
@@ -78,8 +80,37 @@ class ObjectScreen extends React.Component {
         }
     }
     componentDidMount(){
+        const willFocusSubscribe = this.props.navigation.addListener("willFocus", ()=>{
+            this.onFocus();
+        });
+        const willBlurSubscribe = this.props.navigation.addListener("willBlur", ()=>{
+            if(this.abortController) this.abortController.abort();
+        });
+
+        this.unsubscribe = () => {
+            willFocusSubscribe.remove();
+            willBlurSubscribe.remove();
+        }
     }
+
     componentWillUnmount(){
+        this.unsubscribe();
+        if(this.abortController) this.abortController.abort();
+    }
+    onFocus(){
+        if(this.abortController) this.abortController.abort();
+        this.abortController = new AbortController();        
+        if(this.item && this.item.video && this.props.target){
+            fetch(`http://${this.props.target.url}/control/current/${filename(this.item.video)}`, {method: 'PUT', signal: this.abortController.signal})
+            .then(r=>{
+                if(!r.ok){
+                    Toast.show({
+                        text: "Failed to set current : "+r.status,
+                        duration: 2000
+                    })
+                }
+            })
+        }
     }
 }
 
@@ -113,10 +144,11 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        padding: 0,
         alignItems: 'stretch',
         backgroundColor: "black",
-        alignContent: 'center'
+        alignContent: 'center',
+        lineHeight: 68,
+        paddingTop: 10
     },
     links:{
         flex:1,

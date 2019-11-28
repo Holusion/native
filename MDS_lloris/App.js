@@ -140,7 +140,7 @@ export default class App extends React.Component{
        <StatusBar hidden={true} />
       <StyleProvider style={getTheme(variables)}>
         <Provider store={store}>
-          <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
+          <UserInactivity timeForInactivity={40000} onAction={this.onInactive}>
             <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
           </UserInactivity>
         </Provider> 

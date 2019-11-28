@@ -6,7 +6,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import {connect} from "react-redux";
 import {getSelectedItem} from "@holusion/react-native-holusion/lib/selectors";
-
+import {filename} from "@holusion/react-native-holusion/lib/files";
 import {objectScreenVithView} from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
 
 
@@ -33,6 +33,23 @@ function QuestionScreen(props){
             props.navigation.navigate("Home");
         }, item.duration*1000);
         return clearTimeout.bind(null, t);
+    });
+    
+    useEffect(()=>{
+        const abortController = new AbortController();        
+        if(props.item && props.item.video && props.target){
+            console.warn("set current : ", filename(props.item.video))
+            fetch(`http://${props.target.url}/control/current/${filename(props.item.video)}`, {method: 'PUT', signal: abortController.signal})
+            .then(r=>{
+                if(!r.ok){
+                    Toast.show({
+                        text: "Failed to set current : "+r.status,
+                        duration: 2000
+                    })
+                }
+            })
+        }
+        return ()=> abortController.abort();
     });
     return (<Container style={styles.container}>
         <Content contentContainerStyle={styles.content}>
