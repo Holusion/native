@@ -1,80 +1,67 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation'
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer, NavigationActions} from "react-navigation";
 import { Root, Icon, Button, Text, StyleProvider } from 'native-base';
-import {AppState} from "react-native"
+import {AppState, StatusBar, Image} from "react-native"
 import React from 'react';
 import { Provider, connect} from 'react-redux';
 
-import {configureStore} from '@holusion/react-native-holusion';
-import HomeScreen from "@holusion/react-native-holusion/lib/screens/HomeScreen";
-import ConnectScreen from "@holusion/react-native-holusion/lib/screens/ConnectScreen";
-import UpdateScreen from "@holusion/react-native-holusion/lib/screens/UpdateScreen";
-import ObjectScreen from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
-import SynchronizeScreen from "@holusion/react-native-holusion/lib/screens/SynchronizeScreen";
+import UserInactivity from 'react-native-user-inactivity';
+
+
+import {configureStore, screens, components, strings, netScan } from '@holusion/react-native-holusion';
+
+const {NetworkIcon} = components;
+
+import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
+import getVariables from "./theme.js"
+
+import HomeScreen from "./lib/screens/HomeScreen";
+import GroupViewScreen from "./lib/screens/GroupViewScreen";
+import {name, displayName} from "./package.json";
 
 
 
-import getTheme from './native-base-theme/components';
 
-import netScan from "@holusion/react-native-holusion/lib/netScan";
-import {strings} from "@holusion/react-native-holusion";
+import SpriteCube from "./lib/components/SpriteCube";
 
-import {name} from "./package.json";
+const store = configureStore({projectName:name});
 
-const store = configureStore({name});
+const variables = getVariables();
+
+function makeTitle(navigation){
+  const category  = navigation.getParam("category");
+  if(category) return category;
+  return displayName;
+}
 
 function navigationOptions({navigation}){
   return {
-    title: navigation.routeName,
-    headerRight: <NetIcon onPress={() => {navigation.navigate("Connect")}}/>, 
+    headerRight: <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>, 
   }
 }
 
+const default_navigation = screens.getDefaultNavigator({navigationOptions});
 const navigation = {
-  Home: {
+  Home:{
     screen: HomeScreen,
     navigationOptions,
   },
-  Connect:{
-    screen: ConnectScreen,
-    navigationOptions,
-  },
-  Update:{
-    screen: UpdateScreen,
-    navigationOptions,
-  },
-  Object:{
-    screen: ObjectScreen,
-    navigationOptions,
-  },
-  Synchronize:{
-    screen:SynchronizeScreen,
+  Update: default_navigation.Update,
+  Synchronize: default_navigation.Synchronize,
+  Connect: default_navigation.Connect,
+  GroupView: {
+    screen: GroupViewScreen,
     navigationOptions,
   }
 }
 
-class NetworkIcon extends React.Component{
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color: this.props.connected?"green": "red"}} name="ios-wifi" /></Button>);
-  }
-}
-
-function mapStateToProps(state){
-  const {products} = state;
-  return {
-    connected: products.find(p => p.active == true)?true: false
-  }
-}
-
-const NetIcon = connect(mapStateToProps)(NetworkIcon);
 
 const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
     headerStyle: {height: 34, display: 'flex'}, 
-    headerBackTitle: strings.back
+    headerTitle: (<Image source={require("./assets/logo_long.jpg")} resizeMode='contain' style={{height:33, position:"absolute", top:-1, padding: 0}}></Image>),
+    headerBackTitle: "Retour",
   }
 }
 
@@ -91,6 +78,7 @@ export default class App extends React.Component{
   }
   componentDidMount(){
     AppState.addEventListener('change', this.onChange);
+    //ScreenBrightness.setBrightness(1);
     this.unsubscribe = netScan(store);
   }
   componentWillUnmount(){
@@ -108,11 +96,30 @@ export default class App extends React.Component{
     }
     this.setState({appState: nextAppState});
   }
+  onInactive = (status)=>{
+    let activeRoute = this._navigator.state.nav.routes.slice(-1)[0].routeName
+    if(status){
+      //ScreenBrightness.setBrightness(0.4);
+    }else if(["Synchronize", "Update", "Connect"].indexOf(activeRoute) == -1){
+      //ScreenBrightness.setBrightness(1);
+      this._navigator.dispatch(NavigationActions.navigate({
+        routeName:"Home",
+        params:{},
+      }))
+    }
+   
+    
+    //*/
+  }
   render(){
     return <Root>
-      <StyleProvider style={getTheme(/*use default platform theme*/)}>
+       <StatusBar hidden={true} />
+      <StyleProvider style={getTheme(variables)}>
         <Provider store={store}>
-            <AppContainer />
+          <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
+            <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
+            <SpriteCube />
+          </UserInactivity>
         </Provider> 
       </StyleProvider> 
     </Root>
