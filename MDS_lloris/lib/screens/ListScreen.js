@@ -10,6 +10,8 @@ import {initialize, filename} from "@holusion/react-native-holusion/lib/files";
 import {setData} from '@holusion/react-native-holusion/lib/actions';
 import {getActiveItems, getActiveProduct} from "@holusion/react-native-holusion/lib/selectors";
 
+import UserInactivity from 'react-native-user-inactivity';
+
 import * as strings from "@holusion/react-native-holusion/lib/strings.json";
 
 function sortItems({rank:a}, {rank:b}){
@@ -52,7 +54,7 @@ const ConnectedListScreenContent = connect(function(state, props){
 
 class ListScreen extends React.Component {
     render() {
-        return (
+        return (<UserInactivity timeForInactivity={40000} onAction={()=>this.onInactive()}>
             <Container style={{flex: 1, padding: 0}}>
                 <ImageBackground source={require("../../assets/02_Background.png")} style={{width:"100%", height:"100%"}}>
                     <ConnectedListScreenContent 
@@ -61,7 +63,12 @@ class ListScreen extends React.Component {
                     />
                 </ImageBackground>
             </Container>
-        )
+            </UserInactivity>)
+    }
+    onInactive(){
+        if(this.props.navigation.isFocused()){
+            this.props.navigation.navigate("Home");
+        }
     }
     onFocus(){
         if(this.props.config&& this.props.config.video && this.props.target){

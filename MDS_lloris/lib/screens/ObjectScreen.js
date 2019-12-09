@@ -4,6 +4,8 @@ import { Container, Content, Footer, Body, Header, Title, H2, View, Text, Row, I
 
 import { StyleSheet, Dimensions, ImageBackground } from 'react-native';
 
+import UserInactivity from 'react-native-user-inactivity';
+
 import PropTypes from "prop-types";
 
 import {connect} from "react-redux";
@@ -51,6 +53,11 @@ class ObjectScreen extends React.Component {
     get item(){
         return (this.index != -1)? this.props.items[this.index]: null;
     }
+    onInactive(){
+        if(this.props.navigation.isFocused()){
+            this.props.navigation.navigate("Home");
+        }
+    }
     render() {
         const current_index = this.index;
         
@@ -63,11 +70,13 @@ class ObjectScreen extends React.Component {
             </Container>)
         }
         
-        return (<Container onLayout={this._onLayoutDidChange}>
-            <ImageBackground source={require('../../assets/02_Background.png')} style={{width: "100%", height: "100%", resizeMode: "contain"}} >
-                <LinksView {...this.item} navigation={this.props.navigation} active/>
-            </ImageBackground>
-        </Container>)
+        return (<UserInactivity timeForInactivity={40000} onAction={()=>this.onInactive()}>
+            <Container onLayout={this._onLayoutDidChange}>
+                <ImageBackground source={require('../../assets/02_Background.png')} style={{width: "100%", height: "100%", resizeMode: "contain"}} >
+                    <LinksView {...this.item} navigation={this.props.navigation} active/>
+                </ImageBackground>
+            </Container>
+        </UserInactivity>)
     }
     _onLayoutDidChange = (e) => {
         const layout = e.nativeEvent.layout;

@@ -94,6 +94,14 @@ class HomeScreen extends React.Component {
             }, 
             dispatch: this.props.setData.bind(this),
         }))
+        .catch((e)=>{
+            console.warn("no internet access : ", e.message);
+            Toast.show({
+                text: "(info) Pas d'accès internet",
+                textStyle: {color: 'white'},
+                duration: 2000,
+            })
+        })
         .then((unwatch)=>{
             const willFocusSubscribe = this.props.navigation.addListener("willFocus", ()=>{
                 this.onFocus();
@@ -105,15 +113,8 @@ class HomeScreen extends React.Component {
             this.unsubscribe = () => {
                 willFocusSubscribe.remove();
                 willBlurSubscribe.remove();
-                unwatch();
+                if (typeof unwatch == 'function') unwatch();
             }
-        })
-        .catch((e)=>{
-            console.warn("no internet access : ", e.message);
-            Toast.show({
-                text: "(info) Pas d'accès internet",
-                duration: 2000,
-            })
         })
     }
 

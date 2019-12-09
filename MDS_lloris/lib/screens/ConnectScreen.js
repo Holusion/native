@@ -5,6 +5,8 @@ import { connect} from 'react-redux'
 import { Container, Form, Label, Content, StyleProvider, Toast, ListItem, Icon, Footer, Button, Text, H1, Input, Item} from 'native-base';
 import { StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 
+import UserInactivity from 'react-native-user-inactivity';
+
 import {setActive} from "@holusion/react-native-holusion/lib/actions";
 
 class ConnectScreen extends React.Component {
@@ -15,15 +17,16 @@ class ConnectScreen extends React.Component {
     }
     render() {
         if(!this.state.authorized){
-            return(<Container style={styles.container}>
-                <Form>
-                <Item floatingLabel>
-                    <Label>Code</Label>
-                    <Input keyboardType="number-pad" style={{color:"white"}} onChangeText={this.onCodeChange.bind(this)}/>
-                </Item>
-                
-                </Form>
-            </Container>)
+            return(<UserInactivity timeForInactivity={40000} onAction={()=>this.props.navigation.navigate("Home")}>
+                <Container style={styles.container}>
+                    <Form>
+                        <Item floatingLabel>
+                            <Label>Code</Label>
+                            <Input keyboardType="number-pad" style={{color:"white"}} onChangeText={this.onCodeChange.bind(this)}/>
+                        </Item>
+                    </Form>
+                </Container>
+            </UserInactivity>)
         }
 
         const list = this.props.products.map((p)=>{
