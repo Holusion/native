@@ -5,23 +5,111 @@
 Lancez la commande suivante :
 
 ```
-react-native init <project-name>
+npx react-native init <nom_du_projet>
+cd <nom_du_projet>
+```
 
-cd <project-name>
+Editer `package.json`. Dans le champ **name**, donner un nom en minuscules, pouvant comporter des tirets. Utiliser le nom de l'application dans `projectName`. Example : 
+
+```
+  {
+    "name": "egger",
+    "projectName":"Egger",
+    [...]
+  }
+```
+
+Ils faut copier ces fichiers au travers des différents projets :
+
+- App.js
+- index.js
+- theme.js
+
+Ils sont disponibles dans `_template/`
+
+
+### Installer les dépendances npm
+
+```
 npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
       "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" \
     "react-native-zeroconf" \
     "react-navigation" "react-navigation-stack"  \
     "react-redux"
-(cd ios && pod install)
 ```
 
-Ouvrez le projet dans XCode. Signez le code (cliquez sur l'onglet avec le nom de votre projet
-puis dans l'onglet Signing, sélectionnez le compte Holusion. Faire de même dans la cible Test (à gauche de Général, sélectionnez project-nameTest)).
 
-Ajoutez le fichier GoogleService-Info.plist (File> Add file to)
+### Initialiser Firebase
 
-Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) dans `Info.plist`. Copier les lignes : 
+https://rnfirebase.io/docs/v5.x.x/installation/ios
+
+Dans `ios/<nom_du_projet>/AppDelegate.m`, ajouter :
+
+dans les en-têtes :
+
+```
+    #import <Firebase.h>
+```
+
+au début de la méthode `didFinishLaunchingWithOptions` :
+
+```
+    [FIRApp configure];
+```
+
+Dans `ios/Podfile`, ajouter dans le bloc `target '<nom_du_projet>' do` juste avant `target '<nom_du_projet>Test' do` :
+
+```
+  pod 'Firebase/Core', "~>6.15.0"
+  pod 'Firebase/Auth', "~>6.15.0"
+  pod 'Firebase/Storage', "~>6.15.0"
+  pod 'Firebase/Firestore', "~>6.15.0"
+```
+
+Juste en dessous de la première ligne `platform :ios, '9.0'`, on peut ajouter : 
+
+```
+    ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+```
+
+### Installer les librairies nécessaires
+
+avec cocoapods (`gem install cocoapods` si absent) :
+
+```
+  (cd ios && pod install)
+```
+
+### Configurer xcode
+
+Ouvrez XCode. Ouvrir le fichier `<nom_du_projet>.xcworkspace`, **PAS** le fichier `.xcodeproj`!
+
+Dans le volet de gauche, cliquer sur le nom du projet pour ouvrir ses propriétés.
+
+#### signature du code
+
+pour la cible `<nom_du_projet>` :
+
+Dans la configuration du projet, onglet **signing & capabilities** :
+
+sélectionner la *Team* Holusion. 
+
+Donner au projet un identifiant sous la forme :
+
+```
+com.holusion.native.<nom_du_projet>
+```
+
+Pour la cible `<nom_du_projet>Test`, onglet **signing & capabilities** : Sélectionner la *Team* Holusion
+
+### Ajout des fichiers supplémentaires
+
+Ajoutez le fichier **GoogleService-Info.plist** (stocké à la racine du dépôt git). Dans le menu de xcode, cliquer sur :`File > Add files to <nom_du_projet>`
+
+Cocher la case **copy items if needed**
+
+
+Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) dans `ios/Info.plist`. Copier les lignes : 
 ```
 <key>UIAppFonts</key>
 <array>
@@ -42,20 +130,17 @@ Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/rea
     <string>Zocial.ttf</string>
 </array>
 ```
-Pensez à changer les quelques paramètre permettant de forcer le build sur Ipad et de forcer le landscape.
+
+### Paramètres généraux
+
+Dans l'onglet général :
+
+- Changer l'id de l'application pour `com.holusion.native.<nom_du_projet>``
+- Dans **Deployment info**:
+    - cocher `ipad` uniquement (selon usage)
+    - Fournir les orientations nécessaires
 
 
-Initialiser [Firebase](https://rnfirebase.io/docs/v5.x.x/installation/ios)
-
-Puis lancez le build.
-
-## Fichiers importants
-
-Ils faut copier ces fichiers au travers des différents projets :
-
-- App.js
-- index.js
-- theme.js
 
 ## Troubleshooting
 
