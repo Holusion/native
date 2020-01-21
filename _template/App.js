@@ -15,14 +15,9 @@ const {NetworkIcon} = components;
 import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
 import getVariables from "./theme.js"
 
-import HomeScreen from "./lib/screens/HomeScreen";
-import GroupViewScreen from "./lib/screens/GroupViewScreen";
 import {name, displayName} from "./package.json";
 
 
-
-
-import SpriteCube from "./lib/components/SpriteCube";
 
 const store = configureStore({projectName:name});
 
@@ -41,26 +36,16 @@ function navigationOptions({navigation}){
 }
 
 const default_navigation = screens.getDefaultNavigator({navigationOptions});
-const navigation = {
-  Home:{
-    screen: HomeScreen,
-    navigationOptions,
-  },
-  Update: default_navigation.Update,
-  Synchronize: default_navigation.Synchronize,
-  Connect: default_navigation.Connect,
-  GroupView: {
-    screen: GroupViewScreen,
-    navigationOptions,
-  }
-}
+const navigation = Object.assign(default_navigation, {
+
+});
 
 
 const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
     headerStyle: {height: 34, display: 'flex'}, 
-    headerTitle: (<Image source={require("./assets/logo_long.jpg")} resizeMode='contain' style={{height:33, position:"absolute", top:-1, padding: 0}}></Image>),
+    headerTitle: (<Text>{displayName}</Text>),
     headerBackTitle: "Retour",
   }
 }
