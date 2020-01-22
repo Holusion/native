@@ -7,7 +7,7 @@ export default function data(state = {
     projectName:null, 
     userName: null, 
     password: null,
-    slides_control: true,
+    slides_control: "default",
 }, action) {
     switch(action.type) {
         case SET_SLIDES_CONTROL:

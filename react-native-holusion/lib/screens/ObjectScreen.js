@@ -65,7 +65,7 @@ class ObjectScreen extends React.Component {
                 {slides}
             </Carousel>
             <Footer style={styles.footer}>
-                {this.props.control_buttons && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
+                {this.props.control_buttons == "default" && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
             </Footer>
         </Container>)
     }
@@ -128,6 +128,7 @@ function mapStateToProps(state, {navigation}){
     const items = getActiveItems(state, {selectedCategory: navigation.getParam("category")});
     return {
         items,
+        control_buttons: data.slides_control,
         target: products.find(p => p.active)
     };
 }

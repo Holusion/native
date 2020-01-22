@@ -105,13 +105,13 @@ describe("test store", function(){
         test("can change slides control interface", function(done){
             const store = configureStore();
             let state = store.getState();
-            expect(state.data).toHaveProperty("slides_control", true);
+            expect(state.data).toHaveProperty("slides_control", "default");
             store.subscribe(function(){
                 state = store.getState();
-                expect(state.data).toHaveProperty("slides_control", false);
+                expect(state.data).toHaveProperty("slides_control", "hidden");
                 done();
             })
-            store.dispatch(setSlidesControl(false))
+            store.dispatch(setSlidesControl("hidden"))
         })
         describe("selectors", function(){
             const items = {foo:{name:"foo", category:"foofoo"}, bar: {name: "bar", category: "barbar"}};
