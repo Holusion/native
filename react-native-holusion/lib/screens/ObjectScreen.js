@@ -65,7 +65,7 @@ class ObjectScreen extends React.Component {
                 {slides}
             </Carousel>
             <Footer style={styles.footer}>
-                <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>
+                {this.props.control_buttons && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
             </Footer>
         </Container>)
     }
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     
 })
 const ObjectScreenConnected = connect(mapStateToProps)(ObjectScreen);
-export function objectScreenVithView(ViewComponent){
+export function objectScreenWithView(ViewComponent){
     return function ObjectScreenWithView(props){
         return (<ObjectScreenConnected component={ViewComponent} {...props}/>);
     }

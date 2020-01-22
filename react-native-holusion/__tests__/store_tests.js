@@ -1,5 +1,5 @@
 'use strict';
-import {setNetInfo, setData, setActive, addProduct, removeProduct} from "../lib/actions";
+import {setNetInfo, setData, setActive, addProduct, removeProduct, setSlidesControl} from "../lib/actions";
 import reducers from "../lib/reducers";
 import {getItemsIds, getActiveItems, getSelectedItem, getActiveProduct} from "../lib/selectors";
 import configureStore from "../lib/default_store";
@@ -101,6 +101,17 @@ describe("test store", function(){
             const s = reducers(initialState, setData(d));
             expect(s.data.items).toEqual(d.items);
             expect(s.data).toHaveProperty("config", {});
+        })
+        test("can change slides control interface", function(done){
+            const store = configureStore();
+            let state = store.getState();
+            expect(state.data).toHaveProperty("slides_control", true);
+            store.subscribe(function(){
+                state = store.getState();
+                expect(state.data).toHaveProperty("slides_control", false);
+                done();
+            })
+            store.dispatch(setSlidesControl(false))
         })
         describe("selectors", function(){
             const items = {foo:{name:"foo", category:"foofoo"}, bar: {name: "bar", category: "barbar"}};

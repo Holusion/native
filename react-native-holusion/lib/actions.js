@@ -8,7 +8,7 @@ export const SET_NETINFO = 'SET_NETINFO';
 
 export const SET_DATA = "SET_DATA";
 export const SET_CONFIG = "SET_CONFIG";
-
+export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 /*
  * Products actions 
  */
@@ -42,4 +42,8 @@ export const setData = (data) =>{
 
 export const setConfig = (config) => {
     return {type: SET_CONFIG, config}
+}
+
+export const setSlidesControl = (controlType) =>{
+    return {type : SET_SLIDES_CONTROL, controlType}
 }

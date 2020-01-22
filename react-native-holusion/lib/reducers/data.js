@@ -1,8 +1,17 @@
 'use strict';
-import { SET_DATA, SET_CONFIG} from '../actions'
+import { SET_DATA, SET_CONFIG, SET_SLIDES_CONTROL} from '../actions'
 
-export default function data(state = {items:{},config:{}, projectName:null, userName: null, password: null}, action) {
+export default function data(state = {
+    items:{},
+    config:{}, 
+    projectName:null, 
+    userName: null, 
+    password: null,
+    slides_control: true,
+}, action) {
     switch(action.type) {
+        case SET_SLIDES_CONTROL:
+            return Object.assign({}, state, {slides_control: action.controlType});
         case SET_DATA:
             return Object.assign({}, state, action.data);
         case SET_CONFIG:
