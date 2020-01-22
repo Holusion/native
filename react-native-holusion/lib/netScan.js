@@ -23,8 +23,8 @@ export default function netScan(store){
   const netInfoHandler = ({type})=>{
     store.dispatch(setNetInfo(((["none", "unknown"].indexOf(type) == -1 )? "online" : "offline")));
   }
-  NetInfo.addEventListener("connectionChange", netInfoHandler)
-  unsubscribers.push(()=>NetInfo.removeEventListener("connectionChange", netInfoHandler));
+  const unsubscribe = NetInfo.addEventListener(netInfoHandler);
+  unsubscribers.push(unsubscribe);
 
   const zeroconf = new Zeroconf();
   zeroconf.scan('workstation', 'tcp', 'local.');
