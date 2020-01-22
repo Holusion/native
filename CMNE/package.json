@@ -11,7 +11,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^1.0.1",
+    "@holusion/react-native-holusion": "^1.0.2",
+    "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "^5.3.3",
     "native-base": "^2.13.8",
     "react": "16.9.0",
@@ -19,6 +20,7 @@
     "react-native-firebase": "^5.6.0",
     "react-native-fs": "^2.16.2",
     "react-native-gesture-handler": "^1.5.3",
+    "react-native-safe-area-context": "^0.6.2",
     "react-native-user-inactivity": "^1.0.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-zeroconf": "^0.11.4",

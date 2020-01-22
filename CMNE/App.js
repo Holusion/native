@@ -8,18 +8,22 @@ import { Provider, connect} from 'react-redux';
 import UserInactivity from 'react-native-user-inactivity';
 
 
-import {configureStore, screens, components, strings, netScan } from '@holusion/react-native-holusion';
-
+import {configureStore, screens, components, strings, netScan, actions } from '@holusion/react-native-holusion';
+const {setSlidesControl } = actions;
 const {NetworkIcon} = components;
 
-import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
-import getVariables from "./theme.js"
+import {getTheme, getVariables} from "./theme.js"
 
 import {name, displayName} from "./package.json";
 
+import ObjectView from "./lib/components/ObjectView";
+import {objectScreenWithView} from "@holusion/react-native-holusion/lib/screens/ObjectScreen";
 
+const ObjectScreen = objectScreenWithView(ObjectView);
 
-const store = configureStore({projectName:name});
+const store = configureStore({projectName:name, userName: "user@dev.holusion.net", password: "KsrVjGDm"});
+
+store.dispatch(setSlidesControl("hidden"));
 
 const variables = getVariables();
 
@@ -37,14 +41,17 @@ function navigationOptions({navigation}){
 
 const default_navigation = screens.getDefaultNavigator({navigationOptions});
 const navigation = Object.assign(default_navigation, {
-  
+  Object:{
+    screen: ObjectScreen,
+    navigationOptions: default_navigation.Object.navigationOptions,
+  }
 });
 
 
 const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
-    headerStyle: {height: 34, display: 'flex'}, 
+    headerStyle: {height: 70}, 
     headerTitle: (<Text>{displayName}</Text>),
     headerBackTitle: "Retour",
   }
@@ -103,7 +110,6 @@ export default class App extends React.Component{
         <Provider store={store}>
           <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
             <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
-            <SpriteCube />
           </UserInactivity>
         </Provider> 
       </StyleProvider> 
