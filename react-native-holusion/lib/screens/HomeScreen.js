@@ -7,7 +7,7 @@ import { connect} from 'react-redux';
 import { Container, Toast, Content, Footer, Spinner, Text, H1, H2, View, Button} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
-import {getActiveProduct} from "../selectors";
+import {getActiveProduct, getItemsArray} from "../selectors";
 
 import {initialize, signIn, watchFiles, filename} from "../files";
 
@@ -25,9 +25,22 @@ class HomeScreen extends React.Component {
         }
         let cards;
         if(this.props.categories && 0 < this.props.categories.length){
-            cards = this.props.categories.map((item, index)=>{
-                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: item.name})}>
-                    <ImageCard title={item.name} source={item.thumb?{uri: item.thumb}: null}/>
+            cards = this.props.categories.map((category, index)=>{
+                const category_items = this.props.items.filter(i => {
+                    if(i.theme) return category.name == i.theme;
+                    if(i.category) return category.name == i.category;
+                });
+                if(category_items.length ==0){
+                    return (<TouchableOpacity disabled={true} key={index} >
+                        <ImageCard title={category.name} source={category.thumb?{uri: category.thumb}: null}/>
+                    </TouchableOpacity>)
+                }else if(category_items.length == 1){
+                    return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("Object", {id:category_items[0].id, category: category.name})}>
+                        <ImageCard title={category.name} source={category.thumb?{uri: category.thumb}: null}/>
+                    </TouchableOpacity>)
+                }
+                return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: category.name})}>
+                    <ImageCard title={category.name} source={category.thumb?{uri: category.thumb}: null}/>
                 </TouchableOpacity>)
             })
         } else {
@@ -200,6 +213,7 @@ function mapStateToProps(state){
     const categories = config.categories || [];
     return {
         categories, 
+        items: getItemsArray(state),
         projectName,
         userName,
         password,

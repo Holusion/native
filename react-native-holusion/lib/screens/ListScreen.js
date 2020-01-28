@@ -16,7 +16,6 @@ import ImageCard from '../components/ImageCard';
 import * as strings from "../strings.json";
 
 function ListScreenContent(props){
-    console.warn("Category items : ", props.items);
     const cards = props.items.map(item =>{
         //Ugly hack because Images with a file:/// uri are not rendered when updated unless we restart the app
         const thumbSource = item['thumb']? {uri: item['thumb'].replace(/file:\/\/\/.*\/Documents/,"~/Documents"), scale: 1} : require("../../assets/icons/catalogue.png");

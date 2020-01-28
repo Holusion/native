@@ -60,12 +60,13 @@ class ObjectScreen extends React.Component {
                 onAnimateNextPage={(p)=>{
                     if(p != this.index) this.onNextPage(p);
                 }}
+                swipe={["default", "swipe"].indexOf(this.props.control_buttons) != -1}
                 autoplay={false}
             >
                 {slides}
             </Carousel>
             <Footer style={styles.footer}>
-                {this.props.control_buttons == "default" && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
+                {["default", "buttons"].indexOf(this.props.control_buttons) != -1 && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
             </Footer>
         </Container>)
     }
