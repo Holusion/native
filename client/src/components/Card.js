@@ -10,9 +10,9 @@ const image_props ={
   className: "card-img-top img-fluid",
   style:{objectFit:"contain", height: 150},
 }
+
 export default function Card(props){
   let image;
-  
   if(typeof props.image ==="object"){
     image = props.image;
   }else if (props.thumb){
@@ -36,7 +36,7 @@ export default function Card(props){
 
 Card.propTypes = {
   image: PropTypes.string,
-  title: PropTypes.string,
-  url: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   width: PropTypes.any,
 }

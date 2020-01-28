@@ -83,7 +83,7 @@ export default function Project(props){
 
   if (items){
     cards.push (...items.docs.map(doc => {
-      const {title, thumb, image} = doc.data();
+      const {title=doc.id, thumb, image} = doc.data();
       return(<div key={doc.id} {...cardWrapperProps}>
         <Card  url={`/projects/${project_id}/${doc.id}`} title={title} thumb={thumb} image={image}/>
       </div>)
