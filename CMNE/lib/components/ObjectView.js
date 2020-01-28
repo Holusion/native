@@ -1,6 +1,6 @@
 import React from 'react'
-
-import { View, Text,  } from 'native-base';
+import PropTypes from "prop-types";
+import { View, Text, Content } from 'native-base';
 import { ImageBackground, StyleSheet, Dimensions } from 'react-native';
 
 import Buttons from "./Buttons";
@@ -9,18 +9,15 @@ import Buttons from "./Buttons";
 const {width, height} = Dimensions.get('window');
 
 
-export default function ObjectView(d){
-    if(!d.active){
-        return(<Content contentContainerStyle={styles.content}>
-            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
-        </Content>)
-    }
+export default function ObjectView({navigation, ...d}){
 
     const source = ((d && d.image)?{uri: d.image}: require("../../assets/missing-image.png"));
-
-    return(<ImageBackground source={source} style={{width, height:height-70}} >
-        <Buttons items={d["links"] || []} onPress={(id)=>this.props.navigation.push("GroupView", {id})}/>
+    return(<ImageBackground source={source} style={{width, height: height-70}} >
+        <Buttons style={{borderWidth:0}} items={d["links"] || []} onPress={(id)=>navigation.push("Object", {id})}/>
     </ImageBackground>)
+}
+ObjectView.propTypes = {
+    navigation: PropTypes.object.isRequired,
 }
 
 const styles = StyleSheet.create({
