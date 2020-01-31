@@ -66,12 +66,15 @@ FormTextArea.propTypes = BasePropTypes;
 FormTextArea.defaultProps = BaseDefaultProps;
 
 export function FormSelector(props){
-  return(<div className="form-group">
-    <label htmlFor={props.name} className="col-sm-4 col-md-3 col-lg-2 col-form-label" >{props.title? props.title : props.name}</label>
-    <select name={props.name} className="col-sm-8 col-md-9 col-lg-10 form-control custom-select" value={props.value} onChange={props.onChange}>
-      <option key="0" value="">Vide</option>
-      {props.items.map(item=> <option key={item.path} value={item.path}>{item.name}</option>)}
-    </select>
+  return(<div className="input-group">
+
+  <div className="input-group-prepend">
+    <label htmlFor={props.name} className="input-group-text" style={{minWidth:60, textAlign: "right"}}>{props.title? props.title : props.name}</label>
+  </div>
+  <select name={props.name} className="col-sm-8 col-md-9 col-lg-10 form-control custom-select" value={props.value} onChange={props.onChange}>
+    <option key="0" value="">Vide</option>
+    {props.items.map(item=> <option key={item.path} value={item.path}>{item.name}</option>)}
+  </select>
   </div>)
 }
 FormSelector.toStringpropTypes = BasePropTypes;
@@ -80,7 +83,7 @@ FormSelector.defaultProps = BaseDefaultProps;
 export function TitleFormInput(props){
   return(<div className="input-group mb-3">
     <div className="input-group-prepend">
-      <span className="input-group-text" style={{minWidth:60, textAlign: "right"}}id={props.name}>{props.title? props.title : props.name}</span>
+      <span className="input-group-text" style={{minWidth:60, textAlign: "right"}} id={props.name}>{props.title? props.title : props.name}</span>
     </div>
     <input type={props.type? props.type : "text"} name={props.name} className="form-control" aria-label="Sizing example input" aria-describedby={props.name} value={props.value} onChange={props.onChange} />
   </div>)

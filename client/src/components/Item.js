@@ -62,7 +62,6 @@ export default function Item(props){
       else return mapStorageFolder(firebase.storage().refFromURL(data.repo))
     })
     .then(items=>{
-      console.log(items);
       const videos = [];
       const images = [];
 
@@ -136,6 +135,37 @@ export default function Item(props){
     console.error("Invalid data layout : ", data.layout)
   }
 
+  //The page's floating links
+
+  let pageLinks;
+  if(!data.links || data.links.length == 0){
+    pageLinks = (<small className="form-text text-dark text-right">Aucun lien actif sur cet objet</small>)
+  }else{
+    pageLinks = data.links.map((link, index)=>{
+      return(<div className="form-group" key={index}>
+        <div className="input-group mb-2">
+          <div className="input-group-prepend">
+            <button className="btn btn-outline-secondary" type="button" onClick={()=>handleRemoveLink(index)}><Octicon icon={Trashcan}/></button>
+          </div>
+          <input disabled readOnly type="text"  className="form-control" value={link.name}/>
+          <div className="input-group-append">
+            <Link to={`/projects/${project_id}/${link.name}`} className="btn btn-outline-primary text-primary">Voir</Link>
+          </div>
+        </div>
+        
+        <div className="form-group pl-3">
+          <TitleFormInput onChange={onChange} name={`link_${index}_title`} title="Titre" placeholder="nom du lien (par défaut)" value={link.title} />
+          <TitleFormInput onChange={onChange} name={`link_${index}_x`} title="x" type="number"   value={link.x}/>
+          <TitleFormInput onChange={onChange} name={`link_${index}_y`} title="y" type="number"   value={link.y}/>
+          <FormSelector onChange={onChange} name={`link_${index}_thumb`} title="Image" value={link.thumb} items={medias.images}/>
+
+          <TitleFormInput onChange={onChange} name={`link_${index}_color`} title="color" type="text" value={link.color}/>
+        </div>
+      </div>)
+    });
+  }
+
+
   return(<div className="p-4">
     {error && <ErrorMessage message={error.toString()}/>}
     {(loading || !medias.loaded ) && <Loader/>}
@@ -151,29 +181,8 @@ export default function Item(props){
 
           <h3>Liens </h3>
           <div className="form-group pl-3">
-            {0 < data.links.length && data.links.map((link, index)=>{
-              return(<div className="form-group" key={index}>
-                <div className="input-group mb-2">
-                  <div className="input-group-prepend">
-                    <button className="btn btn-outline-secondary" type="button" onClick={()=>handleRemoveLink(index)}><Octicon icon={Trashcan}/></button>
-                  </div>
-                  <input disabled readOnly type="text"  className="form-control" value={link.name}/>
-                  <div className="input-group-append">
-                    <Link to={`/projects/${project_id}/${link.name}`} className="btn btn-outline-primary text-primary">Voir</Link>
-                  </div>
-                </div>
-                
-                <div className="form-group pl-3">
-                  <TitleFormInput onChange={onChange} name={`link_${index}_title`} title="Titre" placeholder="nom du lien (par défaut)" value={link.title} />
-                  <TitleFormInput onChange={onChange} name={`link_${index}_x`} title="x" type="number"   value={link.x}/>
-                  <TitleFormInput onChange={onChange} name={`link_${index}_y`} title="y" type="number"   value={link.y}/>
-                  <TitleFormInput onChange={onChange} name={`link_${index}_color`} title="color" type="text" value={link.color}/>
-                </div>
-              </div>)
-            })}
+            {pageLinks}
 
-
-            {(!data.links || 0 == data.links.length) && <small className="form-text text-dark text-right">Aucun lien actif sur cet objet</small>}
             <div className="form-group">
               <h4>Ajouter un lien:</h4>
               <small id="passwordHelpBlock" className="form-text text-muted">
