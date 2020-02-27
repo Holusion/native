@@ -32,7 +32,7 @@ Ils sont disponibles dans `_template/`
 
 ```
 npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
-      "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" \
+      "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
     "react-native-zeroconf" \
     "react-navigation" "react-navigation-stack"  \
     "react-redux"
@@ -57,14 +57,6 @@ au début de la méthode `didFinishLaunchingWithOptions` :
     [FIRApp configure];
 ```
 
-Dans `ios/Podfile`, ajouter dans le bloc `target '<nom_du_projet>' do` juste avant `target '<nom_du_projet>Test' do` :
-
-```
-  pod 'Firebase/Core', "~>6.15.0"
-  pod 'Firebase/Auth', "~>6.15.0"
-  pod 'Firebase/Storage', "~>6.15.0"
-  pod 'Firebase/Firestore', "~>6.15.0"
-```
 
 Juste en dessous de la première ligne `platform :ios, '9.0'`, on peut ajouter : 
 
@@ -86,6 +78,12 @@ Ouvrez XCode. Ouvrir le fichier `<nom_du_projet>.xcworkspace`, **PAS** le fichie
 
 Dans le volet de gauche, cliquer sur le nom du projet pour ouvrir ses propriétés.
 
+Donner au projet un identifiant sous la forme :
+
+```
+com.holusion.native.<nom_du_projet>
+```
+
 #### signature du code
 
 pour la cible `<nom_du_projet>` :
@@ -94,11 +92,6 @@ Dans la configuration du projet, onglet **signing & capabilities** :
 
 sélectionner la *Team* Holusion. 
 
-Donner au projet un identifiant sous la forme :
-
-```
-com.holusion.native.<nom_du_projet>
-```
 
 Pour la cible `<nom_du_projet>Test`, onglet **signing & capabilities** : Sélectionner la *Team* Holusion
 
