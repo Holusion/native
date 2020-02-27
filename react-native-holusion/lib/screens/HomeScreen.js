@@ -15,6 +15,9 @@ import ImageCard from '../components/ImageCard';
 
 import * as strings from "../strings.json";
 
+import {getUniqueId, getApplicationName, getDeviceName} from "react-native-device-info";
+
+
 class HomeScreen extends React.Component {
     render() {
         if(!this.props.config){
@@ -87,19 +90,20 @@ class HomeScreen extends React.Component {
             this.props.setData(data);
         })
         .catch(e=>{
-            console.warn("Failed to initialize data : ", e.message);
+            console.warn("Impossible d'initialiser l'application hors ligne : ", e.message);
             Toast.show({
                 text: "(info) Données locales absentes",
                 duration: 2000,
             })
             return;
         })
-        .then(()=>{
-            if(this.props.userName){ 
-                return signIn(this.props.userName, this.props.password);
-            } else {
-                return Promise.reject(new Error ("can't sign in : no credentials"));
-            }
+        .then(()=> getDeviceName())
+        .then((hostname) =>  signIn(getUniqueId(), [this.props.projectName], {publicName:`${getApplicationName()}.${hostname}`}))
+        .then(res=> console.warn("Authentication : ", res))
+        .catch((e)=>{
+            let err = new Error("Authentication error : "+e.message);
+            err.code = "authentication-failed";
+            throw err;
         })
         .then (()=>watchFiles({
             projectName: this.props.projectName, 
@@ -127,9 +131,17 @@ class HomeScreen extends React.Component {
             }
         })
         .catch((e)=>{
-            console.warn("no internet access : ", e.message);
+            let text;
+            switch(e.code){
+                case "authentication-failed":
+                    text = e.message;
+                break;
+                default:
+                    text = "(info) Pas d'accès internet";
+            }
+            console.warn("Failed : ", e.message);
             Toast.show({
-                text: "(info) Pas d'accès internet",
+                text,
                 duration: 2000,
             })
         })
@@ -215,8 +227,6 @@ function mapStateToProps(state){
         categories, 
         items: getItemsArray(state),
         projectName,
-        userName,
-        password,
         config, 
         target: getActiveProduct(state),
     };

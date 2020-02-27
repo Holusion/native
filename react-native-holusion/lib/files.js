@@ -1,5 +1,9 @@
 'use strict';
-import firebase from "react-native-firebase";
+import firebase from "@react-native-firebase/app";
+import functions from "@react-native-firebase/functions";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import storage from "@react-native-firebase/storage";
 import RNFS from 'react-native-fs';
 import yaml from 'js-yaml';
 
@@ -45,8 +49,12 @@ export function initialize(projectName){
     });
 }
 
-export async function signIn(mail, password){
-    return await firebase.auth().signInWithEmailAndPassword(mail, password);
+export async function signIn(uuid, applications, meta){
+
+    const func = firebase.app().functions("europe-west1").httpsCallable("authDeviceCall")
+    let {data: token} = await func({uuid:uuid, applications, meta});
+    console.warn("Custom token : ", token);
+    return await auth().signInWithCustomToken(token);
 }
 
 export async function getFiles({
@@ -64,12 +72,11 @@ export async function getFiles({
     if(!projectName){
         throw new Error(`A valid projectName is required. Got ${projectName}`);
     }
-    const db = firebase.firestore();
+    const db = firestore();
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
     const categoriesRef = projectRef.collection("categories");
-    const storage = firebase.storage();
-    const storageRef = storage.ref();
+    const storageRef = storage().ref();
     const mainFolderRef = storageRef.child(projectName);
 
     //Create base directory. Does not throw if it doesn't exist
@@ -170,13 +177,12 @@ export async function watchFiles({
         throw new Error(`A valid projectName is required. Got ${projectName}`);
     }
     
-    const db = firebase.firestore();
+    const db = firestore();
 
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
 
-    const storage = firebase.storage();
-    const storageRef = storage.ref();
+    const storageRef = storage().ref();
     const mainFolderRef = storageRef.child(projectName);
 
         //Create base directory. Does not throw if it does exist
@@ -264,11 +270,10 @@ async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectR
 async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
     let filelist = [];
     let errors = [];
-    const storage = firebase.storage();
     for(let key in d){
         if(signal && signal.aborted) return;
         if(typeof d[key] === "string" && d[key].indexOf("gs://") == 0 && !d[key].endsWith("/") && key !== 'repo'){
-            const ref = storage.refFromURL(d[key]);
+            const ref = storage().refFromURL(d[key]);
             const fullPath = ref.fullPath.slice(10); //fullPath starts with : 'url::gs://'
             const name = filename(fullPath);
             const dest = `${storagePath}/${fullPath}`;
