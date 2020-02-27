@@ -28,10 +28,7 @@ target 'holomouseio2' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Firestore'
+  # Add new pods below this line
 
   target 'holomouseio2Tests' do
     inherit! :search_paths

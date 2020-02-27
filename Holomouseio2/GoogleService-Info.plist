@@ -2,39 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>699957095120-0j6gfpkr85jhjjoqfmtkg74v34cts48v.apps.googleusercontent.com</string>
+	<string>102388524371-9dndnkhl2u2dhctsqh5vqqackviis763.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.699957095120-0j6gfpkr85jhjjoqfmtkg74v34cts48v</string>
+	<string>com.googleusercontent.apps.102388524371-9dndnkhl2u2dhctsqh5vqqackviis763</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAIZL3_SCNAuav8jvnpkj34UULX338a3BE</string>
+	<string>AIzaSyAR17n98JFi1XOEmPVXRGC3EJfIlXNC6tM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>699957095120</string>
+	<string>102388524371</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>holusion</string>
+	<string>com.holusion.native.holomouseio</string>
 	<key>PROJECT_ID</key>
-	<string>holusion-divers</string>
+	<string>holomouseio-staging</string>
 	<key>STORAGE_BUCKET</key>
-	<string>holusion-divers.appspot.com</string>
+	<string>holomouseio-staging.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:699957095120:ios:e53b612381158817</string>
+	<string>1:102388524371:ios:563c8f2063f88b3204ada6</string>
 	<key>DATABASE_URL</key>
-	<string>https://holusion-divers.firebaseio.com</string>
+	<string>https://holomouseio-staging.firebaseio.com</string>
 </dict>
 </plist>

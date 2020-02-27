@@ -14,7 +14,7 @@ import getVariables from "./theme.js"
 
 import {name, displayName} from "./package.json";
 
-const store = configureStore({projectName:name, userName: "user@dev.holusion.net", password: "KsrVjGDm"});
+const store = configureStore({projectName:name});
 
 function makeTitle(navigation){
   const category  = navigation.getParam("category");
