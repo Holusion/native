@@ -46,16 +46,13 @@ const ConnectedListScreenContent = connect(function(state, props){
 
 class ListScreen extends React.Component {
     render() {
+        const {category} = this.props.route.params?this.props.route.params :{};
         return (
             <Container style={{flex: 1}}>
                 <ConnectedListScreenContent 
-                selectedCategory={this.props.navigation.getParam("category")}
-                onNavigate={(id) => this.props.navigation.navigate("Object", {id, category: this.props.navigation.getParam("category")})}
+                selectedCategory={category}
+                onNavigate={(id) => this.props.navigation.navigate("Object", {id, category})}
                 />
-
-                <Footer onPress={()=>this.props.navigation.navigate("Remerciements")}>
-                    <Text style={styles.footerButton}>{strings.home.footerButton}</Text>
-                </Footer>
             </Container>
         )
     }

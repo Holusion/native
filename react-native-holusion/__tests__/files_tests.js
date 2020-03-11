@@ -2,7 +2,6 @@
 
 
 jest.mock('react-native-fs', ()=>{return {}} );
-jest.mock('react-native-firebase', ()=>{return {}} );
 
 
 import {dedupeList, filename} from "../lib/files";

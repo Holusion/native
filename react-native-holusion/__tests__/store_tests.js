@@ -2,6 +2,8 @@
 import {setNetInfo, setData, setActive, addProduct, removeProduct, setSlidesControl} from "../lib/actions";
 import reducers from "../lib/reducers";
 import {getItemsIds, getActiveItems, getSelectedItem, getActiveProduct} from "../lib/selectors";
+
+
 import configureStore from "../lib/default_store";
 
 
@@ -40,6 +42,12 @@ describe("test store", function(){
         test("can add a product",function(){
             const {products} = reducers(initialState, addProduct({name:"foobar"}));
             expect(products).toHaveProperty("length", 1);
+        })
+        test("can add a product twice",function(){
+            const state = reducers(initialState, addProduct({name:"foobar", active: true}));
+            const {products} = reducers(state, addProduct({name:"foobar", active: false}));
+            expect(products).toHaveProperty("length", 1);
+            expect(products[0]).toHaveProperty("active", false);
         })
         test("can remove a product with its name ", function(){
             const s = reducers(initialState, addProduct({name:"foobar"}));

@@ -5,10 +5,12 @@ export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const SET_ACTIVE_PRODUCT = 'SET_ACTIVE_PRODUCT';
 
 export const SET_NETINFO = 'SET_NETINFO';
+export const SET_FIREBASEINFO = "SET_FIREBASEINFO";
 
 export const SET_DATA = "SET_DATA";
 export const SET_CONFIG = "SET_CONFIG";
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
+export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 /*
  * Products actions 
  */
@@ -32,7 +34,9 @@ export const setActive = (item={})=>{
 export const setNetInfo = (status)=>{
     return {type: SET_NETINFO, status: status}
 }
-
+export const setFirebaseInfo = (status)=>{
+    return {type: SET_FIREBASEINFO, status};
+}
 /*
  * Data actions
  */
@@ -46,4 +50,7 @@ export const setConfig = (config) => {
 
 export const setSlidesControl = (controlType) =>{
     return {type : SET_SLIDES_CONTROL, controlType}
+}
+export const setDefaultTarget = (name)=>{
+    return {type:SET_DEFAULT_TARGET, target: name};
 }

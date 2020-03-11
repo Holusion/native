@@ -50,8 +50,7 @@ export function initialize(projectName){
 }
 
 export async function signIn(uuid, applications, meta){
-
-    const func = firebase.app().functions("europe-west1").httpsCallable("authDeviceCall")
+    const func = firebase.app().functions("europe-west1").httpsCallable("https_authDeviceCall")
     let {data: token} = await func({uuid:uuid, applications, meta});
     console.warn("Custom token : ", token);
     return await auth().signInWithCustomToken(token);
@@ -145,30 +144,42 @@ export async function getFiles({
     }
     //console.warn("Stringified store : ", JSON.stringify({items: data, config: config}))
     const datastore = {items: data, config: config};
-    await saveDataFile(datastore);
+    //await saveDataFile(datastore);
     return datastore;
 }
 
 async function saveDataFile(data){
-    let old_data;
+    let dataStr = typeof data === "string" ? data : JSON.stringify(data);
     try{
-        old_data = await initialize();
-    }catch(e){
-        console.warn("initialize error : ",e.message);
-        old_data = {};
-    }
-    const datastore = Object.assign(old_data, data);
-    try{
-        await RNFS.writeFile(`${storagePath}/data.json`, JSON.stringify(datastore), 'utf8')
+        await RNFS.writeFile(`${storagePath}/data.json`, dataStr, 'utf8')
     }catch(e){
         throw new FileError(`${storagePath}/data.json`, e.message);
     }
+}
+
+let pending_saves = [];
+let is_saving = false;
+export async function saveDataFileSerial(data){
+    pending_saves.push(data)
+    if(is_saving) return;
+    is_saving = true;
+    try{
+        while(0 < pending_saves.length){
+            const d = pending_saves.pop();
+            pending_saves = []; // Delete all intermediate data representations
+            await saveDataFile(data);
+            await delay(1000);
+        }
+    }finally{
+        is_saving = false;
+    } 
 }
 
 export async function watchFiles({
     projectName, 
     dispatch,
     onProgress=function(){},
+    onUpdate=function(){},
 }={}){
     let cache;
     let errors = [];
@@ -193,6 +204,7 @@ export async function watchFiles({
         (configSnapshot)=>{
             if(abortConfig) abortConfig.abort(); //Cancel any previous run
             abortConfig = new AbortController();
+            onUpdate(configSnapshot);
             onConfigSnapshot(configSnapshot, {signal: abortConfig.signal, onProgress, projectRef, dispatch})
             
         },
@@ -203,6 +215,7 @@ export async function watchFiles({
         (projectSnapshot)=>{
             if(abortProject) abortProject.abort();
             abortProject = new AbortController();
+            onUpdate(projectSnapshot);
             onProjectSnapshot(projectSnapshot, {signal: abortProject.signal, onProgress, projectRef, dispatch});
         },
         (e) => onProgress("Can't get project snapshot for "+projectName+" :", e)
@@ -244,7 +257,7 @@ async function onConfigSnapshot(configSnapshot, {signal, onProgress, projectRef,
         config.categories.push(c);
     }
     if(signal && signal.aborted) return
-    await saveDataFile({config});
+    //await saveDataFile({config});
     dispatch({config});
     onProgress("Updated configuration");
 }
@@ -262,7 +275,7 @@ async function onProjectSnapshot(projectsSnapshot, {signal, onProgress, projectR
         await makeLocal(d);
         if(signal && signal.aborted) return
     }
-    await saveDataFile({items});
+    //await saveDataFile({items});
     dispatch({items});
     onProgress("Updated item collections");
 }
@@ -297,7 +310,7 @@ async function makeLocal(d, {onProgress=function(){}, force=false, signal}={}){
             if(!uptodate){
                 onProgress(`Downloading ${fullPath}`);
                 try{
-                    await ref.downloadFile(dest);
+                    await ref.writeToFile(dest);
                 }catch(e){
                     console.warn("Download error on %s : ", fullPath, e.message);
                     if(e.code )

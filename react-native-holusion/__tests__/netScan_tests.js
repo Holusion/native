@@ -1,5 +1,4 @@
 'use strict';
-jest.mock('@react-native-community/netinfo', ()=>{return {}} );
 
 import {onUpdate} from "../lib/netScan";
 

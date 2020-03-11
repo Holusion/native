@@ -34,13 +34,7 @@
     "react-test-renderer": "^16.8.6"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "./__mock__/mockFirebase"
-    ],
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "/node_modules/(?!native-base)/"
-    ]
+    "preset": "react-native"
   },
   "license": "ISC",
   "main": "index.js",

@@ -12,18 +12,24 @@ class NetworkIcon extends React.Component{
     }
     render(){
       let color;
-      if(this.props.connected){
+      if(this.props.connectedToProduct){
         color = (this.props.colors)? this.props.colors.on: "green";
       }else{
         color= (this.props.colors)? this.props.colors.off: "red";
       }
-      return (<Button transparent onPress={this.props.onPress}><Icon style={{marginRight: 16, color}} name="ios-wifi" /></Button>);
+      return (<Button transparent onPress={this.props.onPress}>
+        {this.props.cloudStatus === "loading" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
+        {this.props.cloudStatus === "connected" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
+        {this.props.cloudStatus === "rejected" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
+        <Icon style={{marginRight: 16, color}} name="ios-wifi" />
+      </Button>);
     }
   }
   
   function mapStateToProps(state){
     return {
-      connected: (getActiveProduct(state)? true : false)
+      cloudStatus: state.network.firebase,
+      connectedToProduct: (getActiveProduct(state)? true : false)
     }
   }
   

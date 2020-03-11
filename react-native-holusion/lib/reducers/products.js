@@ -15,7 +15,14 @@ export default function products  (state = [], action) {
             })
             return products;
         case ADD_PRODUCT:
-            return [action.product].concat(state);
+            const product_index = state.findIndex(p=> p.name == action.product.name);
+            if(product_index === -1){
+                return [action.product].concat(state);
+            }else{
+                const new_state = [].concat(state);
+                new_state.splice(product_index, 1,  action.product);
+                return new_state;
+            }
         case REMOVE_PRODUCT:
             return state.filter(elem => elem.name != action.name)
         default:

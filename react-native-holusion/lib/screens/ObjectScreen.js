@@ -28,7 +28,7 @@ import ObjectView from "../components/ObjectView";
  */
 class ObjectScreen extends React.Component {
     get index(){
-        return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> item.id == this.props.navigation.getParam("id")) : -1;
+        return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> (item.id == this.props.route.params["id"])) : -1;
     }
 
     render() {
@@ -38,7 +38,7 @@ class ObjectScreen extends React.Component {
         if(!this.props.items || current_index == -1){
             return(<Container>
                 <Content contentContainerStyle={styles.content}>
-                    <Text>No data for Id : {this.props.navigation.getParam("id")}</Text>
+                    <Text>No data for Id : {tthis.props.route.params["id"]}</Text>
                     <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
                 </Content>
             </Container>)
@@ -119,14 +119,14 @@ class ObjectScreen extends React.Component {
     }
     componentWillUnmount(){
         for(let sub of this.subscriptions){
-            sub.remove();
+            sub();
         }
     }
 }
 
-function mapStateToProps(state, {navigation}){
+function mapStateToProps(state, {route}){
     const {data, products} = state;
-    const items = getActiveItems(state, {selectedCategory: navigation.getParam("category")});
+    const items = getActiveItems(state, {selectedCategory: route.params["category"]});
     return {
         items,
         control_buttons: data.slides_control,

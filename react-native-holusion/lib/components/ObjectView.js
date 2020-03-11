@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, ImageBackground } from 'react-native';
 
 import Markdown from '../components/Markdown'
 
@@ -13,63 +13,43 @@ export default function ObjectView(d){
             <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
         </Content>)
     }
-
-    return(<Content contentContainerStyle={styles.content}>
-        <View style={{flexDirection:"row"}}>
-            <View style={styles.titleContainer}>
-                <H1 primary style={styles.title}>{d['title']}</H1>
-                <H2 style={styles.subTitle}>{d['subtitle']}</H2>
-                <Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>
-            </View>
-            <View style={styles.cartouche}>
-                <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
-                <Markdown >{d['description']}</Markdown>
-            </View>
+    const source = ((d && d.image)?{uri: d.image}: require("../../assets/missing-image.png"));
+    const withDescription = d['description']?true:false;
+    return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
+        <View style={styles.image}>
+            <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
+                <H1 primary style={styles.title}>{d["title"]}</H1>
+                <H2 secondary style={styles.subtitle}>{d["subtitle"]}</H2>
+            </ImageBackground>
         </View>
-        <View style={styles.textContent}>
-            <H2 style={styles.subTitle}>Plus d'informations</H2>
-            <Markdown>
-                {d['mainText']}
-            </Markdown>
-        </View>
-    </Content>)
+        {withDescription && <Content contentContainerStyle={{}}>
+            <View style={styles.contentView}>
+                <Markdown style={styles.markdown}>{d['description']}</Markdown>
+            </View>
+            
+        </Content>}
+    </Container>)
 }
 
 const styles = StyleSheet.create({
-    content: {
-        marginHorizontal: 24,
-        paddingTop: 40,
-        paddingBottom: 100,
+    image:{
+        flex: 2,
     },
-    image: {
+    contentView:{
         flex: 1,
-        minHeight: 150,
-        resizeMode: 'contain', 
+        zIndex: 1,
+        padding: 10,
+        paddingBottom: 80,
+        backgroundColor: "#f1f1f1",
+        minHeight:"100%",
     },
-    textContent: {
-        paddingTop: 24,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
+    title:{
+        paddingTop: 30,
+        paddingLeft: 10,
+        width:"100%",
     },
-    titleContainer: {
-        flex:2,
+    subtitle:{
+        paddingLeft: 10,
+
     },
-    cartouche:{
-        flex:1,
-        justifyContent: "center",
-        marginLeft: 40,
-        paddingTop : 0,
-        padding: 12,
-        borderWidth : 1,
-        borderColor : "#bbbbbb"
-    },
-    title: {
-        lineHeight: 40,
-    },
-    subTitle: {
-        color: "#bbbbbb",
-        fontStyle: "italic",
-        paddingTop: 12,
-    },    
 })
