@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>102388524371-d2le18jgal79mmu2k18k9o3ff9qa0qmj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.102388524371-d2le18jgal79mmu2k18k9o3ff9qa0qmj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAR17n98JFi1XOEmPVXRGC3EJfIlXNC6tM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>102388524371</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.holusion.native.handycom</string>
+	<key>PROJECT_ID</key>
+	<string>holomouseio-staging</string>
+	<key>STORAGE_BUCKET</key>
+	<string>holomouseio-staging.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:102388524371:ios:c4fc119bc6a288ea04ada6</string>
+	<key>DATABASE_URL</key>
+	<string>https://holomouseio-staging.firebaseio.com</string>
+</dict>
+</plist>
