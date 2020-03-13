@@ -38,7 +38,7 @@ class ObjectScreen extends React.Component {
         if(!this.props.items || current_index == -1){
             return(<Container>
                 <Content contentContainerStyle={styles.content}>
-                    <Text>No data for Id : {tthis.props.route.params["id"]}</Text>
+                    <Text>No data for Id : {this.props.route.params["id"]}</Text>
                     <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
                 </Content>
             </Container>)

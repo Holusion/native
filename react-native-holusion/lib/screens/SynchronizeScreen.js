@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import StatusIcon from "../components/StatusIcon";
 
-import {filename, dedupeList, uploadFile} from "../files";
+import {filename, dedupeList, uploadFile, sendFiles} from "../files";
 
 class SynchronizeScreen extends React.Component {
     render() {
@@ -39,6 +39,11 @@ class SynchronizeScreen extends React.Component {
     componentDidMount(){
         this.send();
     }
+    
+    componentWillUnmount(){
+        if(typeof this.abort === "function") this.abort();
+    }
+
     send(){
         if(this.state.status =="loading") return;
         if(!this.props.target){
@@ -46,78 +51,18 @@ class SynchronizeScreen extends React.Component {
         }
         this.setState({status: "loading", statusText: "fetching playlist"});
         const url = `http://${this.props.target.url}`;
-        fetch(`${url}/playlist`, {method:"GET"})
-        .then(async r =>{
-            const list = await r.json();
-            let uploads = [];
-            const errors = [];
-            if(!r.ok){
-                return this.setState({status: "error", statusText: list.message});
-            }
-            for(const key in this.props.items){
-                const item = this.props.items[key];
-                if(!item.video) continue;
-                uploads.push({
-                    uri: `${item.video}`,
-                    name: filename(item.video),
-                    type: "video/mp4"
-                })
-            }
-
-            if(this.props.config.video){
-                uploads.push({
-                    uri: this.props.config.video,
-                    name: filename(this.props.config.video),
-                    type:"video/mp4"
-                })
-            }
-
-            for (const category of this.props.config.categories){
-                if(category.video){
-                    uploads.push({
-                        uri: category.video,
-                        name: filename(category.video),
-                        type:"video/mp4"
-                    })
-                }
-            }
-
-            this.setState({statusText: "Getting modification time"});
-            //Can throw an error but we don't want to catch it here
-            const uploads_with_mtime = [];
-            //Don't parallelize : it cause iOS to crash the app
-            for (let upload of uploads){
-                const stat = await RNFS.stat(upload.uri);
-
-                uploads_with_mtime.push(Object.assign({mtime:stat.mtime}, upload))
-            }
-
-            const unique_uploads = dedupeList(uploads_with_mtime, list);
-            this.setState({statusText: "Uploading files"});
-            for (const file of unique_uploads){
-                try{
-                    if(list.find(i=>i.name == file.name)){
-                        this.setState({statusText: "Deleting old "+ file.name});
-                        await fetch(`${url}/medias/${file.name}`, {method: "DELETE"});
-                    }
-                    this.setState({statusText: "Uploading "+ file.name});
-                    await uploadFile(url, file);
-                } catch(e){
-                    console.warn(e);
-                    errors.push(e);
-                }
-            }
-            if(0 < errors.length){
-                console.warn('Errors : ', errors);
-                return this.setState({status: "error", statusText: errors.map(e=>`${e.sourceFile} : ${e.message}`).join("\n")});
-            }
-
-            this.setState({status: "idle", statusText: "Synchronized!"});
-            
-        }).catch(e=>{
-            console.warn("Caught error : ", e);
-            this.setState({status: "error", statusText: "Error : "+e.message});
-        }).then(()=>this.setState({status:"idle"}));
+        const videos =[ 
+            ...Object.keys(this.props.items).map(key=>this.props.items[key].video),
+            this.props.config.video,
+            ...this.props.config.categories.map(c=>c.video)
+        ].filter(i=>i)
+       const [abort] = sendFiles({
+           target,
+           videos,
+           onStatusChange:({status, statusText})=> this.setState({status, statusText}),
+           purge: this.props.purge,
+       });
+       this.abort = abort;
     }
 }
 
@@ -135,6 +80,7 @@ function mapStateToProps(state){
     return {
       target: products.find(p => p.active == true),
       items: data.items,
+      purge: data.purge_products,
       config: data.config,
     }
 }
