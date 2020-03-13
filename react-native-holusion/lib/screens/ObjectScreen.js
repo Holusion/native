@@ -86,7 +86,7 @@ class ObjectScreen extends React.Component {
             console.warn("Index", index, "did not map to any object");
             return;
         }
-        //console.warn(`onNextPage(${index}) : ${object.title}`);
+        console.warn(`onNextPage(${index}) : ${object.title}`);
         if(this.props.target){
             fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
             .then(r=>{
@@ -111,11 +111,10 @@ class ObjectScreen extends React.Component {
     }
     componentDidMount(){
         this.subscriptions = [
-            this.props.navigation.addListener("willFocus",()=>{
+            this.props.navigation.addListener("focus",()=>{
                 this.onNextPage(this.state.index);
             }),
         ];
-
     }
     componentWillUnmount(){
         for(let sub of this.subscriptions){

@@ -39,7 +39,7 @@ class SynchronizeScreen extends React.Component {
     componentDidMount(){
         this.send();
     }
-    
+
     componentWillUnmount(){
         if(typeof this.abort === "function") this.abort();
     }
@@ -57,7 +57,7 @@ class SynchronizeScreen extends React.Component {
             ...this.props.config.categories.map(c=>c.video)
         ].filter(i=>i)
        const [abort] = sendFiles({
-           target,
+           target: this.props.target,
            videos,
            onStatusChange:({status, statusText})=> this.setState({status, statusText}),
            purge: this.props.purge,

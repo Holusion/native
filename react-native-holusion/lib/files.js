@@ -455,7 +455,7 @@ export function sendFiles({target, videos=[], onStatusChange=console.warn.bind(n
         }
         let statusText;
         if(unique_uploads.length == 0 ){
-            statusText = "rien à envoyer";
+            statusText = "Rien à envoyer\n";
         }else{
             statusText = "Synchronisé :\n";
             statusText += unique_uploads.slice(0, 5).map(f=> (`${f.name} Envoyé`)).join("\n")
@@ -478,7 +478,7 @@ export function sendFiles({target, videos=[], onStatusChange=console.warn.bind(n
                 }
             }
             let s = 1 < unused_items.length?"s":""
-            statusText += `${unused_items.length} ancienne${s} vidéo${s} supprimée${s}`;
+            statusText += `${unused_items.length} ancienne${s} vidéo${s} supprimée${s}\n`;
         } 
 
 
@@ -496,7 +496,7 @@ export function sendFiles({target, videos=[], onStatusChange=console.warn.bind(n
         onStatusChange({status: "error", statusText: "Error : "+e.message});
     });
 
-    return [abortController.abort, op];
+    return [abortController.abort.bind(abortController), op];
 }
 
 export async function uploadFile(url, file, signal){

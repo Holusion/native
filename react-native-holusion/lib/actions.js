@@ -11,6 +11,7 @@ export const SET_DATA = "SET_DATA";
 export const SET_CONFIG = "SET_CONFIG";
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
+export const SET_PURGE = "SET_PURGE";
 /*
  * Products actions 
  */
@@ -53,4 +54,7 @@ export const setSlidesControl = (controlType) =>{
 }
 export const setDefaultTarget = (name)=>{
     return {type:SET_DEFAULT_TARGET, target: name};
+}
+export const setPurge = (purge)=>{
+    return {type:SET_PURGE, purge: purge};
 }

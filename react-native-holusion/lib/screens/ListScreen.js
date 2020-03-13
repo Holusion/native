@@ -58,19 +58,23 @@ class ListScreen extends React.Component {
     }
     onFocus(){
         if(this.props.config&& this.props.config.video && this.props.target){
+            console.warn("ListScreen focus to ",filename(this.props.config.video));
             fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
             .then(r=>{
                 if(!r.ok){
+                    console.warn("Failed to set current : "+r.status)
                     Toast.show({
                         text: "Failed to set current : "+r.status,
                         duration: 2000
                     })
                 }
             })
+        }else{
+            console.warn("ListScreen skip focus : ", this.props.config, this.props.target);
         }
     }
     componentDidMount(){
-        this.subscription = this.props.navigation.addListener("willFocus",()=>{
+        this.subscription = this.props.navigation.addListener("focus", ()=>{
             this.onFocus();
         })
     }
