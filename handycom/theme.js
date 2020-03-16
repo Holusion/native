@@ -2,7 +2,7 @@
 import default_vars from "@holusion/react-native-holusion/native-base-theme/variables/platform";
 
 export const theme = {
-    brandPrimary: "#00a5e8ff",
+    brandPrimary: "#008193ff",
     brandSecondary: "#ff9966ff",
 }
 

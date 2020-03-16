@@ -11,7 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^1.0.3",
+    "@holusion/react-native-holusion": "2.0.0-beta.1",
     "@react-native-community/masked-view": "^0.1.7",
     "@react-native-community/netinfo": "^5.5.1",
     "@react-native-firebase/app": "^6.3.4",
