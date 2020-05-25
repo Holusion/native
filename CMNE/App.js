@@ -52,7 +52,7 @@ const options = {
   defaultNavigationOptions:{
     gesturesEnabled: false,
     headerStyle: {height: 70}, 
-    headerTitle: (<Text>{displayName}</Text>),
+    headerTitle: (<Image source={require("./assets/logo.png")} style={{width:382, height:70}} />),
     headerBackTitle: "Retour",
   }
 }

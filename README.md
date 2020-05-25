@@ -35,7 +35,8 @@ npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "nativ
       "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
     "react-native-zeroconf" \
     "react-navigation" "react-navigation-stack"  \
-    "react-redux"
+    "react-redux" \
+    "@react-native-community/masked-view" "react-native-safe-area-context"
 ```
 
 
@@ -164,3 +165,17 @@ Il faudra probablement penser à trouver une autre solution lors de la prchaine 
 react-native ne fonctionne pas avec npm link. Pour éviter de devoir publier une version à chaque fois, on utilise rsync :
 
     rsync -a --exclude node_modules react-native-holusion/ StOmer/node_modules/\@holusion/react-native-holusion
+
+### Ajouter un nouvel iPad
+
+Faire la configuration initiale pour `s.dumetz@holusion.com`.
+
+Penser à renommer l'iPad une fois démarré dans `Réglages > Général > Nom`. et désactiver le vérouillage d'écran dans `Réglages > Luymiunosité et affichage > Verouillage automatique`.
+
+Connecter l'iPad au macBook
+
+Retirer les apps inutiles : Dans `Xcode > Window > Devices and simulator`, séléctionner l'iPad et supprimer toutes les applications.
+
+Dans Xcode, ouvrir le projet et naviguer vers l'onglet `Signing and Capabilities`. Cliquer sur `Register`.
+
+L'iPad est prêt à être utilisé.

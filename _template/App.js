@@ -103,7 +103,6 @@ export default class App extends React.Component{
         <Provider store={store}>
           <UserInactivity timeForInactivity={120000} onAction={this.onInactive}>
             <AppContainer ref={navigatorRef => {this._navigator=navigatorRef}}/>
-            <SpriteCube />
           </UserInactivity>
         </Provider> 
       </StyleProvider> 
