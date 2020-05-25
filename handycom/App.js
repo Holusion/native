@@ -13,11 +13,10 @@ const {NetworkIcon} = components;
 import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
 import getVariables from "./theme.js"
 
-import {name, displayName} from "./package.json";
 
 
 
-const wrapper = new StoreWrapper({projectName:name});
+const wrapper = new StoreWrapper({projectName:"les_residences_du_terroir"});
 const store = wrapper.store;
 const variables = getVariables();
 
@@ -25,7 +24,11 @@ function makeHeader({navigation}){
   return <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>
 }
 function screenOptions({navigation}){
-  return {title: "Handycom", headerRight: ()=>makeHeader({navigation})};
+  return {
+    headerBackTitle: "Retour",
+    title: <Image source={require("./assets/logo.jpg")} resizeMode='contain' style={{flex:1, height:32}} />,
+    headerRight: ()=>makeHeader({navigation}),
+  };
 }
 
 const Stack = createStackNavigator();
@@ -53,6 +56,13 @@ export default class App extends React.Component{
         duration: 4000
       })
     })
+    .catch((e)=>{
+      console.warn(e.code, e.message);
+      Toast.show({
+        text: e.message,
+        duration: 4000
+      })
+    })
   }
   onDefocus(){
     this.net_unsubscribe();
@@ -76,8 +86,9 @@ export default class App extends React.Component{
       <StyleProvider style={getTheme(variables)}>
         <Provider store={store}>
           <NavigationContainer>
-            <Stack.Navigator screenOptions={screenOptions}>
-              <Stack.Screen name="Home" component={screens.ListScreen}/>
+            <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
+              <Stack.Screen name="Home" component={screens.HomeScreen}/>
+              <Stack.Screen name="List" component={screens.ListScreen}/>
               <Stack.Screen name="Connect" component={screens.ConnectScreen}/>
               <Stack.Screen name="Object" component={screens.ObjectScreen}/>
               <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
