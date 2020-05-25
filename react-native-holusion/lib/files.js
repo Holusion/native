@@ -75,8 +75,6 @@ export async function getFiles({
     const projectRef = db.collection("applications").doc(projectName);
     const collectionsRef = projectRef.collection("projects");
     const categoriesRef = projectRef.collection("categories");
-    const storageRef = storage().ref();
-    const mainFolderRef = storageRef.child(projectName);
 
     //Create base directory. Does not throw if it doesn't exist
     await RNFS.mkdir(storagePath);
@@ -167,6 +165,7 @@ export async function saveDataFileSerial(data){
         while(0 < pending_saves.length){
             const d = pending_saves.pop();
             pending_saves = []; // Delete all intermediate data representations
+            console.warn("saving data file");
             await saveDataFile(data);
             await delay(1000);
         }
@@ -191,10 +190,8 @@ export async function watchFiles({
     const db = firestore();
 
     const projectRef = db.collection("applications").doc(projectName);
-    const collectionsRef = projectRef.collection("projects");
+    const collectionsRef = projectRef.collection("pages");
 
-    const storageRef = storage().ref();
-    const mainFolderRef = storageRef.child(projectName);
 
         //Create base directory. Does not throw if it does exist
     await RNFS.mkdir(storagePath);
@@ -208,7 +205,7 @@ export async function watchFiles({
             onConfigSnapshot(configSnapshot, {signal: abortConfig.signal, onProgress, projectRef, dispatch})
             
         },
-        (e) => onProgress("Can't get project snapshot for "+projectName+" :", e)
+        (e) => onProgress("Can't get project snapshot for "+projectRef.path+" :", e.message)
       ))
     let abortProject;
     unsubscribes.push(collectionsRef.onSnapshot(
@@ -218,8 +215,8 @@ export async function watchFiles({
             onUpdate(projectSnapshot);
             onProjectSnapshot(projectSnapshot, {signal: abortProject.signal, onProgress, projectRef, dispatch});
         },
-        (e) => onProgress("Can't get project snapshot for "+projectName+" :", e)
-    ))
+        (e) => onProgress("Can't get collections snapshot for "+collectionsRef.path+" :", e.message)
+    ));
     return ()=>{
         unsubscribes.forEach(fn=> fn());
     }

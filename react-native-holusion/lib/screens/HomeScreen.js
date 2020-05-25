@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {setData} from '../actions';
-import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
 import { Container, Toast, Content, Footer, Spinner, Text, H1, H2, View, Button} from 'native-base';
@@ -9,22 +8,23 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import {getActiveProduct, getItemsArray} from "../selectors";
 
-import {initialize, signIn, watchFiles, filename} from "../files";
+import {filename} from "../files";
 
 import ImageCard from '../components/ImageCard';
 
 import * as strings from "../strings.json";
 
-import {getUniqueId, getApplicationName, getDeviceName} from "react-native-device-info";
 
 
 class HomeScreen extends React.Component {
     render() {
         if(!this.props.config){
-            return(<Container><Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Spinner/> 
-                <Text>Loading...</Text>
-            </Content></Container>)
+            return(<Container>
+                <Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Spinner/> 
+                    <Text>Loading...</Text>
+                </Content>
+            </Container>)
         }
         let cards;
         if(this.props.categories && 0 < this.props.categories.length){

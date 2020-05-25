@@ -26,7 +26,9 @@ export class StoreWrapper{
     get authenticated(){return this._authenticated}
 
     get store(){return this._store}
+    
     async watch(onChange){
+        this.unwatch() // remove any active listeners
         await this.init(onChange)
         this._unwatch = await watchFiles({
             projectName: this.projectName,
@@ -52,17 +54,26 @@ export class StoreWrapper{
     }
     init(onChange){
         if(this._init) return this._init;
-        return this._init = initialize()
+        this._init = initialize()
         .then((data)=>{
             this.store.dispatch(setData(data));
         })
+        .catch(e=>{
+            console.warn("Impossible d'initialiser l'application hors ligne : ", e.message);
+            onChange({severity: "info", message: "pas de données locales."});
+            return;
+        })
         .then(()=>{
-
+            console.warn("dispatched");
             this.data = this.store.getState().data;
             this.dataStr = JSON.stringify(this.data);
-            this.store.subscribe(()=>{
+            this.store.subscribe(() => {
+                console.warn("store update");
                 const new_state = this.store.getState();
-                if(new_state.data === this.data) return;
+                if(new_state.data === this.data){ 
+                    //console.warn("skip data file save because data object reference has not changed")
+                    return;
+                }
                 const new_dataStr = JSON.stringify(new_state.data);
                 if(new_dataStr!== this.dataStr){
                     saveDataFileSerial(new_dataStr)
@@ -70,15 +81,12 @@ export class StoreWrapper{
                     .catch((e)=>{
                         onChange("Failed to save data : "+ e.message);
                     })
+                }else{
+                    //console.warn("skip data file save because serialization has not changed");
                 }
                 this.dataStr = new_dataStr;
                 this.data = new_state.data;
             })
-        })
-        .catch(e=>{
-            console.warn("Impossible d'initialiser l'application hors ligne : ", e.message);
-            onChange({severity: "info", message: "pas de données locales."});
-            return;
         })
         .then(()=> getDeviceName())
         .then((hostname) =>  signIn(getUniqueId(), [this.projectName], {publicName:`${getApplicationName()}.${hostname}`}))
@@ -92,5 +100,7 @@ export class StoreWrapper{
             err.code = "authentication-failed";
             throw err;
         })
+
+        return this._init;
     }
 }

@@ -32,7 +32,6 @@ class ConnectScreen extends React.Component {
         if(!has_default && this.props.default_target){
             list.push({name:`Default (offline): ${this.props.default_target}`, active: false, key: this.props.default_target, disabled: true})
         }
-        console.warn("Items :; ", list);
 
         if(this.props.passcode && !this.state.authenticated ){
             return (<Container>

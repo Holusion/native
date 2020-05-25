@@ -4,30 +4,37 @@ import {setData} from '../actions';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, View} from 'native-base';
+import { Container, Toast, Content, Text, H2, View} from 'native-base';
 import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import {getActiveProduct} from "../selectors";
 
-import {initialize, filename} from "../files";
+import { filename} from "../files";
 
 import ImageCard from '../components/ImageCard';
 
-import * as strings from "../strings.json";
-
 function ListScreenContent(props){
-    const cards = props.items.map(item =>{
+    let title = props.title || props.selectedCategory || null;
+    let cards = props.items.map(item =>{
         //Ugly hack because Images with a file:/// uri are not rendered when updated unless we restart the app
         const thumbSource = item['thumb']? {uri: item['thumb'].replace(/file:\/\/\/.*\/Documents/,"~/Documents"), scale: 1} : require("../../assets/icons/catalogue.png");
         return (<TouchableOpacity key={item['id']} onPress={()=>props.onNavigate(item['id'])}>
                 <ImageCard source={thumbSource} title={item.title} />
         </TouchableOpacity>)
     })
+
+    if(cards.length === 0){
+        title = "Aucun élément à afficher"
+        cards=(<Text>
+            L'application n'a peut-être pas été synchronisée?
+            Relancer l'application si nécessaire
+        </Text>)
+    }
+
     return(<Content contentContainerStyle={styles.container}>
-        <View style={styles.titleContainer}>
-            <Text >
-            </Text>
-        </View>
+        {title && <View style={styles.titleContainer}>
+            {typeof title === "string" ?<H2 primary style={{ paddingTop:30 }}>{title}</H2> : title }
+        </View>}
         <View style= {styles.cardContainer}>
             {cards}
         </View>
@@ -40,7 +47,7 @@ ListScreenContent.propTypes = {
 
 const ConnectedListScreenContent = connect(function(state, props){
     return {
-        items: getActiveItems(state, props)
+        items: getActiveItems(state, props),
     }
 })(ListScreenContent);
 
@@ -58,7 +65,7 @@ class ListScreen extends React.Component {
     }
     onFocus(){
         if(this.props.config&& this.props.config.video && this.props.target){
-            console.warn("ListScreen focus to ",filename(this.props.config.video));
+            //console.warn("ListScreen focus to ",filename(this.props.config.video));
             fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
             .then(r=>{
                 if(!r.ok){
@@ -70,7 +77,7 @@ class ListScreen extends React.Component {
                 }
             })
         }else{
-            console.warn("ListScreen skip focus : ", this.props.config, this.props.target);
+            //console.warn("ListScreen skip focus : ", this.props.config, this.props.target);
         }
     }
     componentDidMount(){
@@ -95,12 +102,14 @@ export default connect(function(state, props){
 })(ListScreen);
 
 const styles = StyleSheet.create({
+    container: {
+    },
     titleContainer: {
         flex: 1,
         display: "flex",
         justifyContent: 'center',
-        alignItems: 'center'
-
+        alignItems: 'center',
+        padding: 8,
     },
     cardContainer: {
         flex: 2,
