@@ -1,6 +1,6 @@
 'use strict';
 
-import {base64ToHex, normalizeAngle} from "../lib/convert";
+import {base64ToHex, normalizeAngle} from "./convert";
 
 
 describe("base64ToHex()",function(){

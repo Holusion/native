@@ -6,12 +6,20 @@ export const SET_ACTIVE_PRODUCT = 'SET_ACTIVE_PRODUCT';
 
 export const SET_NETINFO = 'SET_NETINFO';
 export const SET_FIREBASEINFO = "SET_FIREBASEINFO";
+export const ADD_TASK = "ADD_TASK";
+export const UPDATE_TASK = "UPDATE_TASK";
+export const REMOVE_TASK = "REMOVE_TASK";
 
 export const SET_DATA = "SET_DATA";
+export const SET_ITEMS = "SET_ITEMS";
 export const SET_CONFIG = "SET_CONFIG";
+
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 export const SET_PURGE = "SET_PURGE";
+export const SET_CONF = "SET_CONF";
+
+export const SET_PROJECTNAME = "SET_PROJECTNAME";
 /*
  * Products actions 
  */
@@ -38,13 +46,28 @@ export const setNetInfo = (status)=>{
 export const setFirebaseInfo = (status)=>{
     return {type: SET_FIREBASEINFO, status};
 }
+
+export const addTask = ({id,  status="pending", title, ...props})=>{
+    return {type: ADD_TASK, id, title: title || id, status, ...props};
+}
+export const updateTask = (props)=>{
+    return {type: UPDATE_TASK, ...props};
+}
+export const removeTask = (id)=>{
+    if(typeof id !== "string") throw new Error("removeTask() id must be a string. Got "+typeof id);
+    return {type: REMOVE_TASK, id}
+}
+
+
 /*
  * Data actions
  */
 export const setData = (data) =>{
     return {type: SET_DATA, data};
 }
-
+export const setItems = (items) =>{
+    return {type: SET_ITEMS, items};
+}
 export const setConfig = (config) => {
     return {type: SET_CONFIG, config}
 }
@@ -57,4 +80,11 @@ export const setDefaultTarget = (name)=>{
 }
 export const setPurge = (purge)=>{
     return {type:SET_PURGE, purge: purge};
+}
+
+export const setProjectName = (name) => {
+    return {type: SET_PROJECTNAME, name};
+}
+export const setConf = (conf)=>{
+    return {type: SET_CONF, conf};
 }

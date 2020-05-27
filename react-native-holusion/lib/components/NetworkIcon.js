@@ -2,9 +2,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import { Icon, Button} from 'native-base';
+import { Icon, Button, Spinner} from 'native-base';
 
-import {getActiveProduct} from "../selectors";
+import {getActiveProduct, getPendingSyncTasks} from "../selectors";
 
 class NetworkIcon extends React.Component{
     constructor(props){
@@ -18,9 +18,11 @@ class NetworkIcon extends React.Component{
         color= (this.props.colors)? this.props.colors.off: "red";
       }
       return (<Button transparent onPress={this.props.onPress}>
-        {this.props.cloudStatus === "loading" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
-        {this.props.cloudStatus === "connected" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
-        {this.props.cloudStatus === "rejected" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
+        {/*offline status is purposefully ignored */}
+        { 0 < this.props.syncTasks.length  && <Spinner size="small" color='orange' />}
+        {this.props.cloudStatus === "pending" && <Icon style={{marginRight: 16, color: "orange"}} name="ios-code-working" />}
+        {this.props.cloudStatus === "success" && <Icon style={{marginRight: 16, color: "blue"}} name="ios-code-working" />}
+        {this.props.cloudStatus === "rejected" && <Icon style={{marginRight: 16, color: "red"}} name="ios-code-working" />}
         <Icon style={{marginRight: 16, color}} name="ios-wifi" />
       </Button>);
     }
@@ -28,7 +30,8 @@ class NetworkIcon extends React.Component{
   
   function mapStateToProps(state){
     return {
-      cloudStatus: state.network.firebase,
+      cloudStatus: state.tasks.list["firebase"]?state.tasks.list["firebase"].status : "pending",
+      syncTasks: getPendingSyncTasks(state),
       connectedToProduct: (getActiveProduct(state)? true : false)
     }
   }

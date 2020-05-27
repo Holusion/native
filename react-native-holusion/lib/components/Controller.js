@@ -30,7 +30,8 @@ class Controller extends React.Component {
                 {
                   toValue: 1,
                   duration: 100,
-                  easing: Easing.linear
+                  easing: Easing.linear,
+                  useNativeDriver: true,
                 }
               ).start()
         }
@@ -42,7 +43,8 @@ class Controller extends React.Component {
                 {
                   toValue: 0,
                   duration: 100,
-                  easing: Easing.linear
+                  easing: Easing.linear,
+                  useNativeDriver: true,
                 }
               ).start()
         }

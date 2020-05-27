@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "Base64": "^1.0.2",
+    "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",
     "prop-types": "^15.7.2",
     "react-native-looped-carousel": "^0.1.13",
@@ -16,7 +17,7 @@
     "@babel/runtime": "^7.6.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.5.5",
-    "@react-native-community/netinfo": "^4.2.1",
+    "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/auth": "^6.3.4",
     "@react-native-firebase/firestore": "^6.3.4",
@@ -26,16 +27,19 @@
     "jest": "^24.9.0",
     "jest-fetch-mock": "^3.0.3",
     "metro-react-native-babel-preset": "^0.56.0",
-    "native-base": "^2.12.1",
-    "react": "16.9.0",
-    "react-native": "0.61.5",
+    "native-base": "^2.13.12",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
     "react-native-device-info": "^5.5.3",
-    "react-native-fs": "^2.14.1",
-    "react-native-zeroconf": "^0.11.2",
+    "react-native-fs": "^2.16.6",
+    "react-native-zeroconf": "^0.12.2",
     "react-test-renderer": "^16.9.0"
   },
   "jest": {
     "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native)"
+    ],
     "setupFiles": [
       "./setupJest.js"
     ]
@@ -44,16 +48,21 @@
   "main": "index.js",
   "name": "@holusion/react-native-holusion",
   "peerDependencies": {
-    "react-native": "0.61.5",
-    "react": "16.9.0",
-    "native-base": "^2.12.1",
+    "react-native": "0.62.2",
+    "react": "16.11.0",
+    "native-base": "^2.13.12",
     "react-native-device-info": "^5.5.3",
-    "react-native-zeroconf": "^0.11.2",
-    "react-native-fs": "^2.14.1",
-    "@react-native-community/netinfo": "^4.2.1"
+    "react-native-zeroconf": "^0.12.2",
+    "react-native-fs": "^2.16.6",
+    "@react-native-community/netinfo": "^5.9.1",
+    "@react-native-firebase/app": "^6.3.4",
+    "@react-native-firebase/auth": "^6.3.4",
+    "@react-native-firebase/firestore": "^6.3.4",
+    "@react-native-firebase/functions": "^6.3.4",
+    "@react-native-firebase/storage": "^6.3.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest ./lib"
   },
   "version": "2.0.0-beta.2"
 }

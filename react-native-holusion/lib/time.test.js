@@ -1,9 +1,10 @@
 'use strict';
 
-import {Accumulator} from "../lib/time";
+import {Accumulator} from "./time";
 
 describe("Accumulator", function(){
-
+    beforeEach(()=> jest.useFakeTimers())
+    afterEach(()=> jest.clearAllTimers())
     test("accumulates changes before calling handler", function(done){
         let a = new Accumulator();
         a.handleChange = function(val){
@@ -12,6 +13,7 @@ describe("Accumulator", function(){
         }
         a.add(1);
         a.add(1);
+        jest.runAllTimers();
     })
     test("will call handler after a pre-set delay (1)", function(done){
         const handleChange = jest.fn();
@@ -23,7 +25,8 @@ describe("Accumulator", function(){
             done();
         }, 20);
         a.add(1);
-        setTimeout(()=> a.add(1),5);
+        setTimeout(()=> a.add(1), 5);
+        jest.runAllTimers();
     })
     test("will call handler after a pre-set delay (2)", function(done){
         const handleChange = jest.fn();
@@ -35,6 +38,7 @@ describe("Accumulator", function(){
         }, 20);
         a.add(1);
         setTimeout(()=> a.add(1), 5);
+        jest.runAllTimers();
     })
     
     test("can auto-reset", function(done){
@@ -48,5 +52,6 @@ describe("Accumulator", function(){
         }
         a.add(1);
         a.add(1);
+        jest.runAllTimers();
     })
 })

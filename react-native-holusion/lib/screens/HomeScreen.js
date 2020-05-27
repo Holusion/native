@@ -18,7 +18,14 @@ import * as strings from "../strings.json";
 
 class HomeScreen extends React.Component {
     render() {
-        if(!this.props.config){
+        if(!this.props.projectName){
+            return(<Container>
+                <Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text>Application non configurée</Text>
+                    <Text style={{fontSize:14}}>Renseigner un nom dans l'écran de configuration</Text>
+                </Content>
+            </Container>)
+        }else if(!this.props.config){
             return(<Container>
                 <Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <Spinner/> 
@@ -26,6 +33,7 @@ class HomeScreen extends React.Component {
                 </Content>
             </Container>)
         }
+
         let cards;
         if(this.props.categories && 0 < this.props.categories.length){
             cards = this.props.categories.map((category, index)=>{
@@ -43,7 +51,7 @@ class HomeScreen extends React.Component {
                     </TouchableOpacity>)
                 }
                 return (<TouchableOpacity key={index} onPress={()=>this.props.navigation.navigate("List", {category: category.name})}>
-                    <ImageCard title={category.name} source={category.thumb?{uri: category.thumb}: null}/>
+                    <ImageCard title={category.name} source={category.thumb?{uri: category.thumb}: null} />
                 </TouchableOpacity>)
             })
         } else {
@@ -63,13 +71,11 @@ class HomeScreen extends React.Component {
             </Footer>)
         }
         return (
-            <Container style={{flex: 1}}>
+            <Container>
                 <Content contentContainerStyle={styles.container}>
-                    <View>
-                        <H1 primary style={styles.titleContainer}>
-                            Touchez-moi pour découvrir une collection :
-                        </H1>
-                    </View>
+                    <H1 primary style={styles.titleContainer}>
+                        Touchez-moi pour découvrir une collection :
+                    </H1>
                     <View style= {styles.cardContainer}>
                         {cards}
                     </View>
@@ -103,9 +109,6 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
-        flexDirection:"column",
-        alignContent: "space-around",
     },
     images: {
         width: null,
@@ -153,15 +156,16 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {data} = state;
-    const {config, projectName, userName, password} = data;
+    const {data, conf} = state;
+    const {config} = data;
     const categories = config.categories || [];
     return {
         categories, 
         items: getItemsArray(state),
-        projectName,
+        projectName: conf.projectName,
         config, 
         target: getActiveProduct(state),
     };
 }
+
 export default connect(mapStateToProps, {setData})(HomeScreen);

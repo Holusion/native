@@ -6,13 +6,16 @@ import * as time from "./lib/time";
 
 import * as actions from "./lib/actions";
 import reducers from "./lib/reducers";
-import configureStore, {StoreWrapper} from "./lib/default_store";
+import {configureStore, persistentStore} from "./lib/persistentStore";
 
 import strings from "./lib/strings.json";
 
 import * as screens from "./lib/screens";
 import * as components from "./lib/components";
 import * as selectors from "./lib/selectors";
+
+import {DownloadProvider} from "./lib/synchronize";
+
 export {
   netScan,
   files,
@@ -21,9 +24,10 @@ export {
   actions,
   reducers,
   configureStore,
-  StoreWrapper,
+  persistentStore,
   strings,
   screens,
   components,
   selectors,
+  DownloadProvider,
 }

@@ -1,7 +1,7 @@
 'use strict';
 import { SET_NETINFO, SET_FIREBASEINFO } from '../actions'
 
-export default function network  (state = {status: "offline", firebase: "disconnected"}, action) {
+export default function network  (state = {status: "offline", firebase: "disconnected", tasks: new Map()}, action) {
     switch(action.type) {
         case SET_FIREBASEINFO:
             return Object.assign({}, state, {firebase: action.status});

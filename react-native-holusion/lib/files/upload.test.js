@@ -1,8 +1,7 @@
 'use strict';
 
-
-import {dedupeList, filename, sendFiles} from "../lib/files";
-
+import {promises as fs, mkdir, writeFile} from "fs";
+import {dedupeList, sendFiles, filename} from ".";
 
 describe("files dedupeList()", function(){
     const static_date = new Date();
@@ -56,6 +55,7 @@ describe("files filename()", function(){
         });
     })
 });
+
 
 describe("files sendFiles()", function(){
     beforeEach(function(){

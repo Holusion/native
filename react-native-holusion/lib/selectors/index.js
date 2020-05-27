@@ -48,3 +48,17 @@ export const getActiveProduct = createSelector(
     [getProducts],
     (products)=> products.find(p => p.active == true)
 )
+
+const getTasks = (state)=> state.tasks.list;
+
+export const getSyncTasks = createSelector(
+    [getTasks],
+    (tasks)=>{
+        return Object.keys(tasks).filter((t)=> /sync-/.test(t)).map(t=> tasks[t]);
+    }
+)
+
+export const getPendingSyncTasks = createSelector(
+    [getSyncTasks],
+    (tasks)=> tasks.filter(t=> t.status ==="pending")
+)
