@@ -4,6 +4,7 @@ import storage from "@react-native-firebase/storage";
 
 import {getCachedHash} from "./cache";
 import {mediasPath} from "./path";
+import {FileError} from "./readWrite";  
 
 export async function makeLocal(d, { onProgress = function () { }, force = false, signal } = {}) {
   let filelist = {};
@@ -15,6 +16,7 @@ export async function makeLocal(d, { onProgress = function () { }, force = false
       const ref = storage().refFromURL(d[key]);
       const name = ref.name;
       const dest = `${mediasPath()}/${name}`;
+      
       onProgress(`Checking out ${name}`);
       let [
         exists,
@@ -24,13 +26,17 @@ export async function makeLocal(d, { onProgress = function () { }, force = false
         RNFS.exists(dest),
         ((filelist[dest])? Promise.resolve(filelist[dest]) : getCachedHash(dest)),
         ref.getMetadata()
-      ])
+      ].map(p => p.catch((e)=> {
+        console.warn(`Failed to get hash for ${name} : `, e);
+        return false
+      })));
       if (isCancelled()) break;
 
       if ( !(exists && md5Hash && localHash === md5Hash) ) {
         onProgress(`Downloading ${ref.fullPath} from ${ref.bucket.name}`);
         try {
           await ref.writeToFile(dest);
+          filelist[dest] = md5Hash || true; // true means should be kept but will always be updated    
         } catch (e) {
           if (e.code == "storage/object-not-found") {
             errors.push(new FileError(name, `${name} could not be found at ${d[key]}`, e.code));
@@ -40,10 +46,7 @@ export async function makeLocal(d, { onProgress = function () { }, force = false
         }
       } else {
         onProgress(`${name} is up to date`);
-      }
-
-      if(md5Hash){
-        filelist[dest] = md5Hash;
+        filelist[dest] = md5Hash || true; // true means should be kept but will always be updated  
       }
 
       d[key] = `file://${dest}`;
