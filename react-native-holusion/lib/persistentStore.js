@@ -27,22 +27,21 @@ export function configureStore({ projectName } = {}) {
  */
 export function persistentStore(opts) {
   const store = configureStore(opts);
-  store.dispatch(addTask({ id: "loading"})); //Store is ready when loading is done
+  store.dispatch(addTask({ id: "0_loading", title: "Initial Load"})); //Store is ready when loading is done
   //Dispatch data as soon as possible
   const op = Promise.resolve().then(async () => {
-
-    store.dispatch(addTask({ id: "cleanup", status: "progress" }))
+    store.dispatch(addTask({ id: "1_cleanup", title: "Cleanup", status: "progress" }))
     try {
       let [unlinked, kept] = await cleanup();
       store.dispatch(updateTask({
-        id: "cleanup", 
+        id: "1_cleanup", 
         status: "success", 
         message: `${kept.length} cached files`
           + (0 < unlinked.length ? `(removed ${2 < unlinked.length? unlinked.length: unlinked.map(f=> filename(f)).join(", ")})`: "")
       }));
     } catch (e) {
       console.warn("cleanup error", e);
-      store.dispatch(updateTask({ id: "cleanup", message: e.message, status: "warn" }))
+      store.dispatch(updateTask({ id: "1_cleanup", message: e.message, status: "warn" }))
     }
     //We continue even if cleanup was a failure
     let c = {
@@ -95,7 +94,7 @@ export function persistentStore(opts) {
         })
       }
     });
-    store.dispatch(updateTask({id:"loading", status: "success", message: "OK"}));
+    store.dispatch(updateTask({id:"0_loading", status: "success", message: "OK"}));
   });
 
   return [store, op];

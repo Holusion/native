@@ -1,7 +1,7 @@
 
 import RNFS from 'react-native-fs';
 
-import {storagePath} from "./path";
+import {storagePath, mediasPath} from "./path";
 import {loadFile, lock, FileError, saveFile} from "./readWrite";
 
 
@@ -165,7 +165,7 @@ async function doClean(dir, flatList){
   return [unlinked, kept];
 }
 
-export async function cleanup(dir = storagePath(), flatList) {
+export async function cleanup(dir = mediasPath(), flatList) {
   return await lock.acquire("cleanup", async () => {
     await CacheStage.closeAll();
     const flatList = Array.from((await getCacheFiles()).keys());

@@ -111,7 +111,6 @@ describe("cache", function(){
       await expect(getCachedHash("foo")).resolves.toBeUndefined();
       expect(warnMock).toHaveBeenCalledTimes(1);
     });
-
     it("will match data files even if cache.json has an error", async() =>{
       warnMock.mockImplementationOnce(()=>{});
       RNFSMock.readFile.mockImplementationOnce(()=>Promise.resolve("[]some invalid JSON"));
@@ -123,6 +122,10 @@ describe("cache", function(){
     it("will match cached files", async() =>{
       RNFSMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
       await expect(getCachedHash("/something/bar.mp4")).resolves.toBe("xxxxxxxx");
+    });
+    it("will return null if file is not cached", async() =>{
+      RNFSMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
+      await expect(getCachedHash("/something/foofoo.mp4")).resolves.toBeUndefined();
     });
   });
 

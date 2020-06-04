@@ -3,7 +3,8 @@ import React from 'react'
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 import { Image, StyleSheet, ImageBackground } from 'react-native';
 
-import Markdown from '../components/Markdown'
+import Markdown from '../components/Markdown';
+import LinksView from './LinksView';
 
 export default function ObjectView(d){
     if(!d.active){
@@ -15,11 +16,13 @@ export default function ObjectView(d){
     }
     const source = ((d && d.image)?{uri: d.image}: require("../../assets/missing-image.png"));
     const withDescription = d['description']?true:false;
+
     return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
         <View style={styles.image}>
             <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
                 <H1 primary style={styles.title}>{d["title"]}</H1>
                 <H2 secondary style={styles.subtitle}>{d["subtitle"]}</H2>
+                <LinksView items={d["links"] || []} onPress={(id)=>d.navigation.push("Object", {id})}/>
             </ImageBackground>
         </View>
         {withDescription && <Content contentContainerStyle={{}}>
@@ -28,6 +31,7 @@ export default function ObjectView(d){
             </View>
             
         </Content>}
+        
     </Container>)
 }
 

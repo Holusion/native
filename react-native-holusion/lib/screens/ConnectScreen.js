@@ -30,7 +30,6 @@ function Configuration(props){
     const [name, setName] = useState(props.projectName);
     const handleSubmitName = ()=>{
         props.setProjectName(name);
-        Keyboard.dismiss();
     }
 
     return (<Content>
