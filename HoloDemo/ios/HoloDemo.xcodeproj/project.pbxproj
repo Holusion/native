@@ -50,6 +50,7 @@
 		B122B51CBA5BAF5E6A4CA84E /* Pods-HoloDemo-HoloDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoloDemo-HoloDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-HoloDemo-HoloDemoTests/Pods-HoloDemo-HoloDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B56FACBEABD288206CFE23A1 /* libPods-HoloDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HoloDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE5F1462247C0A370095A6FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE5F1464248A4D630095A6FB /* HoloDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HoloDemo.entitlements; path = HoloDemo/HoloDemo.entitlements; sourceTree = "<group>"; };
 		D905E6C0DA62C82BC33B2526 /* Pods-HoloDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoloDemo.release.xcconfig"; path = "Target Support Files/Pods-HoloDemo/Pods-HoloDemo.release.xcconfig"; sourceTree = "<group>"; };
 		DC8660709FB497C844C6B3B7 /* Pods-HoloDemo-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoloDemo-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-HoloDemo-tvOSTests/Pods-HoloDemo-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -96,6 +97,7 @@
 		13B07FAE1A68108700A75B9A /* HoloDemo */ = {
 			isa = PBXGroup;
 			children = (
+				BE5F1464248A4D630095A6FB /* HoloDemo.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -218,7 +220,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1150;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -505,6 +507,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B122B51CBA5BAF5E6A4CA84E /* Pods-HoloDemo-HoloDemoTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 3235X6LFMC;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -529,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 25030E3F08A00EA9B103FC71 /* Pods-HoloDemo-HoloDemoTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 3235X6LFMC;
@@ -552,7 +556,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CODE_SIGN_ENTITLEMENTS = HoloDemo/HoloDemo.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3235X6LFMC;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -581,7 +586,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CODE_SIGN_ENTITLEMENTS = HoloDemo/HoloDemo.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3235X6LFMC;
 				INFOPLIST_FILE = HoloDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -693,6 +699,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "SWRVE_NO_PUSH=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
