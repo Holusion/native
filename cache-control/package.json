@@ -1,13 +1,17 @@
 {
   "name": "@holusion/cache-control",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "cache control algorithm for content.holusion.net applications",
-  "main": "lib/index.js",
+  "main": "dist/cache-control.js",
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
     "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=12",
+    "electron": ">=8"
   },
   "author": "Sebastien Dumetz <s.dumetz@holusion.com>",
   "license": "MIT",
@@ -30,5 +34,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
-  }
+  },
+  "files": [
+    "dist/"
+  ]
 }

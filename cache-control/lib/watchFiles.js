@@ -69,9 +69,7 @@ export async function onConfigSnapshot(tr, { signal, onProgress=console.log, dis
   let cache = new CacheStage("config");
   let [config, files] = await tr;
   let requiredFiles = [];
-  if (!config) {
-    console.warn("Application has no configuration set. Using defaults.");
-  }
+
 
   try {
     for (let [dest, {src, hash}] of files.entries()){
@@ -113,7 +111,7 @@ export async function onConfigSnapshot(tr, { signal, onProgress=console.log, dis
   await cache.close()
   .catch((e)=>{
     onProgress(`Failed to save cache file : ${e.message}`);
-  })
+  });
 
   dispatch({ config });
   onProgress("Updated configuration");
