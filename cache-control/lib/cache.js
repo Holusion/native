@@ -45,21 +45,6 @@ export async function getCachedHash(file){
   return cacheFiles.get(file);
 }
 
-//Low level cache merge
-export async function saveCacheFile(key, data) {
-  return await lock.acquire("cache-file", async ()=>{
-    let cache;
-    try{
-      cache = JSON.parse(await loadFile("cache.json"));
-    } catch(e){
-      throw new FileError(`${storagePath()}/cache.json`, e.message, e.code);
-    }
-    let mergedCache = Object.assign({}, cache, {[key]: data});
-
-    console.warn("Save cache data : ",cache, mergedCache);
-    await saveFile("cache.json", JSON.stringify(mergedCache));
-  })
-}
 export class CacheStage{
   constructor(name){
     this.name = name;
@@ -130,7 +115,7 @@ export class CacheStage{
       }
       let closures = Object.keys(stages).reduce((res, key)=>{
         return Object.assign(res, {[key]: stages[key].sort().reduce((r, k)=> Object.assign(r, k), {})})
-      }, {})
+      }, {});
       await saveFile("cache.json", JSON.stringify(Object.assign(otherZones,  closures), null, 2));
     });
   }
@@ -169,7 +154,7 @@ async function doClean(dir, flatList){
   return [unlinked, kept];
 }
 
-export async function cleanup(dir = mediasPath(), flatList) {
+export async function cleanup(dir = mediasPath()) {
   return await lock.acquire("cleanup", async () => {
     await CacheStage.closeAll();
     const flatList = Array.from((await getCacheFiles()).keys());

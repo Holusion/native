@@ -2,7 +2,7 @@ import fs from "filesystem";
 
 import AsyncLock from 'async-lock';
 
-export const lock = new AsyncLock({ maxPending: 2 });
+export const lock = new AsyncLock({ });
 
 import {storagePath} from "./path";
 

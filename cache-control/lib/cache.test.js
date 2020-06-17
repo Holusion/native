@@ -18,7 +18,7 @@ describe("cache", function(){
   describe("getCacheFiles()", function(){
 
     it("don't throw if file doesn't exist", async()=>{
-      const e = new Error("Error ENOENT : file doesn't exists");
+      const e = new Error("Error ENOENT : no such file or directory");
       e.code = "ENOENT";
       fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
       await expect(getCacheFiles()).resolves.toEqual(new Map([
@@ -27,12 +27,18 @@ describe("cache", function(){
         ["/some/path/conf.json", true],
       ]));
     });
-
+    it("throw if file isn't readable", async()=>{
+      const e = new Error("Error EACCESS : user doesn't have permission to read file");
+      e.code = "EACCESS";
+      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      await expect(getCacheFiles()).rejects.toThrow(Error);
+    });
     it("throw if JSON  is invalid", async ()=>{
       fsMock.readFile.mockImplementationOnce(()=>Promise.resolve("some invalid JSON"));
       await expect(getCacheFiles()).rejects.toThrow(Error);
     });
   })
+
   describe("cleanup()", function(){
     it("throws error with code == ENOENT if directory does not exist", ()=>{
       const e = new Error("Error ENOENT : file doesn't exists");
@@ -172,6 +178,45 @@ describe("cache", function(){
     it("CacheStage.closeAll() doesn't throw if cache can't be openned", async ()=>{
       fsMock.readFile.mockImplementationOnce(()=>Promise.reject({code: "ENOENT"}));
       expect(CacheStage.closeAll()).resolves.toBeUndefined();
+    })
+
+    it("CacheStage.closeAll() will merge all pending writes", async ()=>{
+      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({
+        "items": {},
+        "items.kaw9ohl9.mq2nolyvzee": {"/path/to/bar.mp4": "xxxxxx"},
+        "items.kaw9ohl9.mq2nolyvzef": {"/path/to/baz.mp4": "yyyyyy"},
+      })));
+      await expect(CacheStage.closeAll()).resolves.toBeUndefined();
+      expect(fsMock.writeFile).toHaveBeenCalledWith(
+        "/some/path/cache.json", 
+        JSON.stringify({items:{
+          "/path/to/bar.mp4":"xxxxxx",
+          "/path/to/baz.mp4": "yyyyyy"
+        }}, null, 2),
+        "utf8"
+      )
+    })
+
+    it("CacheStage.load() completeley ignore ENOENT errors", async ()=>{
+      const warnMock = jest.spyOn(global.console, "warn");
+      warnMock.mockImplementationOnce(()=>{});
+      const e = new Error("ENOENT : no such file or directory");
+      e.code = "ENOENT";
+      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      await expect(CacheStage.load()).resolves.toEqual({});
+      expect(warnMock).not.toHaveBeenCalled();
+      warnMock.mockRestore();
+    })
+
+    it("CacheStage.load() never throw errors", async ()=>{
+      const warnMock = jest.spyOn(global.console, "warn");
+      warnMock.mockImplementationOnce(()=>{});
+      const e = new Error("EACCESS : user doesn't have permission to read file");
+      e.code = "EACCESS";
+      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      await expect(CacheStage.load()).resolves.toEqual({});
+      expect(warnMock).toHaveBeenCalledTimes(1);
+      warnMock.mockRestore();
     })
 
     describe("normal lifecycle", function(){

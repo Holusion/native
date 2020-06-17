@@ -1,4 +1,5 @@
 import fs from "filesystem";
+import {EventEmitter} from "events";
 import {firebase} from "firebase";
 import {makeLocal} from "./makeLocal";
 
@@ -9,7 +10,6 @@ import writeToFile from "writeToFile";
 export async function transformSnapshot(transforms, snapshot){
   let res = Object.assign(snapshot.exists? snapshot.data(): {}, {id: snapshot.id});
   let files = new Map();
-
   for(let t of transforms){
     let [tr_res, new_files ] = await t(res);
     res = tr_res;
@@ -18,150 +18,143 @@ export async function transformSnapshot(transforms, snapshot){
   return [res, files];
 }
 
-
-
-export function watchFiles({
-  projectName,
-  dispatch,
-  transforms = [makeLocal],
-  onProgress = function () { },
-  onUpdate = function () { },
-} = {}) {
-  if (!projectName) {
-    throw new Error(`A valid projectName is required. Got ${projectName}`);
-  }
-  let unsubscribes = [];
-  let abortConfig, abortProject;
-
-  const db = firebase.app().firestore();
-
-  const projectRef = db.collection("applications").doc(projectName);
-  const collectionsRef = projectRef.collection("pages");
-
-
-  unsubscribes.push(projectRef.onSnapshot(
-    (configSnapshot) => {
-      if (abortConfig) abortConfig.abort(); //Cancel any previous run
-      abortConfig = new AbortController();
-      onUpdate("config");
-      onConfigSnapshot(transformSnapshot(transforms, configSnapshot), { signal: abortConfig.signal, onProgress, projectRef, dispatch })
-
-    },
-    (e) => onProgress("Can't get project snapshot for " + projectRef.path + " :", e.message)
-  ))
-
-  unsubscribes.push(collectionsRef.onSnapshot(
-    (projectsSnapshot) => {
-      if (abortProject) abortProject.abort();
-      abortProject = new AbortController();
-      onUpdate("items");
-      onProjectSnapshot(Promise.all(projectsSnapshot.docs.map(ps => transformSnapshot(transforms, ps))), { signal: abortProject.signal, onProgress, projectRef, dispatch });
-    },
-    (e) => onProgress("Can't get collections snapshot for " + collectionsRef.path + " :", e.message)
-  ));
-  return () => {
-    unsubscribes.forEach(fn => fn());
-  }
-}
-
-
-export async function onConfigSnapshot(tr, { signal, onProgress=console.log, dispatch }) {
-  let cache = new CacheStage("config");
-  let [config, files] = await tr;
+async function doGetFiles({files, onProgress, signal, cache}){
   let requiredFiles = [];
-
-
-  try {
-    for (let [dest, {src, hash}] of files.entries()){
-      const name = dest.split("/").slice(-1)[0];
-      const [localExists, localHash] = await Promise.all([
-        fs.exists(dest),
-        getCachedHash(dest)
-      ]);
-      if(!(localExists && localHash && localHash === hash)){
-        if(!localExists) console.info(`${dest} doesn't exists`);
-        else if(!localHash) console.info(`no cached hash for ${dest}`)
-        else console.info(`local hash for ${name} is ${localHash}. remote is ${hash}`);
-        requiredFiles.push([src, dest]);
-      }else{
-        //console.info(`cache for ${name} is up to date`);
-      }
-    }
-    const cacheFiles = Array.from(files.entries()).reduce((res,[dest, { hash }])=> {
-      res[dest] = hash;
-      return res;
-    }, {});
-    await cache.batch(cacheFiles);
-
-    for(let index=0; index < requiredFiles.length; index++){
-      let [src, dest] = requiredFiles[index];
-      onProgress(`GET ${src.split("/").slice(-1)[0]} (${index+1}/${requiredFiles.length})`);
-      await writeToFile(src, dest);
-      if (signal && signal.aborted) return;
-    }
-  } catch (e) {
-    return onProgress("Failed to fetch config resources : "+ e.message);
-  }
-  if (signal && signal.aborted) return //Don't do nothing on abort
-  
-  config.categories = (Array.isArray(config.categories)) ? config.categories.map(c => {
-    return (typeof c === "string") ? { name: c } : c;
-  }) : [];
-
-  await cache.close()
-  .catch((e)=>{
-    onProgress(`Failed to save cache file : ${e.message}`);
-  });
-
-  dispatch({ config });
-  onProgress("Updated configuration");
-}
-
-async function onProjectSnapshot(projects, { signal, onProgress, projectRef, dispatch }) {
-  projects = await projects;
-  const items = {};
-  let cache = new CacheStage("items");
-  if (projects.length == 0) {
-    throw new Error(`no project found in ${projectRef.id}`);
-  }
-
-  let requiredFiles = [];
-  for (let [d] of projects) {
-    if (d.active === false) continue;
-    items[d.id] = d;
-  }
-
-  let files = projects.reduce((prev, [, files])=> new Map([...prev, ...files]), new Map());
+  let cachedFiles = [];
   for (let [dest, {src, hash}] of files.entries()){
-    console.log()
     const name = dest.split("/").slice(-1)[0];
     const [localExists, localHash] = await Promise.all([
       fs.exists(dest),
       getCachedHash(dest)
     ]);
     if(!(localExists && localHash && localHash === hash)){
-      requiredFiles.push([src, dest]);
+      if(!localExists) console.info(`${dest} doesn't exists`);
+      else if(!localHash) console.info(`no cached hash for ${dest}`)
+      else console.info(`local hash for ${name} is ${localHash}. remote is ${hash}`);
+      requiredFiles.push({src, dest, hash});
     }else{
+      cachedFiles.push({src, dest, hash});
       //console.info(`cache for ${name} is up to date`);
     }
   }
-  await cache.batch(Array.from(files.entries()).reduce((res,[dest, {hash}])=> {
-    res[dest] = hash;
-    return res;
-  }, {}));
+  
+  cache.batch(cachedFiles.reduce((res, {dest, hash})=> Object.assign(res, {[dest]: hash}), {}));
 
   for(let index=0; index < requiredFiles.length; index++){
-    let [src, dest] = requiredFiles[index];
-    onProgress(`Downloading ${src.split("/").slice(-1)[0]} (${index+1}/${requiredFiles.length})`);
+    let {src, dest, hash} = requiredFiles[index];
+    onProgress(`GET ${src.split("/").slice(-1)[0]} (${index+1}/${requiredFiles.length})`);
     await writeToFile(src, dest);
+    cache.set(dest, hash);
     if (signal && signal.aborted) return;
   }
+}
 
-  await cache.close()
-  .catch((e)=>{
-    onProgress(`Failed to save cache file : ${e.message}`);
-  })
 
-  dispatch({ items });
-  onProgress("Updated item collections");
+
+export default class WatchFiles extends EventEmitter{
+  constructor({projectName, transforms=[makeLocal]}){
+    super();
+    this.projectName = projectName;
+    this.transforms = transforms;
+    this.unsubscribes = [];
+    const db = firebase.app().firestore();
+    const projectRef = db.collection("applications").doc(projectName);
+    const collectionsRef = projectRef.collection("pages");
+  }
+  watch(){
+    let aborts = {};
+    this.unsubscribes.push(projectRef.onSnapshot( 
+      (configSnapshot) => {
+        if (aborts.config) aborts.config.abort(); //Cancel any previous run
+        aborts.config = new AbortController();
+        this.onConfigSnapshot(configSnapshot, {signal: aborts.config.signal})
+      },
+      (e) => this.makeError("configSnapshot", e)
+    ));
+
+    this.unsubscribes.push(collectionsRef.onSnapshot(
+      (projectsSnapshot) => {
+        if (aborts.items) aborts.items.abort();
+        aborts.items = new AbortController();
+        onUpdate("items");
+        this.onConfigSnapshot(projectsSnapshot, {signal: aborts.items.signal})
+      },
+      (e) => this.makeError("projectsSnapshot", e)
+    ));
+  }
+
+  makeError(name, orig){
+    let e = new Error(`${name} failed : ${orig.message}`);
+    e.name = orig.name;
+    e.stack = orig.stack;
+    e.code = orig.code;
+    this.emit("error", e);
+  }
+
+  onConfigSnapshot(configSnapshot, {signal}={}){
+    transformSnapshot(this.transforms, configSnapshot)
+    .then(async ([config, files])=>{
+      try {
+        await this.getFiles({files, signal, cacheName: "config"});
+      } catch(e){
+        this.makeError("getFiles", e);
+      }
+      if (signal && signal.aborted){
+        this.emit("progress", "Aborted update");
+        return 
+      }
+      if((Array.isArray(config.categories)) ){
+        config.categories = config.categories.map(c => {
+          return (typeof c === "string") ? { name: c } : c;
+        });
+      }
+      
+      this.emit("dispatch", { config });
+    })
+    .catch((e)=>{
+      this.makeError("Failed to get configuration : ", e);
+    });
+  }
+
+  onProjectsSnapshot(projectsSnapshot, {signal}={}){
+    Promise.all(projectsSnapshot.docs.map(p => transformSnapshot(this.transforms, p)))
+    .then(async (projects)=>{
+      let items = {};
+      let files = projects.reduce((prev, [, files])=> new Map([...prev, ...files]), new Map());
+      try {
+        await this.getFiles({files, signal, cacheName: "items"});
+      } catch(e){
+        this.makeError("getFiles failed", e);
+      }
+      if (signal && signal.aborted){
+        this.emit("progress", "Aborted update");
+        return;
+      }
+
+      for (let [d] of projects) {
+        if (d.active === false) continue;
+        items[d.id] = d;
+      }
+      this.emit("dispatch", { items });
+    })
+    .catch((e)=>{
+      this.makeError("Failed to get configuration : ", e);
+    });
+  }
+
+  async getFiles({cacheName, files, signal}){
+    let cache = new CacheStage(cacheName);
+    try{
+      await doGetFiles({cache, files, onProgress:(m)=>this.emit("progress", m), signal});
+    }finally{
+      return cache.close().catch((e)=>{
+        this.makeError("Failed to save cache : ", e);
+      });
+    }
+  }
+  
+  close(){
+    this.unsubscribes.forEach(fn => fn());
+    this.unsubscribes = [];
+  }
 }
