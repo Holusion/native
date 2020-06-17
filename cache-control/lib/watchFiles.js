@@ -51,7 +51,7 @@ async function doGetFiles({files, onProgress, signal, cache}){
 
 
 
-export default class WatchFiles extends EventEmitter{
+export class WatchFiles extends EventEmitter{
   constructor({projectName, transforms=[makeLocal]}){
     super();
     this.projectName = projectName;

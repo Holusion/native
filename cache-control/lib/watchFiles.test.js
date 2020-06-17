@@ -1,12 +1,6 @@
 
-import {promises as fs} from "fs";
-import {tmpdir} from "os"
-import {join} from "path";
-
-
-
 import {setBasePath, createStorage} from "./path";
-import WatchFiles, {transformSnapshot} from "./watchFiles";
+import {WatchFiles, transformSnapshot} from "./watchFiles";
 
 import fsMock from "filesystem";
 
