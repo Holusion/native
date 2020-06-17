@@ -1,8 +1,10 @@
 import fs from "filesystem";
 
 let _basePath;
-export const setBasePath = (p )=>{ 
+export const setBasePath = (p)=>{ 
   if(typeof p !== "string") throw new Error(`path must be a string. got ${typeof p} (in "setBasePath")`);
+  if(p.length == 0 ) throw new Error(`path must not be an empty string`);
+  if(p.lastIndexOf("/") === p.length -1) p = p.slice(0, -1);
   _basePath = p;
 };
 
