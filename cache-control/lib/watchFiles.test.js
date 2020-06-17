@@ -67,6 +67,7 @@ describe("watchFiles", function(){
     expect(()=>wf.watch()).not.toThrow(Error);
     expect(()=>wf.close()).not.toThrow(Error);
   })
+
   describe("onSnapshot callbacks", function(){
     const p={
       exists: true,

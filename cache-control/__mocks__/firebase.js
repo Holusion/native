@@ -8,6 +8,7 @@ const DocumentSnapshot = jest.fn((dbItem) => ({
 }))
 const docs = db.map(elem => DocumentSnapshot(elem));
 
+
 const collection = jest.fn((name) => {
     return {
         id: name,

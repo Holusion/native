@@ -59,15 +59,15 @@ export class WatchFiles extends EventEmitter{
     this.unsubscribes = [];
   }
   watch(){
-
     const db = firebase.app().firestore();
     const projectRef = db.collection("applications").doc(this.projectName);
     const collectionsRef = projectRef.collection("pages");
     let aborts = {};
-    this.unsubscribes.push(projectRef.onSnapshot( 
+    this.unsubscribes.push(projectRef.onSnapshot(
       (configSnapshot) => {
         if (aborts.config) aborts.config.abort(); //Cancel any previous run
         aborts.config = new AbortController();
+        this.emit("progress", "Receiving updated configuration");
         this.onConfigSnapshot(configSnapshot, {signal: aborts.config.signal})
       },
       (e) => this.makeError("configSnapshot", e)
@@ -77,11 +77,12 @@ export class WatchFiles extends EventEmitter{
       (projectsSnapshot) => {
         if (aborts.items) aborts.items.abort();
         aborts.items = new AbortController();
-        onUpdate("items");
+        this.emit("progress", "Receiving updated pages");
         this.onConfigSnapshot(projectsSnapshot, {signal: aborts.items.signal})
       },
       (e) => this.makeError("projectsSnapshot", e)
     ));
+
     this.unsubscribes.push(()=>{
       Object.keys(aborts).forEach((key)=>{
         aborts[key].abort();
