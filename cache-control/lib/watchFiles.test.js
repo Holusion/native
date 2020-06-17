@@ -3,6 +3,7 @@ import {setBasePath, createStorage} from "./path";
 import {WatchFiles, transformSnapshot} from "./watchFiles";
 
 import fsMock from "filesystem";
+import {firebase as firebaseMock} from "firebase";
 
 describe("watchFiles", function(){
   let logMock;
@@ -51,6 +52,12 @@ describe("watchFiles", function(){
       ]);
     });
   });
+  it("can open and close DB callbacks", function(){
+
+    let wf = new WatchFiles({projectName: "foo", transforms: []});
+    expect(()=>wf.watch()).not.toThrow(Error);
+    expect(()=>wf.close()).not.toThrow(Error);
+  })
   describe("onSnapshot callbacks", function(){
     const p={
       exists: true,

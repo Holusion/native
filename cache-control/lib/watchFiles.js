@@ -57,11 +57,12 @@ export class WatchFiles extends EventEmitter{
     this.projectName = projectName;
     this.transforms = transforms;
     this.unsubscribes = [];
-    const db = firebase.app().firestore();
-    const projectRef = db.collection("applications").doc(projectName);
-    const collectionsRef = projectRef.collection("pages");
   }
   watch(){
+
+    const db = firebase.app().firestore();
+    const projectRef = db.collection("applications").doc(this.projectName);
+    const collectionsRef = projectRef.collection("pages");
     let aborts = {};
     this.unsubscribes.push(projectRef.onSnapshot( 
       (configSnapshot) => {
@@ -81,6 +82,11 @@ export class WatchFiles extends EventEmitter{
       },
       (e) => this.makeError("projectsSnapshot", e)
     ));
+    this.unsubscribes.push(()=>{
+      Object.keys(aborts).forEach((key)=>{
+        aborts[key].abort();
+      })
+    })
   }
 
   makeError(name, orig){

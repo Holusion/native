@@ -14,18 +14,20 @@ const collection = jest.fn((name) => {
         doc: jest.fn((projectName) => {
             return {
                 id: projectName,
-                collection: collection
+                collection: collection,
+                onSnapshot: jest.fn(()=>jest.fn()),
             }
         }),
         get: jest.fn(() => ({
             docs: docs,
             forEach: jest.fn((fn) => docs.forEach(fn))
-        }))
+        })),
+        onSnapshot: jest.fn(()=>jest.fn()),
     }
 });
 
 const ref = jest.fn((url) => ({
-    getMetadata: ()=>Promise.resolve({})
+    getMetadata: ()=>Promise.resolve({}),
 }));
 
 
