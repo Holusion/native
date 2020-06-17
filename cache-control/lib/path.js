@@ -1,5 +1,5 @@
-import {join} from "path";
 import fs from "filesystem";
+
 let _basePath;
 export const setBasePath = (p )=>{ 
   if(typeof p !== "string") throw new Error(`path must be a string. got ${typeof p} (in "setBasePath")`);
@@ -8,7 +8,7 @@ export const setBasePath = (p )=>{
 
 const getSuffix = (p)=>{
   if(!_basePath) throw new Error("basePath is not set. Please call setBasePath first");
-  return join(_basePath, p);
+  return `${_basePath}/${p}`;
 } 
 
 
