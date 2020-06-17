@@ -78,7 +78,7 @@ export class WatchFiles extends EventEmitter{
         if (aborts.items) aborts.items.abort();
         aborts.items = new AbortController();
         this.emit("progress", "Receiving updated pages");
-        this.onConfigSnapshot(projectsSnapshot, {signal: aborts.items.signal})
+        this.onProjectsSnapshot(projectsSnapshot, {signal: aborts.items.signal})
       },
       (e) => this.makeError("projectsSnapshot", e)
     ));
