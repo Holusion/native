@@ -175,6 +175,7 @@ describe("cache", function(){
         "utf8"
       );
     });
+
     it("CacheStage.closeAll() doesn't throw if cache can't be openned", async ()=>{
       fsMock.readFile.mockImplementationOnce(()=>Promise.reject({code: "ENOENT"}));
       expect(CacheStage.closeAll()).resolves.toBeUndefined();

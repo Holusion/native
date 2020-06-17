@@ -7,13 +7,22 @@ import {firebase as firebaseMock} from "firebase";
 
 describe("watchFiles", function(){
   let logMock;
+  let nowMock, randomMock
   beforeAll(()=>{
     logMock = jest.spyOn(global.console, "info");
     logMock.mockImplementation(()=>{});
+    nowMock = jest.spyOn(global.Date, "now");
+    nowMock.mockImplementation(()=> 1591002281997 )
+    randomMock = jest.spyOn(global.Math, "random");
+    randomMock.mockImplementation(()=>0.6312298070619418);
+
     setBasePath("/path/to/tmp");
+
   })
   afterAll(()=>{
     logMock.mockRestore();
+    nowMock.mockRestore();
+    randomMock.mockRestore();
   })
   beforeEach(()=>{
     jest.clearAllMocks();
@@ -234,9 +243,9 @@ describe("watchFiles", function(){
           if(!a.signal.aborted) a.abort();
           else{
             try{
-              expect(JSON.parse(contents["/path/to/tmp/storage/cache.json"])).toEqual({items:{
-                "/path/to/bar.mp4": "xxxxxx",
-              }});
+              let res = JSON.parse(contents["/path/to/tmp/storage/cache.json"]);
+              let name = Object.keys(res)[0];
+              expect(name).toEqual(expect.stringMatching(/items\.\w+\.\w+/));
               done();
             }catch(e){
               done(e);

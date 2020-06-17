@@ -39,6 +39,13 @@ describe("makeLocal", () => {
     await expect(makeLocal({ foo: "bar" })).resolves.toEqual([{ foo: "bar" }, new Map()]);
   })
 
+  it("can be cancelled", async () => {
+    const a = new AbortController();
+    let p = makeLocal({ foo: "bar" }, {signal: a.signal});
+    a.abort();
+    await expect(p).resolves.toEqual([{ foo: "bar" }, new Map()]);
+  })
+
   it("lists referenced files", async () => {
     await expect(makeLocal({
       foo: "gs://foo.appspot.com/bar.mp4",

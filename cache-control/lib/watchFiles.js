@@ -153,7 +153,8 @@ export class WatchFiles extends EventEmitter{
     try{
       await doGetFiles({cache, files, onProgress:(m)=>this.emit("progress", m), signal});
     }finally{
-      return cache.close().catch((e)=>{
+      //Only close cache if we were not aborted
+      return (signal && signal.aborted)? Promise.resolve(): cache.close().catch((e)=>{
         this.makeError("Failed to save cache : ", e);
       });
     }

@@ -54,9 +54,8 @@ export class CacheStage{
   }
 
   get id(){ return this._id};
-
+  static get lockName() { return "cache-file"}
   static async load(){
-    let content;
     try{
       return JSON.parse(await loadFile("cache.json"));
     } catch(e){
@@ -73,7 +72,7 @@ export class CacheStage{
   }
   async batch(b){
     if(this.closed) throw new Error("can not append files to cache after staging area has been closed");
-    return await lock.acquire("cache-file", async ()=>{
+    return await lock.acquire(CacheStage.lockName, async ()=>{
       Object.assign(this.files, b);
       let cache = await CacheStage.load();
       let mergedCache = Object.assign({}, cache, {[this.id]: this.files});
@@ -82,7 +81,7 @@ export class CacheStage{
     })
   }
   async close(){
-    return await lock.acquire("cache-file", async () => {
+    return await lock.acquire(CacheStage.lockName, async () => {
       let cache = await CacheStage.load();
       let stages = [], otherZones = {};
       for (let zone in cache){
@@ -95,13 +94,13 @@ export class CacheStage{
       let files = stages.sort().reduce((res, keyFiles)=>{
         return Object.assign(res, keyFiles);
       }, {});
-      //console.info("Closed cache file : ", JSON.stringify(Object.assign(otherZones, {[this.name]: files }), null, 2));
+      //console.info("Closed cache file : ", cache);
       await saveFile("cache.json", JSON.stringify(Object.assign(otherZones, {[this.name]: files }), null, 2));
     })
   }
 
   static async closeAll(){
-    return await lock.acquire("cache-file", async ()=>{
+    return await lock.acquire(CacheStage.lockName, async ()=>{
       let cache = await CacheStage.load();
       let stages = {}, otherZones = {};
       for (let zone in cache){
