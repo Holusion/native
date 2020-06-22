@@ -18,38 +18,6 @@ export async function transformSnapshot(transforms, snapshot){
   return [res, files];
 }
 
-async function doGetFiles({files, onProgress, signal, cache}){
-  let requiredFiles = [];
-  let cachedFiles = [];
-  for (let [dest, {src, hash}] of files.entries()){
-    const name = dest.split("/").slice(-1)[0];
-    const [localExists, localHash] = await Promise.all([
-      fs.exists(dest),
-      getCachedHash(dest)
-    ]);
-    if(!(localExists && localHash && localHash === hash)){
-      if(!localExists) console.info(`${dest} doesn't exists`);
-      else if(!localHash) console.info(`no cached hash for ${dest}`)
-      else console.info(`local hash for ${name} is ${localHash}. remote is ${hash}`);
-      requiredFiles.push({src, dest, hash});
-    }else{
-      cachedFiles.push({src, dest, hash});
-      //console.info(`cache for ${name} is up to date`);
-    }
-  }
-  
-  cache.batch(cachedFiles.reduce((res, {dest, hash})=> Object.assign(res, {[dest]: hash}), {}));
-
-  for(let index=0; index < requiredFiles.length; index++){
-    let {src, dest, hash} = requiredFiles[index];
-    onProgress(`GET ${src.split("/").slice(-1)[0]} (${index+1}/${requiredFiles.length})`);
-    await writeToFile(src, dest);
-    cache.set(dest, hash);
-    if (signal && signal.aborted) return;
-  }
-}
-
-
 
 export class WatchFiles extends EventEmitter{
   constructor({projectName, transforms=[makeLocal]}){
@@ -58,6 +26,7 @@ export class WatchFiles extends EventEmitter{
     this.transforms = transforms;
     this.unsubscribes = [];
   }
+
   watch(){
     const db = firebase.app().firestore();
     const projectRef = db.collection("applications").doc(this.projectName);
@@ -151,15 +120,51 @@ export class WatchFiles extends EventEmitter{
 
   async getFiles({cacheName, files, signal}){
     let cache = new CacheStage(cacheName);
+    let requiredFiles = [];
+    let cachedFiles = [];
     try{
-      await doGetFiles({cache, files, onProgress:(m)=>this.emit("progress", m), signal});
-    }finally{
-      //Only close cache if we were not aborted
-      return (signal && signal.aborted)? Promise.resolve(): cache.close().catch((e)=>{
+      for (let [dest, {src, hash}] of files.entries()){
+        const name = dest.split("/").slice(-1)[0];
+        const [localExists, localHash] = await Promise.all([
+          fs.exists(dest),
+          getCachedHash(dest)
+        ]);
+        if(!(localExists && localHash && localHash === hash)){
+          if(!localExists) console.info(`${dest} doesn't exists`);
+          else if(!localHash) console.info(`no cached hash for ${dest}`)
+          else console.info(`local hash for ${name} is ${localHash}. remote is ${hash}`);
+          requiredFiles.push({src, dest, hash});
+        }else{
+          cachedFiles.push({src, dest, hash});
+          //console.info(`cache for ${name} is up to date`);
+        }
+        cache.batch(cachedFiles.reduce((res, {dest, hash})=> Object.assign(res, {[dest]: hash}), {}));    
+      }  
+    }catch(e) {
+      //Errors during cache analysis are fatal
+      return (signal && signal.aborted)? Promise.resolve(): cache.close()
+      .finally(()=>{
         this.makeError("Failed to save cache : ", e);
       });
     }
+
+    for(let index=0; index < requiredFiles.length; index++){
+      let {src, dest, hash} = requiredFiles[index];
+      this.emit("progress", `GET ${src.split("/").slice(-1)[0]} (${index+1}/${requiredFiles.length})`);
+      try{
+        await writeToFile(src, dest);
+        cache.set(dest, hash);
+      }catch(e){
+        this.makeError("Failed to download file : " + e.message);
+      }
+      if (signal && signal.aborted) return;
+    }
+
+    await cache.close().catch((e)=>{
+      this.makeError("Failed to save cache : ", e);
+    });
   }
+
   
   close(){
     this.unsubscribes.forEach(fn => fn());

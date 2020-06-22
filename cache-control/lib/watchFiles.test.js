@@ -255,6 +255,17 @@ describe("watchFiles", function(){
         })
         wf.onProjectsSnapshot({docs:[p]}, {signal: a.signal});
       })
-    })
+
+      it("retrieves a list of files", async() => {
+        await expect(wf.getFiles({
+          cacheName:"foo", 
+          files: new Map([
+            ["/path/to/foo.mp4",{src: "gs://foo.mp4", hash: true}],
+            ["path/to/bar.mp4", {src: "gs://bar.mp4", hash: true}],
+          ])
+        })).resolves.toBeUndefined();
+      })
+    });
+
   })
 });
