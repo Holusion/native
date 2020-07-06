@@ -1,6 +1,5 @@
 
 import fs from "filesystem";
-
 import {storagePath, mediasPath} from "./path";
 import {loadFile, lock, FileError, saveFile} from "./readWrite";
 
@@ -132,22 +131,23 @@ async function doClean(dir, flatList){
     throw e;
   }
   for (let file of localFiles) {
+    const filepath = file.path? file.path : `${dir}/${file.name}`;
     //console.log("Checking local file : ", file);
     if (file.isDirectory()) {
-      if (flatList.filter(path => path.indexOf(file.path) === 0).length == 0) {
+      if (flatList.filter(path => path.indexOf(filepath) === 0).length == 0) {
         //No file has this prefix
-        await fs.rmdir(file.path); // unlike node's unlink, this works recursively
-        unlinked.push(file.path);
+        await fs.rmdir(filepath); // unlike node's unlink, this works recursively
+        unlinked.push(filepath);
       } else {
-        let [other_unlinked, other_kept] = await doClean(file.path, flatList);
+        let [other_unlinked, other_kept] = await doClean(filepath, flatList);
         unlinked.push(...other_unlinked);
         kept.push(...other_kept);
       }
-    } else if (flatList.indexOf(file.path) == -1) {
-      await fs.unlink(file.path);
-      unlinked.push(file.path);
+    } else if (flatList.indexOf(filepath) == -1) {
+      await fs.unlink(filepath);
+      unlinked.push(filepath);
     }else{
-      kept.push(file.path);
+      kept.push(filepath);
     }
   }
   return [unlinked, kept];

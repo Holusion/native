@@ -1,5 +1,5 @@
 jest.mock("./path");
-import {storagePath} from "./path";
+import {storagePath, mediasPath} from "./path";
 import fsMock from "filesystem";
 
 import {cleanup, getCachedHash, getCacheFiles, CacheStage} from "./cache"
@@ -9,6 +9,7 @@ import {cleanup, getCachedHash, getCacheFiles, CacheStage} from "./cache"
 describe("cache", function(){
   beforeAll(()=>{
     storagePath.mockImplementation(() => "/some/path");
+    mediasPath.mockImplementation(() => "/some/path");
     fsMock.readFile.mockImplementation(()=>Promise.resolve(JSON.stringify({ "/path/to/bar.mp4": "xxxxxx" })));
   })
   afterEach(()=>{
@@ -65,11 +66,27 @@ describe("cache", function(){
         { path: "/foo/bar.mp4", isDirectory: ()=> false }
       ])
       fsMock.unlink.mockReset();
-      await expect(cleanup()).resolves.toEqual([["/foo/bar.mp4"], ["/foo/cache.json"]]);
+      await expect(cleanup("/foo")).resolves.toEqual([["/foo/bar.mp4"], ["/foo/cache.json"]]);
       expect(fsMock.unlink).toHaveBeenCalledTimes(1);
       expect(fsMock.unlink).toHaveBeenCalledWith("/foo/bar.mp4");
     })
-  
+    
+    it("deletes stale files (with nodejs's Dirent objects)", async function(){
+      // Dirent objects have no "path" property
+      // https://nodejs.org/api/fs.html#fs_class_fs_dirent
+      fsMock.readFile.mockResolvedValue(JSON.stringify({
+        local: {"/foo/cache.json": true}
+      }))
+      fsMock.readdir.mockResolvedValueOnce([
+        { name: "cache.json", isDirectory: ()=> false },
+        { name: "bar.mp4", isDirectory: ()=> false }
+      ])
+      fsMock.unlink.mockReset();
+      await expect(cleanup("/foo")).resolves.toEqual([["/foo/bar.mp4"], ["/foo/cache.json"]]);
+      expect(fsMock.unlink).toHaveBeenCalledTimes(1);
+      expect(fsMock.unlink).toHaveBeenCalledWith("/foo/bar.mp4");
+    })
+
     it("delete whole directories", async function(){
       fsMock.readFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/cache.json": true}
