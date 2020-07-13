@@ -1,7 +1,11 @@
 
 import fs from "filesystem";
+import AsyncLock from 'async-lock';
+
 import {storagePath, mediasPath} from "./path";
-import {loadFile, lock, FileError, saveFile} from "./readWrite";
+import {loadFile, FileError, saveFile} from "./readWrite";
+
+const lock = new AsyncLock({ });
 
 
 export const localFiles = ()=> new Map([
@@ -93,7 +97,7 @@ export class CacheStage{
       let files = stages.sort().reduce((res, keyFiles)=>{
         return Object.assign(res, keyFiles);
       }, {});
-      //console.info("Closed cache file : ", cache);
+      //console.log("Closed cache file from ", cache, "to", Object.assign(otherZones, {[this.name]: files }));
       await saveFile("cache.json", JSON.stringify(Object.assign(otherZones, {[this.name]: files }), null, 2));
     })
   }

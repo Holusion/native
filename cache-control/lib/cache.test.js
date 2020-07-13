@@ -1,27 +1,47 @@
 jest.mock("./path");
 import {storagePath, mediasPath} from "./path";
+
 import fsMock from "filesystem";
+
+jest.mock('./readWrite');
+
+import {loadFile, saveFile, lock} from "./readWrite";
 
 import {cleanup, getCachedHash, getCacheFiles, CacheStage} from "./cache"
 
 
 
 describe("cache", function(){
+  let files;
   beforeAll(()=>{
+    lock.acquire.mockImplementation((name, cb)=> cb());
     storagePath.mockImplementation(() => "/some/path");
     mediasPath.mockImplementation(() => "/some/path");
-    fsMock.readFile.mockImplementation(()=>Promise.resolve(JSON.stringify({ "/path/to/bar.mp4": "xxxxxx" })));
   })
-  afterEach(()=>{
-    jest.clearAllMocks();
-  })
+  beforeEach(()=>{
+    files = {"cache.json": JSON.stringify({ }, null, 2)};
+    loadFile.mockReset();
+    loadFile.mockImplementation((name)=> {
+      if(!files[name]){
+        let e = new Error("No such file or directory");
+        e.code = "ENOENT";
+        return Promise.reject(e);
+      }
+      return Promise.resolve(files[name]);
+    });
+    saveFile.mockReset();
+    saveFile.mockImplementation((name, data)=>{
+      files[name] = data;
+      return Promise.resolve();
+    });
+  });
 
   describe("getCacheFiles()", function(){
 
     it("don't throw if file doesn't exist", async()=>{
       const e = new Error("Error ENOENT : no such file or directory");
       e.code = "ENOENT";
-      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      loadFile.mockImplementationOnce(()=>Promise.reject(e));
       await expect(getCacheFiles()).resolves.toEqual(new Map([
         ["/some/path/cache.json", true],
         ["/some/path/data.json", true],
@@ -31,16 +51,20 @@ describe("cache", function(){
     it("throw if file isn't readable", async()=>{
       const e = new Error("Error EACCESS : user doesn't have permission to read file");
       e.code = "EACCESS";
-      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      loadFile.mockImplementationOnce(()=>Promise.reject(e));
       await expect(getCacheFiles()).rejects.toThrow(Error);
     });
     it("throw if JSON  is invalid", async ()=>{
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve("some invalid JSON"));
+      loadFile.mockImplementationOnce(()=>Promise.resolve(JSON.parse("foo{is invalid}")));
       await expect(getCacheFiles()).rejects.toThrow(Error);
     });
   })
 
   describe("cleanup()", function(){
+    beforeEach(()=>{
+      fsMock.readdir.mockClear();
+      fsMock.unlink.mockClear();
+    })
     it("throws error with code == ENOENT if directory does not exist", ()=>{
       const e = new Error("Error ENOENT : file doesn't exists");
       e.code = "ENOENT";
@@ -48,7 +72,7 @@ describe("cache", function(){
       return expect(cleanup()).rejects.toThrow(expect.objectContaining({code: "ENOENT"}));
     })
     it("reads cache file", async function(){
-      fsMock.readFile.mockResolvedValue(JSON.stringify({
+      loadFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/cache.json": true}
       }))
       fsMock.readdir.mockResolvedValueOnce([
@@ -58,14 +82,13 @@ describe("cache", function(){
     })
   
     it("deletes stale files", async function(){
-      fsMock.readFile.mockResolvedValue(JSON.stringify({
+      loadFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/cache.json": true}
       }))
       fsMock.readdir.mockResolvedValueOnce([
         { path: "/foo/cache.json", isDirectory: ()=> false },
         { path: "/foo/bar.mp4", isDirectory: ()=> false }
       ])
-      fsMock.unlink.mockReset();
       await expect(cleanup("/foo")).resolves.toEqual([["/foo/bar.mp4"], ["/foo/cache.json"]]);
       expect(fsMock.unlink).toHaveBeenCalledTimes(1);
       expect(fsMock.unlink).toHaveBeenCalledWith("/foo/bar.mp4");
@@ -74,7 +97,7 @@ describe("cache", function(){
     it("deletes stale files (with nodejs's Dirent objects)", async function(){
       // Dirent objects have no "path" property
       // https://nodejs.org/api/fs.html#fs_class_fs_dirent
-      fsMock.readFile.mockResolvedValue(JSON.stringify({
+      loadFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/cache.json": true}
       }))
       fsMock.readdir.mockResolvedValueOnce([
@@ -88,7 +111,7 @@ describe("cache", function(){
     })
 
     it("delete whole directories", async function(){
-      fsMock.readFile.mockResolvedValue(JSON.stringify({
+      loadFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/cache.json": true}
       }));
       fsMock.readdir.mockResolvedValueOnce([
@@ -101,7 +124,7 @@ describe("cache", function(){
       expect(fsMock.rmdir).toHaveBeenCalledWith("/foo/bar");
     })
     it("recurse in directories", async function(){
-      fsMock.readFile.mockResolvedValue(JSON.stringify({
+      loadFile.mockResolvedValue(JSON.stringify({
         local: {"/foo/bar/test1.mp4": true}
       }))
       fsMock.readdir.mockResolvedValueOnce([
@@ -132,24 +155,24 @@ describe("cache", function(){
 
     it("don't throw if cache file is invalid", async ()=>{
       warnMock.mockImplementationOnce(()=>{});
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve("some invalid JSON"));
+      loadFile.mockImplementationOnce(()=>Promise.resolve("some invalid JSON"));
       await expect(getCachedHash("foo")).resolves.toBeUndefined();
       expect(warnMock).toHaveBeenCalledTimes(1);
     });
     it("will match data files even if cache.json has an error", async() =>{
       warnMock.mockImplementationOnce(()=>{});
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve("[]some invalid JSON"));
+      loadFile.mockImplementationOnce(()=>Promise.resolve("[]some invalid JSON"));
       await expect(getCachedHash("/some/path/data.json")).resolves.toBe(true);
       expect(warnMock).toHaveBeenCalledTimes(1);
       warnMock.mockRestore();
     });
 
     it("will match cached files", async() =>{
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
+      loadFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
       await expect(getCachedHash("/something/bar.mp4")).resolves.toBe("xxxxxxxx");
     });
     it("will return null if file is not cached", async() =>{
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
+      loadFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({items: {"/something/bar.mp4":"xxxxxxxx"}})));
       await expect(getCachedHash("/something/foofoo.mp4")).resolves.toBeUndefined();
     });
   });
@@ -174,22 +197,21 @@ describe("cache", function(){
     it("can close if nothing was added", async ()=>{
       const s = new CacheStage("foo");
       await expect(s.close()).resolves.toBeUndefined();
-      expect(fsMock.writeFile).toHaveBeenCalled();
+      expect(saveFile).toHaveBeenCalled();
     });
     
     it("can consolidate cache", async () => {
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({
+      loadFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({
         "foo":{"baz.mp4":"vvvvvvvv"},
         "foo.kaw9ohl9.mq2nolyvzee": {"foo.mp4": "wwwwwwww","foofoo.mp4":"xxxxxxxx"},
         "bar.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "yyyyyyyy","barbar.mp4":"zzzzzzzz"}
       }, null, 2)));
       await expect(CacheStage.closeAll()).resolves.toBeUndefined();
-      expect(fsMock.writeFile).toHaveBeenCalledWith("/some/path/cache.json", 
+      expect(saveFile).toHaveBeenCalledWith("cache.json", 
         JSON.stringify({
           "foo":{"foo.mp4": "wwwwwwww","foofoo.mp4":"xxxxxxxx"},
           "bar": {"bar.mp4": "yyyyyyyy","barbar.mp4":"zzzzzzzz"},
-        }, null, 2), 
-        "utf8"
+        }, null, 2)
       );
     });
 
@@ -199,19 +221,18 @@ describe("cache", function(){
     })
 
     it("CacheStage.closeAll() will merge all pending writes", async ()=>{
-      fsMock.readFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({
+      loadFile.mockImplementationOnce(()=>Promise.resolve(JSON.stringify({
         "items": {},
         "items.kaw9ohl9.mq2nolyvzee": {"/path/to/bar.mp4": "xxxxxx"},
         "items.kaw9ohl9.mq2nolyvzef": {"/path/to/baz.mp4": "yyyyyy"},
       })));
       await expect(CacheStage.closeAll()).resolves.toBeUndefined();
-      expect(fsMock.writeFile).toHaveBeenCalledWith(
-        "/some/path/cache.json", 
+      expect(saveFile).toHaveBeenCalledWith(
+        "cache.json", 
         JSON.stringify({items:{
           "/path/to/bar.mp4":"xxxxxx",
           "/path/to/baz.mp4": "yyyyyy"
-        }}, null, 2),
-        "utf8"
+        }}, null, 2)
       )
     })
 
@@ -231,7 +252,7 @@ describe("cache", function(){
       warnMock.mockImplementationOnce(()=>{});
       const e = new Error("EACCESS : user doesn't have permission to read file");
       e.code = "EACCESS";
-      fsMock.readFile.mockImplementationOnce(()=>Promise.reject(e));
+      loadFile.mockImplementationOnce(()=>Promise.reject(e));
       await expect(CacheStage.load()).resolves.toEqual({});
       expect(warnMock).toHaveBeenCalledTimes(1);
       warnMock.mockRestore();
@@ -240,52 +261,49 @@ describe("cache", function(){
     describe("normal lifecycle", function(){
       let s;
       beforeEach(()=>{
-        fsMock.readFile.mockReset();
-        fsMock.writeFile.mockReset();
-        fsMock.readFile.mockImplementationOnce(()=> Promise.resolve(JSON.stringify({"foo": {"baz.mp4": "wwwwwwww"}})))
-        fsMock.writeFile.mockImplementation((_, data)=>{
-          fsMock.readFile.mockImplementation(()=>Promise.resolve(data));
-          return Promise.resolve()
-        });
         s = new CacheStage("foo");
       })
-      
 
       it("can add a file to stage", async ()=>{
-        expect(fsMock.writeFile).not.toHaveBeenCalled();
+        files["cache.json"] = JSON.stringify({"foo":{"baz.mp4":"wwwwwwww"}});
+        expect(saveFile).not.toHaveBeenCalled();
         await expect(s.set("bar.mp4", "xxxxxxxx")).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(1,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
             "foo":{"baz.mp4":"wwwwwwww"},
             "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"}
-          }, null, 2), 
-          "utf8"
+          }, null, 2)
         );
       });
 
       it("can append files synchronously", async ()=>{
+        files["cache.json"] = JSON.stringify({"foo":{"baz.mp4":"wwwwwwww"}, "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"}});
+
         await expect(s.set("bar.mp4", "xxxxxxxx")).resolves.toBeUndefined();
         await expect(s.set("barbar.mp4", "yyyyyyyy")).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(2,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
             "foo":{"baz.mp4":"wwwwwwww"},
             "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx","barbar.mp4":"yyyyyyyy"}
-          }, null, 2), 
-          "utf8"
+          }, null, 2),
         );
       });
+
       it("can close staging area", async ()=>{
+        files["cache.json"] = JSON.stringify({
+          "foo":{"baz.mp4":"wwwwwwww"},
+          "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx","barbar.mp4":"yyyyyyyy"}
+        }, null, 2);
         await expect(s.set("bar.mp4", "xxxxxxxx")).resolves.toBeUndefined();
         await expect(s.set("barbar.mp4", "yyyyyyyy")).resolves.toBeUndefined();
         await expect(s.close()).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(3,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
             "foo":{"bar.mp4": "xxxxxxxx","barbar.mp4":"yyyyyyyy"},
-          }, null, 2), 
-          "utf8"
+          }, null, 2)
         );
       });
     });
@@ -293,57 +311,60 @@ describe("cache", function(){
     describe("cancel lifecycle", function(){
       let s1, s2;
       beforeAll(()=>{
-        fsMock.readFile.mockImplementationOnce(()=> Promise.resolve(JSON.stringify({"foo": {"baz.mp4": "wwwwwwww"}})))
-        fsMock.writeFile.mockImplementation((_, data)=>{
-          fsMock.readFile.mockImplementation(()=>Promise.resolve(data));
-          return Promise.resolve()
-        });
         s1 = new CacheStage("foo");
         nowMock.mockImplementationOnce(()=>1591004981354);
         s2 = new CacheStage("foo");
       })
-      afterAll(()=>{
-        fsMock.mockReset();
-      })
+
       it("stages have different IDs", function(){
         expect(s1.id).not.toEqual(s2.id);
       })
 
       it("can add a file to first staging zone", async ()=>{
+        files["cache.json"] = '{}';
         await expect(s1.set("bar.mp4", "xxxxxxxx")).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(1,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
-            "foo":{"baz.mp4":"wwwwwwww"},
             "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"}
-          }, null, 2), 
-          "utf8"
+          }, null, 2)
         );
       });
 
       it("can add a file to second staging zone", async ()=>{
+        files["cache.json"] = JSON.stringify({
+          "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"}
+        }, null, 2);
+
         await expect(s2.set("barbar.mp4", "yyyyyyyy")).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(1,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
-            "foo":{"baz.mp4":"wwwwwwww"},
             "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"},
             "foo.kawbacfe.mq2nolyvzee": {
               "barbar.mp4": "yyyyyyyy"
             }
-          }, null, 2), 
-          "utf8"
+          }, null, 2)
         );
       });
 
       it("can close staging area", async ()=>{
+        files["cache.json"] = JSON.stringify({
+          "foo.kaw9ohl9.mq2nolyvzee": {"bar.mp4": "xxxxxxxx"},
+          "foo.kawbacfe.mq2nolyvzee": {
+            "barbar.mp4": "yyyyyyyy"
+          }
+        }, null, 2);
+
         await expect(s2.close()).resolves.toBeUndefined();
-        expect(fsMock.writeFile).toHaveBeenNthCalledWith(1,
-          "/some/path/cache.json", 
+        expect(saveFile).toHaveBeenLastCalledWith(
+          "cache.json", 
           JSON.stringify({
-            "foo":{"bar.mp4": "xxxxxxxx","barbar.mp4":"yyyyyyyy"},
-          }, null, 2), 
-          "utf8"
+            "foo":{
+              "bar.mp4": "xxxxxxxx",
+              "barbar.mp4": "yyyyyyyy"
+            },
+          }, null, 2)
         );
       });
     });

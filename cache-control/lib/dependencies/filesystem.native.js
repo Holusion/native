@@ -10,4 +10,5 @@ export default {
   mkdir: (path)=> RNFS.mkdir(path),
   readFile: RNFS.readFile,
   writeFile: RNFS.writeFile,
+  rename: RNFS.moveFile,
 }

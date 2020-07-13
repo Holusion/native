@@ -10,4 +10,5 @@ export default {
   mkdir: (path)=> fs.mkdir(path, {recursive:true}),
   readFile: fs.readFile,
   writeFile: fs.writeFile,
+  rename: fs.rename,
 }

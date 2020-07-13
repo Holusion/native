@@ -24,7 +24,8 @@ export async function saveFile(name, data) {
   await lock.acquire(`${name}-rw`, async () => {
     try {
       //console.log("write ", data, "to", `${storagePath()}/${name}`);
-      await fs.writeFile(`${storagePath()}/${name}`, data, 'utf8');
+      await fs.writeFile(`${storagePath()}/~${name}`, data, 'utf8');
+      await fs.rename(`${storagePath()}/~${name}`, `${storagePath()}/${name}`);
     } catch (e) {
       throw new FileError(`${storagePath()}/${name}`, e.message);
     }

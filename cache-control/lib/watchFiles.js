@@ -36,7 +36,6 @@ export class WatchFiles extends EventEmitter{
       (configSnapshot) => {
         if (aborts.config) aborts.config.abort(); //Cancel any previous run
         aborts.config = new AbortController();
-        this.emit("progress", "Receiving updated configuration");
         this.onConfigSnapshot(configSnapshot, {signal: aborts.config.signal})
       },
       (e) => this.makeError("configSnapshot", e)
@@ -46,7 +45,6 @@ export class WatchFiles extends EventEmitter{
       (projectsSnapshot) => {
         if (aborts.items) aborts.items.abort();
         aborts.items = new AbortController();
-        this.emit("progress", "Receiving updated pages");
         this.onProjectsSnapshot(projectsSnapshot, {signal: aborts.items.signal})
       },
       (e) => this.makeError("projectsSnapshot", e)
@@ -68,6 +66,7 @@ export class WatchFiles extends EventEmitter{
   }
 
   onConfigSnapshot(configSnapshot, {signal}={}){
+    this.emit("progress", "Receiving updated configuration");
     transformSnapshot(this.transforms, configSnapshot)
     .then(async ([config, files])=>{
       try {
@@ -93,6 +92,7 @@ export class WatchFiles extends EventEmitter{
   }
 
   onProjectsSnapshot(projectsSnapshot, {signal}={}){
+    this.emit("progress", "Receiving updated pages");
     Promise.all(projectsSnapshot.docs.map(p => transformSnapshot(this.transforms, p)))
     .then(async (projects)=>{
       let items = {};

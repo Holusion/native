@@ -17,7 +17,6 @@ describe("watchFiles", function(){
     randomMock.mockImplementation(()=>0.6312298070619418);
 
     setBasePath("/path/to/tmp");
-
   })
   afterAll(()=>{
     logMock.mockRestore();
@@ -186,21 +185,8 @@ describe("watchFiles", function(){
     })
 
     describe("cache management", function(){
-      let contents;
       beforeEach(()=>{
-        contents = {};
-        fsMock.readFile.mockImplementation((path)=>{
-          if(!contents[path]){
-            let e = new Error(`${path} not found`);
-            e.code = "ENOENT";
-            return Promise.reject(e);
-          }
-          return Promise.resolve(contents[path]);
-        })
-        fsMock.writeFile.mockImplementation((path, data)=>{
-          contents[path] = data;
-          return Promise.resolve();
-        })
+        
       })
 
       it("save cache", function(done){
@@ -216,10 +202,13 @@ describe("watchFiles", function(){
         wf.on("error", done);
         wf.on("dispatch", ()=> {
           try{
-            expect(JSON.parse(contents["/path/to/tmp/storage/cache.json"])).toEqual({items:{
+            expect(JSON.parse(fsMock.contents["/path/to/tmp/storage/cache.json"])).toEqual({
+              config: {},
+              items:{
               "/path/to/bar.mp4": "xxxxxx",
               "/path/to/baz.mp4": "yyyyyy"
-            }});
+              }
+            });
             done();
           }catch(e){
             done(e);
@@ -244,9 +233,8 @@ describe("watchFiles", function(){
           if(!a.signal.aborted) a.abort();
           else{
             try{
-              let res = JSON.parse(contents["/path/to/tmp/storage/cache.json"]);
-              let name = Object.keys(res)[0];
-              expect(name).toEqual(expect.stringMatching(/items\.\w+\.\w+/));
+              let res = JSON.parse(fsMock.contents["/path/to/tmp/storage/cache.json"]);
+              expect(Object.keys(res)).toEqual(["config", "items"]);
               done();
             }catch(e){
               done(e);
