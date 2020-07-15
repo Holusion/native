@@ -8,10 +8,23 @@ Uses specific dependencies for electron/react-native applications to manage file
 
 platform-specific dependencies are not provided as npmjs doesn't provide a mechanism to do so. They are :
 
-Electron / nodejs :
+Electron :
 
 ```
     @firebase/app @firebase/storage
+```
+Node : 
+```
+    @firebase/app @firebase/storage
+    #Those ones only if upload is used
+    node-fetch
+    abort-controller
+    formdata-node
+```
+node users should also define fetch, AbortController and FormData into the global scope :
+```
+global.fetch = require("node-fetch");
+etc...
 ```
 
 react-native :

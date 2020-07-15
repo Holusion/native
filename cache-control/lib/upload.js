@@ -1,5 +1,4 @@
 import fs from "filesystem";
-import fetch from "fetch";
 
 import {FileError} from "./readWrite";
 

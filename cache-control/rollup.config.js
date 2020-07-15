@@ -13,7 +13,6 @@ export default [
 			alias({entries:[
 				{find: "filesystem", replacement: "./lib/dependencies/filesystem.node.js"},
 				{find: "firebase", replacement: "./lib/dependencies/firebase.node.js"},
-				{find: "fetch", replacement: "./lib/dependencies/fetch.js"},
 				{find: "writeToFile", replacement: "./lib/dependencies/writeToFile.node.js"},
 			]}),
 			resolve({mainFields:["main", "module"]}),
@@ -39,7 +38,6 @@ export default [
 			alias({entries:[
 				{find: "filesystem", replacement: "./lib/dependencies/filesystem.native.js"},
 				{find: "firebase", replacement: "./lib/dependencies/firebase.native.js"},
-				{find: "fetch", replacement: "./lib/dependencies/fetch.js"},
 				{find: "writeToFile", replacement: "./lib/dependencies/writeToFile.native.js"},
 				{find: "events", replacement: "./lib/dependencies/events.native.js"}
 			]}),

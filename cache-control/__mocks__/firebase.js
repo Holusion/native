@@ -37,7 +37,9 @@ export const storage = jest.fn(() => ({
 }));
 
 export const firestore = jest.fn(() => ({
-  collection: collection
+  collection: collection,
+  enableNetwork: jest.fn(()=>Promise.resolve()),
+  disableNetwork: jest.fn(()=>Promise.resolve()),
 }));
 
 export const app = ()=>({

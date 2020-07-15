@@ -21,13 +21,19 @@
     "@rollup/plugin-babel": "^5.0.3",
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.0.1",
+    "abort-controller": "^3.0.0",
     "async-lock": "^1.2.4",
+    "formdata-node": "^2.2.1",
     "jest": "^26.0.1",
     "jest-fetch-mock": "^3.0.3",
     "rollup": "^2.16.1",
     "rollup-jest": "0.0.2"
   },
   "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/__mocks__/setupTests.js"
+    ],
     "transform": {
       "^.+\\.m?jsx?$": "babel-jest"
     },

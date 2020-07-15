@@ -20,14 +20,24 @@ export async function transformSnapshot(transforms, snapshot){
 
 
 export class WatchFiles extends EventEmitter{
-  constructor({projectName, transforms=[makeLocal]}){
+  constructor({projectName, transforms=[makeLocal], idleTimeout}){
     super();
     this.projectName = projectName;
     this.transforms = transforms;
+    this.idleTimeout = idleTimeout;
+    this.idleInterval = null;
+    this.on("progress", ()=>{
+      if(this.idleInterval) this.idleInterval.refresh();
+    })
     this.unsubscribes = [];
   }
-
+  get isConnected(){
+    return 0 < this.unsubscribes.length;
+  }
   watch(){
+    if(0 < this.unsubscribes.length){
+      console.warn("WatchFiles.watch() called while subscriptions are still active. This is probably a memory leak");
+    }
     const db = firebase.app().firestore();
     const projectRef = db.collection("applications").doc(this.projectName);
     const collectionsRef = projectRef.collection("pages");
@@ -55,6 +65,18 @@ export class WatchFiles extends EventEmitter{
         aborts[key].abort();
       })
     })
+
+    if(typeof this.idleTimeout === "number" && 0 < this.idleTimeout){
+      this.idleInterval = setInterval(()=>{
+        this.close();
+      }, this.idleTimeout);
+      //In a browser, idleInterval is just a number while in nodejs it's a Timeout object
+      if(typeof this.idleInterval.unref === "function") this.idleInterval.unref();
+      this.unsubscribes.push(()=>{
+        clearInterval(this.idleInterval)
+        this.idleInterval = null;
+      });
+    }
   }
 
   makeError(name, orig){

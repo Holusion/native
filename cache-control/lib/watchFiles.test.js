@@ -60,11 +60,48 @@ describe("watchFiles", function(){
       ]);
     });
   });
-  it("can open and close DB callbacks", function(){
+  describe("check for memory leaks", ()=>{
+    let warnMock;
+    beforeAll(()=>{
+      warnMock = jest.spyOn(global.console, "warn");
+      warnMock.mockImplementation(()=>{});
+    })
+    beforeEach(()=>{
+      warnMock.mockClear()
+    })
+    afterAll(()=>{
+      warnMock.mockRestore();
+    })
 
-    let wf = new WatchFiles({projectName: "foo", transforms: []});
-    expect(()=>wf.watch()).not.toThrow(Error);
-    expect(()=>wf.close()).not.toThrow(Error);
+    it("can open and close DB callbacks", function(){
+      let wf = new WatchFiles({projectName: "foo", transforms: []});
+      expect(wf).toHaveProperty("isConnected", false);
+      expect(()=>wf.watch()).not.toThrow(Error);
+      expect(wf).toHaveProperty("isConnected", true);
+      expect(()=>wf.close()).not.toThrow(Error); 
+      expect(wf).toHaveProperty("isConnected", false);
+      expect(()=>wf.watch()).not.toThrow(Error);
+      expect(()=>wf.close()).not.toThrow(Error);
+      expect(wf.unsubscribes.length).toEqual(0);
+      expect(warnMock).not.toHaveBeenCalled();
+    })
+    it("cancels listeners after a timeout", function(){
+      jest.useFakeTimers()
+      let wf = new WatchFiles({projectName: "foo", transforms: [], idleTimeout:100});
+      expect(()=>wf.watch()).not.toThrow(Error);
+      expect(wf).toHaveProperty("isConnected", true);
+      jest.advanceTimersByTime(100);
+      expect(wf).toHaveProperty("isConnected", false);
+    })
+    it("Emit a warning for trivial memory leaks", function(){
+      let wf = new WatchFiles({projectName: "foo", transforms: []});
+      expect(()=>wf.watch()).not.toThrow(Error);
+      expect(warnMock).not.toHaveBeenCalled();
+      expect(()=>wf.watch()).not.toThrow(Error);
+      expect(warnMock).toHaveBeenCalledTimes(1);
+      expect(warnMock).toHaveBeenCalledWith(expect.stringMatching("memory leak"));
+    });
+
   })
 
   describe("onSnapshot callbacks", function(){
