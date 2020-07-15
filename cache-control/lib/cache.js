@@ -103,6 +103,7 @@ export class CacheStage{
   }
 
   static async closeAll(){
+    //Close all unmerged cache zones but do not evict anything from cache
     return await lock.acquire(CacheStage.lockName, async ()=>{
       let cache = await CacheStage.load();
       let stages = {}, otherZones = {};
@@ -116,8 +117,14 @@ export class CacheStage{
         }
       }
       let closures = Object.keys(stages).reduce((res, key)=>{
-        return Object.assign(res, {[key]: stages[key].sort().reduce((r, k)=> Object.assign(r, k), {})})
+        let keyStages = stages[key].sort();
+        if(otherZones[key]){
+          keyStages = [otherZones[key], ...keyStages];
+        }
+
+        return Object.assign(res, {[key]: keyStages.reduce((r, k)=> Object.assign(r, k), {})})
       }, {});
+
       await saveFile("cache.json", JSON.stringify(Object.assign(otherZones,  closures), null, 2));
     });
   }
@@ -159,7 +166,7 @@ async function doClean(dir, flatList){
 
 export async function cleanup(dir = mediasPath()) {
   return await lock.acquire("cleanup", async () => {
-    await CacheStage.closeAll();
+    await CacheStage.closeAll(); //Close all stages but do not evict anything from cache
     const flatList = Array.from((await getCacheFiles()).keys());
     let res =  await doClean(dir, flatList);
     return res;

@@ -209,7 +209,7 @@ describe("cache", function(){
       await expect(CacheStage.closeAll()).resolves.toBeUndefined();
       expect(saveFile).toHaveBeenCalledWith("cache.json", 
         JSON.stringify({
-          "foo":{"foo.mp4": "wwwwwwww","foofoo.mp4":"xxxxxxxx"},
+          "foo":{"baz.mp4": "vvvvvvvv", "foo.mp4": "wwwwwwww", "foofoo.mp4":"xxxxxxxx"},
           "bar": {"bar.mp4": "yyyyyyyy","barbar.mp4":"zzzzzzzz"},
         }, null, 2)
       );
