@@ -39,7 +39,6 @@ export default [
 				{find: "filesystem", replacement: "./lib/dependencies/filesystem.native.js"},
 				{find: "firebase", replacement: "./lib/dependencies/firebase.native.js"},
 				{find: "writeToFile", replacement: "./lib/dependencies/writeToFile.native.js"},
-				{find: "events", replacement: "./lib/dependencies/events.native.js"}
 			]}),
 			resolve({mainFields:["main", "module"]}),
 			commonjs(),

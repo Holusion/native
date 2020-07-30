@@ -4,6 +4,8 @@
   "private": false,
   "description": "cache control algorithm for content.holusion.net applications",
   "main": "dist/cache-control.js",
+  "browser":"dist/cache-control-native.js",
+  "react-native": "dist/cache-control-native.js",
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
