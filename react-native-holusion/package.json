@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^2.1.0",
+    "@holusion/cache-control": "^2.2.0-beta.0",
     "Base64": "^1.0.2",
     "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",
@@ -65,5 +65,5 @@
   "scripts": {
     "test": "jest ./lib"
   },
-  "version": "2.0.0"
+  "version": "3.0.0-beta.0"
 }

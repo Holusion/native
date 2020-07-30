@@ -1,10 +1,10 @@
 {
   "name": "@holusion/cache-control",
-  "version": "2.1.0",
+  "version": "2.2.0-beta.0",
   "private": false,
   "description": "cache control algorithm for content.holusion.net applications",
   "main": "dist/cache-control.js",
-  "browser":"dist/cache-control-native.js",
+  "browser": "dist/cache-control-native.js",
   "react-native": "dist/cache-control-native.js",
   "scripts": {
     "test": "jest",
