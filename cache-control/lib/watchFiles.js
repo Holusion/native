@@ -35,7 +35,7 @@ export class WatchFiles extends EventEmitter{
     return 0 < this.unsubscribes.length;
   }
   watch(){
-    if(0 < this.unsubscribes.length){
+    if(this.isConnected){
       console.warn("WatchFiles.watch() called while subscriptions are still active. This is probably a memory leak");
     }
     const db = firebase.app().firestore();
