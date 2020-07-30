@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@holusion/cache-control": "^2.1.0",
     "Base64": "^1.0.2",
     "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",
@@ -14,9 +15,9 @@
   "description": "react native api for holusion app",
   "devDependencies": {
     "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.5.5",
+    "@babel/runtime": "^7.6.2",
     "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/auth": "^6.3.4",
@@ -24,9 +25,9 @@
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
     "babel-jest": "^24.9.0",
-    "jest": "^24.9.0",
+    "jest": "^26.1.0",
     "jest-fetch-mock": "^3.0.3",
-    "metro-react-native-babel-preset": "^0.56.0",
+    "metro-react-native-babel-preset": "^0.61.0",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
@@ -38,7 +39,7 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!react-native|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native)"
+      "node_modules/(?!react-native|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
     ],
     "setupFiles": [
       "./setupJest.js"

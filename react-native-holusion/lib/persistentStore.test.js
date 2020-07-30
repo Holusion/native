@@ -1,6 +1,6 @@
-jest.mock("./files");
+
 import {persistentStore, configureStore} from "./persistentStore";
-import * as filesMock from "./files";
+import * as filesMock from "@holusion/cache-control";
 import { setProjectName } from "./actions";
 
 

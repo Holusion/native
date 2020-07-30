@@ -1,11 +1,10 @@
 'use strict';
 
-import { saveFile, loadFile, cleanup, filename } from "./files";
+import { saveFile, loadFile, cleanup, filename } from "@holusion/cache-control";
 import { setData, addTask, updateTask, setConf } from "./actions";
 
 import { createStore } from 'redux'
 import reducers from "./reducers";
-
 
 
 

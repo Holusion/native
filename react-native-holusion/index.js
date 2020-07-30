@@ -1,6 +1,6 @@
 'use strict';
 import netScan from "./lib/netScan";
-import * as files from "./lib/files";
+import * as files from "@holusion/cache-control";
 import * as convert from "./lib/convert";
 import * as time from "./lib/time";
 
