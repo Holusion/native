@@ -118,11 +118,13 @@ export class WatchFiles extends EventEmitter{
     Promise.all(projectsSnapshot.docs.map(p => transformSnapshot(this.transforms, p)))
     .then(async (projects)=>{
       let items = {};
-      let files = projects.reduce((prev, [, files])=> new Map([...prev, ...files]), new Map());
+      let files = projects.reduce((prev, [, files])=> {
+        return new Map([...prev, ...files])
+      }, new Map());
       try {
         await this.getFiles({files, signal, cacheName: "items"});
       } catch(e){
-        this.makeError("getFiles failed", e);
+        this.makeError("getFiles", e);
       }
       if (signal && signal.aborted){
         this.emit("progress", "Aborted update");
@@ -136,7 +138,7 @@ export class WatchFiles extends EventEmitter{
       this.emit("dispatch", { items });
     })
     .catch((e)=>{
-      this.makeError("Failed to get configuration : ", e);
+      this.makeError("get configuration", e);
     });
   }
 
@@ -145,7 +147,7 @@ export class WatchFiles extends EventEmitter{
     let requiredFiles = [];
     let cachedFiles = [];
     try{
-      for (let [dest, {src, hash}] of files.entries()){
+      for (let [dest, {src, hash}={}] of files){
         const name = dest.split("/").slice(-1)[0];
         const [localExists, localHash] = await Promise.all([
           fs.exists(dest),
@@ -166,7 +168,7 @@ export class WatchFiles extends EventEmitter{
       //Errors during cache analysis are fatal
       return (signal && signal.aborted)? Promise.resolve(): cache.close()
       .finally(()=>{
-        this.makeError("Failed to save cache : ", e);
+        this.makeError("compare cache", e);
       });
     }
 
@@ -177,13 +179,13 @@ export class WatchFiles extends EventEmitter{
         await writeToFile(src, dest);
         cache.set(dest, hash);
       }catch(e){
-        this.makeError("Failed to download file : " + e.message);
+        this.makeError("download file" + e.message);
       }
       if (signal && signal.aborted) return;
     }
 
     await cache.close().catch((e)=>{
-      this.makeError("Failed to save cache : ", e);
+      this.makeError("save cache", e);
     });
   }
 

@@ -60,10 +60,11 @@ export class CacheStage{
   static get lockName() { return "cache-file"}
   static async load(){
     try{
-      return JSON.parse(await loadFile("cache.json"));
+      let txt = await loadFile("cache.json");
+      return JSON.parse(txt);
     } catch(e){
       if(e.code !== "ENOENT"){
-        console.warn(new FileError(`${storagePath()}/cache.json`, e.message, e.code));
+        console.warn("Failed to load cache : ",new FileError(`${storagePath()}/cache.json`, e.message, e.code));
       }
       return {}
     }
@@ -97,8 +98,8 @@ export class CacheStage{
       let files = stages.sort().reduce((res, keyFiles)=>{
         return Object.assign(res, keyFiles);
       }, {});
-      //console.log("Closed cache file from ", cache, "to", Object.assign(otherZones, {[this.name]: files }));
       await saveFile("cache.json", JSON.stringify(Object.assign(otherZones, {[this.name]: files }), null, 2));
+      //console.log("Closed cache file from ", cache, "to", Object.assign(otherZones, {[this.name]: files }));
     })
   }
 

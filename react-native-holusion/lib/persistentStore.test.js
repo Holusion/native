@@ -25,6 +25,15 @@ describe("persistentStore",function (){
       expect(conf).toHaveProperty("projectName", undefined);
       expect(conf).toHaveProperty("configurableProjectName", true);
     })
+    it("can force projectName to be editable", function(){
+      const s = configureStore({
+        projectName: "foo",
+        configurableProjectName: true
+      });
+      const conf = s.getState().conf;
+      expect(conf).toHaveProperty("projectName", "foo");
+      expect(conf).toHaveProperty("configurableProjectName", true);
+    })
   })
 
   it("resolves when data files are loaded", async () => {

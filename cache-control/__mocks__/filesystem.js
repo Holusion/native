@@ -14,7 +14,6 @@ const writeMock = (path, data) =>{
     contents[path] = data;
     return Promise.resolve();
 }
-
 const renameMock = (src, dest)=>{
     if(typeof contents[src] === "undefined"){
         let e = new Error(`No such file or directory : ${src}`);
@@ -31,6 +30,7 @@ export default {
     exists: jest.fn(()=> Promise.resolve(true)),
     readFile: jest.fn(readMock),
     writeFile: jest.fn(writeMock),
+    atomicWrite: jest.fn(writeMock),
     rename: jest.fn(renameMock),
     readdir: jest.fn(()=>Promise.resolve()),
     mkdir: jest.fn(()=> Promise.resolve()),

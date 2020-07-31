@@ -1,16 +1,18 @@
 'use strict';
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { connect} from 'react-redux';
 import {updateTask, setData} from "./actions";
 
 import { getUniqueId, getApplicationName, getDeviceName } from "react-native-device-info";
 
 import "@react-native-firebase/functions";
+import "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
 import { delay } from "./time";
 
-import {watchFiles} from "./files";
+import {WatchFiles} from "@holusion/cache-control";
+
 
 export async function signIn(application){
   const hostname = await getDeviceName();
@@ -52,26 +54,48 @@ export function useAuth({projectName, updateTask}){
   }, [projectName, updateTask]);
 };
 
+
 export function useWatch({firebaseTask, setData, updateTask}){
+  const projectName = firebaseTask.target;
+  const [w, setWatch] = useState();
+  useEffect(()=>{
+    let watcher = new WatchFiles({
+      projectName,
+    })
+    setWatch(watcher);
+  }, [projectName]);
+
   useEffect(()=>{
     if(firebaseTask.status !== "success") return;
-    return watchFiles({
-      projectName: firebaseTask.target,
-      onUpdate: (name)=>{
+    if(!w) return;
+    w.on("progress", (...messages)=>{
+      console.warn("watchFiles Progress : ", messages);
+    })
+    w.on("error", (err)=>{
+      console.warn("WatchFiles error : ", err);
+    })
+    w.on("dispatch", (data)=>{
+      console.warn("Dispatch data : ", JSON.stringify(
+        data, 
+        (k, v) =>  k && v && typeof v !== "number" ? (Array.isArray(v) ? "[object Array]" : "" + v) : v 
+      ));
+      setData(data);
+      Object.keys(data).forEach((name)=>{
+        console.log("Done synchronizing", name);
+        updateTask({id:`sync-${name}`, status: "success", message:`synchronized ${new Date().toLocaleString()}`})
+      })
+    })
+    
+    w.watch();
+    return ()=>{
+      w.close();
+    }
+    /*
+          onUpdate: (name)=>{
         updateTask({id: `sync-${name}`, title: `Sync ${name}`, status: "pending", message: "loading"})
       },
-      onProgress: (...messages)=>{
-        console.warn("watchFiles Progress : ", messages);
-      },
-      dispatch: (data)=>{
-        setData(data);
-        Object.keys(data).forEach((name)=>{
-          console.log("Done synchronizing", name);
-          updateTask({id:`sync-${name}`, status: "success", message:`synchronized ${new Date().toLocaleString()}`})
-        })
-      }
-    })
-  }, [setData, updateTask, firebaseTask]);
+      */
+  }, [setData, updateTask, w]);
 }
 
 

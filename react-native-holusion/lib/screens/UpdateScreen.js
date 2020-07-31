@@ -6,7 +6,7 @@ import { connect} from 'react-redux'
 import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text, Spinner, View} from 'native-base';
 import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
-import {getFiles, FileError} from "../files";
+import {getFiles, FileError} from "@holusion/cache-control";
 import StatusIcon from "../components/StatusIcon";
 
 class UpdateScreen extends React.Component {

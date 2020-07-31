@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import {getActiveProduct} from "../selectors";
 
-import { filename} from "../files";
+import { filename} from "@holusion/cache-control";
 
 import ImageCard from '../components/ImageCard';
 

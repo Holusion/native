@@ -8,7 +8,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import Markdown from '../components/Markdown'
 
-import {initialize} from "../files";
+import {initialize} from "@holusion/cache-control";
 
 
 

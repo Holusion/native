@@ -12,7 +12,7 @@ import {getActiveItems} from "../selectors";
 
 import Controller from "../components/Controller"
 
-import {filename} from "../files";
+import {filename} from "@holusion/cache-control";
 
 import Carousel from 'react-native-looped-carousel';
 

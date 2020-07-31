@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 import StatusIcon from "../components/StatusIcon";
 
-import {filename, dedupeList, uploadFile, sendFiles} from "../files";
+import {filename, dedupeList, uploadFile, sendFiles} from "@holusion/cache-control";
 
 class SynchronizeScreen extends React.Component {
     render() {

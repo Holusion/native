@@ -32,7 +32,7 @@ export default [
 		external: [
 			"@react-native-firebase/app", "@react-native-firebase/storage",
 			"react-native-fs", 
-			"EventEmitter" // react-native provides this module
+			"events" // react-native provides this module
 		],
 		plugins: [
 			alias({entries:[
@@ -45,7 +45,7 @@ export default [
 			babel({
 				babelrc: false,
 				babelHelpers: 'bundled',
-				presets: [['@babel/env', { loose: true, modules: false }]],
+				presets: [['@babel/env', { modules: false, targets: {"ios": 9}}]],
 			})
 		],
 		output: {

@@ -1,20 +1,23 @@
 'use strict';
 
-import { saveFile, loadFile, cleanup, filename } from "@holusion/cache-control";
+import { saveFile, loadFile, cleanup, filename, setBasePath, createStorage } from "@holusion/cache-control";
 import { setData, addTask, updateTask, setConf } from "./actions";
 
 import { createStore } from 'redux'
 import reducers from "./reducers";
 
 
+import {DocumentDirectoryPath} from "react-native-fs";
 
 
-export function configureStore({ projectName } = {}) {
+export function configureStore({ projectName, configurableProjectName: forceEditable } = {}) {
+
   const initialState = reducers(undefined, {});
   if (typeof projectName !== "undefined") {
     initialState.conf.projectName = projectName;
+    initialState.conf.configurableProjectName = forceEditable? true: false;
   } else {
-    initialState.conf.configurableProjectName = true;
+    initialState.conf.configurableProjectName = (forceEditable === false)?false: true;
   }
   return createStore(reducers, initialState);
 };
@@ -25,12 +28,14 @@ export function configureStore({ projectName } = {}) {
  * @returns [store, operation<Promise>] operation will resolve once all files are loaded
  */
 export function persistentStore(opts) {
+  setBasePath(DocumentDirectoryPath);
   const store = configureStore(opts);
   store.dispatch(addTask({ id: "0_loading", title: "Initial Load"})); //Store is ready when loading is done
   //Dispatch data as soon as possible
   const op = Promise.resolve().then(async () => {
     store.dispatch(addTask({ id: "1_cleanup", title: "Cleanup", status: "progress" }))
     try {
+      await createStorage();
       let [unlinked, kept] = await cleanup();
       store.dispatch(updateTask({
         id: "1_cleanup", 
