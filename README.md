@@ -164,8 +164,10 @@ Il faudra probablement penser à trouver une autre solution lors de la prchaine 
 
 react-native ne fonctionne pas avec npm link. Pour éviter de devoir publier une version à chaque fois, on utilise rsync :
 
-    rsync -a --exclude node_modules react-native-holusion/ StOmer/node_modules/\@holusion/react-native-holusion
-
+    rsync -a --exclude node_modules react-native-holusion/ <project_name>/node_modules/\@holusion/react-native-holusion
+    
+    # Ou pour le garder à jour : 
+    fswatch -o react-native-holusion| while read f; do rsync -a --exclude node_modules react-native-holusion/ <project_name>/node_modules/@holusion/react-native-holusion; done
 ### Ajouter un nouvel iPad
 
 Faire la configuration initiale pour `s.dumetz@holusion.com`.

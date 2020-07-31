@@ -15,7 +15,10 @@ import getVariables from "./theme.js"
 
 import ConnectedTitle from "./ConnectedTitle";
 
-const [store] = persistentStore({});
+const [store] = persistentStore({
+  configurableProjectName: true,
+  projectName: "holodemo", 
+});
 const variables = getVariables();
 
 function makeHeader({navigation}){
