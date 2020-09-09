@@ -27,14 +27,20 @@ async function atomicWrite(path, data){
   try{
     await RNFS.unlink(fallback);
   }catch(e){
-    console.warn("unlink error : ",e);
-    if(e.code !=="ENOENT") throw e;
+    //ENOENT should be ignored
+    if(e.code !=="ENOENT"){ 
+      console.warn("unlink error : ",e);
+      throw e;
+    }
   }
   try{
     await RNFS.moveFile(path, fallback);
   }catch(e){
-    console.warn("Move error : ",e);
-    if(e.code !=="ENOENT") throw e;
+    //If path doesn't exist, we don't have a problem
+    if(e.code !=="ENSCOCOAERRORDOMAIN4") { // NSFileNoSuchFileError = 4
+      console.warn("Move error : ",e.code, e);
+      throw e;
+    }
   }
   await RNFS.moveFile(tmpFile, path);
 }
