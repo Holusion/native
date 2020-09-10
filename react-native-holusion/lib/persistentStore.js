@@ -44,7 +44,7 @@ export function persistentStore(opts) {
           + (0 < unlinked.length ? `(removed ${2 < unlinked.length? unlinked.length: unlinked.map(f=> filename(f)).join(", ")})`: "")
       }));
     } catch (e) {
-      console.warn("cleanup error", e);
+      console.warn("cleanup", e);
       store.dispatch(updateTask({ id: "1_cleanup", message: e.message, status: "warn" }))
     }
     //We continue even if cleanup was a failure
