@@ -51,7 +51,7 @@ function Configuration(props){
                 <Picker.Item label="Swipe" value="swipe"/>
             </Picker>
         </ListItem>
-        <ListItem>
+        {props.configurableProjectName && <ListItem>
             <Body style={{flex:1}}>
                 <Text>Application cible</Text>
                 <Text style={{fontSize:14}} >Autorisation requise sur content.holusion.com</Text>
@@ -62,7 +62,7 @@ function Configuration(props){
                 </Item>
                 <Button bordered info style={{minWidth:50}} disabled={name === props.projectName} onPress={handleSubmitName}><Icon large primary type="Ionicons" name="ios-send" /></Button>
             </Form>
-        </ListItem>
+        </ListItem>}
     </Content>)
 }
 
