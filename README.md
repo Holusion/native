@@ -30,6 +30,8 @@ Ils sont disponibles dans `_template/`
 
 ### Installer les dépendances npm
 
+**WARNING** : Installer les dépendances en `latest` avec NPM préente un risque d'incompatibilité. ça permet d'être à jour au moment de la création de l'app mais par sécurité, on peut aussi copier-coller les versions d'une dernière version fonctionelle connue.
+
 ```
 npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
       "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
@@ -103,7 +105,7 @@ Ajoutez le fichier **GoogleService-Info.plist** (stocké à la racine du dépôt
 Cocher la case **copy items if needed**
 
 
-Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) dans `ios/Info.plist`. Copier les lignes : 
+Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) dans `ios/<Project_name>/Info.plist`. Copier les lignes : 
 ```
 <key>UIAppFonts</key>
 <array>
