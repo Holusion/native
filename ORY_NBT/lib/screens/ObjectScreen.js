@@ -29,9 +29,10 @@ class ObjectScreen extends React.Component {
     render() {
       const current_index = this.index;
       let item = this.props.items[current_index];
-      let items = this.props.items.map(item=>({
-        name: item.title,
-        to: item.id
+      let items = this.props.items.map(i=>({
+        name: i.title,
+        to: i.id,
+        active: i.id === item.id
       }))
       if(!item){
         return <View>
@@ -40,18 +41,20 @@ class ObjectScreen extends React.Component {
         </View>
       }
       console.warn("Object : ", item);
+      let with_description = item["description"]? true : false;
       return <Layout 
         image={item.image}
         navigate={id=>this.props.navigation.navigate("Object", {id, category:item.category})}
         links={items}
         title={item.title}
-        background={require("../../assets/background_partie.png")}
+        background={with_description?require("../../assets/background_partie.png"): undefined}
       >
-        <Container style={styles.container}>
-          <Content >
+        {with_description && <Container style={styles.container} >
+          <Content contentContainerStyle={{paddingBottom:200, paddingHorizontal: 4, paddingTop: 10}}>
             <Markdown style={{
               heading1:{
-                fontSize: 22,
+                fontSize: 24,
+                fontFamily: "DaxOT-Bold",
                 color: "#5A5099FF"
               },
               heading2: {
@@ -59,11 +62,12 @@ class ObjectScreen extends React.Component {
                 color: "#9b8fc9FF"
               },
               text: {
+                fontFamily: "DaxOT-Regular",
                 fontSize: 15
               }
             }}>{item['description']}</Markdown>
           </Content>
-        </Container>
+        </Container>}
       </Layout>
         
     }

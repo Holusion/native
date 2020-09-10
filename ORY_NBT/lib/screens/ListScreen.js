@@ -23,9 +23,11 @@ function ListScreenContent(props){
         </Text>
       </View>
     }
-    let title = props.title || props.selectedCategory || null;
     let links = props.items.map(item =>{
-        return {name: item.title, to: item.id}
+        return {
+            name: item.title, 
+            to: item.id
+        }
     })
 
     return <Layout

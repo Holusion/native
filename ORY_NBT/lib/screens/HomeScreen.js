@@ -2,17 +2,15 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
-import { StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { Container, Toast, Content, Spinner, Text } from 'native-base';
+import { StyleSheet } from 'react-native';
 
 
 import { filename } from "@holusion/cache-control";
 
 import { setData } from '@holusion/react-native-holusion/lib/actions';
 import { getActiveProduct, getItemsArray } from "@holusion/react-native-holusion/lib/selectors";
-import {ImageCard, ObjectView} from '@holusion/react-native-holusion/lib/components';
-import * as strings from "@holusion/react-native-holusion/lib/strings.json";
-import Right from '@holusion/react-native-holusion/native-base-theme/components/Right';
+import {ObjectView} from '@holusion/react-native-holusion/lib/components';
 import { Layout } from '../Layout';
 
 
@@ -49,7 +47,9 @@ class HomeScreen extends React.Component {
         <ObjectView active={true} navigation={this.props.navigation} {...pageData} />
       </Container>)
     }
-    let links = this.props.categories?this.props.categories.map(({name})=>({name, to: name})): []
+    let links = (0 < this.props.categories.length)?this.props.categories.map(({name})=>({name, to: name})): [
+      {name: "Pas de données"}
+    ]
     return (<Layout
       image={this.props.config.image}
       links={links}

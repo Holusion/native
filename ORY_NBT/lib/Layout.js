@@ -21,15 +21,24 @@ export function Layout({
 }){
   let cards = links.map((category, index) => {
     let name = (typeof category === "string")? category : category.name;
-    return (<TouchableOpacity key={index} onPress={() => navigate(category.to)}>
-      <View style={[styles.menuItem, {width: 180 + (index*6)}]}>
-        <H2 style={styles.menuText}>{name}</H2>
-      </View>
+    let itemStyle = [
+      styles.menuItem,
+      {width: 182 + index*3.7 + 0.8*Math.pow(index, 2)}
+    ];
+    if(category.active){
+      itemStyle.push(styles.activeMenuItem);
+    }
+    return (<TouchableOpacity key={index} onPress={() => {
+      if(category.to) navigate(category.to);
+    }}>
+      <H2 style={itemStyle}>
+        {name}
+      </H2>
     </TouchableOpacity>)
   })
 
   return (
-    <View style={{height:"100%"}}>
+    <View style={styles.container}>
       <View style={{flex: 0, flexDirection:"row"}}>
         <ImageBackground source={require("../assets/titlebar.png")} style={{width:"100%"}}>
           <H1 primary style={styles.titleContainer}>
@@ -60,10 +69,9 @@ export function Layout({
             </Button>}
           </View>
           <View style={styles.footerStyle}>
-            <View style={{width:220, height: 100, overflow: "visible"}}>
-              <Image style={{position: "absolute", bottom:0, width:100}} resizeMode="contain" source={require("../assets/logo_ministère.png")}/>
-              <Image style={{position: "absolute", bottom:0, right: 0, width:90}} resizeMode="contain" source={require("../assets/logo_DGAC_SNIA.png")}/>        
-            </View>
+            <Image style={{ width:128, marginTop: -40, height: 120}} resizeMode="contain" source={require("../assets/MIN_Transition_Ecologique_CMJN.jpg")}/>
+            <Image style={{width:90, height:90}} resizeMode="contain" source={require("../assets/Logo_DSNA.png")}/>    
+            <Image style={{width:90, height: 90}} resizeMode="contain" source={require("../assets/Logo_SNIA.png")}/>        
           </View>
         </ImageBackground>
       </Footer>
@@ -73,9 +81,13 @@ export function Layout({
 Layout.propTypes = {
   title: PropTypes.string,
   image: PropTypes.string,
-  links: PropTypes.arrayOf(PropTypes.oneOf([
+  links: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string, 
-    PropTypes.shape({name:PropTypes.string.isRequired})
+    PropTypes.shape({
+      name:PropTypes.string.isRequired,
+      to: PropTypes.string,
+      active: PropTypes.bool,
+    })
   ])),
   navigate: PropTypes.func.isRequired,
   enableAbout: PropTypes.bool,
@@ -87,6 +99,8 @@ Layout.propTypes = {
 }
 const styles = StyleSheet.create({
   container: {
+    height:"100%",
+    backgroundColor: "white",
   },
   titleContainer: {
     flex: 1,
@@ -101,6 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
+    backgroundColor: "transparent"
   },
   imageContainer: {
     flex: 1,
@@ -108,8 +123,9 @@ const styles = StyleSheet.create({
   },
   children: {
     flex: 0,
-    width: 250,
-    padding: 4,
+    width: 360,
+    height: "100%",
+    padding: 0,
     zIndex: 3,
   },
   mask: {
@@ -133,27 +149,30 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     backgroundColor:"#9B8FC9FF",
+    color: "#443E7DFF",
     marginBottom:9,
-    display: "flex",
-    justifyContent:"flex-end"
-  },
-  menuText: {
-    padding: 18,
-    paddingLeft: 20,
     fontSize: 22,
     lineHeight: 22,
+    paddingTop: 18,
+    paddingBottom: 18,
+    paddingLeft: 20,
+    paddingRight: 4,
     textAlign: "left",
-    color: "#443E7DFF",
+  },
+  activeMenuItem: {
+    backgroundColor: "#9B8FC9FF",
+    color:"white",
   },
   footerStyle: {
-    flex:1, 
+    flex:0, 
     zIndex: 10,
+    width: 320,
     display: "flex", 
     flexDirection: "row", 
-    justifyContent: "flex-end",
-    alignItems:"flex-start",
+    justifyContent: "space-between",
+    alignItems:"flex-end",
     paddingBottom: 0,
-    maxHeight:"100%",
+    marginTop: -50,
   },
   footerButton: {
     fontSize: 28
