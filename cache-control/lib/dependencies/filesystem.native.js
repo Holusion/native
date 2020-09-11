@@ -54,5 +54,6 @@ export default {
   readFile: readWithFallback,
   writeFile: RNFS.writeFile,
   atomicWrite,
+  stat: RNFS.stat,
   rename: RNFS.moveFile,
 }

@@ -16,5 +16,6 @@ export default {
     await fs.writeFile(`${dir}/~${name}`, str, 'utf8');
     await fs.rename(`${dir}/~${name}`, `${dir}/${name}`);
   },
+  stat: fs.stat,
   rename: fs.rename,
 }
