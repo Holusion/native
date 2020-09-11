@@ -1,5 +1,5 @@
 'use strict';
-import { SET_CONF, SET_SLIDES_CONTROL, SET_DEFAULT_TARGET, SET_PURGE, SET_PROJECTNAME} from '../actions'
+import { SET_CONF, SET_SLIDES_CONTROL, SET_DEFAULT_TARGET, SET_PURGE, SET_PAUSE, SET_PROJECTNAME} from '../actions'
 
 export default function conf(state = {
     projectName: undefined, 
@@ -17,6 +17,8 @@ export default function conf(state = {
             return Object.assign({}, state, {purge_products: action.purge});
         case SET_SLIDES_CONTROL:
             return Object.assign({}, state, {slides_control: action.controlType});
+        case SET_PAUSE:
+            return Object.assign({}, state, {pause: action.pause});
         case SET_PROJECTNAME:
             if(!state.configurableProjectName){
                 console.warn("Trying to modify read-only project name");

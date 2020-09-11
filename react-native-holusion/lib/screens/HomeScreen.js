@@ -15,6 +15,7 @@ import ImageCard from '../components/ImageCard';
 import * as strings from "../strings.json";
 
 import ObjectView from "../components/ObjectView";
+import ListObjects from '../containers/ListObjects';
 
 class HomeScreen extends React.Component {
   render() {
@@ -26,7 +27,7 @@ class HomeScreen extends React.Component {
           <Text style={{ fontSize: 14 }}>Renseigner un nom dans l'écran de configuration</Text>
         </Content>
       </Container>)
-    } else if (!this.props.config) {
+    } else if ((!this.props.config || !this.props.items || this.props.items.length== 0)) {
       return (<Container>
         <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Spinner />
@@ -34,7 +35,8 @@ class HomeScreen extends React.Component {
         </Content>
       </Container>)
     }
-
+    console.log("Configuration : ", this.props.config);
+    
     if(this.props.config.defaultPage){
       const pageData = this.props.items.find(i => i.id == this.props.config.defaultPage)
       if(!pageData){
@@ -49,32 +51,30 @@ class HomeScreen extends React.Component {
         <ObjectView active={true} navigation={this.props.navigation} {...pageData} />
       </Container>)
     }
-    let cards;
-    if (this.props.categories && 0 < this.props.categories.length) {
+    if(!this.props.categories || this.props.categories.length == 0){
+      return <Container>
+        <ListObjects onNavigate={(id)=>this.props.navigation.navigate("Object", {id, category: null})}/>
+      </Container>
+    }
 
-      cards = this.props.categories.map((category, index) => {
-        const category_items = this.props.items.filter(i => {
-          if (i.theme) return category.name == i.theme;
-          if (i.category) return category.name == i.category;
-        });
-        if (category_items.length == 0) {
-          return (<TouchableOpacity disabled={true} key={index} >
-            <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
-          </TouchableOpacity>)
-        } else if (category_items.length == 1) {
-          return (<TouchableOpacity key={index} onPress={() => this.props.navigation.navigate("Object", { id: category_items[0].id, category: category.name })}>
-            <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
-          </TouchableOpacity>)
-        }
-        return (<TouchableOpacity key={index} onPress={() => this.props.navigation.navigate("List", { category: category.name })}>
+    let cards = this.props.categories.map((category, index) => {
+      const category_items = this.props.items.filter(i => {
+        if (i.theme) return category.name == i.theme;
+        if (i.category) return category.name == i.category;
+      });
+      if (category_items.length == 0) {
+        return (<TouchableOpacity disabled={true} key={index} >
           <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
         </TouchableOpacity>)
-      })
-    } else {
-      cards = [(<TouchableOpacity key={0} onPress={() => this.props.navigation.navigate("List", { category: null })}>
-        <ImageCard title="Collection" />
-      </TouchableOpacity>)]
-    }
+      } else if (category_items.length == 1) {
+        return (<TouchableOpacity key={index} onPress={() => this.props.navigation.navigate("Object", { id: category_items[0].id, category: category.name })}>
+          <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
+        </TouchableOpacity>)
+      }
+      return (<TouchableOpacity key={index} onPress={() => this.props.navigation.navigate("List", { category: category.name })}>
+        <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
+      </TouchableOpacity>)
+    })
 
 
     let footer;
@@ -90,7 +90,7 @@ class HomeScreen extends React.Component {
       <Container>
         <Content contentContainerStyle={styles.container}>
           <H1 primary style={styles.titleContainer}>
-            Touchez-moi pour découvrir une collection :
+            Découvrez une collection :
                     </H1>
           <View style={styles.cardContainer}>
             {cards}

@@ -6,12 +6,13 @@ import {setProducts, addProduct, removeProduct, setActive, setNetInfo} from "./a
 import NetInfo from "@react-native-community/netinfo";
 
 export function onUpdate(store){
-  const {data, products, network} = store.getState();
-  const {default_target} = data;
+  const {conf:{default_target}, products, network} = store.getState();
+
   const isActive = products.find(p=>p.active)? true: false;
   if(!isActive && default_target ){
     const target_product = products.find(p => p.name === default_target);
     if(target_product){
+      console.log("dispatch new target product");
       store.dispatch(setActive(target_product));
     }
   }

@@ -1,7 +1,5 @@
 'use strict';
-import React, {useState, useEffect} from "react";
-import { connect} from 'react-redux';
-import {updateTask, setData} from "./actions";
+import {useState, useEffect} from "react";
 
 import { getUniqueId, getApplicationName, getDeviceName } from "react-native-device-info";
 
@@ -9,7 +7,7 @@ import "@react-native-firebase/functions";
 import "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
-import { delay } from "./time";
+import { delay } from "../time";
 
 import {WatchFiles} from "@holusion/cache-control";
 
@@ -55,7 +53,12 @@ export function useAuth({projectName, updateTask}){
 };
 
 
-export function useWatch({firebaseTask, setData, updateTask}){
+export function useWatch({
+  firebaseTask, 
+  setData, 
+  updateTask,
+  logger,
+}){
   const projectName = firebaseTask.target;
   const [w, setWatch] = useState();
   useEffect(()=>{
@@ -69,16 +72,13 @@ export function useWatch({firebaseTask, setData, updateTask}){
     if(firebaseTask.status !== "success") return;
     if(!w) return;
     w.on("progress", (...messages)=>{
-      console.warn("watchFiles Progress : ", messages);
+      logger.onProgress( messages);
     })
     w.on("error", (err)=>{
-      console.warn("WatchFiles error : ", err);
+      logger.onError(err);
     })
     w.on("dispatch", (data)=>{
-      console.warn("Dispatch data : ", JSON.stringify(
-        data, 
-        (k, v) =>  k && v && typeof v !== "number" ? (Array.isArray(v) ? "[object Array]" : "" + v) : v 
-      ));
+      logger.onDispatch(data);
       setData(data);
       Object.keys(data).forEach((name)=>{
         console.log("Done synchronizing", name);
@@ -90,26 +90,5 @@ export function useWatch({firebaseTask, setData, updateTask}){
     return ()=>{
       w.close();
     }
-    /*
-          onUpdate: (name)=>{
-        updateTask({id: `sync-${name}`, title: `Sync ${name}`, status: "pending", message: "loading"})
-      },
-      */
   }, [setData, updateTask, w]);
 }
-
-
-export function Downloader({projectName, updateTask, setData, firebaseTask}){
-  useAuth({projectName, updateTask});
-  useWatch({setData, updateTask, firebaseTask})
-  return null;
-}
-
-export const DownloadProvider = connect((state)=>({
-  projectName: state.conf.projectName,
-  connected: state.network.status,
-  firebaseTask: state.tasks.list["firebase"] || {status: "pending"},
-}), {
-  setData,
-  updateTask,
-})(Downloader);

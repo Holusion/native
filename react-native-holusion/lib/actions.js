@@ -17,6 +17,7 @@ export const SET_CONFIG = "SET_CONFIG";
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 export const SET_PURGE = "SET_PURGE";
+export const SET_PAUSE = "SET_PAUSE";
 export const SET_CONF = "SET_CONF";
 
 export const SET_PROJECTNAME = "SET_PROJECTNAME";
@@ -87,4 +88,8 @@ export const setProjectName = (name) => {
 }
 export const setConf = (conf)=>{
     return {type: SET_CONF, conf};
+}
+
+export const setPause = (pause)=>{
+    return {type: SET_PAUSE, pause: !!pause}
 }

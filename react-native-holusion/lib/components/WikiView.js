@@ -13,13 +13,22 @@ export default function WikiView(d){
             <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
         </Content>)
     }
-
+    let abstract = null;
+    if(d["abstract"]){
+        abstract= (<Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>)
+    }
     return(<Content contentContainerStyle={styles.content}>
         <View style={{flexDirection:"row"}}>
             <View style={styles.titleContainer}>
-                <H1 primary style={styles.title}>{d['title']}</H1>
-                <H2 style={styles.subTitle}>{d['subtitle']}</H2>
-                <Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>
+                <View style={styles.titles}>
+                    <H1 primary style={styles.title}>{d['title']}</H1>
+                    <H2 style={styles.subTitle}>{d['subtitle']}</H2>
+                    {abstract}
+                </View>
+                <View>
+                    <H2 style={styles.subTitle}>Plus d'informations</H2>
+
+                </View>
             </View>
             <View style={styles.cartouche}>
                 <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
@@ -27,7 +36,6 @@ export default function WikiView(d){
             </View>
         </View>
         <View style={styles.textContent}>
-            <H2 style={styles.subTitle}>Plus d'informations</H2>
             <Markdown>
                 {d['mainText']}
             </Markdown>
@@ -47,13 +55,21 @@ const styles = StyleSheet.create({
         resizeMode: 'contain', 
     },
     textContent: {
-        paddingTop: 24,
+        paddingTop: 0,
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
     titleContainer: {
         flex:2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent:"space-between",
+    },
+    titles: {
+        flex: 2,
+        display: "flex",
+        justifyContent: "flex-start",
     },
     cartouche:{
         flex:1,

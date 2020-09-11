@@ -56,7 +56,7 @@ class Controller extends React.Component {
           outputRange: [1, 2]
         });
 
-        const content = [
+        let content = [
             (<AnimatedButton primary key="ctrl" onPressIn={this._onPressIn} onPressOut={this._onPressOut} large style={{
                 transform:[{scale: size}],
                 zIndex:2,
@@ -69,10 +69,10 @@ class Controller extends React.Component {
 
         if(this.props.multi){
             content.unshift((<Button key="prev" transparent large style={styles.controlButton} onPressIn={()=>this.props.prev()}>
-                <Icon primary large style={styles.controlIcons} name="ios-arrow-back"/>
+                <Icon primary large style={styles.controlIcons} name="ios-caret-back"/>
             </Button>))
             content.push((<Button key="next" transparent large style={styles.controlButton} onPressIn={()=>this.props.next()}>
-                <Icon primary large style={styles.controlIcons} name="ios-arrow-forward"/>
+                <Icon primary large style={styles.controlIcons} name="ios-caret-forward"/>
             </Button>))
         }
 
@@ -91,21 +91,19 @@ class Controller extends React.Component {
 
 const controllerTheme = StyleSheet.create({
     view: {
-        flex: 1,
+        flex: 0,
         flexDirection: "row",
         alignItems: 'center',
-        justifyContent:'center', 
-        width: 'auto', 
-        backgroundColor: "transparent"
+        justifyContent:'center',
+        position: "absolute",
+        alignSelf: 'center',
     },
     icon:{
         fontSize: 40,
     },
     controlButton:{
         paddingVertical: 5,
-        paddingHorizontal: 15, 
-        height:70,
-        backgroundColor: "#ffffffcc",
+        paddingHorizontal: 5, 
     },
     controlIcons:{
         fontSize: 60,

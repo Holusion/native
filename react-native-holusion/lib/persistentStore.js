@@ -66,7 +66,12 @@ export function persistentStore(opts) {
           status: "success"
         }));
       }catch(e){
-        store.dispatch(updateTask({ id: `local-${key}`, message: e.message, status: "warn"}));
+        if(e.code == "ENOENT"){
+          store.dispatch(updateTask({ id: `local-${key}`, message: "Absent", status: "warn"}));
+        }else{
+          store.dispatch(updateTask({ id: `local-${key}`, message: e.message, status: "warn"}));
+
+        }
       }
     }
 

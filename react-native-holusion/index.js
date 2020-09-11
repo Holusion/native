@@ -14,7 +14,7 @@ import * as screens from "./lib/screens";
 import * as components from "./lib/components";
 import * as selectors from "./lib/selectors";
 
-import {DownloadProvider} from "./lib/synchronize";
+import {DownloadProvider} from "./lib/sync/DownloadProvider";
 
 export {
   netScan,

@@ -21,18 +21,26 @@ const {width, height} = Dimensions.get('window');
 
 
 import ObjectView from "../components/ObjectView";
-
+import WikiView from "../components/WikiView";
 
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
  */
+
 class ObjectScreen extends React.Component {
     get index(){
         return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> (item.id == this.props.route.params["id"])) : -1;
     }
-
+    static propTypes = {
+        views: PropTypes.object
+    }
+    static defaultProps = {
+        views: {
+            "Base": ObjectView,
+            "Wiki": WikiView,
+        }
+    }
     render() {
-        const View_component = this.props.component || ObjectView;
         const current_index = this.index;
         
         if(!this.props.items || current_index == -1){
@@ -50,8 +58,19 @@ class ObjectScreen extends React.Component {
             ((current_index== this.props.items.length-1)?0: current_index+1)
         ]
         const slides = this.props.items.map((object, index)=>{
+            let layout = object.layout || "Base";
+            let View_component = this.props.views[layout];
+            if(!View_component){
+                Toast.show({
+                    severity: "warning",
+                    duration: 5000,
+                    text: `No view provided for layout ${layout}`
+                })
+                View_component = this.props.views["Base"];
+            }
             return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
         })
+
         return (<Container onLayout={this._onLayoutDidChange}>
             <Carousel 
                 ref={(ref) => this._carousel = ref}
@@ -86,8 +105,8 @@ class ObjectScreen extends React.Component {
             console.warn("Index", index, "did not map to any object");
             return;
         }
-        console.warn(`onNextPage(${index}) : ${object.title}`);
-        if(this.props.target){
+        //console.warn(`onNextPage(${index}) : ${object.title}`);
+        if(this.props.target && object.video){
             fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
             .then(r=>{
                 if(!r.ok){
@@ -124,11 +143,11 @@ class ObjectScreen extends React.Component {
 }
 
 function mapStateToProps(state, {route}){
-    const {data, products} = state;
+    const {conf, products} = state;
     const items = getActiveItems(state, {selectedCategory: route.params["category"]});
     return {
         items,
-        control_buttons: data.slides_control,
+        control_buttons: conf.slides_control,
         target: products.find(p => p.active)
     };
 }
@@ -152,9 +171,10 @@ const styles = StyleSheet.create({
     
 })
 const ObjectScreenConnected = connect(mapStateToProps)(ObjectScreen);
-export function objectScreenWithView(ViewComponent){
-    return function ObjectScreenWithView(props){
-        return (<ObjectScreenConnected component={ViewComponent} {...props}/>);
+
+export function objectScreenWithViews(views){
+    return function ObjectScreenWithViews(props){
+        return (<ObjectScreenConnected views={views} {...props}/>);
     }
 }
 export default ObjectScreenConnected;
