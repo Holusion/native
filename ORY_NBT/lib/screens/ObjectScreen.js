@@ -47,6 +47,7 @@ class ObjectScreen extends React.Component {
         navigate={id=>this.props.navigation.navigate("Object", {id, category:item.category})}
         links={items}
         title={item.title}
+        subtitle={item.subtitle}
         background={with_description?require("../../assets/background_partie.png"): undefined}
       >
         {with_description && <Container style={styles.container} >

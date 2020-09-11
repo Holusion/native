@@ -12,6 +12,7 @@ import * as strings from "@holusion/react-native-holusion/lib/strings.json";
 
 export function Layout({
   title="ORY NBT",
+  subtitle,
   image,
   links,
   navigate,
@@ -41,9 +42,14 @@ export function Layout({
     <View style={styles.container}>
       <View style={{flex: 0, flexDirection:"row"}}>
         <ImageBackground source={require("../assets/titlebar.png")} style={{width:"100%"}}>
-          <H1 primary style={styles.titleContainer}>
-            {title}
-          </H1>
+          <View style={styles.titleContainer}>
+            <H1 primary style={{paddingVertical:12, fontSize: 45}} >
+              {title}
+            </H1>
+            {subtitle && <H2 secondary style={{fontSize: 26}}>
+              {subtitle}
+            </H2>}
+          </View>
         </ImageBackground>
       </View>
       <View style={{flex:1, flexDirection:"row-reverse"}}>
@@ -80,6 +86,7 @@ export function Layout({
 }
 Layout.propTypes = {
   title: PropTypes.string,
+  subtitle: PropTypes.string,
   image: PropTypes.string,
   links: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string, 
@@ -103,10 +110,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   titleContainer: {
-    flex: 1,
-    textAlign: 'left',
+    flex: 0,
     paddingLeft: 150,
-    paddingVertical: 70,
+    height: 160,
+    flexDirection: "column",
+    justifyContent: "center"
   },
   cardContainer: {
     flex: 0,

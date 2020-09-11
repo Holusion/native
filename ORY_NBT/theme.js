@@ -3,8 +3,8 @@ import default_vars from "@holusion/react-native-holusion/native-base-theme/vari
 
 export const theme = {
     fontFamily: "DaxOT-Regular",
-    titleFontfamily: "DaxOT-Black",
-    fontFamilyH1: "DaxOT-Black",
+    titleFontfamily: "DaxOT-Bold",
+    fontFamilyH1: "DaxOT-Bold",
     fontFamilyH2: "DaxOT-Bold",
     brandPrimary: "#5A5099FF",
     brandSecondary: "#9b8fc9FF",
