@@ -19,7 +19,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		92A9E1B22AE5FC59335F5476 /* libPods-HolusionCompanion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E11F752C2F55AFA0E504D46 /* libPods-HolusionCompanion.a */; };
 		A297B33B89E9D4E67AB509CA /* libPods-HolusionCompanion-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1DC763B2BC225932464B203 /* libPods-HolusionCompanion-tvOSTests.a */; };
-		BE40922425078C6D008B9E4A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE40922325078C6D008B9E4A /* GoogleService-Info.plist */; };
+		BE727546250B6D4500A3ECA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE727545250B6D4500A3ECA2 /* GoogleService-Info.plist */; };
 		FC0B763A8CCAE1CA395B28D5 /* libPods-HolusionCompanion-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFDA424A94200A8B356CF6F /* libPods-HolusionCompanion-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +63,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = HolusionCompanion/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1DC763B2BC225932464B203 /* libPods-HolusionCompanion-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B32FEF15C7E2BEB157E45859 /* Pods-HolusionCompanion-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOS/Pods-HolusionCompanion-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		BE40922325078C6D008B9E4A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BE727545250B6D4500A3ECA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D607D39C19D3FDFBDBAE2AD8 /* libPods-HolusionCompanion-HolusionCompanionTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion-HolusionCompanionTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D817263C57303DA7DB6E80A8 /* Pods-HolusionCompanion-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOSTests/Pods-HolusionCompanion-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		E341F9D93EE25ECA87107892 /* Pods-HolusionCompanion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion/Pods-HolusionCompanion.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* HolusionCompanion */ = {
 			isa = PBXGroup;
 			children = (
+				BE727545250B6D4500A3ECA2 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -176,7 +177,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				BE40922325078C6D008B9E4A /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* HolusionCompanion */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* HolusionCompanionTests */,
@@ -347,7 +347,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				BE40922425078C6D008B9E4A /* GoogleService-Info.plist in Resources */,
+				BE727546250B6D4500A3ECA2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

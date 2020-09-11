@@ -1,13 +1,16 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from "@react-navigation/native";
-import { Root, Icon, Button, Text, StyleProvider, Toast } from 'native-base';
-import {AppState, StatusBar, Image} from "react-native"
 import React from 'react';
-import { Provider, connect} from 'react-redux';
+import { Provider } from 'react-redux';
 
 import "react-native-gesture-handler";
 
-import {persistentStore, screens, components, strings, netScan, DownloadProvider } from '@holusion/react-native-holusion';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+
+import { Root, StyleProvider, Toast } from 'native-base';
+import { AppState, StatusBar } from "react-native"
+
+
+import {persistentStore, screens, components, netScan, DownloadProvider } from '@holusion/react-native-holusion';
 const {NetworkIcon} = components;
 
 import getTheme from '@holusion/react-native-holusion/native-base-theme/components';
@@ -75,7 +78,7 @@ export default class App extends React.Component{
        <StatusBar hidden={true} />
       <StyleProvider style={getTheme(variables)}>
         <Provider store={store}>
-          <DownloadProvider/>
+          <DownloadProvider logger="toast"/>
           <NavigationContainer>
             <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
               <Stack.Screen name="Home" component={screens.HomeScreen}/>
