@@ -12,71 +12,51 @@ import { setData } from '@holusion/react-native-holusion/lib/actions';
 import { getActiveProduct, getItemsArray } from "@holusion/react-native-holusion/lib/selectors";
 import {ObjectView} from '@holusion/react-native-holusion/lib/components';
 import { Layout } from '../Layout';
+import { useAutoPlay } from '@holusion/react-native-holusion/lib/sync/hooks';
 
 
-class HomeScreen extends React.Component {
-  render() {
-    //First handle cases where application is not ready
-    if (!this.props.projectName) {
+function HomeScreen (props) {
+  useAutoPlay();
+  //First handle cases where application is not ready
+  if (!props.projectName) {
+    return (<Container>
+      <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Application non configurée</Text>
+        <Text style={{ fontSize: 14 }}>Renseigner un nom dans l'écran de configuration</Text>
+      </Content>
+    </Container>)
+  } else if (!props.config) {
+    return (<Container>
+      <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Spinner />
+        <Text>Loading...</Text>
+      </Content>
+    </Container>)
+  }
+
+  if(props.config.defaultPage){
+    const pageData = props.items.find(i => i.id == props.config.defaultPage)
+    if(!pageData){
       return (<Container>
         <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Application non configurée</Text>
-          <Text style={{ fontSize: 14 }}>Renseigner un nom dans l'écran de configuration</Text>
-        </Content>
-      </Container>)
-    } else if (!this.props.config) {
-      return (<Container>
-        <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Spinner />
-          <Text>Loading...</Text>
+          <Text>Page <Text style={{color:"orange"}}>{props.config.defaultPage}</Text>manquante</Text>
+          <Text style={{ fontSize: 14 }}>Changer la page d'accueil ou créer une page correspondante</Text>
         </Content>
       </Container>)
     }
-
-    if(this.props.config.defaultPage){
-      const pageData = this.props.items.find(i => i.id == this.props.config.defaultPage)
-      if(!pageData){
-        return (<Container>
-          <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Page <Text style={{color:"orange"}}>{this.props.config.defaultPage}</Text>manquante</Text>
-            <Text style={{ fontSize: 14 }}>Changer la page d'accueil ou créer une page correspondante</Text>
-          </Content>
-        </Container>)
-      }
-      return (<Container>
-        <ObjectView active={true} navigation={this.props.navigation} {...pageData} />
-      </Container>)
-    }
-    let links = (0 < this.props.categories.length)?this.props.categories.map(({name})=>({name, to: name})): [
-      {name: "Pas de données"}
-    ]
-    return (<Layout
-      image={this.props.config.image}
-      links={links}
-      navigate={(to)=>this.props.navigation.navigate("List",  { category: to })}
-      enableAbout={this.props.config.about} 
-    />);
+    return (<Container>
+      <ObjectView active={true} navigation={props.navigation} {...pageData} />
+    </Container>)
   }
-
-  constructor(props) {
-    super(props);
-  }
-
-  onFocus() {
-    if (this.abortController) this.abortController.abort();
-    this.abortController = new AbortController();
-    if (this.props.config && this.props.config.video && this.props.target) {
-      fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, { method: 'PUT', signal: this.abortController.signal })
-        .then(r => {
-          if (!r.ok) {
-            Toast.show({
-              text: "Failed to set current : " + r.status,
-              duration: 2000
-            })
-          }
-        })
-    }
-  }
+  let links = (0 < props.categories.length)?props.categories.map(({name})=>({name, to: name})): [
+    {name: "Pas de données"}
+  ]
+  return (<Layout
+    image={props.config.image}
+    links={links}
+    navigate={(to)=>props.navigation.navigate("List",  { category: to })}
+    enableAbout={props.config.about} 
+  />);
 }
 
 const styles = StyleSheet.create({

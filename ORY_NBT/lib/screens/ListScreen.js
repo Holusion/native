@@ -10,6 +10,7 @@ import {getActiveProduct, getActiveItems} from "@holusion/react-native-holusion/
 import { filename} from "@holusion/cache-control";
 
 import { Layout } from '../Layout';
+import { useAutoPlay } from '@holusion/react-native-holusion/lib/sync/hooks';
 
 function ListScreenContent(props){
     let categoryData = props.config.categories.find(c=> c.name == props.selectedCategory)
@@ -49,46 +50,17 @@ const ConnectedListScreenContent = connect(function(state, props){
     }
 })(ListScreenContent);
 
-class ListScreen extends React.Component {
-    render() {
-        const {category} = this.props.route.params?this.props.route.params :{};
-        return (
-            <Container style={{flex: 1}}>
-                <ConnectedListScreenContent 
-                selectedCategory={category}
-                onNavigate={(id) => this.props.navigation.navigate("Object", {id, category})}
-                />
-            </Container>
-        )
-    }
-    onFocus(){
-        if(this.props.config&& this.props.config.video && this.props.target){
-            //console.warn("ListScreen focus to ",filename(this.props.config.video));
-            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
-            .then(r=>{
-                if(!r.ok){
-                    console.warn("Failed to set current : "+r.status)
-                    Toast.show({
-                        text: "Failed to set current : "+r.status,
-                        duration: 2000
-                    })
-                }
-            })
-        }else{
-            //console.warn("ListScreen skip focus : ", this.props.config, this.props.target);
-        }
-    }
-    componentDidMount(){
-        this.subscription = this.props.navigation.addListener("focus", ()=>{
-            this.onFocus();
-        })
-    }
-    componentWillunmount(){
-        this.subscription.remove();
-    }
-    constructor(props) {
-        super(props);
-    }
+function ListScreen (props) {
+    useAutoPlay()
+    const {category} = props.route.params?props.route.params :{};
+    return (
+        <Container style={{flex: 1}}>
+            <ConnectedListScreenContent 
+            selectedCategory={category}
+            onNavigate={(id) => props.navigation.navigate("Object", {id, category})}
+            />
+        </Container>
+    )
 }
 
 export default connect(function(state, props){
