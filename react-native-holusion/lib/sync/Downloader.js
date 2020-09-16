@@ -15,7 +15,7 @@ export default function Downloader({projectName, updateTask, setData, firebaseTa
       logger = consoleLogger;
   }
   useAuth({projectName, updateTask});
-  useWatch({setData, updateTask, firebaseTask, logger})
+  useWatch({setData, updateTask, firebaseTask, logger});
   return null;
 }
 

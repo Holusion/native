@@ -1,6 +1,15 @@
 import { Toast } from "native-base"
 
+/**
+ * @typedef Logger
+ * @method onProgress
+ * @method onError
+ * @method onDispatch
+ */
 
+/**
+ * @type Logger
+ */
 export const consoleLogger = {
   onProgress: (m)=>console.warn("watchFiles Progress : ", m.join(", ")),
   onError: (e)=>console.error("watchFiles ", e),
@@ -9,7 +18,9 @@ export const consoleLogger = {
     (k, v) =>  k && v && typeof v !== "number" ? (Array.isArray(v) ? "[object Array]" : "" + v) : v 
   )),
 }
-
+/**
+ * @type Logger
+ */
 class ToastLogger {
   constructor(){
     this._messages=[];

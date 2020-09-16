@@ -65,5 +65,7 @@ export const getSyncTasks = createSelector(
 
 export const getPendingSyncTasks = createSelector(
     [getSyncTasks],
-    (tasks)=> tasks.filter(t=> t.status ==="pending")
+    (tasks)=> {
+        return  tasks.filter(t=> t.status ==="pending")
+    }
 )

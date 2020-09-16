@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^2.2.1",
+    "@holusion/cache-control": "^2.3.0",
     "Base64": "^1.0.2",
     "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",

@@ -3,16 +3,14 @@ import React from 'react';
 import { setData } from '../actions';
 import { connect } from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
+import { Container,  Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { getActiveProduct, getItemsArray } from "../selectors";
+import { getItemsArray } from "../selectors";
 
-import { filename } from "@holusion/cache-control";
 
 import ImageCard from '../components/ImageCard';
 
-import * as strings from "../strings.json";
 
 import ObjectView from "../components/ObjectView";
 import ListObjects from '../containers/ListObjects';
@@ -20,6 +18,7 @@ import { useAutoPlay } from '../sync/hooks';
 
 function HomeScreen (props) {
   useAutoPlay();
+
   //First handle cases where application is not ready
   if (!props.projectName) {
     return (<Container>
@@ -36,7 +35,6 @@ function HomeScreen (props) {
       </Content>
     </Container>)
   }
-  console.log("Configuration : ", props.config);
   
   if(props.config.defaultPage){
     const pageData = props.items.find(i => i.id == props.config.defaultPage)
@@ -82,14 +80,13 @@ function HomeScreen (props) {
   if (props.config.about) {
     footer = (<Footer >
       <Button transparent onPress={() => props.navigation.navigate("About")}>
-        <H2 primary style={styles.footerButton}>{strings.home.footerButton}</H2>
+        <H2 primary style={styles.footerButton}>A propos</H2>
       </Button>
 
     </Footer>)
   }
   return (
     <Container>
-      <VideoPlayer video={props.config?props.config.video:undefined}/>
       <Content contentContainerStyle={styles.container}>
         <H1 primary style={styles.titleContainer}>
           Découvrez une collection :
@@ -160,7 +157,6 @@ function mapStateToProps(state) {
     items: getItemsArray(state),
     projectName: conf.projectName,
     config,
-    target: getActiveProduct(state),
   };
 }
 

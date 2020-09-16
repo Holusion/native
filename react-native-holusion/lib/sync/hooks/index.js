@@ -1,6 +1,5 @@
 
-export {  useAuth  } from "./useAuth";
-export { useSignIn } from "./useSignIn";
+export {  useAuth, signIn  } from "./useAuth";
 export { useWatch  } from "./useWatch";
 
 export {usePlay} from "./usePlay";
