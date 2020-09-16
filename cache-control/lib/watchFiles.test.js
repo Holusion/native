@@ -1,9 +1,8 @@
 
-import {setBasePath, createStorage} from "./path";
-import {WatchFiles, transformSnapshot} from "./watchFiles";
+import { setBasePath } from "./path";
+import { WatchFiles, transformSnapshot } from "./watchFiles";
 
 import fsMock from "filesystem";
-import {firebase as firebaseMock} from "firebase";
 
 describe("watchFiles", function(){
   let logMock;
@@ -266,18 +265,18 @@ describe("watchFiles", function(){
         ];
 
         wf.on("error", done);
-        wf.on("progress", (msg)=>{
-          if(!a.signal.aborted) a.abort();
-          else{
-            try{
-              let res = JSON.parse(fsMock.contents["/path/to/tmp/storage/cache.json"]);
-              expect(Object.keys(res)).toEqual(["config", "items"]);
-              done();
-            }catch(e){
-              done(e);
-            }
+        wf.on("progress", ()=>{
+          try{
+            let res = JSON.parse(fsMock.contents["/path/to/tmp/storage/cache.json"]);
+            expect(Object.keys(res)).toEqual(["config", "items"]);
+            done();
+          }catch(e){
+            done(e);
           }
-        })
+        });
+        wf.on("start", ()=>{
+          a.abort();
+        });
         wf.onProjectsSnapshot({docs:[p]}, {signal: a.signal});
       })
 

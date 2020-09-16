@@ -88,7 +88,7 @@ export class WatchFiles extends EventEmitter{
   }
 
   onConfigSnapshot(configSnapshot, {signal}={}){
-    this.emit("progress", "Receiving updated configuration");
+    this.emit("start", "config");
     transformSnapshot(this.transforms, configSnapshot)
     .then(async ([config, files])=>{
       try {
@@ -109,12 +109,12 @@ export class WatchFiles extends EventEmitter{
       this.emit("dispatch", { config });
     })
     .catch((e)=>{
-      this.makeError("Failed to get configuration : ", e);
+      this.makeError("data.config", e);
     });
   }
 
   onProjectsSnapshot(projectsSnapshot, {signal}={}){
-    this.emit("progress", "Receiving updated pages");
+    this.emit("start", "items");
     Promise.all(projectsSnapshot.docs.map(p => transformSnapshot(this.transforms, p)))
     .then(async (projects)=>{
       let items = {};
@@ -138,7 +138,7 @@ export class WatchFiles extends EventEmitter{
       this.emit("dispatch", { items });
     })
     .catch((e)=>{
-      this.makeError("get configuration", e);
+      this.makeError("data.items", e);
     });
   }
 
