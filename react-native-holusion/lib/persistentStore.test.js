@@ -2,6 +2,7 @@
 import {persistentStore, configureStore} from "./persistentStore";
 import * as filesMock from "@holusion/cache-control";
 import { setProjectName } from "./actions";
+import { getItems } from "./selectors";
 
 
 
@@ -33,6 +34,15 @@ describe("persistentStore",function (){
       const conf = s.getState().conf;
       expect(conf).toHaveProperty("projectName", "foo");
       expect(conf).toHaveProperty("configurableProjectName", true);
+    })
+    it("is initialized with items as an empty object", function(){
+      const s = configureStore({
+      projectName: "foo",
+      configurableProjectName: true
+    });
+    const items = getItems(s.getState());
+    expect(items).toEqual({});
+
     })
   })
 

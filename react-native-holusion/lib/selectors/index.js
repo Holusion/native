@@ -5,10 +5,15 @@ import { createSelector } from 'reselect'
 /*
  * Data selectors
  */
-const getData = (state)=> state.data;
+export const getData = (state)=> state.data;
+export const getConfig = (state)=> getData(state).config;
+/**
+ * get app local configuration (different from getConfig that gives project's configuration)
+ */
+export const getConf = (state)=> state.conf;
+export const getItems = (state) => state.data.items;
 const getSelectedId = (state, props) => props.selectedId;
 const getSelectedCategory = (state, props) => props.selectedCategory;
-const getItems = (state) => state.data.items;
 
 export const getItemsIds = createSelector(
     [getItems],

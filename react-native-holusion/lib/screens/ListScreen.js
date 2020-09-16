@@ -4,57 +4,36 @@ import {setData} from '../actions';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast} from 'native-base';
+import { Container } from 'native-base';
 
 import {getActiveProduct} from "../selectors";
 
-import { filename} from "@holusion/cache-control";
-
 import ListObjects from "../containers/ListObjects";
+import { useAutoPlay } from '../sync/hooks';
 
-class ListScreen extends React.Component {
-    render() {
-        const {category} = this.props.route.params?this.props.route.params :{};
-        return (
-            <Container style={{flex: 1}}>
-                <ListObjects 
-                selectedCategory={category}
-                onNavigate={(id) => this.props.navigation.navigate("Object", {id, category})}
-                />
-            </Container>
-        )
-    }
-    onFocus(){
-        if(this.props.config&& this.props.config.video && this.props.target){
-            //console.warn("ListScreen focus to ",filename(this.props.config.video));
-            fetch(`http://${this.props.target.url}/control/current/${filename(this.props.config.video)}`, {method: 'PUT'})
-            .then(r=>{
-                if(!r.ok){
-                    console.warn("Failed to set current : "+r.status)
-                    Toast.show({
-                        text: "Failed to set current : "+r.status,
-                        duration: 2000
-                    })
-                }
-            })
-        }else{
-            //console.warn("ListScreen skip focus : ", this.props.config, this.props.target);
+
+function ListScreen (props) {
+    const {category} = props.route.params?props.route.params :{};
+    let video = props.config? props.config.video : undefined;;
+    if(props.config && category){
+        let catData = props.config.categories.find(c=> c.name =="category");
+        if(catData && catData.video){
+            video = catData.video;
         }
     }
-    componentDidMount(){
-        this.subscription = this.props.navigation.addListener("focus", ()=>{
-            this.onFocus();
-        })
-    }
-    componentWillunmount(){
-        this.subscription.remove();
-    }
-    constructor(props) {
-        super(props);
-    }
+    useAutoPlay();
+
+    return (
+        <Container style={{flex: 1}}>
+            <ListObjects 
+            selectedCategory={category}
+            onNavigate={(id) => props.navigation.navigate("Object", {id, category})}
+            />
+        </Container>
+    )
 }
 
-export default connect(function(state, props){
+export default connect(function(state){
     const {data} = state;
     return {
         config: data.config,

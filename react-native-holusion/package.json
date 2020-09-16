@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^2.2.0",
+    "@holusion/cache-control": "^2.2.1",
     "Base64": "^1.0.2",
     "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",
@@ -24,6 +24,7 @@
     "@react-native-firebase/firestore": "^6.3.4",
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
+    "@react-navigation/native": "^5.7.3",
     "babel-jest": "^24.9.0",
     "jest": "^26.1.0",
     "jest-fetch-mock": "^3.0.3",
@@ -49,8 +50,8 @@
   "main": "index.js",
   "name": "@holusion/react-native-holusion",
   "peerDependencies": {
-    "react-native": "0.62.2",
-    "react": "16.11.0",
+    "react-native": ">=62 <63",
+    "react": ">=16 <17",
     "native-base": "^2.13.12",
     "react-native-device-info": "^5.5.3",
     "react-native-zeroconf": "^0.12.2",
@@ -60,7 +61,8 @@
     "@react-native-firebase/auth": "^6.3.4",
     "@react-native-firebase/firestore": "^6.3.4",
     "@react-native-firebase/functions": "^6.3.4",
-    "@react-native-firebase/storage": "^6.3.4"
+    "@react-native-firebase/storage": "^6.3.4",
+    "@react-navigation/native": ">=5.0 <6"
   },
   "scripts": {
     "test": "jest ./lib"

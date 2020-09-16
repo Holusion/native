@@ -22,6 +22,7 @@ const {width, height} = Dimensions.get('window');
 
 import ObjectView from "../components/ObjectView";
 import WikiView from "../components/WikiView";
+import { VideoPlayer } from '../sync/VideoPlayer';
 
 /**
  * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
@@ -72,6 +73,7 @@ class ObjectScreen extends React.Component {
         })
 
         return (<Container onLayout={this._onLayoutDidChange}>
+            <VideoPlayer/>
             <Carousel 
                 ref={(ref) => this._carousel = ref}
                 style={this.state.size}
