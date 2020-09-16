@@ -52,6 +52,7 @@ export function useAuth({projectName, updateTask}){
           cancelled || updateTask({id: "firebase", status: "success", target: projectName, message: `connected to ${projectName}`})
           break;
         }catch(e){
+          console.warn("Firebase error : ", e);
           cancelled || updateTask({id:"firebase", status: "error", message: e.message});
           cancelled || await delay(d);
           d = Math.min(d*1.5, 60000);

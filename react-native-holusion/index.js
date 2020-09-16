@@ -8,13 +8,15 @@ import * as actions from "./lib/actions";
 import reducers from "./lib/reducers";
 import {configureStore, persistentStore} from "./lib/persistentStore";
 
-import strings from "./lib/strings.json";
 
 import * as screens from "./lib/screens";
 import * as components from "./lib/components";
 import * as selectors from "./lib/selectors";
 
 import {DownloadProvider} from "./lib/sync/DownloadProvider";
+
+
+import {useWatch, useAutoPlay} from "./lib/sync/hooks";
 
 export {
   netScan,
@@ -25,9 +27,10 @@ export {
   reducers,
   configureStore,
   persistentStore,
-  strings,
   screens,
   components,
   selectors,
   DownloadProvider,
+  useWatch, 
+  useAutoPlay
 }

@@ -6,7 +6,6 @@ import { Container, ListItem, Icon, Button, Text, Title, Form, Item, Input } fro
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import {setActive, setDefaultTarget } from "../actions";
-import { ScrollView } from 'react-native-gesture-handler';
 
 import AppState from "../containers/AppState";
 import AppConfiguration from "../containers/AppConfiguration";
