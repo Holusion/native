@@ -7,7 +7,6 @@ import { StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-nati
 
 
 
-import * as strings from "@holusion/react-native-holusion/lib/strings.json";
 
 
 export function Layout({
@@ -71,7 +70,7 @@ export function Layout({
         <ImageBackground style={{width:"100%", display:"flex", flexDirection: "row", justifyContent:"space-between"}} source={require("../assets/footer.png")}>
           <View style={{flex:1}}>
             {enableAbout && <Button transparent onPress={() => navigate("About")}>
-              <H2 primary style={styles.footerButton}>{strings.home.footerButton}</H2>
+              <H2 primary style={styles.footerButton}>à propos</H2>
             </Button>}
           </View>
           <View style={styles.footerStyle}>

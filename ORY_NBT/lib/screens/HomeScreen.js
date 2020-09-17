@@ -2,11 +2,10 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { Container, Toast, Content, Spinner, Text } from 'native-base';
+import { Container, Content, Spinner, Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 
-import { filename } from "@holusion/cache-control";
 
 import { setData } from '@holusion/react-native-holusion/lib/actions';
 import { getActiveProduct, getItemsArray } from "@holusion/react-native-holusion/lib/selectors";
