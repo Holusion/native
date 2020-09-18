@@ -90,6 +90,15 @@ describe("reducers", function () {
       expect(s.data.items).toEqual(d.items);
       expect(s.data).toHaveProperty("config", {});
     })
+    test("can set mutiple keys of data simultaneously", function () {
+      const d = { 
+        config: {video: "foo.mp4"},
+        items: { foo: { name: "foo", status: "bar" } } 
+      };
+      const s = reducers(initialState, setData(Object.assign({}, d)));
+      expect(s.data).toHaveProperty("items", d.items);
+      expect(s.data).toHaveProperty("config", d.config);
+    })
   })
 
   describe("tasks", function () {

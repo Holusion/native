@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main module has expected properties 1`] = `
+Array [
+  "netScan",
+  "reducers",
+  "configureStore",
+  "persistentStore",
+  "DownloadProvider",
+  "useWatch",
+  "useAutoPlay",
+  "wrapAutoPlay",
+  "files",
+  "convert",
+  "time",
+  "actions",
+  "screens",
+  "components",
+  "selectors",
+]
+`;

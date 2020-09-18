@@ -16,7 +16,7 @@ import * as selectors from "./lib/selectors";
 import {DownloadProvider} from "./lib/sync/DownloadProvider";
 
 
-import {useWatch, useAutoPlay} from "./lib/sync/hooks";
+import {useWatch, useAutoPlay, wrapAutoPlay} from "./lib/sync/hooks";
 
 export {
   netScan,
@@ -32,5 +32,6 @@ export {
   selectors,
   DownloadProvider,
   useWatch, 
-  useAutoPlay
+  useAutoPlay,
+  wrapAutoPlay,
 }

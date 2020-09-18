@@ -18,6 +18,7 @@
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.6.2",
+    "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/auth": "^6.3.4",
@@ -25,25 +26,40 @@
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
     "@react-navigation/native": "^5.7.3",
+    "@react-navigation/stack": "^5.9.0",
+    "@testing-library/jest-native": "^3.4.2",
+    "@testing-library/react-native": "^7.0.2",
     "babel-jest": "^24.9.0",
     "jest": "^26.1.0",
-    "jest-fetch-mock": "^3.0.3",
+    "jest-fetch-mock": "git://github.com:jefflau/jest-fetch-mock#fb4cb19",
     "metro-react-native-babel-preset": "^0.61.0",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-device-info": "^5.5.3",
     "react-native-fs": "^2.16.6",
+    "react-native-gesture-handler": "^1.8.0",
+    "react-native-reanimated": "^1.13.0",
+    "react-native-safe-area-context": "^3.1.7",
     "react-native-zeroconf": "^0.12.2",
     "react-test-renderer": "^16.9.0"
   },
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!react-native|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
+      "node_modules/(?!react-native|@react-navigation/stack|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
     ],
-    "setupFiles": [
-      "./setupJest.js"
+    "setupFilesAfterEnv": [
+      "./setupJest.js",
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   },
   "license": "ISC",

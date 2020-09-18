@@ -33,7 +33,7 @@ export function useWatch({
   useEffect(()=>{
     if(firebaseTask.status !== "success") return;
     if(!w) return;
-    w.on("foo", (a)=>{console.log("foo event", a)});
+    
     w.on("start",(name)=>{
       console.log("Start synchronizing", name);
       //start events should always be followed by "error" or "dispatch".

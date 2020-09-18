@@ -3,7 +3,7 @@
 import * as m from "../index";
 
 describe("main module", function(){
-  it("has DownloadProvider", function(){
-    expect(m).toHaveProperty("DownloadProvider");
+  it("has expected properties", function(){
+    expect(Object.keys(m)).toMatchSnapshot();
   });
 })

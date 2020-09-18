@@ -1,6 +1,5 @@
 'use strict';
 import {useEffect} from "react";
-import { useIsFocused } from '@react-navigation/native';
 
 import {Toast} from "native-base";
 import { filename } from "@holusion/cache-control";
@@ -11,13 +10,12 @@ import { filename } from "@holusion/cache-control";
  * @param {string} targetUrl 
  */
 export function usePlay(video, targetUrl){
-  const isActive = useIsFocused();
   useEffect(()=>{
-    if(!video || ! targetUrl || ! isActive){
+    if(!video || ! targetUrl){
       return;
     }
     let controller = new AbortController();
-    console.log("Playing video : ", video);
+    //console.log("Playing video : ", video);
     let req = `http://${targetUrl}/control/current/${filename(video)}`;
     fetch(req, {
       method: 'PUT',
@@ -36,6 +34,9 @@ export function usePlay(video, targetUrl){
           }
         }
     }, (e)=>{
+      if(e.name === "AbortError"){
+        return;
+      }
       console.warn(`Failed to PUT ${req} : `, e);
       Toast.show({
           text: "Failed to set video : "+e.message,
@@ -43,5 +44,6 @@ export function usePlay(video, targetUrl){
       })
     })
     return ()=> controller.abort();
-  }, [video, targetUrl, isActive]);
+  }, [video, targetUrl]);
+  return;
 }

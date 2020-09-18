@@ -1,6 +1,8 @@
 
 import {addTask, removeTask, ADD_TASK, REMOVE_TASK} from "./actions";
 
+//Actions are mostly tested through reducers.test.js
+
 describe("actions", ()=>{
   describe("addTask", ()=>{
     it("creates a task", function(){
