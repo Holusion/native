@@ -6,7 +6,7 @@
     "js-yaml": "^3.13.1",
     "prop-types": "^15.7.2",
     "react-native-looped-carousel": "^0.1.13",
-    "react-native-markdown-renderer": "^3.2.8",
+    "react-native-markdown-display": "^6.1.6",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "reselect": "^4.0.0"

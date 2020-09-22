@@ -15,7 +15,7 @@ export default function WikiView(d){
     }
     let abstract = null;
     if(d["abstract"]){
-        abstract= (<Markdown style={{text:{fontSize:26}}}>{d['abstract']}</Markdown>)
+        abstract= (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)
     }
     return(<Content contentContainerStyle={styles.content}>
         <View style={{flexDirection:"row"}}>
@@ -32,13 +32,13 @@ export default function WikiView(d){
             </View>
             <View style={styles.cartouche}>
                 <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
-                <Markdown >{d['description']}</Markdown>
+                {d['description'] && <Markdown >{d['description']}</Markdown>}
             </View>
         </View>
         <View style={styles.textContent}>
-            <Markdown>
+            {d['mainText'] && <Markdown>
                 {d['mainText']}
-            </Markdown>
+            </Markdown>}
         </View>
     </Content>)
 }

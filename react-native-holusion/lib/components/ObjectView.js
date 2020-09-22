@@ -14,8 +14,9 @@ export default function ObjectView(d){
             <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
         </Content>)
     }
+    
     const source = ((d && d.image)?{uri: d.image}: require("../../assets/missing-image.png"));
-    const withDescription = d['description']?true:false;
+    const withDescription = typeof d['description']=== "string"?true:false;
 
     return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
         <View style={styles.image}>

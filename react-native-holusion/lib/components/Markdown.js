@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet} from 'react-native';
 import {connectStyle} from "native-base";
-import Renderer from 'react-native-markdown-renderer'
+import Renderer from 'react-native-markdown-display'
 
 function Markdown(props){
     const styles = Array.isArray(props.style)? props.style.reduce((acc, v)=>{return {...acc, ...v}}, {}): props.style;
