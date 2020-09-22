@@ -2,14 +2,13 @@
 import React from 'react';
 import { connect} from 'react-redux'
 
-import RNFS from 'react-native-fs';
 
-import { Container, StyleProvider, Toast, ListItem, Icon, Footer, Button, Content, Text} from 'native-base';
-import { StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import { Container, Button, Content, Text} from 'native-base';
+import { StyleSheet } from 'react-native';
 
 import StatusIcon from "../components/StatusIcon";
 
-import {filename, dedupeList, uploadFile, sendFiles} from "@holusion/cache-control";
+import {sendFiles} from "@holusion/cache-control";
 
 class SynchronizeScreen extends React.Component {
     render() {
@@ -76,11 +75,11 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {products, data} = state;
+    const {products, conf, data} = state;
     return {
       target: products.find(p => p.active == true),
       items: data.items,
-      purge: data.purge_products,
+      purge: conf.purge_products,
       config: data.config,
     }
 }
