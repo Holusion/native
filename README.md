@@ -98,6 +98,7 @@ sélectionner la *Team* Holusion.
 
 Pour la cible `<nom_du_projet>Test`, onglet **signing & capabilities** : Sélectionner la *Team* Holusion
 
+
 ### Ajout des fichiers supplémentaires
 
 Ajoutez le fichier **GoogleService-Info.plist** (stocké à la racine du dépôt git). Dans le menu de xcode, cliquer sur :`File > Add files to <nom_du_projet>`
@@ -126,6 +127,18 @@ Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/rea
     <string>Zocial.ttf</string>
 </array>
 ```
+### Permissions
+
+**iOS 14** : Ajouter la permission de scanner avec zeroconf ([react-native-zeroconf](https://github.com/balthazar/react-native-zeroconf#ios-14-permissions)).
+
+```
+<key>NSBonjourServices</key>
+	<array>
+		<string>_workstation._tcp.</string>
+	</array>
+<key>NSLocalNetworkUsageDescription</key>
+<string>Rechercher automatiquement les équipements holusion sur le réseau</string>
+```
 
 ### Paramètres généraux
 
@@ -135,6 +148,7 @@ Dans l'onglet général :
 - Dans **Deployment info**:
     - cocher `ipad` uniquement (selon usage)
     - Fournir les orientations nécessaires
+    - cocher `this app requires fullscreen` (nécessaire pour la publication sur appStore Connect)
 
 
 
@@ -170,6 +184,8 @@ react-native ne fonctionne pas avec npm link. Pour éviter de devoir publier une
     
     # Ou pour le garder à jour : 
     fswatch -o react-native-holusion| while read f; do rsync -a --exclude node_modules react-native-holusion/ <project_name>/node_modules/@holusion/react-native-holusion; done
+
+
 ### Ajouter un nouvel iPad
 
 Faire la configuration initiale pour `s.dumetz@holusion.com`.
