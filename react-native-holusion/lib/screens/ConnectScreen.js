@@ -47,7 +47,6 @@ class ConnectScreen extends React.Component {
             </Container>)
         }
         const renderItem = ({item})=>{
-            console.log("Render item : ", item);
             const isDefault = this.props.default_target == item.name;
             return (<ListItem style={{justifyContent:"space-between", flex: 1, flexDirection:"row"}} disabled={item.disabled} onPress={this.handlePress.bind(this, item)} selected={(item.active)?true:false}>
                 <Button light={!isDefault} primary={isDefault} style={{width:160}} onPress={isDefault? null: ()=>this.props.setDefaultTarget(item.name)}>
@@ -100,6 +99,7 @@ class ConnectScreen extends React.Component {
 
 const styles = StyleSheet.create({
     title: {
+        textAlign: "left",
         marginTop: 15,
         paddingBottom: 15,
     },

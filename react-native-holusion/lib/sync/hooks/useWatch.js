@@ -43,7 +43,7 @@ export function useWatch({
       logger.onProgress( messages);
     })
     w.on("error", (err)=>{
-      switch(e.name){
+      switch(err.name){
         case "data.config":
           updateTask({id:`sync-config`, status: "error", message:e.message});
           break;

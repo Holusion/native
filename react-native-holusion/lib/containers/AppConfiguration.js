@@ -14,12 +14,12 @@ function AppConfiguration(props){
     }
 
     return (<Content>
-        <ListItem onPress={()=>props.setPurge(!props.purge)} style={{paddingHorizontal:4}}>
+        <ListItem  style={{paddingHorizontal:4}}>
             <Body>
                 <Text>Purger les produits</Text>
                 <Text style={{fontSize:14}} >Retire les vidéos inutilisées du produit cible</Text>
             </Body>
-            <CheckBox checked={props.purge} />
+            <CheckBox checked={props.purge} style={{width:30, height:30, paddingTop: 6, paddingLeft: 1}} onPress={()=>props.setPurge(!props.purge)} />
         </ListItem>
         <ListItem style={{paddingHorizontal:4, flexDirection:"row"}} >
             <Body style={{flex:1}}>
@@ -41,7 +41,9 @@ function AppConfiguration(props){
                 <Item last style={{flex:1}} >
                     <Input placeholder="application" editable={props.configurableProjectName} autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={setName} value={name}/>
                 </Item>
-                <Button bordered info style={{minWidth:50}} disabled={name === props.projectName} onPress={handleSubmitName}><Icon large primary type="Ionicons" name="ios-send" /></Button>
+                {props.configurableProjectName &&<Button bordered info style={{minWidth:50}} disabled={name === props.projectName} onPress={handleSubmitName}>
+                    <Icon large primary type="Ionicons" name="ios-send" />
+                </Button>}
             </Form>
         </ListItem>}
     </Content>)
