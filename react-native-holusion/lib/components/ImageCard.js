@@ -7,7 +7,7 @@ import { connectStyle, Text, Icon, View } from 'native-base'
 class ImageCard extends React.Component{
     static propTypes = {
         image: PropTypes.object,
-        source: PropTypes.shape({uri: PropTypes.string}),
+        source: PropTypes.shape({uri: PropTypes.string.isRequired}),
         title: PropTypes.string,
         style: PropTypes.object,
     }
@@ -16,8 +16,10 @@ class ImageCard extends React.Component{
         const styles = props.style;
         let img 
         if(props.image) img = props.image;
-        else if(props.source) img = (<Image key={props.source.uri} style={styles.image} source={props.source} resizeMode="cover"/>);
-        else img = (<Icon style={styles.icon} name="ios-image"/>);
+        else { 
+            let src = (props.source)?props.source: require("../../assets/default_image.png");
+            img = (<Image key={src.uri} style={styles.image} source={src} resizeMode="cover"/>);
+        }
         (typeof props.title == "string") || console.warn("Invalid title :", props.title);
         const title = (typeof props.title == "string")? props.title : "--";
         return (
@@ -61,6 +63,8 @@ const cardTheme = {
     icon: {
         alignSelf: 'center', 
         fontSize: 200,
+        width:200,
+        height:200,
     },
     titleText: {
         width: 200,
