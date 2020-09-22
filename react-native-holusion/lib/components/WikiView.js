@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
+import { Content, H1, H2, View, Spinner } from 'native-base';
 import { Image, StyleSheet } from 'react-native';
 
 import Markdown from '../components/Markdown'
@@ -18,16 +18,12 @@ export default function WikiView(d){
         abstract= (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)
     }
     return(<Content contentContainerStyle={styles.content}>
-        <View style={{flexDirection:"row"}}>
+        <View style={styles.headerStyles}>
             <View style={styles.titleContainer}>
                 <View style={styles.titles}>
                     <H1 primary style={styles.title}>{d['title']}</H1>
                     <H2 style={styles.subTitle}>{d['subtitle']}</H2>
                     {abstract}
-                </View>
-                <View>
-                    <H2 style={styles.subTitle}>Plus d'informations</H2>
-
                 </View>
             </View>
             <View style={styles.cartouche}>
@@ -35,11 +31,12 @@ export default function WikiView(d){
                 {d['description'] && <Markdown >{d['description']}</Markdown>}
             </View>
         </View>
-        <View style={styles.textContent}>
-            {d['mainText'] && <Markdown>
+        {d['mainText'] && <View style={styles.textContent}>
+            <H2 style={styles.subTitle}>Plus d'informations</H2>
+            <Markdown>
                 {d['mainText']}
-            </Markdown>}
-        </View>
+            </Markdown>
+        </View>}
     </Content>)
 }
 
@@ -54,8 +51,12 @@ const styles = StyleSheet.create({
         minHeight: 150,
         resizeMode: 'contain', 
     },
+    headerStyles: {
+        flexDirection:"row"
+    },
     textContent: {
         paddingTop: 0,
+        marginTop: -40,
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent:"space-between",
+        paddingBottom: 50,
     },
     titles: {
         flex: 2,
