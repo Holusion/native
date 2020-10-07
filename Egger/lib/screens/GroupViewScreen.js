@@ -7,13 +7,12 @@ import { connect} from 'react-redux';
 import { Container, Toast, Content, Footer, Spinner, Text, View, Button, Icon, H1, H2} from 'native-base';
 import { StyleSheet, TouchableOpacity, ImageBackground, Animated} from 'react-native';
 
-import {files, selectors} from "@holusion/react-native-holusion";
+import {files, selectors, components} from "@holusion/react-native-holusion";
 const {getActiveProduct} = selectors;
 const {filename} = files;
-
+const {Markdown} = components;
 import Buttons from "../components/Buttons";
 
-import Markdown from "../components/Markdown";
 
 import {theme} from "../../theme";
 
