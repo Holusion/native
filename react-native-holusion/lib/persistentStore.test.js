@@ -37,12 +37,11 @@ describe("persistentStore",function (){
     })
     it("is initialized with items as an empty object", function(){
       const s = configureStore({
-      projectName: "foo",
-      configurableProjectName: true
-    });
-    const items = getItems(s.getState());
-    expect(items).toEqual({});
-
+        projectName: "foo",
+        configurableProjectName: true
+      });
+      const items = getItems(s.getState());
+      expect(items).toEqual({});
     })
   })
 

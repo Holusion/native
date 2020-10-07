@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {getActiveItems} from "../selectors";
 
-import Controller from "../components/Controller"
+import {Controller} from "../containers"
 
 import {filename} from "@holusion/cache-control";
 
@@ -71,7 +71,6 @@ class ObjectScreen extends React.Component {
             }
             return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
         })
-
         return (<Container onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <Carousel 
@@ -87,7 +86,7 @@ class ObjectScreen extends React.Component {
                 {slides}
             </Carousel>
             <Footer style={styles.footer}>
-                {["default", "buttons"].indexOf(this.props.control_buttons) != -1 && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
+                <Controller prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>
             </Footer>
         </Container>)
     }
@@ -133,7 +132,7 @@ class ObjectScreen extends React.Component {
     componentDidMount(){
         this.subscriptions = [
             this.props.navigation.addListener("focus",()=>{
-                this.onNextPage(this.state.index);
+                this.onNextPage(this.index);
             }),
         ];
     }

@@ -15,6 +15,7 @@ export const SET_ITEMS = "SET_ITEMS";
 export const SET_CONFIG = "SET_CONFIG";
 
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
+export const SET_PLAY_CONTROL = "SET_PLAY_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 export const SET_PURGE = "SET_PURGE";
 export const SET_PAUSE = "SET_PAUSE";
@@ -72,9 +73,19 @@ export const setItems = (items) =>{
 export const setConfig = (config) => {
     return {type: SET_CONFIG, config}
 }
-
-export const setSlidesControl = (controlType) =>{
-    return {type : SET_SLIDES_CONTROL, controlType}
+/**
+ * 
+ * @param {(default|buttons|swipe|none)} control - one of default, buttons, none
+ */
+export const setSlidesControl = (control="default") =>{
+    return {type : SET_SLIDES_CONTROL, control}
+}
+/**
+ * 
+ * @param {(button|rotate|none)} control - one of button, rotate, none
+ */
+export const setPlayControl = (control="none") =>{
+    return {type : SET_PLAY_CONTROL, control}
 }
 export const setDefaultTarget = (name)=>{
     return {type:SET_DEFAULT_TARGET, target: name};

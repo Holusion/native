@@ -1,0 +1,60 @@
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { PrevNext, PlayPause, SpriteCube } from "../components";
+import {StyleSheet} from "react-native";
+import { View } from "native-base";
+import { getActiveProduct } from "../selectors";
+
+//{["default", "buttons"].indexOf(this.props.control_buttons) != -1 && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}
+function Controller({
+  slides_control,
+  play_control,
+  prev,
+  next,
+  target,
+}){
+  let content, wrap;
+  switch(play_control){
+    case "button":
+      content= <PlayPause/>;
+      break;
+    case "rotate":
+      content = <SpriteCube target={target}/>;
+      break;
+    case "none":
+    default:
+      content = null;
+  }
+  switch(slides_control){
+    case "default":
+    case "buttons":
+      wrap = <PrevNext prev={prev} next={next}>{content}</PrevNext>;
+      break;
+    default:
+      wrap = content
+  }
+  return <View style={styles.view}>{wrap}</View> ;
+}
+
+Controller.propTypes = {
+  prev: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+}
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 0,
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent:'center',
+    position: "absolute",
+    alignSelf: 'center',
+  },
+})
+
+export const ConnectedController = connect((state)=>({
+  slides_control: state.conf.slides_control,
+  play_control: state.conf.play_control,
+  target: getActiveProduct(state),
+}))(Controller);

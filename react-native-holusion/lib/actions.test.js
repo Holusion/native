@@ -1,5 +1,5 @@
 
-import {addTask, removeTask, ADD_TASK, REMOVE_TASK} from "./actions";
+import {addTask, removeTask, ADD_TASK, REMOVE_TASK, setSlidesControl} from "./actions";
 
 //Actions are mostly tested through reducers.test.js
 
