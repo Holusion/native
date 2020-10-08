@@ -18,6 +18,7 @@ import {DownloadProvider} from "./lib/sync/DownloadProvider";
 
 import {useWatch, useAutoPlay, wrapAutoPlay} from "./lib/sync/hooks";
 
+export {ThemeProvider, FullLoadWrapper} from "./lib/containers";
 export {
   netScan,
   convert,

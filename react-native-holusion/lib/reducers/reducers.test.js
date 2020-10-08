@@ -122,6 +122,10 @@ describe("reducers", function () {
       s = reducers(s, updateTask({id: "foo", status: "success"}));
       expect(s.tasks.list["foo"]).toHaveProperty("title", "bar");
       expect(s.tasks.list["foo"]).toHaveProperty("status", "success");
+    })    
+    test("can update a task that has not been added", function () {
+      let s = reducers(initialState, updateTask({id: "foofoo", status: "success"}));
+      expect(s.tasks.list["foofoo"]).toHaveProperty("status", "success");
     })
     test("can remove task", function () {
       let s = reducers(initialState, addTask({id: "foo"}));
