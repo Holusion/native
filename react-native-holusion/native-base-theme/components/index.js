@@ -49,7 +49,8 @@ import variable from './../variables/platform';
 
 /* custom components */
 import imageCardTheme from "./ImageCard";
-import controllerTheme from "./Controller";
+import prevNextTheme from "./PrevNext";
+import playPauseTheme from "./PlayPause";
 import markdownTheme from "./Markdown";
 export default (variables /* : * */ = variable) => {
   const theme = {
@@ -58,8 +59,11 @@ export default (variables /* : * */ = variable) => {
     "Holusion.ImageCard": {
       ...imageCardTheme(variables)
     },
-    "Holusion.Controller": {
-      ...controllerTheme(variables)
+    "Holusion.PrevNext": {
+      ...prevNextTheme(variables)
+    },
+    "Holusion.PlayPause": {
+      ...playPauseTheme(variables)
     },
     "Holusion.Markdown": {
       ...markdownTheme(variables)

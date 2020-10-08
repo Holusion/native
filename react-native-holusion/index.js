@@ -20,7 +20,6 @@ import {useWatch, useAutoPlay, wrapAutoPlay} from "./lib/sync/hooks";
 
 export {
   netScan,
-  files,
   convert,
   time,
   actions,
