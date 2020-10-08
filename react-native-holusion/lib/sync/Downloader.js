@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {useAuth, useWatch} from "./hooks";
+import {useAuth, useCleanup, useWatch} from "./hooks";
 
 import {consoleLogger, toastLogger} from "./loggers";
 
@@ -16,6 +16,7 @@ export default function Downloader({projectName, updateTask, setData, firebaseTa
   }
   useAuth({projectName, updateTask});
   useWatch({setData, updateTask, firebaseTask, logger});
+  useCleanup();
   return null;
 }
 

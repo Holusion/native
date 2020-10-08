@@ -18,7 +18,6 @@ import { useAutoPlay } from '../sync/hooks';
 
 function HomeScreen (props) {
   useAutoPlay();
-
   //First handle cases where application is not ready
   if (!props.projectName) {
     return (<Container>

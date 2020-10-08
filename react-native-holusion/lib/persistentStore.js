@@ -1,7 +1,7 @@
 'use strict';
 
-import { saveFile, loadFile, cleanup, filename, setBasePath, createStorage } from "@holusion/cache-control";
-import { setData, addTask, updateTask, setConf } from "./actions";
+import { saveFile, loadFile, setBasePath, createStorage } from "@holusion/cache-control";
+import { setData, addTask, updateTask, taskIds, setConf } from "./actions";
 
 import { createStore } from 'redux'
 import reducers from "./reducers";
@@ -22,6 +22,7 @@ export function configureStore({ projectName, configurableProjectName: forceEdit
   return createStore(reducers, initialState);
 };
 
+
 /**
  * provides a persistence layer over redux store
  * @param {*} opts redux store initialization options
@@ -30,22 +31,14 @@ export function configureStore({ projectName, configurableProjectName: forceEdit
 export function persistentStore(opts) {
   setBasePath(DocumentDirectoryPath);
   const store = configureStore(opts);
-  store.dispatch(addTask({ id: "0_loading", title: "Initial Load"})); //Store is ready when loading is done
+  store.dispatch(addTask({ id: taskIds.initialLoad, title: "Initial Load"})); //Store is ready when loading is done
   //Dispatch data as soon as possible
   const op = Promise.resolve().then(async () => {
-    store.dispatch(addTask({ id: "1_cleanup", title: "Cleanup", status: "progress" }))
     try {
       await createStorage();
-      let [unlinked, kept] = await cleanup();
-      store.dispatch(updateTask({
-        id: "1_cleanup", 
-        status: "success", 
-        message: `${kept.length} cached files`
-          + (0 < unlinked.length ? `(removed ${2 < unlinked.length? unlinked.length: unlinked.map(f=> filename(f)).join(", ")})`: "")
-      }));
     } catch (e) {
-      console.warn("cleanup", e);
-      store.dispatch(updateTask({ id: "1_cleanup", message: e.message, status: "warn" }))
+      store.dispatch(updateTask({id:taskIds.initialLoad, status: "warn", message:e.message}));
+      return;
     }
     //We continue even if cleanup was a failure
     let c = {
@@ -91,7 +84,7 @@ export function persistentStore(opts) {
         //saveFile happens async but is lock-protected
         saveFile(`${key}.json`, new_str)
         .then(()=>{
-          store.dispatch(updateTask({ 
+          store.dispatch(updateTask({
             id: `local-${key}`, 
             message: `updated ${new Date().toLocaleString()}`, 
             status: "success"
@@ -102,8 +95,9 @@ export function persistentStore(opts) {
           store.dispatch(updateTask({ id: `local-${key}`, message: e.message, status: "error"}));
         })
       }
+      //scheduleCleanup(store);
     });
-    store.dispatch(updateTask({id:"0_loading", status: "success", message: "OK"}));
+    store.dispatch(updateTask({id: taskIds.initialLoad, status: "success", message: "OK"}));
   });
 
   return [store, op];

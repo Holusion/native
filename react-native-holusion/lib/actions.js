@@ -59,6 +59,12 @@ export const removeTask = (id)=>{
     if(typeof id !== "string") throw new Error("removeTask() id must be a string. Got "+typeof id);
     return {type: REMOVE_TASK, id}
 }
+export const taskIds = {
+    initialLoad: "01_required_initial_load",
+    cleanup: "02_cleanup",
+    fonts: "03_required_fonts",
+    database: "04_firebase_connection",
+}
 
 
 /*

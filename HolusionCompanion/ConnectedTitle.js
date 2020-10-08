@@ -5,7 +5,7 @@ import { connect} from 'react-redux'
 import {diplayName} from "./package.json"
 
 function mapStateToProps(state, props){
-  const {config} = state;
+  const {config} = state.data;
   return {
       source: (config && config.title)? {uri: config.title} : props.placeholder,
   };

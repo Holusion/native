@@ -14,25 +14,25 @@ import { readFile } from "react-native-fs";
 
 import {addTask, updateTask} from "../actions";
 import { getPendingTasks } from "../selectors";
-import { FullLoadWrapper } from "./FullLoadWrapper";
+import { InitialLoadWrapper } from "./LoadWrapper";
 
-const taskId = "load-theme";
+const taskId = "10_required_theme";
 
 export function  ThemeProvider({
   children
 }){
-  const {fonts, style} = useSelector(state=>state.data.config);
+  const {fonts, theme} = useSelector(state=>state.data.config);
   const dispatch = useDispatch();
-  //Reset theme on each style change
+  //Reset theme on each change
   useEffect(()=>{
     console.log("clearing theme cache");
     clearThemeCache();
-  }, [style]);
+  }, [theme]);
   useEffect(()=>{
-    console.log("Fonts change : ", fonts);
     if(!Array.isArray(fonts)){
       dispatch(updateTask({ 
         id: taskId, 
+        title: "Theme",
         message: `nothing to do`, 
         status: "success"
       }));
@@ -41,12 +41,12 @@ export function  ThemeProvider({
     let aborted = false;
     dispatch(addTask({ 
       id: taskId, 
+      title: "Theme",
       message: `synchronizing...`, 
       status: "pending"
     }))
     Promise.all(fonts.map(async font=>{
       const name = filename(font.slice(0, font.lastIndexOf(".")));
-      console.log("Loading font : ", name, font );
       //use readFile instead of loadFontFromFile because it yields out-of-band errors
       const data = await readFile(font, "base64");
       let type = /\.otf$/i.test(font)? "otf": "ttf";
@@ -57,11 +57,11 @@ export function  ThemeProvider({
       if(aborted) return;
       dispatch(updateTask({
         id: taskId, 
-        message: `polices : ${names.join(", ")}`,
+        message: names.length? `polices : ${names.join(", ")}`: "pas de polices",
         status: "success", 
       }));
     }).catch( (e)=>{
-      console.warn("Error loading font", e);
+      console.warn("Error loading fonts", e);
       if(aborted) return;
       dispatch(updateTask({ 
         id: taskId, 
@@ -70,10 +70,10 @@ export function  ThemeProvider({
       }))
     })
   }, [fonts]);
-  return (<StyleProvider style={getTheme(Object.assign({}, default_vars, style))} key={style}>
-    <FullLoadWrapper >
-      {children}
-    </FullLoadWrapper>
-  </StyleProvider>)
+  return (<InitialLoadWrapper>
+    <StyleProvider style={getTheme(Object.assign({}, default_vars, theme))}>
+        {children}
+    </StyleProvider>
+  </InitialLoadWrapper>)
 }
 

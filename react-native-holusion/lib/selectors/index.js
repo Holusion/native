@@ -57,13 +57,18 @@ export const getActiveProduct = createSelector(
 const getTasks = (state)=> state.tasks.list;
 export const getTasksList = createSelector(
     [getTasks],
-    (tasks)=> Object.keys(tasks).map(t=>tasks[t])
+    (tasks)=> Object.keys(tasks).map(t=>({id: t, ...tasks[t]}))
 );
 
 export const getPendingTasks = createSelector(
     [getTasksList],
     (tasks)=> tasks.filter(t=>t.status == "pending"),
 );
+
+export const getBlockingTasks = createSelector(
+    [getTasksList],
+    (tasks)=>tasks.filter(t=> /required/.test(t.id))
+)
 
 export const getSyncTasks = createSelector(
     [getTasks],
