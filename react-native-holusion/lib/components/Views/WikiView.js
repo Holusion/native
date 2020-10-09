@@ -3,7 +3,7 @@ import React from 'react'
 import { Content, H1, H2, View, Spinner } from 'native-base';
 import { Image, StyleSheet } from 'react-native';
 
-import Markdown from '../components/Markdown'
+import Markdown from '../Markdown'
 
 export default function WikiView(d){
     if(!d.active){

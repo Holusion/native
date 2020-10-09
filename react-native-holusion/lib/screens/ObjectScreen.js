@@ -20,8 +20,7 @@ import Carousel from 'react-native-looped-carousel';
 const {width, height} = Dimensions.get('window');
 
 
-import ObjectView from "../components/ObjectView";
-import WikiView from "../components/WikiView";
+import {BaseView, WikiView} from "../components";
 import { VideoPlayer } from '../sync/VideoPlayer';
 
 /**
@@ -37,7 +36,7 @@ class ObjectScreen extends React.Component {
     }
     static defaultProps = {
         views: {
-            "Base": ObjectView,
+            "Base": BaseView,
             "Wiki": WikiView,
         }
     }
@@ -45,7 +44,7 @@ class ObjectScreen extends React.Component {
         const current_index = this.index;
         
         if(!this.props.items || current_index == -1){
-            return(<Container>
+            return(<Container testID="object-not-found">
                 <Content contentContainerStyle={styles.content}>
                     <Text>No data for Id : {this.props.route.params["id"]}</Text>
                     <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
@@ -71,7 +70,7 @@ class ObjectScreen extends React.Component {
             }
             return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
         })
-        return (<Container onLayout={this._onLayoutDidChange}>
+        return (<Container testID={`object-carousel-at-${this.index}`} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <Carousel 
                 ref={(ref) => this._carousel = ref}

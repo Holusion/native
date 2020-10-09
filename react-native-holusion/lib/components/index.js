@@ -5,7 +5,6 @@ import SpriteCube from "./SpriteCube";
 import ImageCard from "./ImageCard";
 import StatusIcon from "./StatusIcon";
 import NetworkIcon from "./NetworkIcon";
-import WikiView from "./WikiView";
 export {
     SpriteCube,
     PrevNext,
@@ -13,5 +12,6 @@ export {
     ImageCard,
     StatusIcon,
     NetworkIcon,
-    WikiView,
 }
+
+export * from "./Views";

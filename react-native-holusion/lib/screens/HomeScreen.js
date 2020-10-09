@@ -9,10 +9,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { getItemsArray } from "../selectors";
 
 
-import ImageCard from '../components/ImageCard';
-
-
-import ObjectView from "../components/ObjectView";
+import {BaseView, ImageCard} from "../components"
 import ListObjects from '../containers/ListObjects';
 import { useAutoPlay } from '../sync/hooks';
 
@@ -46,7 +43,7 @@ function HomeScreen (props) {
       </Container>)
     }
     return (<Container>
-      <ObjectView active={true} navigation={props.navigation} {...pageData} />
+      <BaseView active={true} navigation={props.navigation} {...pageData} />
     </Container>)
   }
   if(!props.categories || props.categories.length == 0){

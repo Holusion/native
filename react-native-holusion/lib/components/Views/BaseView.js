@@ -3,8 +3,8 @@ import React from 'react'
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 import { Image, StyleSheet, ImageBackground } from 'react-native';
 
-import Markdown from '../components/Markdown';
-import LinksView from './LinksView';
+import Markdown from '../Markdown';
+import {LinksView} from './partials';
 
 export default function ObjectView(d){
     if(!d.active){
@@ -15,7 +15,7 @@ export default function ObjectView(d){
         </Content>)
     }
     
-    const source = ((d && d.image)?{uri: d.image}: require("../../assets/missing-image.png"));
+    const source = ((d && d.image)?{uri: d.image}: require("../../../assets/missing-image.png"));
     const withDescription = typeof d['description']=== "string"?true:false;
 
     return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>

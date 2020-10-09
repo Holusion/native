@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import {Icon, Text} from "native-base";
 import {TouchableOpacity} from "react-native";
 
-export default function LinksView(props){
+export function LinksView(props){
     const buttons = (props.items || []).map((item, index)=>{
         const color = item.color || "#333333ff";
         const fontSize = 24;
