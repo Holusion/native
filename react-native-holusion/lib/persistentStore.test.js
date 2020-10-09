@@ -2,7 +2,7 @@
 import {persistentStore, configureStore} from "./persistentStore";
 import * as filesMock from "@holusion/cache-control";
 import { setProjectName } from "./actions";
-import { getItems } from "./selectors";
+import { getItems, getTasks } from "./selectors";
 
 
 
@@ -92,6 +92,18 @@ describe("persistentStore",function (){
       store.dispatch(setProjectName("fooBar"));
       expect(filesMock.saveFile).toHaveBeenCalledTimes(1);
       expect(filesMock.saveFile).toHaveBeenCalledWith("conf.json", expect.stringMatching("\"projectName\":\"fooBar\""));
+    })
+    it("handles saveFile errors", async function(){
+      let e = new Error("Permission denied");
+      e.code = "EPERM";
+      filesMock.saveFile = jest.fn(()=>Promise.reject(e));
+      const [store, op] = persistentStore();
+      await op;
+      store.dispatch(setProjectName("fooBar"));
+      expect(filesMock.saveFile).toHaveBeenCalledTimes(1);
+      await Promise.resolve(); // Yield
+      await Promise.resolve(); // Yield again
+      expect(getTasks(store.getState())).toHaveProperty("local-conf", expect.objectContaining({status: "error", message: e.message}));
     })
   })
 })

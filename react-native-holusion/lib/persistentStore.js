@@ -90,12 +90,11 @@ export function persistentStore(opts) {
             status: "success"
           }));
         })
-        .catch(e => {
+        .catch( e => {
           console.warn(`${key}.json save error`, e);
           store.dispatch(updateTask({ id: `local-${key}`, message: e.message, status: "error"}));
         })
       }
-      //scheduleCleanup(store);
     });
     store.dispatch(updateTask({id: taskIds.initialLoad, status: "success", message: "OK"}));
   });

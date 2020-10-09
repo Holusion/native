@@ -30,10 +30,7 @@ export const getActiveItems = createSelector(
     [getItemsArray, getSelectedCategory],
     (items, category)=>{
         if(!category) return items;
-        return items.filter(i => {
-            if(i.theme) return category == i.theme;
-            if(i.category) return category == i.category;
-        })
+        return items.filter(i => category == i.category)
     }
 )
 
@@ -54,7 +51,7 @@ export const getActiveProduct = createSelector(
     (products)=> products.find(p => p.active == true)
 )
 
-const getTasks = (state)=> state.tasks.list;
+export const getTasks = (state)=> state.tasks.list;
 export const getTasksList = createSelector(
     [getTasks],
     (tasks)=> Object.keys(tasks).map(t=>({id: t, ...tasks[t]}))
@@ -71,9 +68,9 @@ export const getBlockingTasks = createSelector(
 )
 
 export const getSyncTasks = createSelector(
-    [getTasks],
+    [getTasksList],
     (tasks)=>{
-        return Object.keys(tasks).filter((t)=> /sync-/.test(t)).map(t=> tasks[t]);
+        return tasks.filter((t)=> /sync[_-]/.test(t.id));
     }
 )
 

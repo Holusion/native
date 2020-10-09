@@ -1,7 +1,15 @@
 'use strict';
 
-import {Accumulator} from "./time";
-
+import {delay, Accumulator} from "./time";
+describe("delay", function(){
+    beforeEach(()=> jest.useFakeTimers())
+    afterEach(()=> jest.clearAllTimers())
+    //Dummy tests
+    test("uses promisified setTimeout", (done)=>{
+        delay(10).then(()=>done());
+        jest.advanceTimersByTime(10);
+    });
+})
 describe("Accumulator", function(){
     beforeEach(()=> jest.useFakeTimers())
     afterEach(()=> jest.clearAllTimers())
@@ -15,7 +23,7 @@ describe("Accumulator", function(){
         a.add(1);
         jest.runAllTimers();
     })
-    test("will call handler after a pre-set delay (1)", function(done){
+    test("will call handler", function(done){
         const handleChange = jest.fn();
         let a = new Accumulator({handleChange});
         setTimeout(()=>{
@@ -28,19 +36,32 @@ describe("Accumulator", function(){
         setTimeout(()=> a.add(1), 5);
         jest.runAllTimers();
     })
-    test("will call handler after a pre-set delay (2)", function(done){
+    test("will debounce handler calls", function(){
         const handleChange = jest.fn();
         let a = new Accumulator({handleChange, backoff: 10});
-        setTimeout(()=>{
-            expect(handleChange).toHaveBeenCalledTimes(1);
-            expect(handleChange).toHaveBeenNthCalledWith(1, 2);
-            done();
-        }, 20);
         a.add(1);
-        setTimeout(()=> a.add(1), 5);
+        jest.advanceTimersByTime(5);
+        expect(handleChange).toHaveBeenCalledTimes(0);
+        a.add(1);
+        jest.advanceTimersByTime(5);
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenNthCalledWith(1, 2);
         jest.runAllTimers();
+        expect(handleChange).toHaveBeenCalledTimes(1);
     })
-    
+    test("can use set() to re-set value", function(){
+        const handleChange = jest.fn();
+        let a = new Accumulator({handleChange, backoff: 10});
+        a.set(2);
+        jest.advanceTimersByTime(5);
+        expect(handleChange).toHaveBeenCalledTimes(0);
+        a.set(1);
+        jest.advanceTimersByTime(5);
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenNthCalledWith(1, 1);
+        jest.runAllTimers();
+        expect(handleChange).toHaveBeenCalledTimes(1);
+    })
     test("can auto-reset", function(done){
         let a = new Accumulator({reset: true});
         a.handleChange = function(val){

@@ -24,10 +24,8 @@ export default function conf(state = {
             return Object.assign({}, state, {purge_products: action.purge});
         case SET_SLIDES_CONTROL:
             return Object.assign({}, state, {slides_control: action.control});
-            case SET_PLAY_CONTROL:
-                return Object.assign({}, state, {play_control: action.control});
-        case SET_PAUSE:
-            return Object.assign({}, state, {pause: action.pause});
+        case SET_PLAY_CONTROL:
+            return Object.assign({}, state, {play_control: action.control});
         case SET_PROJECTNAME:
             if(!state.configurableProjectName){
                 console.warn("Trying to modify read-only project name");

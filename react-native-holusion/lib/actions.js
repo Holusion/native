@@ -18,47 +18,86 @@ export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_PLAY_CONTROL = "SET_PLAY_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 export const SET_PURGE = "SET_PURGE";
-export const SET_PAUSE = "SET_PAUSE";
 export const SET_CONF = "SET_CONF";
 
 export const SET_PROJECTNAME = "SET_PROJECTNAME";
-/*
- * Products actions 
+
+
+/**
+ * @typedef Product
+ * @property {string} name - the product's hostname
+ * @property {string} url - the product's network address
+ */
+
+
+/**
+ * Overwrite the whole products state
+ * @param {Product[]} products
  */
 export const setProducts = (products) => {
     return {type:SET_PRODUCTS, products}
 }
+/**
+ * add a product to the available list
+ * @param {Product} product 
+ */
 export const addProduct = (product) =>{
     return {type: ADD_PRODUCT, product}
 }
+/**
+ * Remove a product from the available list
+ * @param {string|Product} nameOrProduct - the product's name or an object with a "name" property
+ */
 export const removeProduct = (nameOrProduct)=>{
     return {type: REMOVE_PRODUCT, name: typeof nameOrProduct === "string"? nameOrProduct: nameOrProduct.name};
 }
-
-export const setActive = (item={})=>{
-    return {type: SET_ACTIVE_PRODUCT, name: (typeof item === "string")? item : item.name}
+/**
+ * Set a product as "active" to be picked by getActiveProduct() selector
+ * @param {string|Product} nameOrProduct - the product's name or an object with a "name" property
+ */
+export const setActive = (nameOrProduct={})=>{
+    return {type: SET_ACTIVE_PRODUCT, name: (typeof nameOrProduct === "string")? nameOrProduct : nameOrProduct.name}
 }
 
-/*
- * Network actions
+/**
+ * 
+ * @param {('offline'|'online')} status 
  */
 export const setNetInfo = (status)=>{
     return {type: SET_NETINFO, status: status}
 }
-export const setFirebaseInfo = (status)=>{
-    return {type: SET_FIREBASEINFO, status};
-}
 
+/**
+ * @typedef Task
+ * @property {string} id one of taskIds
+ * @property {('pending'|'success'|'warn'|'error')} [status=pending] - the task's status
+ * @property {string} title - the task's display title. defaults to task.id
+ */
+
+/**
+ * Add a task
+ * @param {Task} task 
+ */
 export const addTask = ({id,  status="pending", title, ...props})=>{
     return {type: ADD_TASK, id, title: title || id, status, ...props};
 }
+/**
+ * Updates an existing task
+ * Creates it if it doesn't exists
+ * @param {Task} task
+ */
 export const updateTask = (props)=>{
     return {type: UPDATE_TASK, ...props};
 }
+/**
+ * Remove a task using it's ID
+ * @param {string} id
+ */
 export const removeTask = (id)=>{
     if(typeof id !== "string") throw new Error("removeTask() id must be a string. Got "+typeof id);
     return {type: REMOVE_TASK, id}
 }
+
 export const taskIds = {
     initialLoad: "01_required_initial_load",
     cleanup: "02_cleanup",
@@ -83,14 +122,14 @@ export const setConfig = (config) => {
  * 
  * @param {(default|buttons|swipe|none)} control - one of default, buttons, none
  */
-export const setSlidesControl = (control="default") =>{
+export const setSlidesControl = (control) =>{
     return {type : SET_SLIDES_CONTROL, control}
 }
 /**
  * 
  * @param {(button|rotate|none)} control - one of button, rotate, none
  */
-export const setPlayControl = (control="none") =>{
+export const setPlayControl = (control) =>{
     return {type : SET_PLAY_CONTROL, control}
 }
 export const setDefaultTarget = (name)=>{
@@ -105,8 +144,4 @@ export const setProjectName = (name) => {
 }
 export const setConf = (conf)=>{
     return {type: SET_CONF, conf};
-}
-
-export const setPause = (pause)=>{
-    return {type: SET_PAUSE, pause: !!pause}
 }

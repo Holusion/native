@@ -13,7 +13,6 @@ import default_vars from "../../native-base-theme/variables/platform";
 import { readFile } from "react-native-fs";
 
 import {addTask, updateTask} from "../actions";
-import { getPendingTasks } from "../selectors";
 import { InitialLoadWrapper } from "./LoadWrapper";
 
 const taskId = "10_required_theme";

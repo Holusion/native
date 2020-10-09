@@ -20,9 +20,8 @@ export function FullLoadWrapper({children}){
 export function InitialLoadWrapper({children}){
   const tasks = useSelector(getBlockingTasks);
   if(tasks.filter(t=>t.status !== "success").length != 0){
-    console.log("Required tasks : ", tasks);
     return <Content>
-      <H1>Du contenu requis n'a pas pu être chargé</H1>
+      <H1>Du contenu requis n'a pas été chargé</H1>
       <Spinner/>
       <AppState/>
     </Content>
