@@ -18,6 +18,7 @@ export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_PLAY_CONTROL = "SET_PLAY_CONTROL";
 export const SET_DEFAULT_TARGET = "SET_DEFAULT_TARGET";
 export const SET_PURGE = "SET_PURGE";
+export const SET_PASSCODE = "SET_PASSCODE";
 export const SET_CONF = "SET_CONF";
 
 export const SET_PROJECTNAME = "SET_PROJECTNAME";
@@ -142,6 +143,11 @@ export const setPurge = (purge)=>{
 export const setProjectName = (name) => {
     return {type: SET_PROJECTNAME, name};
 }
+
+export const setPasscode = (passcode) => {
+    return {type: SET_PASSCODE, passcode};
+}
+
 export const setConf = (conf)=>{
     return {type: SET_CONF, conf};
 }

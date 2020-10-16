@@ -1,5 +1,5 @@
 'use strict';
-import { SET_CONF, SET_SLIDES_CONTROL, SET_PLAY_CONTROL, SET_DEFAULT_TARGET, SET_PURGE, SET_PAUSE, SET_PROJECTNAME} from '../actions'
+import { SET_CONF, SET_SLIDES_CONTROL, SET_PLAY_CONTROL, SET_DEFAULT_TARGET, SET_PURGE, SET_PAUSE, SET_PROJECTNAME, SET_PASSCODE} from '../actions'
 /**
  * Local app configuration.
  * Not the same as state.data.config, 
@@ -32,6 +32,8 @@ export default function conf(state = {
                 return state;
             }
             return Object.assign({}, state, {projectName: action.name});
+        case SET_PASSCODE:
+            return Object.assign({}, state, {passcode: action.passcode});
         default:
             return state;
     }

@@ -11,7 +11,7 @@ import AppState from "../containers/AppState";
 import AppConfiguration from "../containers/AppConfiguration";
 
 
-function AskPass({onSubmit, keyboardType="default"}){
+function AskPass({onSubmit, keyboardType="numeric"}){
     const [content, setContent] = useState();
     const [error, setError] = useState(false);
     function handleSubmit(e){
@@ -21,7 +21,7 @@ function AskPass({onSubmit, keyboardType="default"}){
         <Form style={{paddingTop:60, minWidth:300}}>
             <Text style={{textAlign: "center", fontSize:15, color:"red"}}>{error != false ? "Mot de passe invalide. Rééssayez.": " "}</Text>
             <Item last error={error} style={{marginBottom:15}}>
-                <Input placeholder="Passcode" keyboardType={keyboardType} secureTextEntry={true} onChangeText={setContent} value={content}/>
+                <Input placeholder="Passcode" keyboardType={keyboardType} secureTextEntry={true} autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={setContent} value={content}/>
             </Item>
             <Button primary onPress={handleSubmit}><Text style={{paddingHorizontal:15}}> Valider</Text></Button>
         </Form>
@@ -32,7 +32,6 @@ function AskPass({onSubmit, keyboardType="default"}){
 
 
 // Configure application
-//FIXME : Will be password-protected only if configurableProjectName is false as a temporary workaround
 class ConnectScreen extends React.Component {
     render() {
         let has_default = this.props.default_target && this.props.products.findIndex((p)=>p.name == this.props.default_target) !== -1; 
@@ -41,9 +40,9 @@ class ConnectScreen extends React.Component {
             list.push({name:`Default (offline): ${this.props.default_target}`, active: false, key: this.props.default_target, disabled: true})
         }
 
-        if(this.props.passcode && !this.props.configurableProjectName && !this.state.authenticated ){
+        if(this.props.passcode && !this.state.authenticated ){
             return (<Container>
-                <AskPass onSubmit={this.handlePasscode} keyboardType="default" />
+                <AskPass onSubmit={this.handlePasscode} />
             </Container>)
         }
         const renderItem = ({item})=>{
@@ -110,12 +109,11 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-    const {products, conf, data} = state;
+    const { products, conf } = state;
     return {
         default_target: conf.default_target,
         products,
-        passcode: data.config.passcode,
-        configurableProjectName: conf.configurableProjectName,
+        passcode: conf.passcode,
     };
 }
 export default connect(mapStateToProps, {setActive, setDefaultTarget})(ConnectScreen);

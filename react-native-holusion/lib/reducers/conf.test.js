@@ -1,5 +1,5 @@
 'use strict';
-import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl } from "../actions";
+import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode } from "../actions";
 import reducers from ".";
 
 
@@ -50,5 +50,17 @@ describe("conf reducer", function () {
     let state = reducers(initialState, setProjectName("foo"));
     expect(state.conf).toHaveProperty("projectName", undefined);
     expect(warnMock).toHaveBeenCalled();
-  })  
+  })
+  
+  test("passcode defaults to not-set", ()=>{
+    expect(initialState.conf.passcode).not.toBeTruthy();
+  })
+  test("set passcode to null", ()=>{
+    let state = reducers(initialState, setPasscode(null))
+    expect(state.conf).toHaveProperty("passcode", null);
+  })
+  test("set passcode to 0000", ()=>{
+    let state = reducers(initialState, setPasscode("0000"))
+    expect(state.conf).toHaveProperty("passcode", "0000");
+  })
 });

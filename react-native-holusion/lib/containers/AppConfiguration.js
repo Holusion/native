@@ -4,14 +4,19 @@ import { connect} from 'react-redux'
 
 import { ListItem, Icon, Button, Content, Text, Form, Item, Input, CheckBox, Picker, Body} from 'native-base';
 
-import {setPurge, setSlidesControl, setProjectName, setPlayControl} from "../actions";
+import {setPurge, setSlidesControl, setProjectName, setPlayControl, setPasscode} from "../actions";
 
 
 function AppConfiguration(props){
     const [name, setName] = useState(props.projectName);
+    const [passcode, setPasscode] = useState(props.passcode);
     const handleSubmitName = ()=>{
         props.setProjectName(name);
     }
+    const handleSubmitPasscode = ()=>{
+        props.setPasscode(passcode);
+    }
+
     return (<Content>
         <ListItem  style={{paddingHorizontal:4}}>
             <Body>
@@ -60,6 +65,20 @@ function AppConfiguration(props){
                 </Button>}
             </Form>
         </ListItem>
+        <ListItem>
+            <Body style={{flex:1}}>
+                <Text>Passcode</Text>
+                <Text style={{fontSize:14}} >Code pin d'accès à cet écran</Text>
+            </Body>
+            <Form style={{ flex: 1, flexDirection:"row"}}>
+                <Item last style={{flex:1}} >
+                    <Input placeholder="application" keyboardType="numeric" autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={setPasscode} value={name}/>
+                </Item>
+                <Button bordered info style={{minWidth:50}}  onPress={handleSubmitPasscode}>
+                    <Icon large primary type="Ionicons" name="ios-send" />
+                </Button>
+            </Form>
+        </ListItem>
     </Content>)
 }
 
@@ -70,9 +89,10 @@ const ConnectedAppConfiguration = connect(
         slides_control: conf.slides_control,
         play_control: conf.play_control,
         configurableProjectName: conf.configurableProjectName,
-        projectName: conf.projectName
+        projectName: conf.projectName,
+        setPasscode: conf.passcode,
     }), 
-    { setPurge, setSlidesControl, setPlayControl, setProjectName }
+    { setPurge, setSlidesControl, setPlayControl, setProjectName, setPasscode }
 )(AppConfiguration);
 
 export default ConnectedAppConfiguration;
