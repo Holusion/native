@@ -1,32 +1,27 @@
 'use strict';
 import React from 'react';
 import {connectStyle, View, Button, Icon} from "native-base";
-import {TouchableOpacity, StyleSheet, Animated, Easing} from "react-native"
-import {connect} from "react-redux";
-
+import { StyleSheet } from "react-native"
 import PropTypes from "prop-types";
 
-import {delay} from "../time";
-
-const AnimatedButton = Animated.createAnimatedComponent(Button);
-
-function PrevNext({style, children}) {
-    return (<View style={prevNextTheme.view}>
-        <Button key="prev" transparent large style={style.controlButton} onPressIn={()=>props.prev()}>
-            <Icon primary large style={style.controlIcons} name="ios-caret-back"/>
-        </Button>
-        {children}
-        <Button key="next" transparent large style={style.controlButton} onPressIn={()=>props.next()}>
-            <Icon primary large style={style.controlIcons} name="ios-caret-forward"/>
-        </Button>
-    </View>)
-}
-
-PrevNext.propTypes = {
-    children: PropTypes.node,
-    target: PropTypes.object,
-    next: PropTypes.func.isRequired,
-    prev: PropTypes.func.isRequired,
+class PrevNext extends React.Component{
+    static propTypes = {
+        children: PropTypes.node,
+        target: PropTypes.object,
+        next: PropTypes.func.isRequired,
+        prev: PropTypes.func.isRequired,
+    }
+    render(){
+        return (<View style={this.props.style.view}>
+            <Button key="prev" testID="button-prev" transparent large style={this.props.style.controlButton} onPressIn={()=>this.props.prev()}>
+                <Icon primary large style={this.props.style.controlIcons} ios="ios-caret-back"/>
+            </Button>
+            {this.props.children}
+            <Button key="next" testID="button-next" transparent large style={this.props.style.controlButton} onPressIn={()=>this.props.next()}>
+                <Icon primary large style={this.props.style.controlIcons} ios="ios-caret-forward"/>
+            </Button>
+        </View>)
+    }
 }
 
 const prevNextTheme = StyleSheet.create({
