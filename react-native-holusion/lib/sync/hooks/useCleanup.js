@@ -8,10 +8,10 @@ import { cleanup, filename } from "@holusion/cache-control";
 
 
 export function useCleanup(){
-  const tasks = useSelector(getPendingTasks);
+  const {length} = useSelector(getPendingTasks);
   const dispatch = useDispatch();
   useEffect(()=>{
-    if(tasks.length !== 0) return;
+    if(length !== 0) return;
     let id = setTimeout(()=>{
       console.log("Running cleanup");
       cleanup().then(([unlinked, kept])=>{
@@ -33,5 +33,5 @@ export function useCleanup(){
       })
     }, 30*1000);
     return ()=>clearTimeout(id);
-  }, [tasks]);
+  }, [length]);
 }
