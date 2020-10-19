@@ -31,7 +31,17 @@ function HomeScreen (props) {
       </Content>
     </Container>)
   }
-  
+
+  let footer = null;
+  if (props.config.about) {
+    footer = (<Footer >
+      <Button transparent onPress={() => props.navigation.navigate("About")}>
+        <H2 primary style={styles.footerButton}>A propos</H2>
+      </Button>
+
+    </Footer>)
+  }
+
   if(props.config.defaultPage){
     const pageData = props.items.find(i => i.id == props.config.defaultPage)
     if(!pageData){
@@ -48,7 +58,15 @@ function HomeScreen (props) {
   }
   if(!props.categories || props.categories.length == 0){
     return <Container>
-      <ListObjects onNavigate={(id)=>props.navigation.navigate("Object", {id, category: null})}/>
+      <Content contentContainerStyle={styles.container}>
+        <H1 primary style={styles.titleContainer}>
+          {props.config.header || "Découvrez  ces objets enb hologramme :"}
+        </H1>
+        <View style={styles.cardContainer}>
+          <ListObjects onNavigate={(id)=>props.navigation.navigate("Object", {id, category: null})}/>
+        </View>
+      </Content>
+      {footer}
     </Container>
   }
 
@@ -72,15 +90,7 @@ function HomeScreen (props) {
   })
 
 
-  let footer;
-  if (props.config.about) {
-    footer = (<Footer >
-      <Button transparent onPress={() => props.navigation.navigate("About")}>
-        <H2 primary style={styles.footerButton}>A propos</H2>
-      </Button>
 
-    </Footer>)
-  }
   return (
     <Container>
       <Content contentContainerStyle={styles.container}>
