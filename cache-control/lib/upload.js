@@ -64,8 +64,14 @@ export function sendFiles({ target, videos = [], onStatusChange = console.warn.b
     const uploads_with_mtime = [];
     //Don't parallelize : it cause iOS to crash the app
     for (let upload of uploads) {
-      const stat = await fs.stat(upload.uri);
-      uploads_with_mtime.push(Object.assign({ mtime: stat.mtime }, upload))
+      try{
+        const stat = await fs.stat(upload.uri);
+        uploads_with_mtime.push(Object.assign({ mtime: stat.mtime }, upload))
+      }catch(e){
+        let wrap = new Error("Could no find file's mtime : " + e.message);
+        wrap.stack = e.stack;
+        errors.push(wrap);
+      }
       if (abortController.signal.aborted) {
         let e = new Error("Transfer aborted during files.stat");
         e.name = "AbortError";
@@ -85,7 +91,6 @@ export function sendFiles({ target, videos = [], onStatusChange = console.warn.b
         await uploadFile(url, file, abortController.signal);
       } catch (e) {
         if (e.name === "AbortError") throw e;
-        console.warn(e);
         errors.push(e);
       }
     }
@@ -128,7 +133,7 @@ export function sendFiles({ target, videos = [], onStatusChange = console.warn.b
     if (e.name === "AbortError") {
       return console.warn("Aborted files transfer to product");// Do nothing : component doesn't wan't any updates after abort.
     }
-    console.warn("Caught error : ", e);
+    console.warn("Caught error : ", e.message, e.stack);
     onStatusChange({ status: "error", statusText: "Error : " + e.message });
   });
 
