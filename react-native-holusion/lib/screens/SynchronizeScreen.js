@@ -50,11 +50,12 @@ class SynchronizeScreen extends React.Component {
         }
         this.setState({status: "loading", statusText: "fetching playlist"});
         const url = `http://${this.props.target.url}`;
-        const videos =[ 
+        const videos =[
             ...Object.keys(this.props.items).map(key=>this.props.items[key].video),
             this.props.config.video,
-            ...this.props.config.categories.map(c=>c.video)
-        ].filter(i=>i)
+            ...(this.props.config.categories || []).map(c=>c.video)
+        ].filter(i=>i);
+        
        const [abort] = sendFiles({
            target: this.props.target,
            videos,
