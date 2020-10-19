@@ -4,7 +4,7 @@ import network from "./network";
 import data from "./data";
 import tasks from "./tasks";
 import conf from "./conf";
-
+import logs from "./logs";
 
 import {combineReducers} from "redux";
 export default combineReducers({
@@ -13,4 +13,5 @@ export default combineReducers({
   data,
   tasks,
   conf,
+  logs,
 });

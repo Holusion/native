@@ -1,6 +1,6 @@
 import React from "react";
 import {Text} from "react-native";
-import { render, fireEvent } from '@testing-library/react-native'
+import { render, fireEvent, act } from '@testing-library/react-native'
 
 import {PrevNext} from ".";
 
@@ -23,14 +23,18 @@ describe("<PrevNext/>", ()=>{
   });
   test("uses callback when user press prev", ()=>{
     const res = render(<PrevNext prev={prev} next={next}/>);
-    fireEvent(res.queryByTestId("button-prev"), "pressIn");
+    let btn = res.queryByTestId("button-prev");
+    expect(btn).toBeTruthy;
+    fireEvent.press(btn);
     expect(prev).toHaveBeenCalledTimes(1);
     expect(next).not.toHaveBeenCalled();
   })
   test("uses callback when user press next", ()=>{
     const res = render(<PrevNext prev={prev} next={next}/>);
-    fireEvent(res.queryByTestId("button-next"), "pressIn");
+    let btn = res.queryByTestId("button-next");
+    expect(btn).toBeTruthy;
+    fireEvent.press(btn);
     expect(next).toHaveBeenCalledTimes(1);
     expect(prev).not.toHaveBeenCalled();
-  })
+  });
 })

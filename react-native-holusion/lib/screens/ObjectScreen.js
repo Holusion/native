@@ -70,6 +70,9 @@ class ObjectScreen extends React.Component {
             }
             return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
         })
+
+        const prev = ()=> requestAnimationFrame(()=>this._carousel._animatePreviousPage());
+        const next = ()=> requestAnimationFrame(()=>this._carousel._animateNextPage());
         return (<Container testID={`object-carousel-at-${this.index}`} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <Carousel 
@@ -85,7 +88,7 @@ class ObjectScreen extends React.Component {
                 {slides}
             </Carousel>
             <Footer style={styles.footer}>
-                <Controller prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>
+                <Controller prev={prev} next={next}/>
             </Footer>
         </Container>)
     }

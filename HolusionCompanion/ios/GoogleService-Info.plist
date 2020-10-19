@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>16774029953-rm8d2du1pr1lsn8h3k0fh2mg8cp7dsfm.apps.googleusercontent.com</string>
+	<string>16774029953-kbmf79vm21kpirj3r5rik406n63r539v.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.16774029953-rm8d2du1pr1lsn8h3k0fh2mg8cp7dsfm</string>
+	<string>com.googleusercontent.apps.16774029953-kbmf79vm21kpirj3r5rik406n63r539v</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBt2LrRefTzjzc3OLxRAuQuib1Humsfg5U</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.holusion.native.demo</string>
+	<string>com.holusion.native.companion</string>
 	<key>PROJECT_ID</key>
 	<string>holomouseio</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:16774029953:ios:075631ea61c65f24a0e380</string>
+	<string>1:16774029953:ios:b39d80a6b4cb460ba0e380</string>
 	<key>DATABASE_URL</key>
 	<string>https://holomouseio.firebaseio.com</string>
 </dict>

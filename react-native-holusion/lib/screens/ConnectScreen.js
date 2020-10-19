@@ -17,7 +17,7 @@ function AskPass({onSubmit, keyboardType="numeric"}){
     function handleSubmit(e){
         if(onSubmit(content) === false) return setError(true);
     }
-    return <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+    return <View style={{flex: 1, alignItems: "center"}}>
         <Form style={{paddingTop:60, minWidth:300}}>
             <Text style={{textAlign: "center", fontSize:15, color:"red"}}>{error != false ? "Mot de passe invalide. Rééssayez.": " "}</Text>
             <Item last error={error} style={{marginBottom:15}}>

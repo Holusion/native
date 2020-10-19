@@ -72,9 +72,9 @@ function AppConfiguration(props){
             </Body>
             <Form style={{ flex: 1, flexDirection:"row"}}>
                 <Item last style={{flex:1}} >
-                    <Input placeholder="application" keyboardType="numeric" autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={setPasscode} value={name}/>
+                    <Input placeholder="aucun" keyboardType="numeric" autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={setPasscode} value={passcode}/>
                 </Item>
-                <Button bordered info style={{minWidth:50}}  onPress={handleSubmitPasscode}>
+                <Button bordered info style={{minWidth:50}}  onPress={handleSubmitPasscode} disabled={passcode === props.passcode}>
                     <Icon large primary type="Ionicons" name="ios-send" />
                 </Button>
             </Form>
@@ -90,7 +90,7 @@ const ConnectedAppConfiguration = connect(
         play_control: conf.play_control,
         configurableProjectName: conf.configurableProjectName,
         projectName: conf.projectName,
-        setPasscode: conf.passcode,
+        passcode: conf.passcode,
     }), 
     { setPurge, setSlidesControl, setPlayControl, setProjectName, setPasscode }
 )(AppConfiguration);

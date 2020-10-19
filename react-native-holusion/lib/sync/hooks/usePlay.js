@@ -26,14 +26,15 @@ export function usePlay(video, targetUrl){
           let msg;
           try{
             let d = await r.json();
-            msg = `Request failed with status ${r.status} : ${d.message}`;
+            console.log("Request body : ", d);
+            msg = `Request failed with status ${r.status} : ${d.message || r.statusText}`;
           }catch(e){
             msg = `Request failed with status ${r.status} : ${r.statusText}`
           }finally{
             throw new Error(msg);
           }
         }
-    }, (e)=>{
+    }).catch( (e)=>{
       if(e.name === "AbortError"){
         return;
       }
