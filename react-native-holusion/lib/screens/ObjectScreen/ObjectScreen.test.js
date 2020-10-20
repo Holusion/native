@@ -5,9 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from "react-redux";
 
-import {configureStore} from "../persistentStore";
-import {ObjectScreen} from ".";
-import { setData } from "../actions";
+import {configureStore} from "../../persistentStore";
+import {ObjectScreen} from "..";
+import { setData } from "../../actions";
 
 const Stack = createStackNavigator();
 

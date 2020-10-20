@@ -1,76 +1,27 @@
 'use strict'
-import React, { useCallback } from 'react'
-import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
+import React from 'react'
+import { Container, Content, Footer, Text } from 'native-base';
 
-import { StyleSheet, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 
 import PropTypes from "prop-types";
 
 import {connect} from "react-redux";
-import {getActiveItems} from "../selectors";
+import {getActiveItems} from "../../selectors";
 
-import {Controller} from "../containers"
-
-import {filename} from "@holusion/cache-control";
-
-import SideSwipe from 'react-native-sideswipe';
+import {Controller} from "../../containers"
 
 
 const {width, height} = Dimensions.get('window');
 
 
-import {BaseView, WikiView} from "../components";
-import { VideoPlayer } from '../sync/VideoPlayer';
+import { VideoPlayer } from '../../sync/VideoPlayer';
 
-
-const viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 65
-}
-/**
- * Optimized FlatList that reduces re-renders
- */
-const ObjectList = React.memo(React.forwardRef(({items, initialItem, size, views, onChange}, ref)=>{
-    const onViewChanged = useCallback(({changed: items})=>{
-        //There should only be one item viewable at a time
-        if(items[0].isViewable === true){
-            onChange(items[0].index);
-        }
-    }, []);
-    return <FlatList
-        ref={ref}
-        getItemLayout={(_, index) => ( {length: size.width, offset: size.width * index, index})}
-        horizontal
-        initialNumToRender={1}
-        initialScrollIndex={initialItem}
-        viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={onViewChanged}
-        snapToAlignment={"start"}
-        pagingEnabled={true}
-        style={{...size}}
-        useNativeDriver={true}
-        data={items}
-        keyExtractor={(_, index) => `${index}`}
-        renderItem={({ item }) => {
-            let layout = item.layout || "Base";
-            let View_component = views[layout];
-            if(!View_component){
-                console.warn(`No view provided for layout ${layout}`);
-                View_component = views["Base"];
-            }
-            return (<View style={{width:size.width}}>
-                <View_component active={true} {...item} />
-            </View>)
-        }}
-    />
-}), function areEqual(prevProps, nextProps) {
-    const changedProps = Object.keys(nextProps)
-    .filter(p => nextProps[p] !== prevProps[p] && p !== "initialItem")
-    return (changedProps.length === 0)? true : false;
-  });
+import ObjectList from "./ObjectList"
 
 /**
- * Object screen is the screen that render a FlatLisrt of the current collection. 
+ * Object screen is the screen that render a FlatList of the current collection. 
  * You can swipe to change the current object or touch the next or previous button (depending on configured controls)
  */
 
@@ -81,19 +32,11 @@ class ObjectScreen extends React.Component {
     static propTypes = {
         views: PropTypes.object
     }
-    static defaultProps = {
-        views: {
-            "Base": BaseView,
-            "Wiki": WikiView,
-        }
-    }
-
     setIdForIndex = (i)=>{
         const object = this.props.items[i];
         if(!object){
             return console.warn("Object not found at index : ", i);
         }
-        console.log('Set index : ', object.id);
         this.props.navigation.setParams({id: object.id});
     }
     render() {
