@@ -37,4 +37,16 @@ describe("<PrevNext/>", ()=>{
     expect(next).toHaveBeenCalledTimes(1);
     expect(prev).not.toHaveBeenCalled();
   });
+
+  test("hide prev button if no callback is provided", ()=>{
+    const res = render(<PrevNext prev={prev} next={null}/>);
+    let btn = res.queryByTestId("button-next");
+    expect(btn).toBeDisabled();
+  });
+
+  test("hide next button if no callback is provided", ()=>{
+    const res = render(<PrevNext prev={null} next={next}/>);
+    let btn = res.queryByTestId("button-prev");
+    expect(btn).toBeDisabled();
+  });
 })

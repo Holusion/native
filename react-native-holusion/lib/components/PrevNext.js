@@ -15,15 +15,14 @@ class PrevNext extends React.Component{
     }
 
     render(){
-        console.log("render controller with :", this.props.prev?"prev ":"", this.props.next?"next":"");
         return (<View style={this.props.style.view}>
-            <View style={{opacity: this.props.prev? 1 : 0}}>
+            <View style={{opacity: this.props.prev? 1 : 0}} disabled={!this.props.prev}>
                 <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} onPress={this.props.prev}>
                     <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-back"/>
                 </TouchableOpacity>
             </View>
             {this.props.children}
-            <View style={{opacity: this.props.next? 1 : 0}}>
+            <View style={{opacity: this.props.next? 1 : 0}} disabled={!this.props.next}>
                 <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} onPress={this.props.next}>
                     <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-forward"/>
                 </TouchableOpacity>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import {render, act, cleanup} from '@testing-library/react-native'
+import { render, act } from '@testing-library/react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from "react-redux";
@@ -39,9 +39,7 @@ describe("<ObjectScreen/>", ()=>{
       }
     }));
   })
-  afterEach(()=>{
-    cleanup();
-  })
+
   test("Render an error if requested ID is invalid", async ()=>{
     let res = doWrap({store, initialParams:{category:"cat1", id: "foo"}});
     await act(async ()=>{});

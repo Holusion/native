@@ -1,5 +1,8 @@
 'use strict';
 
+
+import '@testing-library/jest-native/extend-expect';
+
 import {enableFetchMocks} from 'jest-fetch-mock';
 
 import {AbortController} from "abort-controller/dist/abort-controller";

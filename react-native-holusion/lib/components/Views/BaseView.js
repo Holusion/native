@@ -19,14 +19,14 @@ export default function ObjectView(d){
     const withDescription = typeof d['description']=== "string"?true:false;
 
     return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
-        <View style={styles.image}>
+        <View testID="image-content" style={styles.image}>
             <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
                 <H1 primary style={styles.title}>{d["title"]}</H1>
                 <H2 secondary style={styles.subtitle}>{d["subtitle"]}</H2>
                 <LinksView items={d["links"] || []} onPress={(id)=>d.navigation.push("Object", {id})}/>
             </ImageBackground>
         </View>
-        {withDescription && <Content contentContainerStyle={{}}>
+        {withDescription && <Content testID="description-content" contentContainerStyle={{}}>
             <View style={styles.contentView}>
                 <Markdown style={styles.markdown}>{d['description']}</Markdown>
             </View>
