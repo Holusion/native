@@ -10,19 +10,24 @@ class PrevNext extends React.Component{
     static propTypes = {
         children: PropTypes.node,
         target: PropTypes.object,
-        next: PropTypes.func.isRequired,
-        prev: PropTypes.func.isRequired,
+        next: PropTypes.func,
+        prev: PropTypes.func,
     }
 
     render(){
+        console.log("render controller with :", this.props.prev?"prev ":"", this.props.next?"next":"");
         return (<View style={this.props.style.view}>
-            <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} onPress={this.props.prev}>
-                <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-back"/>
-            </TouchableOpacity>
+            <View style={{opacity: this.props.prev? 1 : 0}}>
+                <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} onPress={this.props.prev}>
+                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-back"/>
+                </TouchableOpacity>
+            </View>
             {this.props.children}
-            <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} onPress={this.props.next}>
-                <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-forward"/>
-            </TouchableOpacity>
+            <View style={{opacity: this.props.next? 1 : 0}}>
+                <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} onPress={this.props.next}>
+                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-forward"/>
+                </TouchableOpacity>
+            </View>
         </View>)
     }
 }

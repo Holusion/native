@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     }
 })
 SpriteCube.propTypes = {
-    source: PropTypes.object,
+    source: PropTypes.any,
     target: PropTypes.shape({uri: PropTypes.string }),
 }
 

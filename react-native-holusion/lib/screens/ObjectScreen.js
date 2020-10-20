@@ -1,8 +1,8 @@
 'use strict'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, FlatList } from 'react-native';
 
 
 import PropTypes from "prop-types";
@@ -14,7 +14,7 @@ import {Controller} from "../containers"
 
 import {filename} from "@holusion/cache-control";
 
-import Carousel from 'react-native-looped-carousel';
+import SideSwipe from 'react-native-sideswipe';
 
 
 const {width, height} = Dimensions.get('window');
@@ -23,8 +23,55 @@ const {width, height} = Dimensions.get('window');
 import {BaseView, WikiView} from "../components";
 import { VideoPlayer } from '../sync/VideoPlayer';
 
+
+const viewabilityConfig = {
+    viewAreaCoveragePercentThreshold: 65
+}
 /**
- * Object screen is the screen that render a carousel of the current collection. You can swipe to change the current object or touch the next or previous button
+ * Optimized FlatList that reduces re-renders
+ */
+const ObjectList = React.memo(React.forwardRef(({items, initialItem, size, views, onChange}, ref)=>{
+    const onViewChanged = useCallback(({changed: items})=>{
+        //There should only be one item viewable at a time
+        if(items[0].isViewable === true){
+            onChange(items[0].index);
+        }
+    }, []);
+    return <FlatList
+        ref={ref}
+        getItemLayout={(_, index) => ( {length: size.width, offset: size.width * index, index})}
+        horizontal
+        initialNumToRender={1}
+        initialScrollIndex={initialItem}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewChanged}
+        snapToAlignment={"start"}
+        pagingEnabled={true}
+        style={{...size}}
+        useNativeDriver={true}
+        data={items}
+        keyExtractor={(_, index) => `${index}`}
+        renderItem={({ item }) => {
+            let layout = item.layout || "Base";
+            let View_component = views[layout];
+            if(!View_component){
+                console.warn(`No view provided for layout ${layout}`);
+                View_component = views["Base"];
+            }
+            return (<View style={{width:size.width}}>
+                <View_component active={true} {...item} />
+            </View>)
+        }}
+    />
+}), function areEqual(prevProps, nextProps) {
+    const changedProps = Object.keys(nextProps)
+    .filter(p => nextProps[p] !== prevProps[p] && p !== "initialItem")
+    return (changedProps.length === 0)? true : false;
+  });
+
+/**
+ * Object screen is the screen that render a FlatLisrt of the current collection. 
+ * You can swipe to change the current object or touch the next or previous button (depending on configured controls)
  */
 
 class ObjectScreen extends React.Component {
@@ -40,85 +87,53 @@ class ObjectScreen extends React.Component {
             "Wiki": WikiView,
         }
     }
+
+    setIdForIndex = (i)=>{
+        const object = this.props.items[i];
+        if(!object){
+            return console.warn("Object not found at index : ", i);
+        }
+        console.log('Set index : ', object.id);
+        this.props.navigation.setParams({id: object.id});
+    }
     render() {
-        const current_index = this.index;
-        
-        if(!this.props.items || current_index == -1){
-            return(<Container testID="object-not-found">
+        const initialItem = this.index;
+        if(!this.props.items || initialItem == -1){
+            return (<Container testID="object-not-found">
                 <Content contentContainerStyle={styles.content}>
                     <Text>No data for Id : {this.props.route.params["id"]}</Text>
                     <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
                 </Content>
             </Container>)
         }
-        //When there is more than a few object, we rapidly run into perf limitations
-        const active_indices = [
-            current_index, 
-            ((current_index==0)?this.props.items.length-1: current_index-1),
-            ((current_index== this.props.items.length-1)?0: current_index+1)
-        ]
-        const slides = this.props.items.map((object, index)=>{
-            let layout = object.layout || "Base";
-            let View_component = this.props.views[layout];
-            if(!View_component){
-                Toast.show({
-                    severity: "warning",
-                    duration: 5000,
-                    text: `No view provided for layout ${layout}`
-                })
-                View_component = this.props.views["Base"];
-            }
-            return (<View_component key={object.id} active={active_indices.indexOf(index) !== -1} navigation={this.props.navigation} {...object} />);
-        })
-
-        const prev = ()=> requestAnimationFrame(()=>this._carousel._animatePreviousPage());
-        const next = ()=> requestAnimationFrame(()=>this._carousel._animateNextPage());
-        return (<Container testID={`object-carousel-at-${this.index}`} onLayout={this._onLayoutDidChange}>
+        
+        return (<Container onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
-            <Carousel 
-                ref={(ref) => this._carousel = ref}
-                style={this.state.size}
-                currentPage={current_index}
-                onAnimateNextPage={(p)=>{
-                    if(p != this.index) this.onNextPage(p);
-                }}
-                swipe={["default", "swipe"].indexOf(this.props.control_buttons) != -1}
-                autoplay={false}
-            >
-                {slides}
-            </Carousel>
+            <ObjectList 
+                ref= {(ref)=>this._list = ref}
+                initialItem={this.index}
+                items={this.props.items}
+                size={this.state.size}
+                views={this.props.views}
+                onChange={this.setIdForIndex}
+            />
             <Footer style={styles.footer}>
-                <Controller prev={prev} next={next}/>
+                <Controller 
+                    prev={this.index !== 0? this.onPrevPage : null} 
+                    next={(this.index < this.props.items.length -1 )?this.onNextPage : null}
+                />
             </Footer>
         </Container>)
     }
-
-    onNextPage(index){
-        index = (typeof index !== "undefined")? index : this.index;
-        const object = this.props.items[index];
-        if(!object){
-            return console.warn("Object not found at index : ", index);
-        }
-        this.props.navigation.setParams({id: object.id});
-
-        if(!this.props.target){
-            return;
-        }
-        if(!object){
-            console.warn("Index", index, "did not map to any object");
-            return;
-        }
-        //console.warn(`onNextPage(${index}) : ${object.title}`);
-        if(this.props.target && object.video){
-            fetch(`http://${this.props.target.url}/control/current/${filename(object.video)}`, {method: 'PUT'})
-            .then(r=>{
-                if(!r.ok){
-                    Toast.show({
-                        text: "Failed to set current : "+r.status,
-                        duration: 2000
-                    })
-                }
-            })
+    onNextPage = ()=>{
+        this.onChangePage((this.index + 1), true);
+    }
+    onPrevPage = ()=>{
+        this.onChangePage(this.index - 1, true);
+    }
+    onChangePage(index, animated=false){
+        if(this._list){
+            this._list.scrollToIndex({animated, index});
         }
     }
     _onLayoutDidChange = (e) => {
@@ -128,19 +143,7 @@ class ObjectScreen extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            size: {width, height}
-        }
-    }
-    componentDidMount(){
-        this.subscriptions = [
-            this.props.navigation.addListener("focus",()=>{
-                this.onNextPage(this.index);
-            }),
-        ];
-    }
-    componentWillUnmount(){
-        for(let sub of this.subscriptions){
-            sub();
+            size: {width, height},
         }
     }
 }

@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
+import { useRoute } from '@react-navigation/native';
+
 import { PrevNext, PlayPause, SpriteCube } from "../components";
 import {StyleSheet} from "react-native";
 import { View } from "native-base";
@@ -14,6 +17,7 @@ function Controller({
   next,
   target,
 }){
+  const {params:{ id }={}} = route = useRoute();
   let content, wrap;
   switch(play_control){
     case "button":
@@ -38,8 +42,8 @@ function Controller({
 }
 
 Controller.propTypes = {
-  prev: PropTypes.func.isRequired,
-  next: PropTypes.func.isRequired,
+  prev: PropTypes.func,
+  next: PropTypes.func,
 }
 
 const styles = StyleSheet.create({

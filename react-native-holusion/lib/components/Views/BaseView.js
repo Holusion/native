@@ -8,7 +8,7 @@ import {LinksView} from './partials';
 
 export default function ObjectView(d){
     if(!d.active){
-        return(<Content contentContainerStyle={styles.content}>
+        return(<Content>
             <H1 style={styles.title}>{d['title']}</H1>
             <H2  style={styles.subTitle}>{d['subtitle']}</H2>
             <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
