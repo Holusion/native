@@ -133,19 +133,27 @@ export function sendFiles({ target, videos = [], onStatusChange = console.warn.b
     if (e.name === "AbortError") {
       return console.warn("Aborted files transfer to product");// Do nothing : component doesn't wan't any updates after abort.
     }
-    console.warn("Caught error : ", e.message, e.stack);
+    console.warn("Caught upload error : ", e.message, e.stack);
     onStatusChange({ status: "error", statusText: "Error : " + e.message });
   });
 
   return [abortController.abort.bind(abortController), op];
 }
 
+/**
+ * 
+ * @param {string} url - target url (eg. http://192.168.1.10) 
+ * @param {object} file - a file reference
+ * @param {string} file.uri - path to file on local filesystem 
+ * @param {Date} file.mtime - file's mtime
+ * @param {AbortSignal} [signal] - an AbortController's signal to give to fetch() 
+ */
 export async function uploadFile(url, file, signal) {
   //It's a bad pattern but react-native's XMLHttpRequest implementation will randomly throw on missing file
   if (!await fs.exists(file.uri)) {
-    console.warn("File ", file.uri, "does not exists");
     throw new FileError(file.uri, "File does not exists");
   }
+  let body;
   const form = new FormData();
   form.append("file", file);
   try {
@@ -158,10 +166,14 @@ export async function uploadFile(url, file, signal) {
       },
       signal: signal,
     });
-    let body = await response.json();
     if (!response.ok) {
+      try{
+        body = await response.json();
+      }catch(e){
+        //Invalid JSON
+        body = {};
+      }
       if (body.message) {
-        console.warn("Body : ", body);
         throw new FileError(file.uri, (typeof body.message == 'object') ? JSON.stringify(body.message) : body.message);
       } else {
         throw new FileError(file.uri, response.statusText);
@@ -184,8 +196,13 @@ export async function uploadFile(url, file, signal) {
           },
         })
       });
-      body = await response.json();
       if (!response.ok) {
+        try{
+          body = await response.json();
+        }catch(e){
+          //Error is always Invalid JSON
+          body = {};
+        }
         if (body.message) {
           throw new FileError(file.uri, (typeof body.message == 'object') ? JSON.stringify(body.message) : body.message);
         } else {

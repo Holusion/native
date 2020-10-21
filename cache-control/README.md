@@ -64,10 +64,9 @@ stop listening for snapshot changes
 
 when any error happens during snapshots processing. No error is fatal but `dispatch`events will not fire if there was failures
 
+##### start ("config"|"item")
+
+
 ##### dispatch (object {config?:{}, items?:{}})
 
 exports an object with updated key `config`or `items` to be consumed by the state manager (redux or react context).
-
-##### progress (string)
-
-dispatch progression messages for long running operations (ie. file downloads).

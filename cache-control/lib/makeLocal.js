@@ -17,7 +17,7 @@ export async function makeLocal(d, { signal } = {}) {
       const name = ref.name;
       const dest = `${mediasPath()}/${name}`;
       
-      let {md5Hash} = await ref.getMetadata().catch(e=>{
+      let {md5Hash, size, contentType} = await ref.getMetadata().catch(e=>{
         console.warn("for "+dest, e);
         return {md5Hash: true};
       });
@@ -25,6 +25,8 @@ export async function makeLocal(d, { signal } = {}) {
       filelist.set(dest, {
         src: d[key],
         hash: md5Hash,
+        size,
+        contentType,
       })
 
       res[key] = `file://${dest}`;

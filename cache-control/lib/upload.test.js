@@ -1,6 +1,24 @@
 'use strict';
 import {dedupeList, sendFiles, filename} from ".";
 
+import fsMock from "filesystem";
+import { uploadFile } from "./upload";
+
+let warnMock;
+beforeAll(()=>{
+    warnMock = jest.spyOn(console, "warn");
+})
+afterAll(()=>{
+    warnMock.mockRestore();
+})
+
+beforeEach(()=>{
+    fsMock.exists.mockImplementation(()=>Promise.resolve(true));
+})
+afterEach(()=>{
+    fsMock._reset();
+    fetch.resetMocks();
+})
 
 describe("files dedupeList()", function(){
     const static_date = new Date();
@@ -55,13 +73,68 @@ describe("files filename()", function(){
     })
 });
 
+describe("files uploadFile()", ()=>{
+
+    it("throw an error if fs.exists fails", async ()=>{
+        //Normally we would let fetch throw by itself but it fails badly on react-native
+        fsMock.exists.mockImplementationOnce(()=>Promise.reject(new Error("No such file or directory")));
+        await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("No such file or directory");
+    })
+
+    it("throw an error if fs.exists fails", async ()=>{
+        //Normally we would let fetch throw by itself but it fails badly on react-native
+        fsMock.exists.mockImplementationOnce(()=>Promise.resolve(false));
+        await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("File does not exists");
+    })
+    describe("POST media", ()=>{
+        it("handles abort errors", async ()=>{
+            fetch.mockAbortOnce();
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow(DOMException);
+        })
+        it("handles network errors", async ()=>{
+            fetch.mockRejectOnce(new Error("Network error"));
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("Network error");
+        })
+        it("throw an error on HTTP 400 response", async ()=>{
+            fetch.mockResponse(JSON.stringify({code: 400, message:"Bad Request : Foo"}), {status: 400});
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("Bad Request : Foo");
+        })
+        it("throw an error on HTTP 400 response with invalid body", async ()=>{
+            fetch.mockResponse("Some Error Text", {status: 400});
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("Bad Request");
+        })
+    })
+    describe("PUT mtime", ()=>{
+        let preMocked;
+        beforeEach(()=>{
+            preMocked = fetch.mockResponseOnce("{}")
+        });
+        it("skip PUT if mtime is not provided", async ()=>{
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file" })).resolves.toBeUndefined();
+            expect(fetch).toHaveBeenCalledTimes(1);
+        })
+        it("handles abort errors", async ()=>{
+            preMocked.mockAbortOnce();
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file", mtime: new Date(0)})).rejects.toThrow(DOMException);
+        })
+        it("handles network errors", async ()=>{
+            preMocked.mockRejectOnce(new Error("Network error"));
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file", mtime: new Date(0)})).rejects.toThrow("Network error");
+        })
+        it("throw an error on HTTP 400 response", async ()=>{
+            preMocked.mockResponse(JSON.stringify({code: 400, message:"Bad Request : Foo"}), {status: 400});
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file", mtime: new Date(0)})).rejects.toThrow("Bad Request : Foo");
+        })
+        it("throw an error on HTTP 400 response with invalid body", async ()=>{
+            preMocked.mockResponse("Some Error Text", {status: 400});
+            await expect( uploadFile("http://example.com", {uri:"/path/to/file", mtime: new Date(0)})).rejects.toThrow("Bad Request");
+        })
+    })
+})
 
 describe("files sendFiles()", function(){
-    beforeEach(function(){
-        fetch.resetMocks();
-    })
+
     it("Upload files",function(){
-        jest.spyOn(console, "warn");
         const expected_uris = [
             "http://192.168.1.1/playlist",
             "http://192.168.1.1/medias",
@@ -69,7 +142,7 @@ describe("files sendFiles()", function(){
             "http://192.168.1.1/medias",
             "http://192.168.1.1/playlist",
         ]
-        const responses = [["[]", {status: 200}]]
+        const responses = [["[]", {status: 200}]];
         while(responses.length < expected_uris.length){
             responses.push(["{}", {status: 200}])
         }
@@ -125,7 +198,6 @@ describe("files sendFiles()", function(){
         });
     })
     it("purge is optional", function(){
-        jest.spyOn(console, "warn");
         fetch.mockResponse(""); //default mock response
         fetch.mockOnce(JSON.stringify([
             {name:"foo.mp4", conf:{mtime:new Date(0)}},
@@ -141,5 +213,30 @@ describe("files sendFiles()", function(){
         return operation.then(()=>{
             expect(fetch.mock.calls.length).toEqual(1);
         });
+    });
+    it("handles abort errors", async ()=>{
+        warnMock.mockImplementationOnce(()=>{});
+        fetch.mockAbortOnce();
+        const [abort, operation] = sendFiles({
+            target: {url:"192.168.1.1"},
+            videos: [],
+            purge: true,
+            onStatusChange:()=>{},
+        });
+        await expect(operation).resolves.toBeUndefined();
+        expect(warnMock).toHaveBeenCalledWith(expect.stringMatching("Aborted"));
+    })
+    it("handles abort errors", async ()=>{
+        warnMock.mockImplementationOnce(()=>{});
+        fetch.mockRejectOnce(new Error("Network Error"));
+        const onStatusChange = jest.fn();
+        const [abort, operation] = sendFiles({
+            target: {url:"192.168.1.1"},
+            videos: [],
+            purge: true,
+            onStatusChange: onStatusChange,
+        });
+        await expect(operation).resolves.toBeUndefined();
+        expect(onStatusChange).toHaveBeenCalledWith(expect.objectContaining({status: "error", statusText: expect.stringMatching("Network Error")}));
     })
 })

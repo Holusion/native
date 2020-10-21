@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleFiles() with default write and save functions on mocked filesystem can be called in parallel: 01 analyze files 1`] = `
+Object {
+  "blocking": true,
+  "length": 2,
+  "nbDone": 0,
+  "progress": 0,
+  "requiredSize": 1000,
+  "totalSize": 2024,
+}
+`;
+
+exports[`handleFiles() with default write and save functions on mocked filesystem can be called in parallel: 02 write baz.png 1`] = `
+Array [
+  Object {
+    "blocking": false,
+    "length": 2,
+    "nbDone": 1,
+    "progress": 1000,
+    "requiredSize": 1000,
+    "totalSize": 2024,
+  },
+  Object {
+    "/path/to/tmp/medias/baz.png": "gs://foo.appspot.com/baz.png",
+    "/tmp/storage/cache.json": "{
+  \\"/path/to/tmp/medias/baz.png\\": \\"xxxxxx\\"
+}",
+  },
+]
+`;
+
+exports[`handleFiles() with default write and save functions on mocked filesystem can be called in parallel: 03 analyze new files 1`] = `
+Object {
+  "blocking": true,
+  "length": 3,
+  "nbDone": 1,
+  "progress": 0,
+  "requiredSize": 2000,
+  "totalSize": 3024,
+}
+`;
+
+exports[`handleFiles() with default write and save functions on mocked filesystem can be called in parallel: 04 write foobar.png 1`] = `
+Array [
+  Object {
+    "blocking": false,
+    "length": 3,
+    "nbDone": 2,
+    "progress": 2000,
+    "requiredSize": 2000,
+    "totalSize": 3024,
+  },
+  Object {
+    "/path/to/tmp/medias/baz.png": "gs://foo.appspot.com/baz.png",
+    "/path/to/tmp/medias/foobar.png": "gs://foo.appspot.com/foobar.png",
+    "/tmp/storage/cache.json": "{
+  \\"/path/to/tmp/medias/baz.png\\": \\"xxxxxx\\",
+  \\"/path/to/tmp/medias/foobar.png\\": \\"xxxxxx\\"
+}",
+  },
+]
+`;
+
+exports[`handleFiles() with default write and save functions on mocked filesystem can be called in parallel: 05 write bar.mp4 1`] = `
+Array [
+  Object {
+    "blocking": false,
+    "length": 3,
+    "nbDone": 3,
+    "progress": 3024,
+    "requiredSize": 2000,
+    "totalSize": 3024,
+  },
+  Object {
+    "/path/to/tmp/medias/bar.mp4": "gs://foo.appspot.com/bar.mp4",
+    "/path/to/tmp/medias/baz.png": "gs://foo.appspot.com/baz.png",
+    "/path/to/tmp/medias/foobar.png": "gs://foo.appspot.com/foobar.png",
+    "/tmp/storage/cache.json": "{
+  \\"/path/to/tmp/medias/baz.png\\": \\"xxxxxx\\",
+  \\"/path/to/tmp/medias/foobar.png\\": \\"xxxxxx\\",
+  \\"/path/to/tmp/medias/bar.mp4\\": \\"xxxxxx\\"
+}",
+  },
+]
+`;
+
+exports[`handleFiles() with files to download calls writeToFile if some files need to be downloaded 1`] = `
+Array [
+  Array [
+    Object {
+      "blocking": true,
+      "length": 3,
+      "nbDone": 1,
+      "progress": 0,
+      "requiredSize": 10,
+      "totalSize": 50,
+    },
+  ],
+  Array [
+    Object {
+      "blocking": false,
+      "length": 3,
+      "nbDone": 2,
+      "progress": 10,
+      "requiredSize": 10,
+      "totalSize": 50,
+    },
+  ],
+  Array [
+    Object {
+      "blocking": false,
+      "length": 3,
+      "nbDone": 3,
+      "progress": 50,
+      "requiredSize": 10,
+      "totalSize": 50,
+    },
+  ],
+]
+`;
+
+exports[`handleFiles() with files to download yields a first progress status after sortFiles() 1`] = `
+Object {
+  "blocking": true,
+  "length": 3,
+  "nbDone": 1,
+  "progress": 0,
+  "requiredSize": 10,
+  "totalSize": 50,
+}
+`;
+
+exports[`sortFiles() find cached files using getHash 1`] = `
+Object {
+  "cached": Array [
+    Object {
+      "contentType": "video/mp4",
+      "dest": "/path/to/tmp/medias/bar.mp4",
+      "hash": "xxxxxx",
+      "name": "bar.mp4",
+      "size": 1024,
+      "src": "gs://foo.appspot.com/bar.mp4",
+    },
+    Object {
+      "contentType": "image/png",
+      "dest": "/path/to/tmp/medias/baz.png",
+      "hash": "xxxxxx",
+      "name": "baz.png",
+      "size": 1000,
+      "src": "gs://foo.appspot.com/baz.png",
+    },
+  ],
+  "other": Array [],
+  "required": Array [],
+}
+`;
+
+exports[`sortFiles() finds other uncached files 1`] = `
+Object {
+  "cached": Array [
+    Object {
+      "contentType": "image/png",
+      "dest": "/path/to/tmp/medias/baz.png",
+      "hash": "xxxxxx",
+      "name": "baz.png",
+      "size": 1000,
+      "src": "gs://foo.appspot.com/baz.png",
+    },
+  ],
+  "other": Array [
+    Object {
+      "contentType": "video/mp4",
+      "dest": "/path/to/tmp/medias/bar.mp4",
+      "hash": "yyyyyy",
+      "name": "bar.mp4",
+      "size": 1024,
+      "src": "gs://foo.appspot.com/bar.mp4",
+    },
+  ],
+  "required": Array [],
+}
+`;
+
+exports[`sortFiles() finds required uncached files 1`] = `
+Object {
+  "cached": Array [
+    Object {
+      "contentType": "video/mp4",
+      "dest": "/path/to/tmp/medias/bar.mp4",
+      "hash": "xxxxxx",
+      "name": "bar.mp4",
+      "size": 1024,
+      "src": "gs://foo.appspot.com/bar.mp4",
+    },
+  ],
+  "other": Array [],
+  "required": Array [
+    Object {
+      "contentType": "image/png",
+      "dest": "/path/to/tmp/medias/baz.png",
+      "hash": "yyyyyy",
+      "name": "baz.png",
+      "size": 1000,
+      "src": "gs://foo.appspot.com/baz.png",
+    },
+  ],
+}
+`;
