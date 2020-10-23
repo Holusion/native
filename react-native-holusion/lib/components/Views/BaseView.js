@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 import { Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
 import { Image, StyleSheet, ImageBackground } from 'react-native';
@@ -7,23 +8,16 @@ import Markdown from '../Markdown';
 import {LinksView} from './partials';
 
 export default function ObjectView(d){
-    if(!d.active){
-        return(<Content>
-            <H1 style={styles.title}>{d['title']}</H1>
-            <H2  style={styles.subTitle}>{d['subtitle']}</H2>
-            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
-        </Content>)
-    }
-    
+    const navigation = useNavigation();
     const source = ((d && d.image)?{uri: d.image}: require("../../../assets/missing-image.png"));
-    const withDescription = typeof d['description']=== "string"?true:false;
+    const withDescription = typeof d['description']=== "string" && d['description'].length ? true:false;
 
     return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
         <View testID="image-content" style={styles.image}>
             <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
                 <H1 primary style={styles.title}>{d["title"]}</H1>
                 <H2 secondary style={styles.subtitle}>{d["subtitle"]}</H2>
-                <LinksView items={d["links"] || []} onPress={(id)=>d.navigation.push("Object", {id})}/>
+                <LinksView items={d["links"] || []} onPress={(id)=>navigation.push("Object", {id})}/>
             </ImageBackground>
         </View>
         {withDescription && <Content testID="description-content" contentContainerStyle={{}}>

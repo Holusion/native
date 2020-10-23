@@ -1,5 +1,4 @@
 
-import { setBasePath } from "../path";
 import { transformSnapshot } from ".";
 
 

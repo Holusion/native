@@ -11,8 +11,6 @@ export const UPDATE_TASK = "UPDATE_TASK";
 export const REMOVE_TASK = "REMOVE_TASK";
 
 export const SET_DATA = "SET_DATA";
-export const SET_ITEMS = "SET_ITEMS";
-export const SET_CONFIG = "SET_CONFIG";
 
 export const SET_SLIDES_CONTROL = "SET_SLIDES_CONTROL";
 export const SET_PLAY_CONTROL = "SET_PLAY_CONTROL";
@@ -23,6 +21,7 @@ export const SET_CONF = "SET_CONF";
 
 export const SET_PROJECTNAME = "SET_PROJECTNAME";
 
+export const ADD_LOG = "ADD_LOG";
 
 /**
  * @typedef Product
@@ -103,22 +102,19 @@ export const taskIds = {
     initialLoad: "01_required_initial_load",
     cleanup: "02_cleanup",
     fonts: "03_required_fonts",
-    database: "04_firebase_connection",
+    requiredFiles: "04_sync_required_files",
+    otherFiles: "05_sync_other_files",
+    database: "06_firebase_connection",
 }
 
 
 /*
  * Data actions
  */
-export const setData = (data) =>{
-    return {type: SET_DATA, data};
+export const setData = ({files, ...data}) =>{
+    return {type: SET_DATA, files, data};
 }
-export const setItems = (items) =>{
-    return {type: SET_ITEMS, items};
-}
-export const setConfig = (config) => {
-    return {type: SET_CONFIG, config}
-}
+
 /**
  * 
  * @param {(default|buttons|swipe|none)} control - one of default, buttons, none
@@ -150,4 +146,14 @@ export const setPasscode = (passcode) => {
 
 export const setConf = (conf)=>{
     return {type: SET_CONF, conf};
+}
+/**
+ * 
+ * @param {object} param0 
+ * @param {string} param0.message - the main user-readable log message
+ * @param {string} [param0.context] - additional context that will only be seen in the debugger
+ * @param {"info"|"warn"|"error"} param0.severity - the log's severity
+ */
+export const log = ({message, context, severity="info"}) => {
+    return {type: ADD_LOG, message, context, severity};
 }

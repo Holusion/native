@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadLocalSaga Load local files 1`] = `undefined`;
+
+exports[`sagaStore() after INITIAL_LOAD save conf changes to disk 1`] = `
+Object {
+  "/tmp/storage/data_v1.json": "{\\"files\\":{\\"list\\":{},\\"cache\\":{},\\"itemFiles\\":[],\\"configFiles\\":[]},\\"data\\":{\\"items\\":{},\\"config\\":{}},\\"conf\\":{\\"configurableProjectName\\":true,\\"default_target\\":null,\\"purge_products\\":false,\\"slides_control\\":\\"default\\",\\"play_control\\":\\"none\\"}}",
+}
+`;
+
+exports[`sagaStore() after INITIAL_LOAD save data changes to disk 1`] = `
+Object {
+  "/tmp/storage/data_v1.json": "{\\"files\\":{\\"list\\":{},\\"cache\\":{},\\"itemFiles\\":[],\\"configFiles\\":[]},\\"data\\":{\\"items\\":{\\"foo\\":{\\"title\\":\\"bar\\"}},\\"config\\":{}},\\"conf\\":{\\"configurableProjectName\\":true,\\"default_target\\":null,\\"purge_products\\":false,\\"slides_control\\":\\"default\\",\\"play_control\\":\\"none\\"}}",
+}
+`;
+
+exports[`sagaStore() after INITIAL_LOAD save required files list to disk 1`] = `"{\\"files\\":{\\"list\\":{},\\"cache\\":{},\\"itemFiles\\":[],\\"configFiles\\":[]},\\"data\\":{\\"items\\":{\\"foo\\":{\\"image\\":\\"/tmp/foo.png\\"}},\\"config\\":{}},\\"conf\\":{\\"configurableProjectName\\":true,\\"default_target\\":null,\\"purge_products\\":false,\\"slides_control\\":\\"default\\",\\"play_control\\":\\"none\\"}}"`;

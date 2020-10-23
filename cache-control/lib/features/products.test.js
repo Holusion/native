@@ -1,7 +1,8 @@
 'use strict';
-import { setActive, addProduct, removeProduct, setProducts } from "../actions";
-import reducers from ".";
-import { getActiveProduct } from "../selectors";
+
+import { setActive, addProduct, removeProduct, setProducts, getActiveProduct } from "./products";
+import {reducers} from ".";
+
 
 
 

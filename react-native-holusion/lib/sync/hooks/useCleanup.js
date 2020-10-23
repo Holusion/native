@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskIds, updateTask } from "../../actions";
-import { getPendingTasks } from "../../selectors";
+import { getPendingTasks, getTasks } from "../../selectors";
 
 
 import { cleanup, filename } from "@holusion/cache-control";
 
 
 export function useCleanup(){
-  const {length} = useSelector(getPendingTasks);
+  const tasks = useSelector(getTasks);
+  const pendingTasks = useSelector(getPendingTasks);
+  const files = useSelector(state=>state.files);
   const dispatch = useDispatch();
   useEffect(()=>{
-    if(length !== 0) return;
+    if(pendingTasks.length !== 0) return;
+    if(!tasks[taskIds.firebase] || tasks[taskIds.firebase].status !== "success") return;
+    if(!tasks["sync-items"] || tasks["sync-items"].status !== "success") return;
+    if(!tasks["sync-config"] || tasks["sync-config"].status !== "success") return;
+    if(!tasks[taskIds.requiredFiles] || tasks[taskIds.requiredFiles].status !== "success") return;
     let id = setTimeout(()=>{
       console.log("Running cleanup");
-      cleanup().then(([unlinked, kept])=>{
+      cleanup(Array.from(files.keys())).then(([unlinked, kept])=>{
         dispatch(updateTask({
           id: taskIds.cleanup, 
           title: "Nettoyage",
@@ -33,5 +39,5 @@ export function useCleanup(){
       })
     }, 30*1000);
     return ()=>clearTimeout(id);
-  }, [length]);
+  }, [pendingTasks, tasks]);
 }

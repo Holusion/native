@@ -5,7 +5,6 @@ import { WatchChanges } from ".";
 import {storage, firestore} from "firebase";
 
 import fsMock from "filesystem";
-import { firebase } from "../../__mocks__/firebase";
 
 describe("WatchChanges", function(){
   let logMock;

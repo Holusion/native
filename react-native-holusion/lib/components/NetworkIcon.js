@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import { Icon, Button, Spinner} from 'native-base';
 
 import {getActiveProduct, getPendingSyncTasks} from "../selectors";
+import {taskIds} from "../actions";
+
 
 class NetworkIcon extends React.Component{
     constructor(props){
@@ -30,7 +32,7 @@ class NetworkIcon extends React.Component{
   
   function mapStateToProps(state){
     return {
-      cloudStatus: state.tasks.list["firebase"]?state.tasks.list["firebase"].status : "pending",
+      cloudStatus: state.tasks.list[taskIds.firebase]?state.tasks.list[taskIds.firebase].status : "pending",
       syncTasks: getPendingSyncTasks(state),
       connectedToProduct: (getActiveProduct(state)? true : false)
     }

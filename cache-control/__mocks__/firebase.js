@@ -31,6 +31,9 @@ const ref = jest.fn((url) => ({
     getMetadata: ()=>Promise.resolve({}),
 }));
 
+export const auth = jest.fn(()=>({
+    
+}))
 
 export const storage = jest.fn(() => ({
   refFromURL: ref
@@ -42,13 +45,14 @@ export const firestore = jest.fn(() => ({
   disableNetwork: jest.fn(()=>Promise.resolve()),
 }));
 
-export const app = ()=>({
+export const app = jest.fn(()=>({
     firestore,
     storage
-});
+}));
 
 export const firebase = {
     app,
+    auth,
     storage,
     firestore,
 }

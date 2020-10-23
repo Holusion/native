@@ -11,6 +11,7 @@ import { getUniqueId, getApplicationName, getDeviceName } from "react-native-dev
 
 import { delay } from "../../time";
 
+import {taskIds} from "../../actions";
 
 
 export async function signIn(application){
@@ -38,22 +39,23 @@ export async function signIn(application){
 export function useAuth({projectName, updateTask}){
   useEffect(()=>{
     if(!projectName){
-      updateTask({id: "firebase", status: "warn", title:"Database", message: `no project name`})
+      updateTask({id: taskIds.firebase, status: "warn", title:"Database", message: `no project name`})
       return
     }
-    updateTask({id: "firebase", status: "pending", title:"Database", message: `Connecting`});
+    updateTask({id: taskIds.firebase, status: "pending", title:"Database", message: `Connecting`});
     let cancelled = false;
     Promise.resolve().then(async () => {
       let d = 2000;
       while(!cancelled){
         try{
-          updateTask({id: "firebase", status: "pending", title:"Database", message: `Connecting`});
+          updateTask({id: taskIds.firebase, status: "pending", title:"Database", message: `Connecting`});
           await signIn(projectName);
-          cancelled || updateTask({id: "firebase", status: "success", target: projectName, message: `connected to ${projectName}`})
+          console.log("Signed in for", projectName);
+          cancelled || updateTask({id: taskIds.firebase, status: "success", target: projectName, message: `connected to ${projectName}`})
           break;
         }catch(e){
           console.warn("Firebase error : ", e);
-          cancelled || updateTask({id:"firebase", status: "error", message: e.message});
+          cancelled || updateTask({id: taskIds.firebase, status: "error", message: e.message});
           cancelled || await delay(d);
           d = Math.min(d*1.5, 60000);
           continue;

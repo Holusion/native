@@ -1,12 +1,11 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^2.3.0",
+    "@holusion/cache-control": "^3.0.0-beta.0",
     "Base64": "^1.0.2",
     "async-lock": "^1.2.4",
     "js-yaml": "^3.13.1",
     "prop-types": "^15.7.2",
     "react-native-markdown-display": "^6.1.6",
-    "react-native-sideswipe": "^1.5.0",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "reselect": "^4.0.0"
@@ -85,5 +84,5 @@
   "scripts": {
     "test": "jest ./lib"
   },
-  "version": "3.5.5"
+  "version": "3.6.0-beta.0"
 }

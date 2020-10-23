@@ -49,7 +49,7 @@ class ObjectScreen extends React.Component {
                 </Content>
             </Container>)
         }
-        
+        const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
         return (<Container onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
@@ -58,7 +58,7 @@ class ObjectScreen extends React.Component {
                 items={this.props.items}
                 size={this.state.size}
                 views={this.props.views}
-                onChange={this.setIdForIndex}
+                onChange={ canSwipe ? this.setIdForIndex: null}
             />
             <Footer style={styles.footer}>
                 <Controller 

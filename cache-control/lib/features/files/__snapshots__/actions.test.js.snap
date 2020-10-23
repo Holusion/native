@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`files reducer setDependencies() change files dependencies for config 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/barbar.mp4": "xxxxxx",
+    "/tmp/foofoo.png": "xxxxxx",
+  },
+  "configFiles": Array [
+    "/tmp/baz.png",
+  ],
+  "itemFiles": Array [
+    "/tmp/foo.png",
+    "/tmp/foofoo.png",
+  ],
+  "list": Object {
+    "/tmp/baz.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "baz.png",
+      "size": 16,
+      "src": "gs://example.com/baz.png",
+    },
+    "/tmp/foo.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foo.png",
+      "size": 32,
+      "src": "gs://example.com/foo.png",
+    },
+    "/tmp/foofoo.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foofoo.png",
+      "size": 64,
+      "src": "gs://example.com/foofoo.png",
+    },
+  },
+}
+`;
+
+exports[`files reducer setDependencies() change files dependencies for items 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/barbar.mp4": "xxxxxx",
+    "/tmp/foofoo.png": "xxxxxx",
+  },
+  "configFiles": Array [
+    "/tmp/bar.mp4",
+    "/tmp/barbar.mp4",
+  ],
+  "itemFiles": Array [
+    "/tmp/baz.png",
+  ],
+  "list": Object {
+    "/tmp/bar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "bar.mp4",
+      "size": 128,
+      "src": "gs://example.com/bar.mp4",
+    },
+    "/tmp/barbar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "barbar.mp4",
+      "size": 256,
+      "src": "gs://example.com/barbar.mp4",
+    },
+    "/tmp/baz.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "baz.png",
+      "size": 16,
+      "src": "gs://example.com/baz.png",
+    },
+  },
+}
+`;
+
+exports[`files reducer setDependencies() merge dependencies for items and config 1`] = `
+Object {
+  "cache": Object {},
+  "configFiles": Array [
+    "/tmp/baz.png",
+  ],
+  "itemFiles": Array [
+    "/tmp/baz.png",
+  ],
+  "list": Object {
+    "/tmp/baz.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "baz.png",
+      "size": 16,
+      "src": "gs://example.com/baz.png",
+    },
+  },
+}
+`;
+
+exports[`files reducer setDependencies() remove unused dependencies 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/barbar.mp4": "xxxxxx",
+    "/tmp/foofoo.png": "xxxxxx",
+  },
+  "configFiles": Array [
+    "/tmp/bar.mp4",
+    "/tmp/barbar.mp4",
+  ],
+  "itemFiles": Array [],
+  "list": Object {
+    "/tmp/bar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "bar.mp4",
+      "size": 128,
+      "src": "gs://example.com/bar.mp4",
+    },
+    "/tmp/barbar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "barbar.mp4",
+      "size": 256,
+      "src": "gs://example.com/barbar.mp4",
+    },
+  },
+}
+`;
+
+exports[`files reducer setDependencies() update file hash 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/barbar.mp4": "xxxxxx",
+    "/tmp/foofoo.png": "xxxxxx",
+  },
+  "configFiles": Array [
+    "/tmp/bar.mp4",
+    "/tmp/barbar.mp4",
+  ],
+  "itemFiles": Array [
+    "/tmp/foo.png",
+    "/tmp/foofoo.npg",
+  ],
+  "list": Object {
+    "/tmp/bar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "bar.mp4",
+      "size": 128,
+      "src": "gs://example.com/bar.mp4",
+    },
+    "/tmp/barbar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "xxxxxx",
+      "name": "barbar.mp4",
+      "size": 256,
+      "src": "gs://example.com/barbar.mp4",
+    },
+    "/tmp/foo.png": Object {
+      "contentType": "image/png",
+      "hash": "aaaaaa",
+      "name": "foo.png",
+      "size": 16,
+      "src": "gs://example.com/foo.png",
+    },
+    "/tmp/foofoo.npg": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foofoo.png",
+      "size": 16,
+      "src": "gs://example.com/foofoo.png",
+    },
+  },
+}
+`;
+
+exports[`files reducer setFiles() initial state shape 1`] = `
+Object {
+  "conf": Object {
+    "configurableProjectName": true,
+    "default_target": null,
+    "play_control": "none",
+    "projectName": undefined,
+    "purge_products": false,
+    "slides_control": "default",
+  },
+  "data": Object {
+    "config": Object {},
+    "items": Object {},
+  },
+  "files": Object {
+    "cache": Object {
+      "/tmp/barbar.mp4": "xxxxxx",
+      "/tmp/foofoo.png": "xxxxxx",
+    },
+    "configFiles": Array [
+      "/tmp/bar.mp4",
+      "/tmp/barbar.mp4",
+    ],
+    "itemFiles": Array [
+      "/tmp/foo.png",
+      "/tmp/foofoo.png",
+    ],
+    "list": Object {
+      "/tmp/bar.mp4": Object {
+        "contentType": "video/mp4",
+        "hash": "xxxxxx",
+        "name": "bar.mp4",
+        "size": 128,
+        "src": "gs://example.com/bar.mp4",
+      },
+      "/tmp/barbar.mp4": Object {
+        "contentType": "video/mp4",
+        "hash": "xxxxxx",
+        "name": "barbar.mp4",
+        "size": 256,
+        "src": "gs://example.com/barbar.mp4",
+      },
+      "/tmp/foo.png": Object {
+        "contentType": "image/png",
+        "hash": "xxxxxx",
+        "name": "foo.png",
+        "size": 32,
+        "src": "gs://example.com/foo.png",
+      },
+      "/tmp/foofoo.png": Object {
+        "contentType": "image/png",
+        "hash": "xxxxxx",
+        "name": "foofoo.png",
+        "size": 64,
+        "src": "gs://example.com/foofoo.png",
+      },
+    },
+  },
+  "logs": Object {
+    "errors": Object {},
+    "idCount": 1,
+    "lines": Array [],
+  },
+  "products": Array [],
+  "status": Object {
+    "connected": false,
+    "initial_load": true,
+  },
+}
+`;

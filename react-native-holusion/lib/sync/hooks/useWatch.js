@@ -4,7 +4,7 @@ import {useState, useEffect} from "react";
 import "@react-native-firebase/functions";
 import "@react-native-firebase/firestore";
 
-import {WatchFiles} from "@holusion/cache-control";
+import {WatchChanges} from "@holusion/cache-control";
 
 /**
  * 
@@ -12,19 +12,17 @@ import {WatchFiles} from "@holusion/cache-control";
  * @param {Object} param0.firebaseTask - The state of firebase Task in Redux
  * @param {function} param0.setData - setData redux dispatch
  * @param {function} param0.updateTask - updateTask redux dispatch
- * @param {Logger} logger - a logger object
  * @returns undefined
  */
 export function useWatch({
   firebaseTask, 
   setData, 
   updateTask,
-  logger,
 }){
   const projectName = firebaseTask.target;
   const [w, setWatch] = useState();
   useEffect(()=>{
-    let watcher = new WatchFiles({
+    let watcher = new WatchChanges({
       projectName,
     })
     setWatch(watcher);
@@ -35,26 +33,23 @@ export function useWatch({
     if(!w) return;
     
     w.on("start",(name)=>{
-      console.log("Start synchronizing", name);
+      //console.info("Start synchronizing", name);
       //start events should always be followed by "error" or "dispatch".
       updateTask({id:`sync-${name}`, status: "pending", message:`synchronizing...`});
-    })
-    w.on("progress", (...messages)=>{
-      logger.onProgress( messages);
     })
     w.on("error", (err)=>{
       switch(err.name){
         case "data.config":
-          updateTask({id:`sync-config`, status: "error", message:e.message});
+          updateTask({id:`sync-config`, status: "error", message:err.message, error: err});
           break;
         case "data.items":
-          updateTask({id:`sync-items`, status: "error", message:e.message});
+          updateTask({id:`sync-items`, status: "error", message:err.message, error: err});
           break;
+        default:
+          updateTask({id:`sync-unknown`, status: "error", message:err.message, error: err});
       }
-      logger.onError(err);
     })
     w.on("dispatch", (data)=>{
-      logger.onDispatch(data);
       setData(data);
       Object.keys(data).forEach((name)=>{
         updateTask({id:`sync-${name}`, status: "success", message:`synchronized ${new Date().toLocaleString()}`})

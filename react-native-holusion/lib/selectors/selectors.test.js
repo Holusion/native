@@ -1,9 +1,8 @@
 'use strict';
-import { setNetInfo, setData, setActive, addProduct, removeProduct, addTask, taskIds } from "../actions";
-import reducers from "../reducers";
+import { setNetInfo, setData, setActive, addProduct, removeProduct, addTask, taskIds } from "@holusion/cache-control";
+import {reducers} from "@holusion/cache-control";
 import { 
-  getItemsIds, getActiveItems, getSelectedItem, 
-  getTasks, getTasksList, getPendingTasks, getBlockingTasks, getSyncTasks, getPendingSyncTasks
+  getItemsIds, getActiveItems, getSelectedItem,
 } from ".";
 
 
@@ -71,43 +70,5 @@ describe("selectors", function () {
   
       })
     });
-  })
-  
-
-
-
-  describe("tasks", ()=>{
-    test("getTasks() always return an object", function(){
-      expect(getTasks(initialState)).toEqual({});
-      const s = reducers(initialState, addTask({id: taskIds.initialLoad, status: "success"}));
-      expect(getTasks(s)).toEqual({[taskIds.initialLoad]:{status: "success", title: taskIds.initialLoad}});
-    });
-    test("getTasksList() always return an  array", function(){
-      expect(getTasksList(initialState)).toEqual([]);
-      const s = reducers(initialState, addTask({id: taskIds.initialLoad, status: "success"}));
-      expect(getTasksList(s)).toEqual([{id: taskIds.initialLoad, status: "success", title: taskIds.initialLoad}]);
-    });
-    test("getPendingTasks() shows only tasks with status=pending", ()=>{
-      let s = reducers(initialState, addTask({id: taskIds.initialLoad, status: "success"}));
-      s = reducers(s, addTask({id: taskIds.cleanup, status: "pending", title: "foo"}));
-      expect(getPendingTasks(s)).toEqual([{id: taskIds.cleanup, status: "pending", title: "foo"}])
-    })
-    test("getBlockingTasks() returns only tasks whose name contains 'required'", ()=>{
-      let s = reducers(initialState, addTask({id: "required_foo", status: "success", title: "foo"}));
-      s = reducers(s, addTask({id: "bar", status: "pending"}));
-      expect(getBlockingTasks(s)).toEqual([{id: "required_foo", status: "success", title: "foo"}])
-    })
-
-    test("getSyncTasks() get all tasks whose name contains 'sync'", ()=>{
-      let s = reducers(initialState, addTask({id: "sync_foo", status: "success", title: "foo"}));
-      s = reducers(s, addTask({id: "bar", status: "pending"}));
-      expect(getSyncTasks(s)).toEqual([{id: "sync_foo", status: "success", title: "foo"}])
-    })
-
-    test("getPendingSyncTasks()", ()=>{
-      let s = reducers(initialState, addTask({id: "sync_foo", status: "pending", title: "foo"}));
-      s = reducers(s, addTask({id: "sync_bar", status: "success"}));
-      expect(getPendingSyncTasks(s)).toEqual([{id: "sync_foo", status: "pending", title: "foo"}])
-    })
   })
 })

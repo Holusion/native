@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors get active errors 1`] = `
+Object {
+  "context": StringMatching /\\(\\?:\\)/,
+  "id": Any<Number>,
+  "message": "Hello",
+  "name": "SET_DATA",
+  "severity": "error",
+  "timestamp": Any<Date>,
+}
+`;
+
+exports[`errors get error by name 1`] = `
+Object {
+  "context": StringMatching /\\(\\?:\\)/,
+  "id": Any<Number>,
+  "message": "Hello",
+  "name": "SET_DATA",
+  "severity": "error",
+  "timestamp": Any<Date>,
+}
+`;

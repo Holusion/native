@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { setData } from '../actions';
+import { setData, getItemsArray } from '@holusion/cache-control';
 import { connect } from 'react-redux';
 
 import { Container,  Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-
-import { getItemsArray } from "../selectors";
 
 
 import {BaseView, ImageCard} from "../components"

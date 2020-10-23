@@ -32,12 +32,16 @@ function AppState(props){
           <Text style={{color, fontSize: 14}} >{t.message || t.status}</Text>
       </ListItem>)
   })
-  return (<View>{list}</View>)
+  return (<View>
+      {list}
+      {props.logs.map((l, idx)=><Text key={idx}>{l.message}</Text>)}
+    </View>)
 }
 
 const ConnectedAppState = connect(
-  ({tasks})=>({
+  ({tasks, logs})=>({
       taskList: tasks.list,
+      logs,
   }), 
   {}
 )(AppState);

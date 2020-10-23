@@ -1,7 +1,7 @@
 'use strict';
 import Zeroconf from 'react-native-zeroconf';   
 
-import {setProducts, addProduct, removeProduct, setActive, setNetInfo} from "./actions";
+import {setProducts, addProduct, removeProduct, setActive, setNetInfo} from "@holusion/cache-control";
 
 import NetInfo from "@react-native-community/netinfo";
 

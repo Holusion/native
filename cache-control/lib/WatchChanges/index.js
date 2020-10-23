@@ -12,7 +12,9 @@ import {transformSnapshot} from "./transformSnapshot";
  * @typedef FileRef
  * @property {string} hash
  * @property {string} src
- * @property {number} [size]
+ * @property {string} dest
+ * @property {string} contentType]
+ * @property {number} size
  */
 
 /**
@@ -36,7 +38,7 @@ import {transformSnapshot} from "./transformSnapshot";
  * @type {object}
  * @property {object} [config] - a new config to dispatch
  * @property {object} [items] - new items to dispatch
- * @property {Map<string,FileRef>} [files] - required files for this data
+ * @property {Array<FileRef>} [files] - required files for this data
  */
 
 

@@ -1,21 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {useAuth, useCleanup, useWatch} from "./hooks";
+import {useAuth, useCleanup, useWatch, useDownload} from "./hooks";
 
-import {consoleLogger, toastLogger} from "./loggers";
 
-export default function Downloader({projectName, updateTask, setData, firebaseTask, logger:loggerName="console"}){
-  let logger;
-  switch (loggerName){
-    case "toast":
-      logger = toastLogger;
-      break;
-    case "console":
-    default:
-      logger = consoleLogger;
-  }
+export default function Downloader({projectName, updateTask, setData, firebaseTask}){
   useAuth({projectName, updateTask});
-  useWatch({setData, updateTask, firebaseTask, logger});
+  useWatch({setData, updateTask, firebaseTask});
+  useDownload({updateTask});
   useCleanup();
   return null;
 }
@@ -25,5 +16,4 @@ Downloader.propTypes = {
   updateTask: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
   firebaseTask: PropTypes.object.isRequired,
-  logger: PropTypes.oneOf(["console", "toast"])
 }

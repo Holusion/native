@@ -1,14 +1,11 @@
 import React from 'react';
 
-import {setData} from '../actions';
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Footer, Spinner, Text, H1, View} from 'native-base';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { Container, Content} from 'native-base';
 
 import Markdown from '../components/Markdown'
 
-import {initialize} from "@holusion/cache-control";
 
 
 

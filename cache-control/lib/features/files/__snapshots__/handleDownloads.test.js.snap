@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleDownloads saga cancels downloads if a new action is fired 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/bar.mp4": "yyyyyy",
+    "/tmp/foo.jpg": "xxxxxx",
+    "/tmp/foo.png": "xxxxxx",
+  },
+  "configFiles": Array [
+    "/tmp/foo.jpg",
+  ],
+  "itemFiles": Array [
+    "/tmp/bar.mp4",
+    "/tmp/foo.png",
+  ],
+  "list": Object {
+    "/tmp/bar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "yyyyyy",
+      "name": "bar.mp4",
+      "size": 16,
+      "src": "gs://example.com/bar.mp4",
+    },
+    "/tmp/foo.jpg": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foo.jpg",
+      "size": 16,
+      "src": "gs://example.com/foo.jpg",
+    },
+    "/tmp/foo.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foo.png",
+      "size": 16,
+      "src": "gs://example.com/foo.png",
+    },
+  },
+}
+`;
+
+exports[`handleDownloads saga one-time run 1`] = `
+Object {
+  "cache": Object {
+    "/tmp/bar.mp4": "yyyyyy",
+    "/tmp/foo.png": "xxxxxx",
+  },
+  "configFiles": Array [],
+  "itemFiles": Array [
+    "/tmp/bar.mp4",
+    "/tmp/foo.png",
+  ],
+  "list": Object {
+    "/tmp/bar.mp4": Object {
+      "contentType": "video/mp4",
+      "hash": "yyyyyy",
+      "name": "bar.mp4",
+      "size": 16,
+      "src": "gs://example.com/bar.mp4",
+    },
+    "/tmp/foo.png": Object {
+      "contentType": "image/png",
+      "hash": "xxxxxx",
+      "name": "foo.png",
+      "size": 16,
+      "src": "gs://example.com/foo.png",
+    },
+  },
+}
+`;

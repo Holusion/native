@@ -1,8 +1,9 @@
 
 jest.mock("@holusion/cache-control/dist/cache-control-native.js");
-import * as props from "@holusion/cache-control/dist/cache-control-native.js";
 //console.log("Props : ", Object.keys(props).map(key=> `[${typeof props[key]}] ${key}`));
 
-export const {filename} = jest.requireActual("@holusion/cache-control/dist/cache-control-native.js");
-export const setBasePath = jest.fn();
-export const createStorage = jest.fn();
+let mod = jest.requireActual("@holusion/cache-control/dist/cache-control-native.js");
+mod.setBasePath = jest.fn();
+mod.createStorage = jest.fn();
+
+module.exports = mod;

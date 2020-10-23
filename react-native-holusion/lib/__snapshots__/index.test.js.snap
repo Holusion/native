@@ -3,18 +3,12 @@
 exports[`main module has expected properties 1`] = `
 Array [
   "netScan",
-  "reducers",
-  "configureStore",
-  "persistentStore",
-  "DownloadProvider",
-  "useWatch",
   "useAutoPlay",
   "wrapAutoPlay",
   "ThemeProvider",
   "FullLoadWrapper",
   "convert",
   "time",
-  "actions",
   "screens",
   "components",
   "selectors",

@@ -6,13 +6,6 @@ import { Image, StyleSheet } from 'react-native';
 import Markdown from '../Markdown'
 
 export default function WikiView(d){
-    if(!d.active){
-        return(<Content contentContainerStyle={styles.content}>
-            <H1 style={styles.title}>{d['title']}</H1>
-            <H2  style={styles.subTitle}>{d['subtitle']}</H2>
-            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}><Spinner primary/></View>
-        </Content>)
-    }
     let abstract = null;
     if(d["abstract"]){
         abstract= (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)

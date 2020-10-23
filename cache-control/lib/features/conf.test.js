@@ -1,8 +1,23 @@
 'use strict';
-import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode } from "../actions";
-import reducers from ".";
+jest.mock("../path");
+import fsMock from "filesystem";
+import { testSaga, expectSaga } from 'redux-saga-test-plan';
 
+import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile } from "./conf";
+import {reducers} from ".";
+import { select } from "redux-saga/effects";
+import { saveFile } from "../readWrite";
 
+describe("actions", ()=>{
+  test("exports an object of actions", ()=>{
+    expect(typeof actions).toEqual("object");
+    expect(action_strings).not.toHaveLength(0);
+    expect(Object.keys(actions)).toHaveLength(action_strings.length);
+    for(let k in actions){
+      expect(actions[k]).toEqual(k);
+    }
+  })
+})
 
 describe("conf reducer", function () {
   const initialState = reducers(undefined, {});
@@ -10,6 +25,14 @@ describe("conf reducer", function () {
   afterEach(function () {
     //Be sure state is never mutated, because const doesn't ensure this.
     expect(initialState).toEqual(initialStateCopy);
+  })
+  test("setConf() / getConf()", ()=>{
+    let c = {projectName: "foo", slides_control: "none"};
+    const s = reducers(initialState, setConf(c));
+    expect(getConf(s)).toEqual(expect.objectContaining(c));
+  })
+  test("setConf() ignore errors", ()=>{
+    expect(reducers(initialState, setConf({error: new Error("Booh")}))).toHaveProperty("conf", initialState.conf);
   })
   test('conf default', function () {
     expect(initialState).toHaveProperty("conf");
@@ -39,17 +62,17 @@ describe("conf reducer", function () {
     state = reducers(initialState, setPlayControl("none"));
     expect(state.conf).toHaveProperty("play_control", "none");
   });
-  test("can set projectName", function(){
-    let init = Object.assign({}, initialState, {conf: Object.assign({}, initialState.conf, {configurableProjectName: true})})
-    let state = reducers(init, setProjectName("foo"));
-    expect(state).toHaveProperty("conf", expect.objectContaining({projectName: "foo"}));
-  })
-  test("projectName defaults to read-only", function(){
+  test("can lock projectName", function(){
     let warnMock = jest.spyOn(global.console, "warn");
     warnMock.mockImplementationOnce(()=>{});
-    let state = reducers(initialState, setProjectName("foo"));
-    expect(state.conf).toHaveProperty("projectName", undefined);
+    let init = Object.assign({}, initialState, {conf: Object.assign({}, initialState.conf, {configurableProjectName: false})})
+    let state = reducers(init, setProjectName("foo"));
+    expect(state).toHaveProperty("conf", expect.objectContaining({projectName: undefined}));
     expect(warnMock).toHaveBeenCalled();
+  })
+  test("projectName defaults to editable", function(){
+    let state = reducers(initialState, setProjectName("foo"));
+    expect(state.conf).toHaveProperty("projectName", "foo");
   })
   
   test("passcode defaults to not-set", ()=>{

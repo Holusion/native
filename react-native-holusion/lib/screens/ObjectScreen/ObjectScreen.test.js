@@ -4,8 +4,9 @@ import { render, act } from '@testing-library/react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from "react-redux";
+import {createStore} from "redux";
 
-import {configureStore} from "../../persistentStore";
+import {reducers} from "@holusion/cache-control";
 import {ObjectScreen} from "..";
 import { setData } from "../../actions";
 
@@ -26,7 +27,8 @@ describe("<ObjectScreen/>", ()=>{
   let store;
 
   beforeEach(()=>{
-    store = configureStore();
+    console.log("Reducers : ", reducers);
+    store = createStore(reducers);
     store.dispatch(setData({
       config:{
         video: "/path/to/foo.mp4",

@@ -4,5 +4,5 @@ export { useWatch  } from "./useWatch";
 
 export {usePlay} from "./usePlay";
 export {useAutoPlay, wrapAutoPlay } from "./useAutoPlay";
-
+export {useDownload} from "./useDownload";
 export {useCleanup} from "./useCleanup";
