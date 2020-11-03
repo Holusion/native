@@ -52,6 +52,8 @@ import imageCardTheme from "./ImageCard";
 import prevNextTheme from "./PrevNext";
 import playPauseTheme from "./PlayPause";
 import markdownTheme from "./Markdown";
+import progressTheme from "./Progress";
+
 export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
@@ -67,6 +69,9 @@ export default (variables /* : * */ = variable) => {
     },
     "Holusion.Markdown": {
       ...markdownTheme(variables)
+    },
+    "Holusion.Progress": {
+      ...progressTheme(variables)
     },
     /* Nativebase components */
     'NativeBase.Left': {

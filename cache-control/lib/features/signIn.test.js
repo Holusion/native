@@ -3,10 +3,12 @@ import {testSaga, expectSaga} from 'redux-saga-test-plan';
 
 import {app as appMock, auth as autoMock} from "firebase";
 
-import {signIn, SET_SIGNEDIN, doSignIn} from "./signIn";
+import {SET_SIGNEDIN} from "./status";
+import {signIn, doSignIn} from "./signIn";
 import * as matchers from 'redux-saga-test-plan/matchers';
 import {throwError, dynamic} from "redux-saga-test-plan/providers"
 import { delay } from 'redux-saga/effects';
+import { setProjectName } from './conf';
 
 describe("signIn", ()=>{
 
@@ -17,16 +19,17 @@ describe("signIn", ()=>{
   })
 
   test("sign in for projectName", ()=>{
-    testSaga(signIn, {projectName: "foo"}).next()
+    testSaga(signIn, setProjectName("foo")).next()
+    .put({type: SET_SIGNEDIN, value: false}).next()
     .call(doSignIn, "foo").next()
-    .put({type:SET_SIGNEDIN, projectName: "foo"}).next()
+    .put({type:SET_SIGNEDIN, value: "foo"}).next()
     .isDone();
   })
 
   test("Retry after an error", ()=>{
     let e = new Error("Internal error");
     let count = 0;
-    return expectSaga(signIn, {projectName: "foo"})
+    return expectSaga(signIn, setProjectName("foo"))
     .provide({
       call(effect, next){
         if(effect.fn === doSignIn) return [e, e][count++];
@@ -44,7 +47,7 @@ describe("signIn", ()=>{
     .put({type: SET_SIGNEDIN, error: e})
     .call.like({args:[1024]})
     .call(doSignIn, "foo")
-    .put({type: SET_SIGNEDIN, projectName:"foo"})
+    .put({type: SET_SIGNEDIN, value:"foo"})
     .run(256);
   })
 });

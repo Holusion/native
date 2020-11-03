@@ -1,5 +1,5 @@
 'use strict';
-import { setNetInfo, setData, setActive, addProduct, removeProduct, addTask, taskIds } from "@holusion/cache-control";
+import { setData, addProduct} from "@holusion/cache-control";
 import {reducers} from "@holusion/cache-control";
 import { 
   getItemsIds, getActiveItems, getSelectedItem,

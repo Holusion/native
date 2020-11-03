@@ -1,64 +1,63 @@
 import React from 'react';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 
 import "react-native-gesture-handler";
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from "@react-navigation/native";
 
-import { Root } from 'native-base';
+import { Root, Container, Content, Spinner } from 'native-base';
 import { AppState, StatusBar } from "react-native"
 
+import {sagaStore} from "@holusion/cache-control";
 
-import {persistentStore, screens, components, netScan, DownloadProvider, ThemeProvider } from '@holusion/react-native-holusion';
-const {NetworkIcon} = components;
+import { screens, NetworkIcon, netScan, ThemeProvider, RequiredLoadWrapper } from '@holusion/react-native-holusion';
 
 
 import ConnectedTitle from "./ConnectedTitle";
 
-const [store] = persistentStore({
-  configurableProjectName: true,
-  projectName: "holodemo", 
-});
 
-function makeHeader({navigation}){
-  return <NetworkIcon onPress={() => {navigation.navigate("Connect")}}/>
-}
+const ModalStack = createStackNavigator();
+const MainStack = createStackNavigator();
 
-function screenOptions({navigation}){
+const screenOptions = ({navigation})=>{
   return {
     headerBackTitle: "Retour",
     title: <ConnectedTitle placeholder={require("./assets/logo_holusion.png")} resizeMode='contain' style={{flex:1, height:32}} />,
-    headerRight: ()=>makeHeader({navigation}),
+    headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
   };
 }
-
-
-
-const Stack = createStackNavigator();
-
 
 export default class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
+      showOptions: true,
       appState: AppState.currentState,
     }
   }
+
+
+
   componentDidMount(){
+    const [store, task] = sagaStore({defaultProject:"holodemo"});
+    this.setState({store, task});
+    this.onFocus(store);
     AppState.addEventListener('change', this.onChange);
-    //ScreenBrightness.setBrightness(1);
-    this.onFocus();
   }
   componentWillUnmount(){
     AppState.removeEventListener('change', this.onChange);
+    if(this.state.task) this.state.task.cancel();
+    this.onDefocus();
   }
-  onFocus(){
-    this.net_unsubscribe = netScan(store);
+
+  onFocus(store){
+    this.net_unsubscribe = netScan(store || this.state.store);
   }
   onDefocus(){
     this.net_unsubscribe();
   }
+
   onChange =  (nextAppState)=>{
     if (
       this.state.appState.match(/inactive|background/) &&
@@ -74,20 +73,29 @@ export default class App extends React.Component{
   render(){
     return <Root>
        <StatusBar hidden={true} />
-        <Provider store={store}>
-          <DownloadProvider/>
-          <ThemeProvider>
-            <NavigationContainer>
-              <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
-                <Stack.Screen name="Home" component={screens.HomeScreen}/>
-                <Stack.Screen name="List" component={screens.ListScreen}/>
-                <Stack.Screen name="Connect" component={screens.ConnectScreen}/>
-                <Stack.Screen name="Object" component={screens.ObjectScreen}/>
-                <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
-              </Stack.Navigator>
-            </NavigationContainer>
-          </ThemeProvider> 
-        </Provider> 
+        {this.state.store?<Provider store={this.state.store}>
+            <ThemeProvider>
+              <NavigationContainer>
+                <ModalStack.Navigator mode="modal" headerMode= 'none' screenOptions={{headerShown: false, cardStyle: { backgroundColor: 'transparent' },}} initialRouteName="Home">
+                  <ModalStack.Screen name="Home" component={Home}/>
+                  <ModalStack.Screen name="Settings"  component={screens.SettingsScreen}/>
+                </ModalStack.Navigator>
+              
+              </NavigationContainer>
+            </ThemeProvider> 
+        </Provider> : <Container><Content><Spinner/></Content></Container>}
     </Root>
   }
+}
+
+function Home(){
+  return (<RequiredLoadWrapper>
+    <MainStack.Navigator mode="card" screenOptions={screenOptions} >
+      <MainStack.Screen name="Home" component={screens.HomeScreen}/>
+      <MainStack.Screen name="List" component={screens.ListScreen}/>
+      <MainStack.Screen name="Connect" component={screens.ConnectScreen}/>
+      <MainStack.Screen name="Object" component={screens.ObjectScreen}/>
+      <MainStack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
+    </MainStack.Navigator>
+  </RequiredLoadWrapper>);
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { setData, getItemsArray } from '@holusion/cache-control';
+import { setData, getItemsArray, isLoaded, getRequiredSize } from '@holusion/cache-control';
 import { connect } from 'react-redux';
 
 import { Container,  Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
@@ -14,21 +14,6 @@ import { useAutoPlay } from '../sync/hooks';
 function HomeScreen (props) {
   useAutoPlay();
   //First handle cases where application is not ready
-  if (!props.projectName) {
-    return (<Container>
-      <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Application non configurée</Text>
-        <Text style={{ fontSize: 14 }}>Renseigner un nom dans l'écran de configuration</Text>
-      </Content>
-    </Container>)
-  } else if ((!props.config || !props.items || props.items.length== 0)) {
-    return (<Container>
-      <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Spinner />
-        <Text>Loading...</Text>
-      </Content>
-    </Container>)
-  }
 
   let footer = null;
   if (props.config.about) {
@@ -57,11 +42,8 @@ function HomeScreen (props) {
   if(!props.categories || props.categories.length == 0){
     return <Container>
       <Content contentContainerStyle={styles.container}>
-        <H1 primary style={styles.titleContainer}>
-          {props.config.header || "Découvrez  ces objets enb hologramme :"}
-        </H1>
         <View style={styles.cardContainer}>
-          <ListObjects onNavigate={(id)=>props.navigation.navigate("Object", {id, category: null})}/>
+          <ListObjects title={props.config.header || "Découvrez  ces objets en hologramme :"} onNavigate={(id)=>props.navigation.navigate("Object", {id, category: null})}/>
         </View>
       </Content>
       {footer}
@@ -159,7 +141,6 @@ function mapStateToProps(state) {
   return {
     categories,
     items: getItemsArray(state),
-    projectName: conf.projectName,
     config,
   };
 }

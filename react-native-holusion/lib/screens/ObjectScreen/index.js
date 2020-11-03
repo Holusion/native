@@ -1,6 +1,6 @@
 'use strict'
 import React from 'react'
-import { Container, Content, Footer, Text } from 'native-base';
+import { Container, Content, Footer, H1, Text } from 'native-base';
 
 import { StyleSheet, Dimensions } from 'react-native';
 
@@ -19,33 +19,35 @@ const {width, height} = Dimensions.get('window');
 import { VideoPlayer } from '../../sync/VideoPlayer';
 
 import ObjectList from "./ObjectList"
+import { getItems } from '@holusion/cache-control';
 
 /**
  * Object screen is the screen that render a FlatList of the current collection. 
  * You can swipe to change the current object or touch the next or previous button (depending on configured controls)
+ * It does some sort of strange circular update between itself, holding the route param and ObjectList which holds the VirtualizedList
+ * it *works* but should be improved
  */
 
 class ObjectScreen extends React.Component {
-    get index(){
-        return Array.isArray(this.props.items)?this.props.items.findIndex((item)=> (item.id == this.props.route.params["id"])) : -1;
-    }
+
     static propTypes = {
         views: PropTypes.object
     }
     setIdForIndex = (i)=>{
         const object = this.props.items[i];
+        if(object.id === this.props.id) return;
         if(!object){
             return console.warn("Object not found at index : ", i);
         }
         this.props.navigation.setParams({id: object.id});
     }
     render() {
-        const initialItem = this.index;
-        if(!this.props.items || initialItem == -1){
+        if(!this.props.items || this.props.index == -1){
             return (<Container testID="object-not-found">
-                <Content contentContainerStyle={styles.content}>
-                    <Text>No data for Id : {this.props.route.params["id"]}</Text>
-                    <Text>Available objects : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
+                <Content contentContainerStyle={styles["404Content"]}>
+                  <H1 style={{paddingTop: 8}}>Erreur : non trouvé</H1>
+                  <Text>Aucune page n'existe avec l'identifiant "{this.props.route.params["id"]}"</Text>
+                  <Text>Les pages existantes sont : { (Array.isArray(this.props.items) && 0 < this.props.items.length)? this.props.items.map(i=> i.id).join(", ") : "None"}</Text>
                 </Content>
             </Container>)
         }
@@ -54,7 +56,7 @@ class ObjectScreen extends React.Component {
             <VideoPlayer/>
             <ObjectList 
                 ref= {(ref)=>this._list = ref}
-                initialItem={this.index}
+                initialItem={this.props.index}
                 items={this.props.items}
                 size={this.state.size}
                 views={this.props.views}
@@ -62,22 +64,31 @@ class ObjectScreen extends React.Component {
             />
             <Footer style={styles.footer}>
                 <Controller 
-                    prev={this.index !== 0? this.onPrevPage : null} 
-                    next={(this.index < this.props.items.length -1 )?this.onNextPage : null}
+                    prev={this.props.index !== 0? this.onPrevPage : null} 
+                    next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
                 />
             </Footer>
         </Container>)
     }
+
     onNextPage = ()=>{
-        this.onChangePage((this.index + 1), true);
+        this.setIdForIndex(this.props.index+1)
     }
     onPrevPage = ()=>{
-        this.onChangePage(this.index - 1, true);
+        this.setIdForIndex(this.props.index-1)
     }
-    onChangePage(index, animated=false){
-        if(this._list){
-            this._list.scrollToIndex({animated, index});
-        }
+    componentDidUpdate(prevProps){
+      if(prevProps.id !== this.props.id){
+        //Index might not change if we navigate to another ID with the same in-category index
+        requestAnimationFrame(()=>{ 
+          if(this._list){
+            this._list.scrollToIndex({
+              animated: Math.abs(this.props.index-prevProps.index) === 1, 
+              index: this.props.index
+            });
+          }
+        })
+      }
     }
     _onLayoutDidChange = (e) => {
         const layout = e.nativeEvent.layout;
@@ -93,16 +104,25 @@ class ObjectScreen extends React.Component {
 
 function mapStateToProps(state, {route}){
     const {conf, products} = state;
-    const items = getActiveItems(state, {selectedCategory: route.params["category"]});
+    const id = route.params["id"];
+    const items = getItems(state);
+    const item = items[id];
+    const selectedCategory = item?item.category: undefined;
+    const activeItems = getActiveItems(state, {selectedCategory});
+    const index = Array.isArray(activeItems)?activeItems.findIndex((item)=> (item.id == id)) : -1
+    //console.log("ID : ", item.id, "Index : ", index, activeItems.map(i=>i.id));
     return {
-        items,
+        id,
+        item,
+        index,
+        items: activeItems,
         control_buttons: conf.slides_control,
         target: products.find(p => p.active)
     };
 }
 
 const styles = StyleSheet.create({
-    content: {
+    "404Content": {
         marginHorizontal: 24,
         paddingTop: 40,
         paddingBottom: 100,

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 
-import {filename} from "@holusion/cache-control";
+import {filename, info, getCachedFiles} from "@holusion/cache-control";
 
 import {loadFonts} from 'react-native-dynamic-fonts';
 import { StyleProvider, Content, Spinner, Text } from 'native-base';
@@ -12,74 +12,58 @@ import default_vars from "../../native-base-theme/variables/platform";
 
 import { readFile } from "react-native-fs";
 
-import {addTask, updateTask, taskIds} from "../actions";
-import { InitialLoadWrapper } from "./LoadWrapper";
-import { getTasks } from "../selectors";
 
 
-export function  ThemeProvider({
+export function ThemeProvider({
   children
 }){
-  const {fonts, theme} = useSelector(state=>state.data.config);
-  const loaded = useSelector(getTasks)[taskIds.theme];
-  const syncFiles = useSelector(getTasks)[taskIds.requiredFiles];
+  const [loadedFonts, setLoadedFonts] = useState([]);
+  const {fonts=[], theme} = useSelector(state=>state.data.config);
+  const cachedFiles = useSelector(getCachedFiles);
   const dispatch = useDispatch();
-
-  const useTheme = (loaded && loaded.status == "success")?true: false;
+  const allFontsLoaded = fonts.filter(font=> loadedFonts.indexOf(font) === -1).length === 0;
+  //console.log("Theme : ",theme, "Load : ", allFontsLoaded, "Fonts : " , fonts, "Loaded fonts : ", loadedFonts);
   //Reset theme on each change
   useEffect(()=>{
-    if(useTheme){
-      console.log("clearing theme cache");
-      clearThemeCache();
+    if(allFontsLoaded){
+      //console.log("clearing theme cache");
+      requestAnimationFrame(()=>{
+        clearThemeCache();
+      });
     }
-  }, [useTheme]);
+  }, [theme, allFontsLoaded]);
+
   useEffect(()=>{
-    if(!Array.isArray(fonts)){
-      dispatch(updateTask({ 
-        id: taskIds.theme, 
-        title: "Theme",
-        message: `nothing to do`, 
-        status: "success"
-      }));
-      return;
-    };
+    if(!Array.isArray(fonts)) return;
+    const missingFonts = fonts.filter(font => loadedFonts.indexOf(font) === -1);
+    const fontsWithAFile = missingFonts.filter(font => cachedFiles.find(f=>font.indexOf(f) !== -1));
+
+    if(missingFonts.length === 0 || fontsWithAFile.length === 0) return;
     let aborted = false;
-    dispatch(addTask({ 
-      id: taskIds.theme, 
-      title: "Theme",
-      message: `synchronizing...`, 
-      status: "pending"
-    }))
-    if(!syncFiles || syncFiles.status !== "success") return;
-    Promise.all(fonts.map(async font=>{
+    Promise.all(fontsWithAFile.map(async font=>{
       const name = filename(font.slice(0, font.lastIndexOf(".")));
       //use readFile instead of loadFontFromFile because it yields out-of-band errors
       const data = await readFile(font, "base64");
       let type = /\.otf$/i.test(font)? "otf": "ttf";
       return {name, data, type};
     }))
-    .then(fonts=> loadFonts(fonts))
+    .then(l_fonts => loadFonts(l_fonts))
     .then((names)=>{
       if(aborted) return;
-      dispatch(updateTask({
-        id: taskIds.theme, 
-        message: names.length? `polices : ${names.join(", ")}`: "pas de polices",
-        status: "success", 
-      }));
+      //DISPATCH FONTS SUCCESS
+      dispatch(info("FONTS", `Police${ 1< names.length?"s":""} chargée${ 1< names.length?"s":""} : ${names.join(", ")}`));
+      setLoadedFonts([...loadedFonts,...fontsWithAFile]);
     }).catch( (e)=>{
-      console.warn("Error loading fonts", e);
       if(aborted) return;
-      dispatch(updateTask({ 
-        id: taskIds.theme, 
-        message: `echec du chargement de : ${fonts.map(f=>filename(f)).join(", ")}`, 
-        status: "warn"
-      }))
+      dispatch(error("FONTS", "Error loading fonts : "+e.message));
     })
-  }, [fonts, syncFiles, dispatch]);
-  return (<InitialLoadWrapper>
-    <StyleProvider style={getTheme(Object.assign({}, default_vars, useTheme?theme: {}))}>
-        {children}
-    </StyleProvider>
-  </InitialLoadWrapper>)
-}
+    return ()=> aborted = true;
+  }, [fonts, loadedFonts, cachedFiles, dispatch]);
 
+
+  return (<StyleProvider style={getTheme(Object.assign({}, default_vars, allFontsLoaded?theme: {}))}>
+    <React.Fragment>
+        {children}
+    </React.Fragment>
+    </StyleProvider>)
+}

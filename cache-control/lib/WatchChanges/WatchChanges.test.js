@@ -2,7 +2,7 @@
 import { setBasePath } from "../path";
 import { WatchChanges } from ".";
 
-import {storage, firestore} from "firebase";
+import {firebase} from "firebase";
 
 import fsMock from "filesystem";
 
@@ -19,6 +19,7 @@ describe("WatchChanges", function(){
   beforeEach(()=>{
     jest.clearAllMocks();
     fsMock._reset();
+    firebase._reset();
   })
 
   it("can be created", function(){
@@ -75,12 +76,9 @@ describe("WatchChanges", function(){
           }),
         }),
       }
-      firestore().collection.mockImplementationOnce(()=>collection);
+      firebase._collection.mockImplementationOnce(()=>collection);
     });
     
-    afterEach(()=>{
-      firestore().collection.mockClear();
-    })
 
 
     it("onConfigSnapshot can be cancelled with close()", ()=>{
@@ -175,6 +173,7 @@ describe("WatchChanges", function(){
     afterEach(()=>{
       wf.close();
     });
+    
     it("onProjectsSnapshot ignores pages where active === false", (done)=>{
       wf.on("dispatch",(data)=>{
         expect(data).toEqual({items: {}, files: new Map()})
@@ -250,22 +249,25 @@ describe("WatchChanges", function(){
 
         it("can return transformed data and required files", function(done){
           let file_deps = new Map([["/path/to/tmp/medias/bar.mp4", {
-            src: "gs://foo.appspot.com/bar.mp4",
+            src: "gs://example.com/bar.mp4",
             hash: "xxxxxx",
             size: 24,
+            dest: "/path/to/tmp/medias/bar.mp4",
             contentType: "video/mp4"
           }]])
           let raw_results = {
             "onConfigSnapshot": { config: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}, files: file_deps},
             "onProjectsSnapshot": { items: {alice: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}}, files: file_deps}
           }
-          storage.mockImplementationOnce(()=>({
-            refFromURL: ()=>({
-              name: "bar.mp4",
-              getMetadata: ()=>Promise.resolve({
-                md5Hash:"xxxxxx",
-                size: 24,
-                contentType: "video/mp4",
+          firebase.app.mockImplementationOnce(()=>({
+            storage: ()=>({
+              refFromURL: ()=>({
+                name: "bar.mp4",
+                getMetadata: ()=>Promise.resolve({
+                  md5Hash:"xxxxxx",
+                  size: 24,
+                  contentType: "video/mp4",
+                })
               })
             })
           }))

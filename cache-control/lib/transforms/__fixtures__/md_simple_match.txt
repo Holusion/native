@@ -1,0 +1,6 @@
+---
+![alt text](foo.png)
+---
+![alt text](file:///tmp/makeLocal-tests/foo.png)
+---
+gs://example.com/applications/bar/foo.png

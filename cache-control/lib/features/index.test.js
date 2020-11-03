@@ -7,40 +7,22 @@ jest.mock("../path");
 import fsMock from "filesystem";
 import {app as appMock, auth as autoMock} from "firebase";
 
-import {loadLocalSaga, reducers, rootSaga, sagaStore, saveCache, dataFile} from ".";
+import {loadLocalSaga, reducers, rootSaga, sagaStore, saveCache, dataFile, getPersistentState} from ".";
 import {SET_DATA, watchChanges, createWatcher} from "./data";
 import {setConf, actions, action_strings as conf_actions_names, getProjectName} from "./conf";
 
-import { signIn, SET_SIGNEDIN, doSignIn } from "./signIn";
+import { signIn, doSignIn } from "./signIn";
 import { storagePath } from "../path";
 import { handleSetData, SET_CACHED_FILE, SET_DEPENDENCIES, SET_FILES } from "./files";
 import {makeFileRef} from "./files/_mock_fileRef";
-import { INITIAL_LOAD } from "./status";
+import { INITIAL_LOAD, isLoaded, setSignedIn, SET_SIGNEDIN } from "./status";
+import { saveFile } from "../readWrite";
 
 afterEach(()=>{
   fsMock._reset();
 })
 
-
 describe("rootSaga", ()=>{
-  test("workflow", ()=>{
-    testSaga(rootSaga)
-    .next()
-    .call(loadLocalSaga)
-    .next()
-    .select(getProjectName)
-    .next()
-    .call(signIn, {projectName: undefined})
-    .next()
-    .all([
-      takeLatest(actions.SET_PROJECTNAME, signIn),
-      takeLatest(SET_SIGNEDIN, watchChanges),
-      takeLatest(SET_DATA, handleSetData),
-      throttle(1000, [SET_DATA, SET_DEPENDENCIES, SET_CACHED_FILE, ...conf_actions_names], saveCache),
-    ])
-    .next()
-    .isDone();
-  })
 
   test("will auth initially if projectName is set", ()=>{
     let s = reducers(undefined, setConf({projectName:"foo"}))
@@ -59,9 +41,9 @@ describe("rootSaga", ()=>{
     .provide([
       [matchers.call.fn(loadLocalSaga), undefined],
     ])
-    .dispatch({type: SET_SIGNEDIN, projectName: "foo"})
+    .dispatch(setSignedIn("foo"))
     .call(createWatcher, "foo")
-    .dispatch({type: SET_SIGNEDIN, projectName: "bar"})
+    .dispatch(setSignedIn("bar"))
     .call(createWatcher, "bar")
     .silentRun()
   })
@@ -69,13 +51,38 @@ describe("rootSaga", ()=>{
   test("will save conf changes to disk", ()=>{
     return expectSaga(rootSaga)
     .withReducer(reducers)
-    .provide([
-      [matchers.call.fn(loadLocalSaga), undefined],
-    ])
+    .provide({
+      call(effect, next){
+        if(effect.fn === loadLocalSaga) return undefined;
+        next();
+      },
+      fork(effect, next){
+        if(effect.fn.name == "debounceHelper") return takeLatest(...effect.args.slice(1));
+        next();
+      }
+    })
     .dispatch({type: actions.SET_PROJECTNAME, projectName: "foo"})
+    .delay(600)
     .fork.fn(saveCache)
     .silentRun()
   })
+})
+
+describe("saveCache()", ()=>{
+  test("handle saveFile error", ()=>{
+    let s = {
+      files: "files_foo",
+      data: "data_foo",
+      conf: "conf_foo"
+    }
+    let e = new Error("Booh");
+    testSaga(saveCache).next()
+    .select(getPersistentState).next(s)
+    .call(JSON.stringify, s).next("stringified_state")
+    .call(saveFile, dataFile, "stringified_state").throw(e)
+    .put({type:"SAVE_CACHE", error: e}).next()
+    .isDone();
+  });
 })
 
 describe("loadLocalSaga", function(){
@@ -157,51 +164,58 @@ describe("sagaStore()", ()=>{
     }));
   });
 
+  test("can set a pre-defined default project name", ()=>{
+    const [store, task] =sagaStore({defaultProject: "holodemo"});
+    expect(getProjectName(store.getState())).toEqual("holodemo");
+    task.cancel();
+  })
+
   describe("after INITIAL_LOAD", ()=>{
     //Some smoke test to check if store properly initializes
     let store, task;
     beforeEach(()=>{
+      jest.useFakeTimers();
       ([store, task] = sagaStore());
       return new Promise((resolve)=>{
         const unsubscribe = store.subscribe(()=>{
           const state = store.getState();
-          if(state.status.initial_load) {
+          if(isLoaded(state)) {
             unsubscribe();
             resolve();
           }
         });
       });
     });
+
     afterEach(()=>{
       task.cancel();
     })
 
-    test("save data changes to disk", (done)=>{
+    async function doDebounce(){
+      jest.advanceTimersByTime(500);
+      await Promise.resolve();
+    }
+    test("save data changes to disk", async ()=>{
       store.dispatch({type:SET_DATA, data: {items: {foo: {title: "bar"}}}});
-      setTimeout(()=>{
-        expect(fsMock.contents).toMatchSnapshot();
-        done();
-      },1);
+      await doDebounce();
+      expect(fsMock.contents).toMatchSnapshot();
     });
-    test("save conf changes to disk", (done)=>{
+    test("save conf changes to disk", async ()=>{
       store.dispatch({type:actions.SET_CONF, conf:{projectName: "foo"}});
-      setTimeout(()=>{
-        expect(fsMock.contents).toMatchSnapshot();
-        done();
-      },1);
+      await doDebounce();
+      expect(fsMock.contents).toMatchSnapshot();
     });
-    test('save required files list to disk', (done)=>{
+    test('save required files list to disk', async ()=>{
       store.dispatch({
         type:SET_DATA, 
         data: {items: {foo: {image: "/tmp/foo.png"}}}, 
         files: {
           "/tmp/foo.png": makeFileRef("foo.png")
-        }});
-      setTimeout(()=>{
-        expect(fsMock.contents[`${storagePath()}/${dataFile}`]).toBeTruthy();
-        expect(fsMock.contents[`${storagePath()}/${dataFile}`]).toMatchSnapshot();
-        done();
-      },1);
+        }
+      });
+      await doDebounce();
+      expect(fsMock.contents[`${storagePath()}/${dataFile}`]).toBeTruthy();
+      expect(fsMock.contents[`${storagePath()}/${dataFile}`]).toMatchSnapshot();
     });
   })
 })

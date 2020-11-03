@@ -1,17 +1,8 @@
 'use strict';
 import { createSelector } from 'reselect'
 
+import {getItems} from "@holusion/cache-control";
 
-/*
- * Data selectors
- */
-export const getData = (state)=> state.data;
-export const getConfig = (state)=> getData(state).config;
-/**
- * get app local configuration (different from getConfig that gives project's configuration)
- */
-export const getConf = (state)=> state.conf;
-export const getItems = (state) => state.data.items;
 const getSelectedId = (state, props) => props.selectedId;
 const getSelectedCategory = (state, props) => props.selectedCategory;
 
@@ -38,45 +29,5 @@ export const getSelectedItem = createSelector(
     [getItems, getSelectedId],
     (itemsMap, id) => {
         return itemsMap[id]
-    }
-)
-
-/*
- * Products Selectors
- */
-const getProducts = (state) => state.products;
-
-export const getActiveProduct = createSelector(
-    [getProducts],
-    (products)=> products.find(p => p.active == true)
-)
-
-export const getTasks = (state)=> state.tasks.list;
-export const getTasksList = createSelector(
-    [getTasks],
-    (tasks)=> Object.keys(tasks).map(t=>({id: t, ...tasks[t]}))
-);
-
-export const getPendingTasks = createSelector(
-    [getTasksList],
-    (tasks)=> tasks.filter(t=>t.status == "pending"),
-);
-
-export const getBlockingTasks = createSelector(
-    [getTasksList],
-    (tasks)=>tasks.filter(t=> /required/.test(t.id))
-)
-
-export const getSyncTasks = createSelector(
-    [getTasksList],
-    (tasks)=>{
-        return tasks.filter((t)=> /sync[_-]/.test(t.id));
-    }
-)
-
-export const getPendingSyncTasks = createSelector(
-    [getSyncTasks],
-    (tasks)=> {
-        return  tasks.filter(t=> t.status ==="pending")
     }
 )

@@ -1,0 +1,19 @@
+---
+# a title
+
+![alt text](gs://example.com/applications/bar/foo.png)
+
+Some text
+
+![](gs://example.com/applications/bar/baz.jpg)
+---
+# a title
+
+![alt text](file:///tmp/makeLocal-tests/foo.png)
+
+Some text
+
+![](file:///tmp/makeLocal-tests/baz.jpg)
+---
+gs://example.com/applications/bar/foo.png
+gs://example.com/applications/bar/baz.jpg

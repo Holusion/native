@@ -6,6 +6,7 @@ import writeToFile from "writeToFile";
 import {SET_DEPENDENCIES, getRequiredFiles, getOtherFiles, setHash, SET_CACHED_FILE, getFiles, isCached} from "./actions";
 
 export const REQUEST_DOWNLOAD = "REQUEST_DOWNLOAD";
+
 /**
  * Meant to be used with takeLatest(SET_DEPENDENCIES, handleDownload)
  * */
@@ -38,6 +39,6 @@ export function* do_download(){
 
 export function* handleDownloads(){
   yield fork(do_download);
-  yield call(schedule_downloads)
+  yield call(schedule_downloads);
   yield takeLatest(SET_DEPENDENCIES, schedule_downloads);
 }

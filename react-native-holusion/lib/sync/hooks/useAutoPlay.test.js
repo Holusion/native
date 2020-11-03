@@ -5,7 +5,8 @@ import { NavigationContainer, ServerContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from "react-redux";
 
-import {configureStore} from "../../persistentStore";
+import {createStore} from "redux";
+import {reducers} from "@holusion/cache-control";
 import {useAutoPlay} from ".";
 import { addProduct, setActive, setData } from "../../actions";
 import { View } from "react-native";
@@ -42,7 +43,7 @@ describe("useAutoPlay", ()=>{
   })
 
   beforeEach(()=>{
-    store = configureStore();
+    store = createStore(reducers);
   })
   afterEach(()=>{
     cleanup();

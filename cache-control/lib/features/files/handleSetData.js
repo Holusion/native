@@ -8,9 +8,9 @@ import {setDependencies} from "./actions";
  * @param {Error} [param0.error]
  */
 export function* handleSetData({error, data, files}){
-  if(error) return
+  if(error || !files) return
   //Dispatch the new files list
-  let list = (files instanceof Map)? Object.fromEntries(files): files || {};
+  let list = (files instanceof Map)? Object.fromEntries(files): files;
   yield put(setDependencies(data['config']?"config": "items", list));
 }
 

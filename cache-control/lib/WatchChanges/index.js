@@ -3,7 +3,7 @@ import {EventEmitter} from "events";
 import {firebase} from "firebase";
 import AsyncLock from 'async-lock';
 
-import {makeLocal} from "../makeLocal";
+import {defaultTransformsFactory, makeLocal} from "../transforms";
 
 
 export {transformSnapshot} from "./transformSnapshot";
@@ -56,11 +56,10 @@ export class WatchChanges extends EventEmitter{
    * @param {string} param0.projectName - the application to bind to
    * @param {function[]} [param0.transforms] - an array of transforms to make over incoming data
    */
-  constructor({projectName, transforms=[makeLocal]}){
+  constructor({projectName, transforms=defaultTransformsFactory(projectName)}){
     super();
     this.projectName = projectName;
     this.transforms = transforms;
-
 
     this.lock = new AsyncLock({ });
 
@@ -135,17 +134,18 @@ export class WatchChanges extends EventEmitter{
 
   onProjectsSnapshot(projectsSnapshot, {signal}={}){
     this.emit("start", "items");
-    Promise.all(projectsSnapshot.docs.map(p => transformSnapshot(this.transforms, p)))
+    let activeDocs = projectsSnapshot.docs.filter((doc)=>{
+      return doc.data().active !== false
+    })
+    Promise.all(activeDocs.map(p => transformSnapshot(this.transforms, p)))
     .then(async (projects)=>{
 
       let items = {};
       let files = projects.reduce((prev, [d, files])=> {
-        if(d.active === false) return prev;
         return new Map([...prev, ...files])
       }, new Map());
       
       for (let [d] of projects) {
-        if (d.active === false) continue;
         items[d.id] = d;
       }
       //await this.handleFiles({files, name: "items", signal});

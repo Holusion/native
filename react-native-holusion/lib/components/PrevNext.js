@@ -18,20 +18,20 @@ class PrevNext extends React.Component{
         return (<View style={this.props.style.view}>
             <View style={{opacity: this.props.prev? 1 : 0}} disabled={!this.props.prev}>
                 <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} onPress={this.props.prev}>
-                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-back"/>
+                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-back"/>
                 </TouchableOpacity>
             </View>
             {this.props.children}
             <View style={{opacity: this.props.next? 1 : 0}} disabled={!this.props.next}>
                 <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} onPress={this.props.next}>
-                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="ios-caret-forward"/>
+                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-forward"/>
                 </TouchableOpacity>
             </View>
         </View>)
     }
 }
 
-const prevNextTheme = StyleSheet.create({
+const prevNextTheme = {
     view: {
         flex: 0,
         flexDirection: "row",
@@ -52,6 +52,6 @@ const prevNextTheme = StyleSheet.create({
         padding: 5,
         fontWeight: "bold"
     },
-})
+}
 
 export default connectStyle('Holusion.PrevNext', prevNextTheme)(PrevNext);

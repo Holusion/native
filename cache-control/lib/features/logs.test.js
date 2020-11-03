@@ -2,6 +2,7 @@
 import {reducers} from ".";
 import {info, getLogs, getErrors, getError, warn, error} from "./logs";
 import { SET_DATA } from "./data";
+import { setActive } from "./products";
 
 
 const initialState = reducers(undefined, {});
@@ -18,7 +19,6 @@ describe("errors", ()=>{
       severity: "error", 
       message: e.message, 
       name: SET_DATA,
-      context: e.stack,
     }));
   })
 
@@ -41,11 +41,18 @@ describe("errors", ()=>{
 
   test("clear action error", ()=>{
     s = reducers(s, {type: SET_DATA,data: {foo:"bar"}});
-    expect(getLogs(s)).toHaveLength(1);
     expect(getErrors(s)).toHaveLength(0);
   })
 
-
+  test("handle setActive() actions", ()=>{
+    s = reducers(s, setActive("foo"));
+    expect(getLogs(s)[1]).toEqual(expect.objectContaining({
+      message: "Connexion à foo",
+      name: "SET_ACTIVE_PRODUCT",
+      severity: "info",
+      timestamp: expect.any(Date),
+    }));
+  })
   test("Allow custom error type", ()=>{
     let e = new Error("Hello");
     const s = reducers(initialState, {error: e, type: "FOO"});
@@ -106,6 +113,15 @@ test("can provide custom log name", ()=>{
   }))
 })
 
+test("can provide context", ()=>{
+  let s = reducers(initialState, info("Foo", `Hello World`, "some context"));
+  expect(getLogs(s)[0]).toEqual(expect.objectContaining({
+    name: "Foo",
+    severity: "info",
+    message: "Hello World",
+    context: "some context",
+  }))
+})
 test("log warnings", ()=>{
   let s = reducers(initialState, warn("FOO", "Hello"));
   s = reducers(s, warn("World"));

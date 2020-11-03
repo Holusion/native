@@ -1,17 +1,10 @@
 'use strict';
-import PrevNext from "./PrevNext";
-import PlayPause from "./PlayPause";
-import SpriteCube from "./SpriteCube";
-import ImageCard from "./ImageCard";
-import StatusIcon from "./StatusIcon";
-import NetworkIcon from "./NetworkIcon";
-export {
-    SpriteCube,
-    PrevNext,
-    PlayPause,
-    ImageCard,
-    StatusIcon,
-    NetworkIcon,
-}
-
+export {default as PrevNext} from "./PrevNext";
+export {default as PlayPause} from "./PlayPause";
+export {default as SpriteCube} from "./SpriteCube";
+export {default as ImageCard} from "./ImageCard";
+export {default as StatusIcon} from "./StatusIcon";
+export {default as NetworkIcon} from "./NetworkIcon";
+export {default as BgIcon} from "./BgIcon";
+export {default as Bytes} from "./Bytes";
 export * from "./Views";

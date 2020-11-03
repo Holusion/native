@@ -17,8 +17,12 @@ export class ObjectList extends React.Component {
   }
 
   onViewChanged = ({changed: items})=>{
-    //There should only be one item viewable at a time
-    if(typeof this.props.onChange === "function" && items[0].isViewable === true){
+    //There should only be one item viewable at a time.
+    if(items.length == 2){
+      //we're in a "replace" update
+      return
+    }else if(typeof this.props.onChange === "function" && items[0].isViewable === true){
+      //console.log("onChange : ", items.map(i=>`${i.item.id} - ${i.index}: ${i.isViewable}`));
       this.props.onChange(items[0].index);
     }
   }

@@ -27,32 +27,57 @@ const collection = jest.fn((name) => {
     }
 });
 
-const ref = jest.fn((url) => ({
-    getMetadata: ()=>Promise.resolve({}),
-}));
 
-export const auth = jest.fn(()=>({
-    
-}))
+export const auth = jest.fn(()=>({}))
 
-export const storage = jest.fn(() => ({
-  refFromURL: ref
-}));
+export const storage = {
+    _getMetadata: jest.fn(),
+    ref: jest.fn(),
+    refFromURL: jest.fn(),
+    _reset(){
+        storage.ref.mockReset();
+        storage.ref.mockImplementation((path)=>{
+            return {
+              getMetadata: jest.fn(()=>Promise.resolve({
+                  size: 24,
+                  md5Hash: "xxxxxx",
+                  contentType: /mp4$/.test(path)?"video/mp4": "image/png",
+              })),
+              name: path.split("/").slice(-1)[0],
+              bucket: "example.com",
+              fullPath: path,
+            }
+        });
+        storage.refFromURL.mockReset();
+        storage.refFromURL.mockImplementation((url)=>{
+            const u = new URL(url);
+            return storage.ref(u.pathname.slice(1));
+        });
+    }
+};
 
-export const firestore = jest.fn(() => ({
-  collection: collection,
-  enableNetwork: jest.fn(()=>Promise.resolve()),
-  disableNetwork: jest.fn(()=>Promise.resolve()),
-}));
+export const firestore = jest.fn();
 
-export const app = jest.fn(()=>({
-    firestore,
-    storage
-}));
+export const app = jest.fn();
 
 export const firebase = {
     app,
     auth,
-    storage,
-    firestore,
+    _collection: collection,
+    _reset(){
+        storage._reset();
+        firestore.mockReset();
+        firestore.mockImplementation(() => ({
+            collection: collection,
+            enableNetwork: jest.fn(()=>Promise.resolve()),
+            disableNetwork: jest.fn(()=>Promise.resolve()),
+        }));
+        app.mockReset();
+        app.mockImplementation(()=>({
+            firestore,
+            storage: jest.fn(()=> storage)
+        }));
+    }
 }
+        
+firebase._reset();

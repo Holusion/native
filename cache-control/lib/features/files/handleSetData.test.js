@@ -36,6 +36,14 @@ describe("handleSetData()", ()=>{
     .next()
     .isDone();
   });
+  test("ignore setData() with no files", ()=>{
+    testSaga(handleSetData, setData({
+      config:{title: "Empty"}, 
+      files: undefined
+    }))
+    .next()
+    .isDone();
+  })
   test("ignore setData() with error", ()=>{
     let files = {"/tmp/foo.png": makeFileRef("foo.png")};
     testSaga(handleSetData, setData({

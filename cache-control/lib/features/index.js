@@ -1,18 +1,20 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { put, all, call, select, takeLatest, throttle } from 'redux-saga/effects'
+import { put, all, call, select, takeLatest, debounce } from 'redux-saga/effects'
 
 import {loadFile, saveFile} from "../readWrite";
 import {createStorage} from "../path";
 
 
-import files, { SET_CACHED_FILE , SET_DEPENDENCIES, handleSetData } from "./files";
+import files, { SET_CACHED_FILE , SET_DEPENDENCIES, handleSetData, handleDownloads } from "./files";
 import data, { SET_DATA, watchChanges } from "./data";
-import conf, { getProjectName, action_strings as conf_actions_names, actions as conf_actions }  from "./conf";
-import {signIn, SET_SIGNEDIN} from "./signIn";
-import products from "./products"
-import logs from "./logs";
-import status, {INITIAL_LOAD} from "./status";
+import conf, { getProjectName, action_strings as conf_actions_names, actions as conf_actions, setProjectName }  from "./conf";
+import {signIn} from "./signIn";
+import products, { getActiveProduct, SET_ACTIVE_PRODUCT } from "./products"
+import logs, { info } from "./logs";
+import status, {INITIAL_LOAD, SET_SIGNEDIN, SET_SYNCHRONIZED} from "./status";
+import { synchronizeProduct } from './sync';
+import { SET_PURGE } from '../../../react-native-holusion/lib/actions';
 
 
 export * from "./conf";
@@ -35,14 +37,22 @@ export const reducers = combineReducers({
 export const dataFile = "data_v1.json";
 
 
-export function* saveCache(){
-  const persistentState = yield select(state=> ({
-    files: state.files,
-    data: state.data,
-    conf: state.conf
-  }))
+export const getPersistentState = (state)=>({
+  files: state.files,
+  data: state.data,
+  conf: state.conf
+});
+
+export function* saveCache(action){
+  const persistentState = yield select(getPersistentState)
   const str = yield call(JSON.stringify, persistentState);
-  yield call(saveFile, dataFile, str);
+  try{
+    yield call(saveFile, dataFile, str);
+    yield put(info("SAVE_CACHE", `Données locales sauvegardées`, `Déclenché par ${action.type}`));
+  }catch(e){
+    //console.log("Save cache fail on trigger : ", action.type);
+    yield put({type:"SAVE_CACHE", error: e});
+  }
 }
 
 export function* loadLocalSaga(){
@@ -63,25 +73,37 @@ export function* loadLocalSaga(){
 export function* rootSaga(){
   //Load local files only once before everything
   yield call(loadLocalSaga);
+  /*
+  yield 
+  yield ;
+    //*/
   //Sign-in
   const projectName = yield select(getProjectName);
-  yield call(signIn, {projectName});
   yield all([
     takeLatest(conf_actions.SET_PROJECTNAME, signIn),
+    takeLatest(SET_DEPENDENCIES, handleDownloads),
     takeLatest(SET_SIGNEDIN, watchChanges),
-    takeLatest(SET_DATA, handleSetData),
-    throttle(1000, [
+    takeLatest([SET_ACTIVE_PRODUCT, SET_CACHED_FILE, SET_PURGE], synchronizeProduct),
+    debounce(500, [
       SET_DATA, 
       SET_DEPENDENCIES, SET_CACHED_FILE,
       ...conf_actions_names,
     ], saveCache),
+    call(signIn, {projectName}),
   ]);
 }
-
-export function sagaStore(){
-  const sagaMiddleware = createSagaMiddleware()
+//Does not natively support hot-reload
+// https://github.com/redux-saga/redux-saga/issues/1961
+export function sagaStore({defaultProject}={}){
+  const sagaMiddleware = createSagaMiddleware();
+  let initialState = reducers(undefined, {});
+  //Apply initial setup
+  if(defaultProject){
+    initialState = reducers(initialState, setProjectName(defaultProject));
+  }
   const store = createStore(
     reducers,
+    initialState,
     applyMiddleware(sagaMiddleware),
   );
   const task = sagaMiddleware.run(rootSaga)

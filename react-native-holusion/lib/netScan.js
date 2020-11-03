@@ -12,7 +12,7 @@ export function onUpdate(store){
   if(!isActive && default_target ){
     const target_product = products.find(p => p.name === default_target);
     if(target_product){
-      console.log("dispatch new target product");
+      //console.log("dispatch new target product");
       store.dispatch(setActive(target_product));
     }
   }

@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import { connect} from 'react-redux'
 
-import { Container, ListItem, Icon, Button, Text, Title, Form, Item, Input } from 'native-base';
+import { Container, ListItem, Icon, Button, Text, Title, Form, Item, Input, H3 } from 'native-base';
 import { StyleSheet, View, FlatList } from 'react-native';
 
 import {setActive, setDefaultTarget } from "../actions";
@@ -58,9 +58,9 @@ class ConnectScreen extends React.Component {
         return (<Container style={{flex: 1, flexDirection:"row"}}>
             <View style={{flex:1}}>
                     <FlatList
-                    ListHeaderComponent={<Title primary style={styles.title}>Produits : </Title>}
+                    ListHeaderComponent={<H3 primary style={styles.title}>Produits : </H3>}
                     ListEmptyComponent={<ListItem>
-                        <Text>Aucun produit accessible. Vérifiez la connection réseau</Text>
+                        <Text>Aucun produit accessible. Vérifiez la connexion réseau</Text>
                     </ListItem>}
 
                     data={list} 
@@ -68,13 +68,13 @@ class ConnectScreen extends React.Component {
                     keyExtractor={item=>item.name}
 
                     ListFooterComponent={<View>
-                        <Title primary style={styles.title}>Etat : </Title>
+                        <H3 primary style={styles.title}>Etat : </H3>
                         <AppState/>
                     </View>}
                 />
             </View>
             <View style={{flex:1}}>
-                <Title primary style={styles.title}>Configuration : </Title>
+                <H3 primary style={styles.title}>Configuration : </H3>
                 <AppConfiguration/>
             </View>
         </Container>)

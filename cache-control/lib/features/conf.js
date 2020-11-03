@@ -46,7 +46,7 @@ export default function conf(state = {
                 console.warn("Trying to modify read-only project name");
                 return state;
             }
-            return Object.assign({}, state, {projectName: action.name});
+            return Object.assign({}, state, {projectName: action.projectName});
         case actions.SET_PASSCODE:
             return Object.assign({}, state, {passcode: action.passcode});
         default:
@@ -76,8 +76,8 @@ export const setPurge = (purge)=>{
 }
 
 export const getProjectName = (store)=> store.conf.projectName; 
-export const setProjectName = (name) => {
-    return {type: actions.SET_PROJECTNAME, name};
+export const setProjectName = (projectName) => {
+    return {type: actions.SET_PROJECTNAME, projectName};
 }
 
 export const setPasscode = (passcode) => {

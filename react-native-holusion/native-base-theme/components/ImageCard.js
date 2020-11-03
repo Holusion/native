@@ -7,8 +7,11 @@ export default (variables /* : * */ = variable) => {
         container: {
             borderColor: variables.brandPrimary,
         },
+        titleContainer: {
+          backgroundColor: variables.brandPrimary,
+        },
         titleText: {
-            color: variables.brandPrimary,
+            color: variables.cardTitleColor
         },
         icon: {
           color: variables.brandPrimary

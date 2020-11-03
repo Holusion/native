@@ -13,6 +13,9 @@ export default (variables /* : * */ = variable) => {
     },
     '.primary': {
       color: variables.brandPrimary,
+    },
+    '.secondary': {
+      color: variables.brandSecondary,
     }
   };
 

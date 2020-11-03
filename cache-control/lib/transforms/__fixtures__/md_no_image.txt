@@ -1,0 +1,11 @@
+---
+# a title
+
+some text and [a link](foo)
+
+---
+# a title
+
+some text and [a link](foo)
+
+---

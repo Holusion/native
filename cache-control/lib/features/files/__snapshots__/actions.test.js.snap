@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`files reducer getCachedFiles() list files in cache 1`] = `
+Array [
+  "/tmp/foofoo.png",
+  "/tmp/barbar.mp4",
+]
+`;
+
 exports[`files reducer setDependencies() change files dependencies for config 1`] = `
 Object {
   "cache": Object {
@@ -243,6 +250,8 @@ Object {
   "status": Object {
     "connected": false,
     "initial_load": true,
+    "signedIn": false,
+    "synchronized": false,
   },
 }
 `;

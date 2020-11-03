@@ -8,7 +8,7 @@ import Markdown from '../Markdown'
 export default function WikiView(d){
     let abstract = null;
     if(d["abstract"]){
-        abstract= (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)
+        abstract = (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)
     }
     return(<Content contentContainerStyle={styles.content}>
         <View style={styles.headerStyles}>

@@ -14,6 +14,7 @@ import {
 import {reducers} from ".";
 
 import { getError } from "./logs";
+import { setSignedIn } from "./status";
 
 
 
@@ -96,10 +97,18 @@ describe("watchChanges", ()=>{
     wc.on("dispatch", ()=>done());
     wc.emit("dispatch");
   });
-  
+  test("ignore setSignedIn if it reports an error", ()=>{
+    testSaga(watchChanges, {error: new Error("Foo"), projectName: "foo"}).next()
+    .isDone();
+  })
+  test("uses action from setSignedIn", ()=>{
+    testSaga(watchChanges, setSignedIn("foo")).next()
+    .call(createWatcher, "foo");
+  })
+
   test("loop over WatchChanges events", ()=>{
     let wc = new WatchChangesMock();
-    let p = expectSaga(watchChanges, {projectName: "foo"})
+    let p = expectSaga(watchChanges, setSignedIn("foo"))
     .provide([
       [matchers.call.fn(createWatcher), wc]
     ])
@@ -118,7 +127,7 @@ describe("watchChanges", ()=>{
   test("Can cancel watcher", ()=>{
     let wc = new WatchChangesMock();
     let channel = createWatchChannel(wc);
-    let saga = testSaga(watchChanges, {projectName: "foo"}).next()
+    let saga = testSaga(watchChanges, setSignedIn("foo")).next()
     .call(createWatcher, "foo").next(wc)
     .call(createWatchChannel, wc).next(channel)
     .take(channel);
@@ -133,7 +142,7 @@ describe("watchChanges", ()=>{
     let e =new Error("Booh");
     let wc = new WatchChangesMock();
     let channel = createWatchChannel(wc);
-    testSaga(watchChanges, {projectName: "foo"}).next()
+    testSaga(watchChanges, setSignedIn("foo")).next()
     .call(createWatcher, "foo").next(wc)
     .call(createWatchChannel, wc).next(channel)
     .take(channel).next({error: e})
@@ -147,7 +156,7 @@ describe("watchChanges", ()=>{
         wc.emit("error", new Error("Booh"));
       }, 1);
     });
-    let saga = expectSaga(watchChanges, {projectName: "foo"})
+    let saga = expectSaga(watchChanges, setSignedIn("foo"))
     .provide([
       [matchers.call.fn(createWatcher), wc]
     ])

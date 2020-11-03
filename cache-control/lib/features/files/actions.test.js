@@ -7,7 +7,7 @@ import {
 } from ".";
 
 import {makeFileRef} from "./_mock_fileRef";
-import { getRequiredSize, getOtherSize, SET_CACHED_FILE, isCached } from './actions';
+import { getRequiredSize, getOtherSize, SET_CACHED_FILE, isCached, getCachedFiles, getHash } from './actions';
 import { getError } from '../logs';
 
 
@@ -84,7 +84,6 @@ describe("files reducer", function () {
       expect(s.files).toBe(initialState.files);
       expect(getError(s, SET_DEPENDENCIES)).toEqual(expect.objectContaining({
         name: SET_DEPENDENCIES,
-        context: err.stack,
         message: err.message,
         severity: "error"
       }));
@@ -96,10 +95,20 @@ describe("files reducer", function () {
       expect(s.files).toBe(initialState.files);
       expect(getError(s, SET_CACHED_FILE)).toEqual(expect.objectContaining({
         name: SET_CACHED_FILE,
-        context: err.stack,
         message: err.message,
         severity: "error"
       }));
+    })
+    describe("getHash()", ()=>{
+      test("uses cached files list", ()=>{
+        expect(getHash(initialState, "/tmp/foofoo.png")).toEqual("xxxxxx");
+      })
+      test("returns undefined for uncached files", ()=>{
+        expect(getHash(initialState, "/tmp/foo.png")).toBeUndefined();
+      })
+      test("also match file:// prefix", ()=>{
+        expect(getHash(initialState, "file:///tmp/foofoo.png")).toEqual("xxxxxx");
+      })
     })
   })
 
@@ -126,6 +135,11 @@ describe("files reducer", function () {
     })
   })
 
+  describe("getCachedFiles()", ()=>{
+    test("list files in cache", ()=>{
+      expect(getCachedFiles(initialState)).toMatchSnapshot();
+    })
+  })
   describe("getRequiredFiles()", ()=>{
     test("don't match video files or cached files", ()=>{
       let files = getRequiredFiles(initialState);

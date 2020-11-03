@@ -1,12 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {setData} from '../actions';
-import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
 import { Container } from 'native-base';
 
-import {getActiveProduct} from "../selectors";
+import {getActiveProduct} from "@holusion/cache-control";
 
 import ListObjects from "../containers/ListObjects";
 import { useAutoPlay } from '../sync/hooks';

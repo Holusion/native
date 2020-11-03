@@ -3,7 +3,7 @@ import { usePlay } from "./usePlay";
 
 import { useIsFocused, useRoute } from '@react-navigation/native';
 import { useSelector } from "react-redux";
-import { getActiveProduct, getItems, getConfig } from "../../selectors";
+import {getItems, getConfig, getActiveProduct} from "@holusion/cache-control";
 
 /**
  * usePlay on steroids.

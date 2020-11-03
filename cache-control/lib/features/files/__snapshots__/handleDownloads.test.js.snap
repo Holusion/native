@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleDownloads saga cancels downloads if a new action is fired 1`] = `
+exports[`handleDownloads saga cancels next downloads if a new action is fired 1`] = `
 Object {
   "cache": Object {
     "/tmp/bar.mp4": "yyyyyy",

@@ -1,0 +1,8 @@
+---
+![alt text](gs://example.com/applications/bar/foo.png)
+![](gs://example.com/applications/bar/foo.png)
+---
+![alt text](file:///tmp/makeLocal-tests/foo.png)
+![](file:///tmp/makeLocal-tests/foo.png)
+---
+gs://example.com/applications/bar/foo.png

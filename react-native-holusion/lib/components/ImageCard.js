@@ -6,7 +6,7 @@ import { connectStyle, Text, Icon, View } from 'native-base'
 
 class ImageCard extends React.Component{
     static propTypes = {
-        image: PropTypes.object,
+        image: PropTypes.any,
         source: PropTypes.shape({uri: PropTypes.string.isRequired}),
         title: PropTypes.string,
         style: PropTypes.object,
@@ -39,20 +39,21 @@ const cardTheme = {
         flexDirection: 'column',
         alignContent: 'center',
         justifyContent: 'center',
-        margin: 20,
+        margin: 10,
         padding: 0,
         borderRadius: 8,
+        overflow: "hidden",
         backgroundColor: "transparent",
         borderWidth: 1,
     },
 
     titleContainer: {
-        marginLeft: 16,
-        marginRight: 16,
-        marginTop: 10,
+        alignSelf: "stretch",
+        paddingHorizontal: 16,
+        paddingVertical: 10,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     image: {

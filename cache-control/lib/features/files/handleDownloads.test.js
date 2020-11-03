@@ -144,7 +144,7 @@ describe("handleDownloads saga", ()=>{
     });
   })
 
-  test("cancels downloads if a new action is fired", ()=>{
+  test("cancels next downloads if a new action is fired", ()=>{
     let p =  new Promise((resolve)=>{setTimeout(resolve, 10)});
     return expectSaga(handleDownloads)
     .withReducer(reducers, state)

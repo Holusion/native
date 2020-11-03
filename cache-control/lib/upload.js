@@ -4,6 +4,10 @@ import {FileError} from "./readWrite";
 
 import {filename} from "./path";
 
+/**
+ * 
+ * @deprecated
+ */
 export function dedupeList(uploads, list = []) {
   // Remove existing files
   const filteredUploads = uploads.filter((file, index) => {
@@ -28,7 +32,11 @@ export function dedupeList(uploads, list = []) {
 
   return filteredUploads;
 }
-
+/**
+ * 
+ * @param {*} param0 
+ * @deprecated
+ */
 export function sendFiles({ target, videos = [], onStatusChange = console.warn.bind(null, "sendFiles status change : "), purge = false }) {
   const abortController = new AbortController();
   if (!target) {
@@ -144,8 +152,9 @@ export function sendFiles({ target, videos = [], onStatusChange = console.warn.b
  * 
  * @param {string} url - target url (eg. http://192.168.1.10) 
  * @param {object} file - a file reference
- * @param {string} file.uri - path to file on local filesystem 
- * @param {Date} file.mtime - file's mtime
+ * @param {string} file.uri - path to file on local filesystem
+ * @param {string} file.name - the file's name that will be used as identifier in playlist
+ * @param {string} [file.hash] - file's hash
  * @param {AbortSignal} [signal] - an AbortController's signal to give to fetch() 
  */
 export async function uploadFile(url, file, signal) {
@@ -179,7 +188,7 @@ export async function uploadFile(url, file, signal) {
         throw new FileError(file.uri, response.statusText);
       }
     }
-    if (file.mtime) {
+    if (file.hash) {
       response = await fetch(`${url}/playlist`, {
         method: "PUT",
         signal: signal,
@@ -191,7 +200,7 @@ export async function uploadFile(url, file, signal) {
           query: { name: file.name },
           modifier: {
             $set: {
-              conf: { mtime: file.mtime }
+              conf: { hash: file.hash }
             }
           },
         })

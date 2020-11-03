@@ -73,12 +73,12 @@ class PlayPause extends React.Component {
 }
 
 
-const controllerTheme = StyleSheet.create({
+const controllerTheme = {
 
     icon:{
         fontSize: 40,
     },
 
-})
+}
 
 export default connectStyle('Holusion.PlayPause', controllerTheme)(PlayPause);

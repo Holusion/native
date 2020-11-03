@@ -1,14 +1,12 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^3.0.0-beta.0",
-    "Base64": "^1.0.2",
+    "@holusion/cache-control": "^3.0.0-beta.1",
     "async-lock": "^1.2.4",
+    "Base64": "^1.0.2",
     "js-yaml": "^3.13.1",
     "prop-types": "^15.7.2",
     "react-native-markdown-display": "^6.1.6",
-    "react-redux": "^7.1.1",
-    "redux": "^4.0.4",
-    "reselect": "^4.0.0"
+    "react-redux": "^7.1.1"
   },
   "deprecated": false,
   "description": "react native api for holusion app",
@@ -66,23 +64,23 @@
   "main": "index.js",
   "name": "@holusion/react-native-holusion",
   "peerDependencies": {
-    "react-native": ">=62 <63",
-    "react": ">=16 <17",
-    "native-base": "^2.13.12",
-    "react-native-device-info": "^5.5.3",
-    "react-native-zeroconf": "^0.12.2",
-    "react-native-fs": "^2.16.6",
     "@react-native-community/netinfo": "^5.9.1",
-    "react-native-dynamic-fonts": "^0.3.2",
     "@react-native-firebase/app": "^6.3.4",
     "@react-native-firebase/auth": "^6.3.4",
     "@react-native-firebase/firestore": "^6.3.4",
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
-    "@react-navigation/native": ">=5.0 <6"
+    "@react-navigation/native": ">=5.0 <6",
+    "native-base": "^2.13.12",
+    "react": ">= 16 < 17",
+    "react-native": ">= 0.62 < 0.63",
+    "react-native-device-info": "^5.5.3",
+    "react-native-dynamic-fonts": "^0.3.2",
+    "react-native-fs": "^2.16.6",
+    "react-native-zeroconf": "^0.12.2"
   },
   "scripts": {
     "test": "jest ./lib"
   },
-  "version": "3.6.0-beta.0"
+  "version": "3.0.0-beta.2"
 }

@@ -14,6 +14,9 @@ export class FileError extends Error {
     this.code = messageOrError.code;
     this.stack = messageOrError.stack;
   }
+  toString(){
+    return `Error from ${this.sourceFile} : ${this.message}`
+  }
 }
 
 export async function loadFile(name) {

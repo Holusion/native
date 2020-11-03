@@ -1,53 +1,8 @@
 'use strict';
-import HomeScreen from "./HomeScreen";
-import ConnectScreen from "./ConnectScreen";
-import ObjectScreen from "./ObjectScreen";
-import SynchronizeScreen from "./SynchronizeScreen";
-import UpdateScreen from "./UpdateScreen";
-import ListScreen from "./ListScreen";
-import AboutScreen from "./AboutScreen";
-
-function getDefaultNavigator({navigationOptions}){
-    return {
-      Home: {
-        screen: HomeScreen,
-        navigationOptions,
-      },
-      Connect: {
-        screen: ConnectScreen,
-        navigationOptions,
-      },
-      Update: {
-        screen: UpdateScreen,
-        navigationOptions,
-      },
-      Object: {
-        screen: ObjectScreen,
-        navigationOptions,
-      },
-      Synchronize: {
-        screen:SynchronizeScreen,
-        navigationOptions,
-      },
-      List: {
-        screen: ListScreen,
-        navigationOptions,
-      },
-      About: {
-          screen: AboutScreen,
-          navigationOptions,
-      }
-    }
-}
-
-export {
-    HomeScreen,
-    ConnectScreen,
-    ObjectScreen,
-    SynchronizeScreen,
-    UpdateScreen,
-    ListScreen,
-    AboutScreen,
-
-    getDefaultNavigator,
-}
+export {default as HomeScreen} from "./HomeScreen";
+export {default as ConnectScreen} from "./ConnectScreen";
+export {default as ObjectScreen} from "./ObjectScreen";
+export {default as SynchronizeScreen} from "./SynchronizeScreen";
+export {default as ListScreen} from "./ListScreen";
+export {default as AboutScreen} from "./AboutScreen";
+export {default as SettingsScreen} from "./SettingsScreen";

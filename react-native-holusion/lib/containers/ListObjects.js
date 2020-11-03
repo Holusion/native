@@ -22,12 +22,11 @@ function ListObjects(props){
 
     if(cards.length === 0){
         title = "Aucun élément à afficher"
-        cards=(<View >
+        cards=(<View style={{flex:1}}>
           <Text style={{paddingBottom:50}}>
             L'application n'a peut-être pas été synchronisée?
-            Relancer l'application si nécessaire
           </Text>
-          <View style={{width:"50%", marginHorizontal:"auto"}}>
+          <View>
             <AppState/>
           </View>
         </View>)
@@ -69,8 +68,8 @@ const styles = StyleSheet.create({
       display: 'flex', 
       flexWrap: "wrap",
       flexDirection: "row", 
-      alignContent: 'center', 
-      justifyContent: 'center'
+      alignContent: "space-around",
+      justifyContent: 'space-evenly',
   },
   footerContainer: {
       display: 'flex', 

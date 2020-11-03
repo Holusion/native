@@ -1,16 +1,18 @@
 'use strict';
+import {SET_DATA} from "./data";
+import { SET_ACTIVE_PRODUCT } from "./products";
 
 export const ADD_LOG = "ADD_LOG";
 export const LOG_INFO = "LOG_INFO";
 export const LOG_WARN = "LOG_WARN";
 export const LOG_ERROR = "LOG_ERROR";
 
-export const addLine = (state, severity, {message, name, context, stack})=> {
+export const addLine = (state, severity, {message, name, context})=> {
   let currentId = state.idCount +1;
   let errors = severity !== "error" ? state.errors: {...state.errors, [name]: currentId};
   let lines = [
     ...state.lines, 
-    {id: currentId, severity, name: name, message: `${message}`, context: context || stack, timestamp: new Date()}
+    {id: currentId, severity, name: name, message: `${message}`, context, timestamp: new Date()}
   ];
   let slicedLines = [
     ...lines.slice(0, -100).filter(l => Object.keys(errors).findIndex((k)=>errors[k] === l.id) !== -1 ),
@@ -28,26 +30,35 @@ export default function logs(state = {
   lines:[],  
   errors:{},
 }, action) {
-
+  if(action.error){
+    return addLine(state, "error", {
+      message: action.error.message,
+      name: action.type,
+      context: action.error.context || action.error.toString(),
+    });
+  }
+  let clean_state = state;
+  if(state.errors[action.type]){
+    let {[action.type]:_, ...errors} = state.errors;
+    clean_state = {...state, errors};
+  }
   switch(action.type){
     case LOG_INFO:
-      return addLine(state, "info", action);
+      return addLine(clean_state , "info", action);
     case LOG_WARN:
-      return addLine(state, "warn", action);
+      return addLine(clean_state , "warn", action);
     case LOG_ERROR:
-      return addLine(state, "error", action);
-    default:
-      if(action.error){
-        return addLine(state, "error", {
-          message: action.error.message,
-          name: action.type,
-          context: action.error.context || action.error.stack,
-        });
-      }else if(state.errors[action.type]){
-        let {[action.type]:_, ...errors} = state.errors;
-        return {...state, errors};
+      return addLine(clean_state , "error", action);
+    case SET_DATA:
+      if(action.data["items"]){
+        return addLine(clean_state, "info", {message: "Mise à jour des pages", name: SET_DATA, context: `Réception de ${Object.keys(action.data["items"]).length} pages` })
+      }else{
+        return addLine(clean_state, "info", {message: "Mise à jour du projet", name: SET_DATA, context: `Configuration : ${JSON.stringify(action.data, null, 2)}` })
       }
-      return state;
+    case SET_ACTIVE_PRODUCT:
+      return addLine(clean_state, "info", {message: `Connexion à ${action.name}`, name:SET_ACTIVE_PRODUCT});
+    default:
+      return clean_state ;
   }
 }
 
