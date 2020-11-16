@@ -3,8 +3,7 @@ import {EventEmitter} from "events";
 import {firebase} from "firebase";
 import AsyncLock from 'async-lock';
 
-import {defaultTransformsFactory, makeLocal} from "../transforms";
-
+import {defaultTransformsFactory} from "../transforms";
 
 export {transformSnapshot} from "./transformSnapshot";
 import {transformSnapshot} from "./transformSnapshot";

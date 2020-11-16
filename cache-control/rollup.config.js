@@ -34,7 +34,9 @@ export default [
 		input: "lib/index.js",
 		external: [
 			"react-native-device-info",
-			"@react-native-firebase/app", "@react-native-firebase/storage",
+      "@react-native-firebase/app", "@react-native-firebase/storage",
+      "@react-native-firebase/functions", "@react-native-firebase/auth",
+      "@react-native-firebase/firestore",
 			"react-native-fs", 
 			"events" // react-native provides this module
 		],
