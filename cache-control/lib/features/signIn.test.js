@@ -9,6 +9,7 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 import {throwError, dynamic} from "redux-saga-test-plan/providers"
 import { delay } from 'redux-saga/effects';
 import { setProjectName } from './conf';
+import {warn} from "./logs";
 
 describe("signIn", ()=>{
 
@@ -49,6 +50,14 @@ describe("signIn", ()=>{
     .call(doSignIn, "foo")
     .put({type: SET_SIGNEDIN, value:"foo"})
     .run(256);
+  })
+
+  test("handle offline errors", ()=>{
+    testSaga(signIn, setProjectName("foo")).next()
+    .put({type: SET_SIGNEDIN, value: false}).next()
+    .call(doSignIn, "foo").next(new Error("The Internet connection appears to be offline."))
+    .put(warn(SET_SIGNEDIN, "Impossible de se connecter", "la tablette n'est probablement pas reliée à internet")).next()
+    .finish();
   })
 });
 

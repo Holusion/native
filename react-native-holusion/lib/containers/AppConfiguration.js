@@ -20,13 +20,6 @@ function AppConfiguration(props){
     }
 
     return (<React.Fragment>
-        <ListItem  style={{paddingHorizontal:4}}>
-            <Body>
-                <Text>Purger les produits</Text>
-                <Text style={{fontSize:14}} >Retire les vidéos inutilisées du produit cible</Text>
-            </Body>
-            <CheckBox checked={props.purge} style={{paddingLeft: 0}} onPress={()=>props.setPurge(!props.purge)} />
-        </ListItem>
 
         <ListItem>
             <Body style={{flex:1}}>

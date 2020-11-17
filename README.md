@@ -34,11 +34,13 @@ Ils sont disponibles dans `_template/`
 
 ```
 npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
-      "react-native-firebase" "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
-    "react-native-zeroconf" \
-    "react-navigation" "react-navigation-stack"  \
-    "react-redux" \
-    "@react-native-community/masked-view" "react-native-safe-area-context"
+      "@react-native-firebase/app" "@react-native-firebase/auth" "@react-native-firebase/firestore" \
+      "@react-native-firebase/functions" "@react-native-firebase/storage" \
+      "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
+    "react-native-zeroconf" "react-native-device-info" \
+    "@react-navigation/core" "@react-navigation/native" "@react-navigation/stack" \
+    "react-native-screens" "@react-native-community/masked-view" "react-native-safe-area-context" "react-native-reanimated" \
+    "react-redux"
 ```
 
 
@@ -140,6 +142,12 @@ Ajoutez les `font` de [react-native-vector-icons](https://github.com/oblador/rea
 <string>Rechercher automatiquement les équipements holusion sur le réseau</string>
 ```
 
+On peut aussi ajouter la déclaration d'encryption : 
+````
+<key>ITSAppUsesNonExemptEncryption</key>
+<false/>
+```
+
 ### Paramètres généraux
 
 Dans l'onglet général :
@@ -149,6 +157,12 @@ Dans l'onglet général :
     - cocher `ipad` uniquement (selon usage)
     - Fournir les orientations nécessaires
     - cocher `this app requires fullscreen` (nécessaire pour la publication sur appStore Connect)
+
+
+## Ajouter des polices "custom"
+
+Il faut ajouter la police aux ressources du projet et fournir le nom du fichier de police dans `Info.plist`.
+
 
 
 

@@ -14,7 +14,6 @@ import products, { getActiveProduct, SET_ACTIVE_PRODUCT } from "./products"
 import logs, { info } from "./logs";
 import status, {INITIAL_LOAD, SET_SIGNEDIN, SET_SYNCHRONIZED} from "./status";
 import { synchronizeProduct } from './sync';
-import { SET_PURGE } from '../../../react-native-holusion/lib/actions';
 
 
 export * from "./conf";
@@ -63,7 +62,8 @@ export function* loadLocalSaga(){
     yield put({type: INITIAL_LOAD, ...data});
   }catch(e){
     if(e.code == "ENOENT"){
-      yield put({type: INITIAL_LOAD, error: new Error(`${dataFile} was not present on disk`)});
+      yield put(info(INITIAL_LOAD, `${dataFile} n'existait pas`, "Soit c'est une nouvelle installation soit le fichier a été perdu"))
+      yield put({type: INITIAL_LOAD});
     }else{
       yield put({type: INITIAL_LOAD, error: new Error(`Could not load ${dataFile} : ${e.message}`)});
     }
@@ -73,17 +73,13 @@ export function* loadLocalSaga(){
 export function* rootSaga(){
   //Load local files only once before everything
   yield call(loadLocalSaga);
-  /*
-  yield 
-  yield ;
-    //*/
-  //Sign-in
+
   const projectName = yield select(getProjectName);
   yield all([
     takeLatest(conf_actions.SET_PROJECTNAME, signIn),
     takeLatest(SET_DEPENDENCIES, handleDownloads),
     takeLatest(SET_SIGNEDIN, watchChanges),
-    takeLatest([SET_ACTIVE_PRODUCT, SET_CACHED_FILE, SET_PURGE], synchronizeProduct),
+    takeLatest([SET_ACTIVE_PRODUCT, SET_CACHED_FILE, conf_actions.SET_PURGE], synchronizeProduct),
     debounce(500, [
       SET_DATA, 
       SET_DEPENDENCIES, SET_CACHED_FILE,

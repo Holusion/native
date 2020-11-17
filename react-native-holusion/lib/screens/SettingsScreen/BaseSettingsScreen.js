@@ -1,12 +1,12 @@
 'use strict';
-import React from "react";
+import React, { useState } from "react";
 import {StyleSheet, TouchableWithoutFeedback} from "react-native";
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {connectStyle,View, Text, List, ListItem, Header, Separator, Spinner, Content, Container, H2, Button, Left, Right, Form, Picker, Icon, Body, Badge} from "native-base";
-import { useSelector } from "react-redux";
-import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles } from "@holusion/cache-control";
+import {connectStyle,View, Text, List, ListItem, Header, Separator, Spinner, Content, Container, H2, Button, Left, Right, Form, Picker, Icon, Body, Badge, CheckBox} from "native-base";
+import { useDispatch, useSelector } from "react-redux";
+import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
 import { Link } from "@react-navigation/native";
 import {BgIcon, Bytes} from "../../components";
 import { AppConfiguration, DownloadState } from "../../containers";
@@ -27,6 +27,32 @@ export function ShowErrors(){
       <Icon name="chevron-forward-outline"/>
     </Link></Right>
   </ListItem>);
+}
+
+export function ShowFirestore(){
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const {projectName} = useSelector(getConf);
+  const signedIn = useSelector(isSignedIn);
+  const onPress = ()=>{
+    setLoading(true);
+    dispatch(setProjectName(projectName));
+    setTimeout(()=>{
+      setLoading(false);
+    }, 5000);
+  }
+  return <ListItem icon>
+    <Left>
+      <BgIcon status={signedIn?"success": "muted"} name="ios-code-working"/>
+    </Left>
+    <Body>
+      <Text>Lien vers content.holusion.com</Text>
+    </Body>
+    <Right>
+      {signedIn ? <Text style={{color: "#666666", lineHeight:17, fontSize: 17}}>connecté</Text> : 
+      (loading? <Spinner size="small"/> : <Button small transparent onPress={onPress}><Text style={{color: "#666666", lineHeight:17, fontSize: 17}}>déconnecté</Text><Icon style={{color:"#666666"}} name="refresh"/></Button>)}
+    </Right>
+  </ListItem>
 }
 
 export function ShowCache(){
@@ -63,7 +89,7 @@ export function ShowCache(){
 }
 
 export function ShowTarget(){
-  const default_target = useSelector((state)=> state.conf.default_target);
+  const {default_target} = useSelector(getConf);
   const target = useSelector(getActiveProduct);
   const synchronized = useSelector(isSynchronized);
   let color = "danger";
@@ -99,7 +125,8 @@ function A({to, children}){
 
 
 export default function SettingsScreen(){
-  const default_target = useSelector((state)=> state.conf.default_target);
+  const dispatch = useDispatch();
+  const {default_target, purge_products} = useSelector(getConf);
   return (<Container>
     <SettingsHeader>Settings</SettingsHeader>
     <Content settings contentContainerStyle={style.listView}>
@@ -108,6 +135,8 @@ export default function SettingsScreen(){
       <ShowTarget/>
 
       <ShowCache/>
+
+      <ShowFirestore/>
 
       <ShowErrors/>
 
@@ -123,6 +152,17 @@ export default function SettingsScreen(){
           <A to="/PickProduct?t=default">
             {default_target||"aucun"}
           </A>
+        </Right>
+      </ListItem>
+      <ListItem  icon>
+        <Left>
+          <BgIcon name="trash"/>
+        </Left>
+        <Body>
+            <Text>Supprimer les vidéos inutiles sur l'hologramme</Text>
+        </Body>
+        <Right>
+          <CheckBox checked={purge_products} style={{paddingLeft: 0}} onPress={()=>dispatch(setPurge(!purge_products))} />
         </Right>
       </ListItem>
       <Separator><Text>configuration</Text></Separator>

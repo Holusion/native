@@ -17,6 +17,7 @@ import { handleSetData, SET_CACHED_FILE, SET_DEPENDENCIES, SET_FILES } from "./f
 import {makeFileRef} from "./files/_mock_fileRef";
 import { INITIAL_LOAD, isLoaded, setSignedIn, SET_SIGNEDIN } from "./status";
 import { saveFile } from "../readWrite";
+import { warn } from "./logs";
 
 afterEach(()=>{
   fsMock._reset();
@@ -115,10 +116,13 @@ describe("loadLocalSaga", function(){
   test("Handle local files absence", async ()=>{
     let e = new Error(`no such file or directory`);
     e.code = "ENOENT";
-    let expectError = new Error(`${dataFile} was not present on disk`);
     fsMock.readFile.mockImplementation(()=>Promise.reject(e));
     await expectSaga(loadLocalSaga)
-    .put({type: INITIAL_LOAD, error:  expectError})
+    .put({ type: 'LOG_INFO',
+      name: 'INITIAL_LOAD',
+      message: 'data_v1.json n\'existait pas',
+      context: 'Soit c\'est une nouvelle installation soit le fichier a été perdu' 
+    })
     .run();
   });
   test("Handle EACCESS error", async ()=>{
