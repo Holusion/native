@@ -1,14 +1,24 @@
 'use strict';
 import React from "react";
 import PropTypes from "prop-types"
-import {Icon, Text} from "native-base";
-import {TouchableOpacity} from "react-native";
+import {Icon, Text, View} from "native-base";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import {Svg, Path, Rect, Text as SvgText} from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
+
 
 export function LinksView(props){
-    const buttons = (props.items || []).map((item, index)=>{
-        const color = item.color || "#333333ff";
-        const fontSize = 24;
-        const textAlign = "center";
+  const navigation = useNavigation();
+    const buttons = (props.items || [])
+    .filter(item => item.title && typeof item.x !== "undefined" && typeof item.y !== "undefined")
+    .map((item, index)=>{
+        const color = item.color || "#00000000";
+        const borders = {
+          borderWidth: 2,
+          borderRadius: 4,
+          borderColor: color,
+          padding: 4,
+        }
         const style = {
             position: "absolute",
             display: "flex",
@@ -24,18 +34,37 @@ export function LinksView(props){
             left: (typeof item.x == "number")? item.x : parseInt(item.x),
             top: (typeof item.y == "number")? item.y : parseInt(item.y)
         }
-
-        return (<TouchableOpacity key={index} style={style} onPress={()=> props.onPress(item.name)}>
-            <Icon name="zoom-in" type="MaterialIcons" style={{color, fontSize}}></Icon>
-            <Text style={{color, fontSize, textAlign}} numberOfLines={2}>{item.title || item.name}</Text>
+        return (<TouchableOpacity key={index} style={style} onPress={()=> navigation.navigate("Object",{id:item.name})}>
+          <Text style={{color}}>{item.title}</Text>
         </TouchableOpacity>)
     })
-    return (<React.Fragment>
-        {buttons}
-    </React.Fragment>)
+
+    const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
+      const key = index + buttons.length;
+      return <Path key={key}
+        onPress={()=>navigation.navigate("Object", {id: name})}
+        d={d} 
+        fill={fill} stroke={stroke} strokeWidth={strokeWidth}
+      />
+    })
+    return (<View style={styles.overlay}>
+      {(paths.length !==0) && <Svg width="100%" height="100%" viewBox={`0 0 1024 724`}>
+        {paths}
+      </Svg>}
+      {buttons}
+    </View>)
 }
 
 LinksView.propTypes = {
     items: PropTypes.array.isRequired,
-    onPress: PropTypes.func.isRequired,
 }
+
+const styles = StyleSheet.create({
+  overlay: {
+    position:"absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
+})
