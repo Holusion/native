@@ -7,14 +7,14 @@ import { connectStyle, Text, Icon, View } from 'native-base'
 class ImageCard extends React.Component{
     static propTypes = {
         image: PropTypes.any,
-        source: PropTypes.shape({uri: PropTypes.string.isRequired}),
+        source: PropTypes.oneOfType([PropTypes.shape({uri: PropTypes.string.isRequired}),PropTypes.number]),
         title: PropTypes.string,
         style: PropTypes.object,
     }
     render() {
         const props = this.props;
         const styles = props.style;
-        let img 
+        let img;
         if(props.image) img = props.image;
         else { 
             let src = (props.source)?props.source: require("../../assets/default_image.png");
