@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@holusion/cache-control": "^3.0.0-beta.2",
+    "@holusion/cache-control": "^3.0.0",
     "async-lock": "^1.2.4",
     "Base64": "^1.0.2",
     "js-yaml": "^3.13.1",
@@ -31,8 +31,8 @@
     "jest-fetch-mock": "git://github.com:jefflau/jest-fetch-mock#fb4cb19",
     "metro-react-native-babel-preset": "^0.61.0",
     "native-base": "^2.13.12",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react": "16.13.1",
+    "react-native": "0.63.3",
     "react-native-device-info": "^5.5.3",
     "react-native-dynamic-fonts": "^0.3.2",
     "react-native-fs": "^2.16.6",
@@ -72,7 +72,6 @@
     "@react-native-firebase/storage": "^6.3.4",
     "@react-navigation/native": ">=5.0 <6",
     "native-base": "^2.13.12",
-    "react": ">= 16 < 17",
     "react-native": ">= 0.62 < 0.64",
     "react-native-device-info": "^5.5.3",
     "react-native-dynamic-fonts": "^0.3.2",
@@ -82,5 +81,5 @@
   "scripts": {
     "test": "jest ./lib"
   },
-  "version": "3.6.0-beta.2"
+  "version": "3.6.0"
 }
