@@ -20,7 +20,7 @@ export function Pick({label, help, active, onPress}){
     <Body>
       <Text style={{color: BgIcon.colors[active?"default": "muted"], fontSize: 14 }}>{help}</Text>
       </Body>
-    <Right><CheckBox style={{paddingLeft: 0}} checked={active}/></Right>
+    <Right><CheckBox onPress={onPress} style={{paddingLeft: 0}} checked={active}/></Right>
   </ListItem>)
 }
 
