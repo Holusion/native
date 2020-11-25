@@ -1,6 +1,6 @@
 import {call, cancelled, put, select} from "redux-saga/effects";
 import {CANCEL} from '@redux-saga/symbols'
-import { getConfig, getItems, getItemsArray } from "./data";
+import { getConfig, getItemsArray } from "./data";
 
 import { getHash, getUncachedFiles } from "./files";
 import { getActiveProduct } from "./products";
@@ -11,7 +11,7 @@ import { error, info, warn } from "./logs";
 import { filename } from "../path";
 
 
-const abortableFetch = (url, opts) => {
+export const abortableFetch = (url, opts) => {
   const controller = new AbortController();
   const signal = controller.signal;
   const promise = fetch(url, {
@@ -22,7 +22,7 @@ const abortableFetch = (url, opts) => {
   return promise
 }
 
-const abortableUpload = (url, file) =>{
+export const abortableUpload = (url, file) =>{
   const controller = new AbortController();
   const signal = controller.signal;
   const promise = uploadFile(
@@ -44,7 +44,6 @@ export function* synchronizeProduct(){
 
   let hasError = false, count= 0;
 
-  const abortController = new AbortController();
   const url = `http://${target.url}`;
 
   const {purge: doPurge} = yield select(getConf);
@@ -63,8 +62,7 @@ export function* synchronizeProduct(){
     });
     const playlist = yield call([res, res.json]);
     if(!res.ok){
-      let err = new Error(`Failed to fetch playlist (${res.statusCode})`);
-      err.context = playlist.message;
+      let err = new Error(`Failed to fetch playlist (${playlist.message ||res.statusCode})`);
       throw err;
     }else{
       yield put(info("SYNC", `${playlist.length} vidéos trouvées sur ${target.name}`));
@@ -98,7 +96,7 @@ export function* synchronizeProduct(){
   }catch(e){
     hasError = true;
     let wrap = new Error(`Echec de l'envoi des vidéos au produit`);
-    wrap.context = e.toString();
+    wrap.context = e.message;
     yield put(setSynchronized(wrap));
   }
   if(!hasError && 0< count){

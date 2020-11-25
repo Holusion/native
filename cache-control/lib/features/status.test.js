@@ -1,7 +1,7 @@
 
 import {reducers} from ".";
 
-import {INITIAL_LOAD, isLoaded, isConnected, setNetInfo, isSignedIn, SET_SIGNEDIN, setSignedIn} from "./status";
+import {INITIAL_LOAD, isLoaded, isConnected, setNetInfo, isSignedIn, SET_SIGNEDIN, setSignedIn, setSynchronized, SET_SYNCHRONIZED, isSynchronized} from "./status";
 describe("status reducer", ()=>{
   test("initial_load is initialized to false", ()=>{
     expect(isLoaded(reducers(undefined, {}))).toBe(false);
@@ -54,5 +54,35 @@ describe("setSignedIn", ()=>{
       type: SET_SIGNEDIN,
       value: true
     });
+  })
+})
+
+describe("setSynchronized", ()=>{
+  test("action handle error", ()=>{
+    let e = new Error("Foo");
+    expect(setSynchronized(e)).toEqual({
+      type: SET_SYNCHRONIZED,
+      error: e,
+    });
+  })
+
+  test("reducer handles false", ()=>{
+    const s = reducers(undefined, {type: SET_SYNCHRONIZED, value: false});
+    expect(isSynchronized(s)).toBe(false);
+  })
+  test("reducer handles default", ()=>{
+    const s = reducers(undefined, {type: SET_SYNCHRONIZED});
+    expect(isSynchronized(s)).toBe(true);
+  })
+  test("reducer handles true", ()=>{
+    const s = reducers(undefined, {type: SET_SYNCHRONIZED, value: true});
+    expect(isSynchronized(s)).toBe(true);
+  })
+  test("reducer handles error", ()=>{
+    let e = new Error("Foo");
+    const s = reducers(
+      reducers(undefined, setSynchronized(true)), 
+      setSynchronized(e));
+    expect(isSynchronized(s)).toBe(false);
   })
 })
