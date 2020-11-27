@@ -1,0 +1,73 @@
+name: deploy
+
+on:
+  push:
+    branches: [ master ]
+    paths: [ 'HolusionCompanion/**' ]
+    tags: [ v* ]
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Install react native CLI
+        run: |
+          sudo npm install -g react-native-cli
+      - name: Install fastlane
+        run: |
+          sudo gem install fastlane
+      - name: Set environment variables from project settings
+        run: |
+          echo "SCHEME=HolusionCompanion" >> $GITHUB_ENV
+          echo "PRODUCT_NAME=HolusionCompanion" >> $GITHUB_ENV
+
+      - name: Import signing certificate
+        env:
+          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
+          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          security create-keychain -p "" build.keychain
+          security list-keychains -s build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings
+          security import <(echo $SIGNING_CERTIFICATE_P12_DATA | base64 --decode) \
+                -f pkcs12 \
+                -k build.keychain \
+                -P $SIGNING_CERTIFICATE_PASSWORD \
+                -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+      - name: Import provisioning profile
+        env:
+          PROVISIONING_PROFILE_DATA: ${{ secrets.PROVISIONING_PROFILE_DATA }}
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "$PROVISIONING_PROFILE_DATA" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+
+      - name: Build app
+        env:
+          BUILD_NUM: ${{ env.GITHUB_RUN_NUMBER }}
+        run: |
+          cd HolusionCompanion
+          npm install
+          (cd ios && pod install)
+          npm run build
+          (cd ios && fastlane beta)
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build.log
+          path: ~/Library/Logs/gym/*.log
+
+      - name: Upload app to App Store Connect
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+          APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+        run: |
+          xcrun altool --upload-app -t ios -f "$PRODUCT_NAME.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
