@@ -40,7 +40,8 @@ const prevNextTheme = {
         alignSelf: 'center',
     },
     controlPrev: {
-        paddingLeft: 10,
+      zIndex: 3,
+      paddingLeft: 10,
     },
     controlNext: {
         paddingRight: 10,

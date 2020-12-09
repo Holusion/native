@@ -21,14 +21,14 @@ class Markdown extends React.Component {
   static handlers = ["file://", 'data:image/png;base64', 'data:image/gif;base64', 'data:image/jpeg;base64', "http://", "https://"]
   rules = {
     link: (node, children, parent, styles) => (
-      <Link to={`/Object?id=${node.attributes.href}`}
+      <Link to={`/${node.attributes.href}`}
         key={node.key}
         style={styles.link}>
         {children}
       </Link>
     ),
     blocklink: (node, children, parent, styles) => (
-      <Link to={`/Object?id=${node.attributes.href}`}
+      <Link to={`/${node.attributes.href}`}
         key={node.key}
         style={styles.blocklink}>
         <View style={styles.image}>{children}</View>

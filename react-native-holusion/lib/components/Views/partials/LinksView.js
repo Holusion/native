@@ -34,7 +34,7 @@ export function LinksView(props){
             left: (typeof item.x == "number")? item.x : parseInt(item.x),
             top: (typeof item.y == "number")? item.y : parseInt(item.y)
         }
-        return (<TouchableOpacity key={index} style={style} onPress={()=> navigation.navigate("Object",{id:item.name})}>
+        return (<TouchableOpacity key={index} style={style} onPress={()=> navigation.navigate("Object",{screen: item.name})}>
           <Text style={{color}}>{item.title}</Text>
         </TouchableOpacity>)
     })
@@ -42,7 +42,7 @@ export function LinksView(props){
     const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
       const key = index + buttons.length;
       return <Path key={key}
-        onPress={()=>navigation.navigate("Object", {id: name})}
+        onPress={()=>navigation.navigate("Object", {screen: name})}
         d={d} 
         fill={fill} stroke={stroke} strokeWidth={strokeWidth}
       />

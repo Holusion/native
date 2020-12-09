@@ -57,7 +57,7 @@ class PlayPause extends React.Component {
 
        return (<AnimatedButton key="ctrl" onPressIn={this._onPressIn} onPressOut={this._onPressOut} large style={{
             transform:[{scale: size}],
-            zIndex:2,
+            zIndex:3,
             padding:5, 
             borderRadius:45,
         }} >

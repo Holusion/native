@@ -42,6 +42,7 @@ class ObjectScreen extends React.Component {
         this.props.navigation.setParams({id: object.id});
     }
     render() {
+      console.log("STATE : ", this.props.navigation.dangerouslyGetState());
         if(!this.props.items || this.props.index == -1){
             return (<Container testID="object-not-found">
                 <Content contentContainerStyle={styles["404Content"]}>
