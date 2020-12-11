@@ -15,7 +15,7 @@ export function Pick({label, help, active, onPress}){
 
   return ( <ListItem onPress={onPress}>
     <Left>
-      <Text style={{color: BgIcon.colors[active?"default": "muted"], fontSize: 17 }}>{label}</Text>
+      <Text style={{color: BgIcon.colors[active?"default": "muted"]}}>{label}</Text>
     </Left>
     <Body>
       <Text style={{color: BgIcon.colors[active?"default": "muted"], fontSize: 14 }}>{help}</Text>

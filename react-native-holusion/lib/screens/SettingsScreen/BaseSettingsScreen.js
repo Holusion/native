@@ -49,8 +49,8 @@ export function ShowFirestore(){
       <Text>Lien vers content.holusion.com</Text>
     </Body>
     <Right>
-      {signedIn ? <Text style={{color: "#666666", lineHeight:17, fontSize: 17}}>connecté</Text> : 
-      (loading? <Spinner size="small"/> : <Button small transparent onPress={onPress}><Text style={{color: "#666666", lineHeight:17, fontSize: 17}}>déconnecté</Text><Icon style={{color:"#666666"}} name="refresh"/></Button>)}
+      {signedIn ? <Text style={{color: "#666666"}}>connecté</Text> : 
+      (loading? <Spinner size="small"/> : <Button small transparent onPress={onPress}><Text style={{color: "#666666"}}>déconnecté</Text><Icon style={{color:"#666666"}} name="refresh"/></Button>)}
     </Right>
   </ListItem>
 }
@@ -82,7 +82,7 @@ export function ShowCache(){
     </Body>
     <Right>
       <A to="/Cache">
-      {(otherSize+requiredSize !=0) ? <Spinner style={{height:17}} size="small" color={color}/> : <Bytes style={{fontSize:17, lineHeight:17, color:"#666666"}}>{localSize}</Bytes>}
+      {(otherSize+requiredSize !=0) ? <Spinner style={{height:17}} size="small" color={color}/> : <Bytes style={{color:"#666666"}}>{localSize}</Bytes>}
       </A>
     </Right>
   </ListItem>)
@@ -118,7 +118,7 @@ export function ShowTarget(){
 
 function A({to, children}){
   return <Link  to={to}>
-    <Text style={{color: "#666666", lineHeight:17, fontSize: 17, minWidth:40 }}>{children}</Text>
+    <Text style={{color: "#666666", minWidth:40 }}>{children}</Text>
     <Icon style={{fontSize: 16, lineHeight: 17}}name="chevron-forward-outline"/>
   </Link>
 }
@@ -216,6 +216,5 @@ const style = StyleSheet.create({
   },
   headerDoneBtn: {
     color: '#007aff',
-    fontSize: 16,
   },
 });

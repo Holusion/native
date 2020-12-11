@@ -11,7 +11,7 @@ export default function SettingsHeader({back, children}){
   return (<Header>
     <Left style={styles.left}>
       {back ?<Button transparent onPress={onDismiss}>
-        <Icon style={{fontSize:17}} name="chevron-back-outline" />
+        <Icon style={{fontSize:17}} name="chevron-back-outline" /><Text>Retour</Text>
       </Button>:<Text>&nbsp;</Text>}
     </Left>
     <Body style={styles.body}>{typeof children === "string"? <Text style={{fontWeight: "bold"}}>{children}</Text>: children}</Body>

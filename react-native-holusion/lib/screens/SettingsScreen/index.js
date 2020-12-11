@@ -4,8 +4,9 @@ import {StyleSheet, TouchableWithoutFeedback} from "react-native";
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {Form, H1, Input, Item, View} from "native-base";
-
+import {Form, H1, Input, Item, StyleProvider, View} from "native-base";
+import getTheme from '../../../native-base-theme/components';
+import default_vars from "../../../native-base-theme/variables/platform";
 
 import {getConf} from "@holusion/cache-control";
 import LogScreen from "./LogScreen";
@@ -33,7 +34,14 @@ export function Auth({passcode:ref, onSubmit}){
   </View>
 }
 
-
+const variables = Object.create(
+  Object.getPrototypeOf(default_vars), 
+  Object.getOwnPropertyDescriptors(default_vars) 
+)
+Object.assign(variables, {
+  fontSizeBase: 17,
+  DefaultFontSize: 17,
+});
 const OptionsStack = createStackNavigator();
 
 export default function SettingsScreen({navigation}){
@@ -53,16 +61,18 @@ export default function SettingsScreen({navigation}){
       <OptionsStack.Screen name="Interactions" component={InteractionsScreen}/>
     </OptionsStack.Navigator>)
   }
-  return(<View style={{flex:1}}>
-    <TouchableWithoutFeedback onPress={onDismiss}>
-      <View style={style.overlay}/>
-    </TouchableWithoutFeedback>
-    <View style={style.centeredView}>
-      <View style={style.modalView}>
-        {content}
+  return(<StyleProvider style={getTheme(variables)}>
+    <View style={{flex:1}}>
+      <TouchableWithoutFeedback onPress={onDismiss}>
+        <View style={style.overlay}/>
+      </TouchableWithoutFeedback>
+      <View style={style.centeredView}>
+        <View style={style.modalView}>
+          {content}
+        </View>
       </View>
     </View>
-  </View>)
+  </StyleProvider>)
 }
 
 
