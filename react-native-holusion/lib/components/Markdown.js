@@ -1,7 +1,8 @@
 import React from "react";
 import {StyleSheet} from 'react-native';
 import {connectStyle} from "native-base";
-import {Link} from "@react-navigation/native";
+
+import ObjectLink from "./ObjectLink";
 
 import Renderer, { MarkdownIt } from 'react-native-markdown-display'
 
@@ -21,18 +22,18 @@ class Markdown extends React.Component {
   static handlers = ["file://", 'data:image/png;base64', 'data:image/gif;base64', 'data:image/jpeg;base64', "http://", "https://"]
   rules = {
     link: (node, children, parent, styles) => (
-      <Link to={`/Object?id=${node.attributes.href}`}
+      <ObjectLink to={node.attributes.href}
         key={node.key}
         style={styles.link}>
         {children}
-      </Link>
+      </ObjectLink>
     ),
     blocklink: (node, children, parent, styles) => (
-      <Link to={`/Object?id=${node.attributes.href}`}
+      <ObjectLink to={node.attributes.href}
         key={node.key}
         style={styles.blocklink}>
         <View style={styles.image}>{children}</View>
-      </Link>
+      </ObjectLink>
     ),
   }
 

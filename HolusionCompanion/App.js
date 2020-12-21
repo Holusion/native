@@ -3,9 +3,8 @@ import { Provider } from 'react-redux';
 
 import "react-native-gesture-handler";
 import { enableScreens } from 'react-native-screens';
-enableScreens();
-
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+//import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from "@react-navigation/native";
 
 
@@ -17,16 +16,14 @@ import {sagaStore} from "@holusion/cache-control";
 import { screens, NetworkIcon, netScan, ThemeProvider, RequiredLoadWrapper } from '@holusion/react-native-holusion';
 
 
-import ConnectedTitle from "./ConnectedTitle";
 
+enableScreens();
 
-const ModalStack = createStackNavigator();
-const MainStack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const screenOptions = ({navigation})=>{
   return {
     headerBackTitle: "Retour",
-    title: <ConnectedTitle placeholder={require("./assets/logo_holusion.png")} resizeMode='contain' style={{flex:1, height:32}} />,
     headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
   };
 }
@@ -79,11 +76,14 @@ export default class App extends React.Component{
         {this.state.store?<Provider store={this.state.store}>
             <ThemeProvider>
               <NavigationContainer>
-                <ModalStack.Navigator mode="modal" headerMode= 'none' screenOptions={{headerShown: false, cardStyle: { backgroundColor: 'transparent' },}} initialRouteName="Home">
-                  <ModalStack.Screen name="Home" component={Home}/>
-                  <ModalStack.Screen name="Settings"  component={screens.SettingsScreen}/>
-                </ModalStack.Navigator>
-              
+                <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
+                  <Stack.Screen name="Home" component={screens.HomeScreen}/>
+                  <Stack.Screen name="List" component={screens.ListScreen}/>
+                  <Stack.Screen name="Connect" component={screens.ConnectScreen}/>
+                  <Stack.Screen name="Object" options={{ headerShown: false }} component={screens.ObjectScreen}/>
+                  <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
+                  <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
+                </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider> 
         </Provider> : <Container><Content><Spinner/></Content></Container>}
@@ -93,12 +93,7 @@ export default class App extends React.Component{
 
 function Home(){
   return (<RequiredLoadWrapper>
-    <MainStack.Navigator mode="card" screenOptions={screenOptions} >
-      <MainStack.Screen name="Home" component={screens.HomeScreen}/>
-      <MainStack.Screen name="List" component={screens.ListScreen}/>
-      <MainStack.Screen name="Connect" component={screens.ConnectScreen}/>
-      <MainStack.Screen name="Object" component={screens.ObjectScreen}/>
-      <MainStack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
-    </MainStack.Navigator>
+    <Stack.Navigator mode="card" screenOptions={screenOptions} >
+    </Stack.Navigator>
   </RequiredLoadWrapper>);
 }

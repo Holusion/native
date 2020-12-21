@@ -7,4 +7,6 @@ export {default as StatusIcon} from "./StatusIcon";
 export {default as NetworkIcon} from "./NetworkIcon";
 export {default as BgIcon} from "./BgIcon";
 export {default as Bytes} from "./Bytes";
+
+export {default as ObjectLink} from "./ObjectLink";
 export * from "./Views";
