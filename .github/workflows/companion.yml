@@ -4,7 +4,6 @@ on:
   push:
     branches: [ master ]
     paths: [ 'HolusionCompanion/**' ]
-    tags: [ v* ]
 
 jobs:
   deploy:
@@ -13,12 +12,27 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
+      ### restore caches
+      - uses: actions/cache@v2
+        with:
+          path: HolusionCompanion/ios/Pods
+          key: ${{ runner.os }}-HolusionCompanion-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-HolusionCompanion-pods-
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      ### install build dependencies
       - name: Install react native CLI
         run: |
           sudo npm install -g react-native-cli
       - name: Install fastlane
         run: |
           sudo gem install fastlane
+          
       - name: Set environment variables from project settings
         run: |
           echo "SCHEME=HolusionCompanion" >> $GITHUB_ENV
