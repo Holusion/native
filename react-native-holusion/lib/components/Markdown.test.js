@@ -1,6 +1,9 @@
 import React from "react";
 import {Text} from "react-native";
 import { render, fireEvent, act } from '@testing-library/react-native'
+
+jest.mock("./ObjectLink",()=>(()=> null));
+
 import Markdown from "./Markdown";
 
 

@@ -91,31 +91,7 @@ exports[`<Markdown> handle links 1`] = `
   >
     <Text
       style={Object {}}
-    >
-      <Text
-        accessibilityRole="link"
-        href="/Object?id=foo"
-        onPress={[Function]}
-        style={
-          Object {
-            "textDecorationLine": "underline",
-          }
-        }
-      >
-        <Text
-          style={
-            Array [
-              Object {
-                "textDecorationLine": "underline",
-              },
-              Object {},
-            ]
-          }
-        >
-          text
-        </Text>
-      </Text>
-    </Text>
+    />
   </View>
 </View>
 `;
