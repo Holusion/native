@@ -31,7 +31,7 @@ jobs:
       ### install build dependencies
       - name: Install react native CLI
         run: |
-          sudo npm install -g react-native-cli
+          npm install -g react-native-cli
       - name: Install fastlane
         run: |
           sudo gem install fastlane
