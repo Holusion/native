@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches: [ master ]
-    paths: [ 'HolusionCompanion/**' ]
+    paths: [ 'HolusionCompanion/**', ".github/workflows/companion.yml" ]
 
 jobs:
   deploy:
