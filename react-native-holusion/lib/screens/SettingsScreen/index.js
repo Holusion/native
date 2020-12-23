@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {StyleSheet, TouchableWithoutFeedback} from "react-native";
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import {Form, H1, Input, Item, StyleProvider, View} from "native-base";
 import getTheme from '../../../native-base-theme/components';
@@ -42,7 +42,7 @@ Object.assign(variables, {
   fontSizeBase: 17,
   DefaultFontSize: 17,
 });
-const OptionsStack = createStackNavigator();
+const OptionsStack = createNativeStackNavigator();
 
 export default function SettingsScreen({navigation}){
   const {passcode} = useSelector(getConf);
