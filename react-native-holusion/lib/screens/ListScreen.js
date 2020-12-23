@@ -5,6 +5,8 @@ import { Container } from 'native-base';
 
 import {getActiveProduct} from "@holusion/cache-control";
 
+import {parseItem} from "../components/ObjectLink";
+
 import ListObjects from "../containers/ListObjects";
 import { useAutoPlay } from '../sync/hooks';
 
@@ -20,9 +22,8 @@ function ListScreen (props) {
     }
   }
   
-
   return (<Container style={{flex: 1}}>
-    <ListObjects 
+    <ListObjects
       selectedCategory={category}
       onNavigate={(id) => props.navigation.navigate("Object", {params: {id}, screen: category})}
     />

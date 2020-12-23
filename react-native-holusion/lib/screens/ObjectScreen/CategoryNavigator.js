@@ -9,18 +9,27 @@ import { HeaderBackButton } from '@react-navigation/stack';
 
 import { useSelector } from 'react-redux';
 import ObjectScreen from './ObjectScreen';
+import { NetworkIcon } from '../../components';
 
 
 //const Nav = createMaterialTopTabNavigator();
 const Nav = createNativeStackNavigator();
 //const Nav = createStackNavigator();
 
+const screenOptions = ({ navigation, route:{name, params={}}}) => {
+  let title = params.title || name;
+  return {
+    headerShown: true, 
+    title,
+    headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton label="Retour" onPress={() => navigation.goBack()} />) : null),
+    headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
+  }
+}
+
 export default function CategoryNavigator() {
   let { categories = [] } = useSelector(getConfig);
-  if(!categories.length) categories = [{name: "Undefined"}];
-
-  return (<Nav.Navigator screenOptions={({ navigation }) => ({ headerShown: true, headerLeft: () => (<HeaderBackButton label="Retour" onPress={() => navigation.goBack()} />) })}>
-    {categories.map(({ name }, index) => (<Nav.Screen key={index} name={name} component={ObjectScreen} />))}
+  return (<Nav.Navigator screenOptions={screenOptions}>
+    {[...categories, {name: "Undefined"}].map(({ name }, index) => (<Nav.Screen key={index} name={name} component={ObjectScreen} />))}
   </Nav.Navigator>)
 }
 

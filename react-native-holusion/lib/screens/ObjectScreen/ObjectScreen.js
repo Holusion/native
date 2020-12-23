@@ -1,6 +1,6 @@
 'use strict'
 import React from 'react'
-import { Container, Content, Footer, H1, Text } from 'native-base';
+import { Container, Content, Footer, H1, Header, Text, Title } from 'native-base';
 
 import { StyleSheet, Dimensions } from 'react-native';
 
@@ -70,8 +70,12 @@ class ObjectScreen extends React.Component {
     onPrevPage = ()=>{
         this.setIdForIndex(this.props.index-1)
     }
+    componentDidMount(){
+      this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
+    }
     componentDidUpdate(prevProps){
       if(prevProps.id !== this.props.id){
+        this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
           if(this._list){

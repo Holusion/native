@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { Container,  Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-
-import {BaseView, ImageCard} from "../components"
+import {ImageCard, Redirect} from "../components"
 import ListObjects from '../containers/ListObjects';
 import { useAutoPlay } from '../sync/hooks';
 
@@ -35,9 +34,7 @@ function HomeScreen (props) {
         </Content>
       </Container>)
     }
-    return (<Container>
-      <BaseView active={true} navigation={props.navigation} {...pageData} />
-    </Container>)
+    return (<Redirect to={props.config.defaultPage} prefix="Object" encoded={false}/>)
   }
   if(!props.categories || props.categories.length == 0){
     return <Container>

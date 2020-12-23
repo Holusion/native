@@ -5,7 +5,14 @@ import {Icon, Text, View} from "native-base";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {Svg, Path, Rect, Text as SvgText} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { useParsedLink } from "../../ObjectLink";
 
+
+export function LinkPath({to, ...rest}){
+  const navigation = useNavigation();
+  const {category, params} = useParsedLink({to});
+  return <Path onPress={()=>navigation.navigate(category, params)} {...rest} fill="#00000088"/>
+}
 
 export function LinksView(props){
   const navigation = useNavigation();
@@ -41,8 +48,8 @@ export function LinksView(props){
 
     const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
       const key = index + buttons.length;
-      return <Path key={key}
-        onPress={()=>navigation.navigate(name)}
+      return <LinkPath key={key}
+        to={name}
         d={d} 
         fill={fill} stroke={stroke} strokeWidth={strokeWidth}
       />

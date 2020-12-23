@@ -8,5 +8,5 @@ export {default as NetworkIcon} from "./NetworkIcon";
 export {default as BgIcon} from "./BgIcon";
 export {default as Bytes} from "./Bytes";
 
-export {default as ObjectLink} from "./ObjectLink";
+export {default as ObjectLink, Redirect} from "./ObjectLink";
 export * from "./Views";
