@@ -31,6 +31,8 @@ jobs:
       ### install build dependencies
       - name: Install react native CLI
         run: |
+          sudo chown -R 501:20 "$HOME/.npm"
+          npm --version
           npm install -g react-native-cli
       - name: Install fastlane
         run: |
@@ -64,14 +66,16 @@ jobs:
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           echo "$PROVISIONING_PROFILE_DATA" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
-
+      - name: Install build dependencies
+        run: |
+          cd HolusionCompanion
+          npm ci
+          (cd ios && pod install)
       - name: Build app
         env:
           BUILD_NUM: ${{ env.GITHUB_RUN_NUMBER }}
         run: |
           cd HolusionCompanion
-          npm install
-          (cd ios && pod install)
           npm run build
           (cd ios && fastlane beta)
 
