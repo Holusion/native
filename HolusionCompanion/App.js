@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import "react-native-gesture-handler";
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-//import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from "@react-navigation/native";
 
 
