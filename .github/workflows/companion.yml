@@ -72,10 +72,11 @@ jobs:
           (cd ios && pod install)
       - name: Build app
         env:
-          BUILD_NUM: ${{ env.GITHUB_RUN_NUMBER }}
+          BUILD_NUM: ${{ github.run_number }}
         run: |
           cd HolusionCompanion
           npm run build
+          echo "Build number : $BUILD_NUM"
           (cd ios && fastlane beta)
 
       - name: Upload build artifacts
