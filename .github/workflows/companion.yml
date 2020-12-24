@@ -32,7 +32,6 @@ jobs:
       - name: Install react native CLI
         run: |
           sudo chown -R 501:20 "$HOME/.npm"
-          npm --version
           npm install -g react-native-cli
       - name: Install fastlane
         run: |
