@@ -20,7 +20,7 @@ export default function WikiView(d){
                 </View>
             </View>
             <View style={styles.cartouche}>
-                <Image source={{uri: `${d["thumb"]}`}} style={styles.image}/>
+                <Image source={d["thumb"]?{uri: `${d["thumb"]}`}: require("../../../assets/missing-image.png")} style={styles.image}/>
                 {d['description'] && <Markdown >{d['description']}</Markdown>}
             </View>
         </View>
@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
     },
     image: {
-        flex: 1,
+        flex: 0,
         minHeight: 150,
-        resizeMode: 'contain', 
+        width: "100%",
+        resizeMode: "contain",
     },
     headerStyles: {
         flexDirection:"row"

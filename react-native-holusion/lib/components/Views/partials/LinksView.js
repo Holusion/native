@@ -10,8 +10,8 @@ import { useParsedLink } from "../../ObjectLink";
 
 export function LinkPath({to, ...rest}){
   const navigation = useNavigation();
-  const {category, params} = useParsedLink({to});
-  return <Path onPress={()=>navigation.navigate(category, params)} {...rest} fill="#00000088"/>
+  const {screen, params} = useParsedLink({to});
+  return <Path onPress={()=>navigation.navigate(screen, params)} {...rest} />
 }
 
 export function LinksView(props){

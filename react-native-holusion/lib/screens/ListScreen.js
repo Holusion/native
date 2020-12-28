@@ -5,7 +5,6 @@ import { Container } from 'native-base';
 
 import {getActiveProduct} from "@holusion/cache-control";
 
-import {parseItem} from "../components/ObjectLink";
 
 import ListObjects from "../containers/ListObjects";
 import { useAutoPlay } from '../sync/hooks';

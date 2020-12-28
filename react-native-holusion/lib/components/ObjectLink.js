@@ -6,25 +6,35 @@ import { getItems } from "@holusion/cache-control";
 
 
 export function parseItem({id, category="Undefined"}){
-  return {category, params:{id}};
+  return {screen: category, params:{id}};
 }
 
 export function useParsedLink({to, encoded=true}){
   const id = encoded?decodeURIComponent(to): to;
   const targetItem = useSelector((state)=>getItems(state)[id]);
+  if(!targetItem){
+    switch(id){
+      case "Settings":
+      case "Contact":
+      case "Home":
+        return {screen: id, params: {}};
+      default:
+        return {screen: "404", params:{id}}
+    }
+  }
   return parseItem(targetItem);
 }
 
 export default function ObjectLink({to:name, encoded=true, ...rest}){
-  const {category, params} = useParsedLink({to: name, encoded});
-  return (<Link action={StackActions.navigate(category, params)} {...rest} />);
+  const {screen, params} = useParsedLink({to: name, encoded});
+  return (<Link action={StackActions.navigate(screen, params)} {...rest} />);
 }
 
 export function Redirect({to, encoded=true, action="replace"}){
   const navigation = useNavigation();
-  const {category, params} = useParsedLink({to, encoded});
+  const {screen, params} = useParsedLink({to, encoded});
   useEffect(()=>{
-    navigation[action]("Object", {screen: category, params});
-  }, [navigation, action, category, params]);
+    navigation[action]("Object", {screen, params});
+  }, [navigation, action, screen, params]);
   return null;
 }

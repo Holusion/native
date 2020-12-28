@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 
-import {filename, info, getCachedFiles} from "@holusion/cache-control";
+import {filename, info, error as logError, getCachedFiles} from "@holusion/cache-control";
 
 import {loadFonts} from 'react-native-dynamic-fonts';
 import { StyleProvider, Content, Spinner, Text } from 'native-base';
@@ -55,7 +55,7 @@ export function ThemeProvider({
       setLoadedFonts([...loadedFonts,...fontsWithAFile]);
     }).catch( (e)=>{
       if(aborted) return;
-      dispatch(error("FONTS", "Error loading fonts : "+e.message));
+      dispatch(logError("FONTS", "Error loading fonts : "+e.message));
     })
     return ()=> aborted = true;
   }, [fonts, loadedFonts, cachedFiles, dispatch]);

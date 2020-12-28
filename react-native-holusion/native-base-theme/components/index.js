@@ -53,7 +53,7 @@ import prevNextTheme from "./PrevNext";
 import playPauseTheme from "./PlayPause";
 import markdownTheme from "./Markdown";
 import progressTheme from "./Progress";
-
+import categoryNavigatorTheme from "./CategoryNavigator";
 export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
@@ -72,6 +72,9 @@ export default (variables /* : * */ = variable) => {
     },
     "Holusion.Progress": {
       ...progressTheme(variables)
+    },
+    "Holusion.CategoryNavigator": {
+      ...categoryNavigatorTheme(variables)
     },
     /* Nativebase components */
     'NativeBase.Left': {

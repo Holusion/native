@@ -19,6 +19,7 @@ Array [
   "BgIcon",
   "Bytes",
   "ObjectLink",
+  "Redirect",
   "BaseView",
   "WikiView",
   "AppConfiguration",
