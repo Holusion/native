@@ -82,6 +82,7 @@ export default class App extends React.Component{
                   <Stack.Screen name="Object" options={{ headerShown: false }} component={screens.ObjectScreen}/>
                   <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
                   <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
+                  <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={screens.ContactScreen} />
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider> 
