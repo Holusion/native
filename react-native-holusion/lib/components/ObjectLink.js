@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {Link, useNavigation, StackActions} from "@react-navigation/native";
+import {Link, useNavigation, CommonActions} from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { getItems } from "@holusion/cache-control";
 
@@ -27,7 +27,7 @@ export function useParsedLink({to, encoded=true}){
 
 export default function ObjectLink({to:name, encoded=true, ...rest}){
   const {screen, params} = useParsedLink({to: name, encoded});
-  return (<Link action={StackActions.navigate(screen, params)} {...rest} />);
+  return (<Link action={CommonActions.navigate(screen, params)} {...rest} />);
 }
 
 export function Redirect({to, encoded=true, action="replace"}){
