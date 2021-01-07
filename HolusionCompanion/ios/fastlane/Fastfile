@@ -22,6 +22,10 @@ platform :ios do
       build_number: ENV["BUILD_NUM"].to_i,
       xcodeproj: "HolusionCompanion.xcodeproj", 
     )
-    build_app(workspace: "HolusionCompanion.xcworkspace", scheme: "HolusionCompanion")
+    build_app(
+      workspace: "HolusionCompanion.xcworkspace", 
+      scheme: "HolusionCompanion",
+      suppress_xcode_output: true, #still stored in ~/Library/Logs/gym/*.log
+    )
   end
 end

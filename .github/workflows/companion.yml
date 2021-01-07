@@ -16,13 +16,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '15'
-      - uses: actions/cache@v2
+      - name: CocoaPods cache
+        uses: actions/cache@v2
         with:
           path: HolusionCompanion/ios/Pods
           key: ${{ runner.os }}-HolusionCompanion-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-HolusionCompanion-pods-
-      - uses: actions/cache@v2
+      - name: npm cache
+        uses: actions/cache@v2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -70,14 +72,17 @@ jobs:
           cd HolusionCompanion
           npm ci
           (cd ios && pod install)
-      - name: Build app
-        env:
-          BUILD_NUM: ${{ github.run_number }}
+      - name: Build JS package
         run: |
           cd HolusionCompanion
           npm run build
+      - name: Build iOS app
+        env:
+          BUILD_NUM: ${{ github.run_number }}
+        run: |
           echo "Build number : $BUILD_NUM"
-          (cd ios && fastlane beta)
+          cd HolusionCompanion/ios
+          fastlane beta
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2

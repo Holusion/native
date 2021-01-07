@@ -23,12 +23,3 @@ target 'HolusionCompanion' do
     flipper_post_install(installer)
   end
 end
-
-target 'HolusionCompanion-tvOS' do
-  # Pods for HolusionCompanion-tvOS
-
-  target 'HolusionCompanion-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end
