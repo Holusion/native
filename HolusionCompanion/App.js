@@ -83,6 +83,7 @@ export default class App extends React.Component{
                   <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
                   <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
                   <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={screens.ContactScreen} />
+                  <Stack.Screen name="404" component={screens.NotFoundScreen}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider> 
