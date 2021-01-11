@@ -8,10 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, ...rest}){
+export function LinkPath({to, style={}, ...rest}){
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
-  return <Path onPress={()=>navigation.navigate(screen, params)} {...rest} />
+  const onPress = ()=>{
+    navigation.navigate(screen, params)
+  }
+  return <Path onPress={onPress} style={{zIndex:2, ...style}} {...rest} />
 }
 
 export function LinksView(props){

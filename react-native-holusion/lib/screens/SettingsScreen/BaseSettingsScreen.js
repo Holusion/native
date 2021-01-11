@@ -1,7 +1,7 @@
 'use strict';
 import React, { useState } from "react";
 import {StyleSheet, TouchableWithoutFeedback} from "react-native";
-
+import {getReadableVersion} from "react-native-device-info";
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {connectStyle,View, Text, List, ListItem, Header, Separator, Spinner, Content, Container, H2, Button, Left, Right, Form, Picker, Icon, Body, Badge, CheckBox} from "native-base";
@@ -179,6 +179,11 @@ export default function SettingsScreen(){
         </Right>
       </ListItem>
       <AppConfiguration/>
+      <ListItem icon>
+        <Left><BgIcon name="logo-apple-appstore"/></Left>
+        <Body><Text>Version</Text></Body>
+        <Right><Text>{getReadableVersion()}</Text></Right>
+      </ListItem>
     </Content>
   </Container>);
 }

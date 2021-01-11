@@ -23,8 +23,8 @@ class CategoryNavigator extends React.Component {
       headerShown: true,
       title: params.title || name,
       headerTitleStyle: this.props.style.title,
-      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton label="Retour" onPress={() => navigation.goBack()} />) : null),
-      headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
+      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
+      headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
   render(){

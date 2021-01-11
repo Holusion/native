@@ -30,15 +30,12 @@ function Controller({
     default:
       content = null;
   }
-  switch(slides_control){
-    case "default":
-    case "buttons":
-      wrap = <PrevNext prev={prev} next={next}>{content}</PrevNext>;
-      break;
-    default:
-      wrap = content
+  if((prev || next) && ["default", "buttons"].indexOf(slides_control) !== -1){
+    wrap = (<PrevNext prev={prev} next={next}>{content}</PrevNext>);
+  }else{
+    wrap = content;
   }
-  return <View style={styles.view}>{wrap}</View> ;
+  return <View style={styles.view} pointerEvents="box-none">{wrap}</View>;
 }
 
 Controller.propTypes = {

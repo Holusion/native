@@ -55,7 +55,7 @@ class ObjectScreen extends React.Component {
                 views={this.props.views}
                 onChange={ canSwipe ? this.setIdForIndex: null}
             />
-            <Footer style={styles.footer}>
+            <Footer style={styles.footer} pointerEvents="box-none">
                 <Controller 
                     prev={this.props.index !== 0? this.onPrevPage : null} 
                     next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
