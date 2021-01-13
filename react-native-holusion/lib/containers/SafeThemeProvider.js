@@ -11,6 +11,7 @@ import getTheme from '../../native-base-theme/components';
 import default_vars from "../../native-base-theme/variables/platform";
 
 import { readFile } from "react-native-fs";
+import { RequiredLoadWrapper } from "./LoadWrapper";
 
 
 
@@ -60,10 +61,9 @@ export function ThemeProvider({
     return ()=> aborted = true;
   }, [fonts, loadedFonts, cachedFiles, dispatch]);
 
-
   return (<StyleProvider style={getTheme(Object.assign({}, default_vars, allFontsLoaded?theme: {}))}>
-    <React.Fragment>
+    <RequiredLoadWrapper>
         {children}
-    </React.Fragment>
+    </RequiredLoadWrapper>
     </StyleProvider>)
 }
