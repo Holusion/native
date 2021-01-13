@@ -109,6 +109,43 @@ export class WatchChanges extends EventEmitter{
       })
     })
   }
+  /**
+   * Does the same thing as watch(), but only once.
+   * Don't use in parallel with watch() because they fire the same events and you won't know who's who.
+   * WatchChanges.close() can be safely called to ensure any subscription is cancelled
+   */
+  getOnce(){
+    if(this.isConnected){
+      console.warn("WatchChanges.getOnce() got called when subscriptions were active. Changes will get notified twice");
+    }
+    const db = firebase.app().firestore();
+    const projectRef = db.collection("applications").doc(this.projectName);
+    const collectionsRef = projectRef.collection("pages");
+
+    //Create separate AbortController for each listener
+    //So they can abort individually and be all cancelled on close()
+    let aborts = {};
+    function withSignal(name, callback){
+      aborts[name] = new AbortController();
+      callback(aborts[name].signal)
+    }
+    withSignal("config", (signal)=>{
+      projectRef.get().then(configSnapshot=>{
+        this.onConfigSnapshot(configSnapshot, {signal})
+      }, e=>this.makeError("configSnapshot", e));
+    });
+    withSignal("items", (signal)=>{
+      collectionsRef.get().then(projectsSnapshot=>{
+        this.onProjectsSnapshot(projectsSnapshot, {signal})
+      }, e=>this.makeError("projectsSnapshot", e));
+    });
+
+    this.unsubscribes.push(()=>{
+      Object.keys(aborts).forEach((key)=>{
+        aborts[key].abort();
+      })
+    })
+  }
 
   makeError(name, orig){
     /* istanbul ignore next */

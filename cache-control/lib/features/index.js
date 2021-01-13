@@ -6,11 +6,11 @@ import {loadFile, saveFile} from "../readWrite";
 import {createStorage} from "../path";
 
 
-import files, { SET_CACHED_FILE , SET_DEPENDENCIES, handleSetData, handleDownloads } from "./files";
+import files, { SET_CACHED_FILE , SET_DEPENDENCIES, handleDownloads } from "./files";
 import data, { SET_DATA, watchChanges } from "./data";
 import conf, { getProjectName, action_strings as conf_actions_names, actions as conf_actions, setProjectName }  from "./conf";
 import {signIn} from "./signIn";
-import products, { getActiveProduct, SET_ACTIVE_PRODUCT } from "./products"
+import products, { SET_ACTIVE_PRODUCT } from "./products"
 import logs, { info } from "./logs";
 import status, {INITIAL_LOAD, SET_SIGNEDIN, SET_SYNCHRONIZED} from "./status";
 import { synchronizeProduct } from './sync';

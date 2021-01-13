@@ -163,6 +163,85 @@ describe("WatchChanges", function(){
       configSnapshot.mock.calls[0][1](err);
     })
   })
+
+  describe("getOnce()", ()=>{
+    let collection, configSnapshot, projectsSnapshot;
+    beforeEach(()=>{
+      configSnapshot = jest.fn(()=>Promise.resolve({}));
+      projectsSnapshot = jest.fn(()=>Promise.resolve({docs: []}));
+      collection = {
+        doc: ()=>({
+          get: configSnapshot,
+          collection: ()=>({
+            get: projectsSnapshot,
+          }),
+        }),
+      }
+      firebase._collection.mockImplementation(()=>collection);
+    });
+    
+    it("onConfigSnapshot and onProjectsSnapshot will get called with values", async ()=>{
+      const wf = new WatchChanges({projectName: "foo"});
+      wf.onConfigSnapshot = jest.fn();
+      wf.onProjectsSnapshot = jest.fn();
+      wf.getOnce();
+      await Promise.resolve();
+      expect(wf.onConfigSnapshot).toHaveBeenCalledTimes(1);
+      expect(wf.onProjectsSnapshot).toHaveBeenCalledTimes(1);
+    })
+    it("onConfigSnapshot and onProjectsSnapshotcan be cancelled", async ()=>{
+      const wf = new WatchChanges({projectName: "foo"});
+      wf.onConfigSnapshot = jest.fn();
+      wf.onProjectsSnapshot = jest.fn();
+      wf.getOnce();
+      wf.close();
+      await Promise.resolve();
+      expect(wf.onConfigSnapshot).toHaveBeenCalledTimes(1);
+      expect(wf.onConfigSnapshot.mock.calls[0][1]).toEqual(expect.objectContaining({signal: expect.anything()}));
+      expect(wf.onConfigSnapshot.mock.calls[0][1].signal.aborted).toBe(true);
+      expect(wf.onProjectsSnapshot).toHaveBeenCalledTimes(1);
+      expect(wf.onProjectsSnapshot.mock.calls[0][1]).toEqual(expect.objectContaining({signal: expect.anything()}));
+      expect(wf.onProjectsSnapshot.mock.calls[0][1].signal.aborted).toBe(true);
+    })
+    it("onProjectsSnapshot can catch firestore errors", (done)=>{
+      let err = new Error("Permission denied");
+      err.code = "permission-denied";
+      projectsSnapshot.mockImplementationOnce(()=>Promise.reject(err));
+      const wf = new WatchChanges({projectName: "foo"});
+      wf.onProjectsSnapshot = jest.fn();
+      wf.getOnce();
+      wf.on("error", (e)=>{
+        expect(e.message).toMatch(err.message);
+        expect(e.message).toMatch("projectsSnapshot");
+        done();
+      })
+    })
+    it("will warn if called multiple times without resolving", ()=>{
+      const warnMock = jest.spyOn(global.console, "warn");
+      const wf = new WatchChanges({projectName: "foo"});
+      wf.getOnce();
+      expect(warnMock).not.toHaveBeenCalled();
+      wf.getOnce();
+      expect(warnMock).toHaveBeenCalledWith("WatchChanges.getOnce() got called when subscriptions were active. Changes will get notified twice")
+      warnMock.mockRestore();
+    });
+    
+    it("onConfigSnapshot can catch firestore errors", (done)=>{
+      let err = new Error("Permission denied");
+      err.code = "permission-denied";
+      configSnapshot.mockImplementationOnce(()=>Promise.reject(err));
+      const wf = new WatchChanges({projectName: "foo"});
+      wf.onConfigSnapshot = jest.fn();
+      wf.getOnce();
+      wf.on("error", (e)=>{
+        expect(e.message).toMatch(err.message);
+        expect(e.message).toMatch("configSnapshot");
+        done();
+      })
+    })
+  })
+
+
   describe("onSnapshot callbacks", function(){
     
     let wf;
