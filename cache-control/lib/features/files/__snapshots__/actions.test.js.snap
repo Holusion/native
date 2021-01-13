@@ -192,6 +192,7 @@ Object {
     "projectName": undefined,
     "purge_products": false,
     "slides_control": "default",
+    "watch": true,
   },
   "data": Object {
     "config": Object {},

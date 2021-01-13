@@ -6,5 +6,6 @@ export class WatchChanges extends EventEmitter{
     super();
     this.watch = jest.fn();
     this.close = jest.fn();
+    this.getOnce = jest.fn(()=>Promise.resolve());
   }
 }

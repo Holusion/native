@@ -15,6 +15,7 @@ import {reducers} from ".";
 
 import { getError } from "./logs";
 import { setSignedIn } from "./status";
+import { getWatch, setWatch } from "./conf";
 
 
 
@@ -103,6 +104,7 @@ describe("watchChanges", ()=>{
   })
   test("uses action from setSignedIn", ()=>{
     testSaga(watchChanges, setSignedIn("foo")).next()
+    .select(getWatch).next(true)
     .call(createWatcher, "foo");
   })
 
@@ -123,18 +125,40 @@ describe("watchChanges", ()=>{
     wc.emit("dispatch", {config: {title: "file:///tmp/foo.png"}, files: {"file:///tmp/foo.png": {src: "gs://example.com/foo.png", size: 12, hash:"xxx"}}})
     return p;
   })
-  
+
+  test("can use WatchChanges.getOnce()", ()=>{
+    let wc = new WatchChangesMock();
+    let p = expectSaga(watchChanges, setSignedIn("foo"))
+    .provide([
+      [matchers.call.fn(createWatcher), wc]
+    ])
+    .withReducer(reducers, reducers(initialState, setWatch(false)))
+    .silentRun() //It should not stop before wc emits an error so it will timeout
+    .then(result=>{
+      expect(wc.watch).toHaveBeenCalledTimes(0);
+      expect(wc.getOnce).toHaveBeenCalledTimes(1);
+      expect(wc.close).toHaveBeenCalledTimes(1);
+      expect(result.storeState.data).toHaveProperty("config", {title: "file:///tmp/foo.png"});
+    })
+    
+    wc.emit("dispatch", {config: {title: "file:///tmp/foo.png"}, files: {"file:///tmp/foo.png": {src: "gs://example.com/foo.png", size: 12, hash:"xxx"}}})
+    return p;
+  })
+
   test("Can cancel watcher", ()=>{
     let wc = new WatchChangesMock();
     let channel = createWatchChannel(wc);
     let saga = testSaga(watchChanges, setSignedIn("foo")).next()
+    .select(getWatch).next(true)
     .call(createWatcher, "foo").next(wc)
-    .call(createWatchChannel, wc).next(channel)
+    .call(createWatchChannel, wc, true).next(channel)
     .take(channel);
+
     expect(wc.close).not.toHaveBeenCalled();
 
     saga.finish()
     .isDone();
+
     expect(wc.close).toHaveBeenCalledTimes(1);
   })
 
@@ -143,8 +167,9 @@ describe("watchChanges", ()=>{
     let wc = new WatchChangesMock();
     let channel = createWatchChannel(wc);
     testSaga(watchChanges, setSignedIn("foo")).next()
+    .select(getWatch).next(true)
     .call(createWatcher, "foo").next(wc)
-    .call(createWatchChannel, wc).next(channel)
+    .call(createWatchChannel, wc, true).next(channel)
     .take(channel).next({error: e})
     .put({type: SET_DATA, error: e})
   })

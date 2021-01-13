@@ -3,7 +3,7 @@ jest.mock("../path");
 import fsMock from "filesystem";
 import { testSaga, expectSaga } from 'redux-saga-test-plan';
 
-import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile } from "./conf";
+import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile, getWatch, setWatch } from "./conf";
 import {reducers} from ".";
 import { select } from "redux-saga/effects";
 import { saveFile } from "../readWrite";
@@ -85,5 +85,13 @@ describe("conf reducer", function () {
   test("set passcode to 0000", ()=>{
     let state = reducers(initialState, setPasscode("0000"))
     expect(state.conf).toHaveProperty("passcode", "0000");
+  })
+
+  test("watch defaults to true", ()=>{
+    expect(getWatch(initialState)).toBe(true);
+  })
+  test("watch can be changed to false", ()=>{
+    let state = reducers(initialState, setWatch(false));
+    expect(getWatch(state)).toBe(false);
   })
 });

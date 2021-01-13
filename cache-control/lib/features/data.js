@@ -5,6 +5,7 @@ import {createSelector} from "reselect";
 
 
 import {WatchChanges} from "../WatchChanges";
+import { getWatch } from './conf';
 import { handleSetData } from './files';
 import { INITIAL_LOAD } from './status';
 
@@ -59,16 +60,22 @@ export const getItemsArray = createSelector(
     (ids,items) => ids.map(id => Object.assign({id}, items[id]) ),
 )
 
+/**
+ * simple wrapper around WatchChanges to be called by redux-saga
+ * @param {string} projectName 
+ * @see WatchChanges
+ */
 export function createWatcher(projectName){
   return new WatchChanges({projectName});
 }
 
-export function createWatchChannel(wc) {
+export function createWatchChannel(wc, watch=true) {
   return eventChannel( (emit) => {
     wc.on("error", (err)=> emit({error: err}) );
     wc.on("dispatch", (data)=> emit(data) );
     
-    wc.watch();
+    if(watch) wc.watch();
+    else wc.getOnce();
     return ()=> {
       wc.close();
       wc.removeAllListeners();
@@ -79,8 +86,9 @@ export function createWatchChannel(wc) {
 export function* watchChanges(action) {
   const projectName = action.value;
   if(!projectName || action.error) return;
+  const doWatch = yield select(getWatch);
   const wc = yield call(createWatcher, projectName);
-  const watchChannel = yield call(createWatchChannel, wc);
+  const watchChannel = yield call(createWatchChannel, wc, doWatch);
   try{
     while(true){
       const payload = yield take(watchChannel);

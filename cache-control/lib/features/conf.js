@@ -9,6 +9,7 @@ export const actions = {
     SET_PURGE: "SET_PURGE",
     SET_PASSCODE: "SET_PASSCODE",
     SET_PROJECTNAME: "SET_PROJECTNAME",
+    SET_WATCH: "SET_WATCH",
 }
 export const action_strings = Object.keys(actions).reduce((res, k)=>([...res, actions[k]]),[]);
 
@@ -26,31 +27,34 @@ export default function conf(state = {
     purge_products: false,
     slides_control: "default",
     play_control: "none",
+    watch: true,
 }, action) {
     if(action.error){
         return state;
     }
     switch(action.type) {
-        case INITIAL_LOAD:
-            return Object.assign({}, state, action.conf);
-        case actions.SET_DEFAULT_TARGET:
-            return Object.assign({}, state, {default_target: action.target});
-        case actions.SET_PURGE:
-            return Object.assign({}, state, {purge_products: action.purge});
-        case actions.SET_SLIDES_CONTROL:
-            return Object.assign({}, state, {slides_control: action.control});
-        case actions.SET_PLAY_CONTROL:
-            return Object.assign({}, state, {play_control: action.control});
-        case actions.SET_PROJECTNAME:
-            if(!state.configurableProjectName){
-                console.warn("Trying to modify read-only project name");
-                return state;
-            }
-            return Object.assign({}, state, {projectName: action.projectName});
-        case actions.SET_PASSCODE:
-            return Object.assign({}, state, {passcode: action.passcode});
-        default:
+      case INITIAL_LOAD:
+        return Object.assign({}, state, action.conf);
+      case actions.SET_DEFAULT_TARGET:
+        return Object.assign({}, state, {default_target: action.target});
+      case actions.SET_PURGE:
+        return Object.assign({}, state, {purge_products: action.purge});
+      case actions.SET_SLIDES_CONTROL:
+        return Object.assign({}, state, {slides_control: action.control});
+      case actions.SET_PLAY_CONTROL:
+        return Object.assign({}, state, {play_control: action.control});
+      case actions.SET_PROJECTNAME:
+        if(!state.configurableProjectName){
+            console.warn("Trying to modify read-only project name");
             return state;
+        }
+        return Object.assign({}, state, {projectName: action.projectName});
+      case actions.SET_PASSCODE:
+        return Object.assign({}, state, {passcode: action.passcode});
+      case actions.SET_WATCH:
+        return Object.assign({}, state, {watch: action.watch});
+      default:
+        return state;
     }
 }
 
@@ -75,13 +79,18 @@ export const setPurge = (purge)=>{
     return {type: actions.SET_PURGE, purge: purge};
 }
 
-export const getProjectName = (store)=> store.conf.projectName; 
+export const getProjectName = (state)=> state.conf.projectName; 
 export const setProjectName = (projectName) => {
     return {type: actions.SET_PROJECTNAME, projectName};
 }
 
 export const setPasscode = (passcode) => {
     return {type: actions.SET_PASSCODE, passcode};
+}
+
+export const getWatch = (state) => state.conf.watch;
+export const setWatch = (watch)=>{
+  return {type: actions.SET_WATCH, watch: !!watch};
 }
 
 export const getConf = (state)=>{
