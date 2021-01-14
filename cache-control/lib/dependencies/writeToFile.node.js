@@ -6,7 +6,7 @@ import {firebase} from "@firebase/app";
 import "@firebase/storage";
 
 
-import {FileError} from "../readWrite";
+import {FileError} from "../errors";
 
 export function fetchFile(src, {dest,signal={}}={}){
   if(/^file:\/\//.test(dest)){

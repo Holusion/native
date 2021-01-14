@@ -3,7 +3,7 @@
 import storage from "@react-native-firebase/storage";
 
 
-import {FileError} from "../readWrite";
+import {FileError} from "../errors";
 import {filename} from "../path";
 
 export default async function writeToFile(src, dest){

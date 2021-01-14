@@ -2,7 +2,8 @@ jest.mock("./path");
 import {storagePath} from "./path";
 import fs from "filesystem";
 
-import {loadFile, saveFile, FileError} from "./readWrite";
+import {FileError} from "./errors";
+import {loadFile, saveFile} from "./readWrite";
 
 describe("files readWrite", ()=>{
   it("ensure proper mocks", function(){
@@ -12,19 +13,6 @@ describe("files readWrite", ()=>{
     expect(storagePath()).toEqual("/foo");
   });
 
-  it("create new FileError()", function(){
-    const e = new FileError("foo.js", "some message");
-    expect(e).toHaveProperty("sourceFile", "foo.js");
-    expect(e).toHaveProperty("message", "some message");
-  })
-  it("create new FileError() from Error", function(){
-    let orig =new Error("some message");
-    orig.code ="ENOENT";
-    const e = new FileError("foo.js", orig);
-    expect(e).toHaveProperty("sourceFile", "foo.js");
-    expect(e).toHaveProperty("message", "some message");
-    expect(e).toHaveProperty("code", "ENOENT");
-  })
 
   it("properly locks read/write", function(){
     saveFile("foo.txt", "hello world synchronized");

@@ -1,11 +1,13 @@
 import {call, cancelled, put, select} from "redux-saga/effects";
-import {CANCEL} from '@redux-saga/symbols'
+import {CANCEL} from '@redux-saga/symbols';
+
+import { uploadFile } from "upload";
+
 import { getConfig, getItemsArray } from "./data";
 
 import { getHash, getUncachedFiles } from "./files";
 import { getActiveProduct } from "./products";
 import { setSynchronized } from "./status";
-import { uploadFile } from "../upload";
 import { getConf } from "./conf";
 import { error, info, warn } from "./logs";
 import { filename } from "../path";

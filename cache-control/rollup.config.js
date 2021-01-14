@@ -3,6 +3,14 @@ import alias from '@rollup/plugin-alias';
 import commonjs from "@rollup/plugin-commonjs";
 import babel from '@rollup/plugin-babel';
 import requireJSON from "@rollup/plugin-json";
+
+function replacements (type){
+	return [
+		"deviceInfo", "filesystem", "firebase", "writeToFile", "upload"
+	].map(n=> `./lib/dependencies/${n}.${type}.js`)
+}
+
+console.log("Upload : ", replacements("native"));
 export default [
 	{
 		input: "lib/index.js",
@@ -11,12 +19,7 @@ export default [
 			"fs", "path", "https", "events"
 		],
 		plugins: [
-			alias({entries:[
-				{find: "deviceInfo", replacement: "./lib/dependencies/deviceInfo.node.js"},
-				{find: "filesystem", replacement: "./lib/dependencies/filesystem.node.js"},
-				{find: "firebase", replacement: "./lib/dependencies/firebase.node.js"},
-				{find: "writeToFile", replacement: "./lib/dependencies/writeToFile.node.js"},
-			]}),
+			alias({entries: replacements("node")}),
 			resolve({mainFields:["main", "module"]}),
 			commonjs(),
 			requireJSON(),
@@ -41,12 +44,7 @@ export default [
 			"events" // react-native provides this module
 		],
 		plugins: [
-			alias({entries:[
-				{find: "deviceInfo", replacement: "./lib/dependencies/deviceInfo.native.js"},
-				{find: "filesystem", replacement: "./lib/dependencies/filesystem.native.js"},
-				{find: "firebase", replacement: "./lib/dependencies/firebase.native.js"},
-				{find: "writeToFile", replacement: "./lib/dependencies/writeToFile.native.js"},
-			]}),
+			alias({entries: replacements("native")}),
 			resolve({mainFields:["main", "module"]}),
 			commonjs(),
 			babel({

@@ -16,7 +16,7 @@
     "electron": ">=8"
   },
   "author": "Sebastien Dumetz <s.dumetz@holusion.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@babel/preset-env": "^7.10.2",
     "@rollup/plugin-alias": "^3.1.1",

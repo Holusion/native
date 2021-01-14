@@ -1,7 +1,7 @@
 import fs from "filesystem";
 
 import { mediasPath} from "../path";
-import { FileError} from "../readWrite";
+import { FileError} from "../errors";
 
 import {getCacheFiles} from "./cache";
 
