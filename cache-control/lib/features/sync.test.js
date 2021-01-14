@@ -66,8 +66,6 @@ describe("synchronizeProduct", ()=>{
     .isDone();
   })
 
-
-
   describe("upload ", ()=>{
     let saga, res = {
       ok: true,

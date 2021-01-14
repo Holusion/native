@@ -7,10 +7,9 @@ import requireJSON from "@rollup/plugin-json";
 function replacements (type){
 	return [
 		"deviceInfo", "filesystem", "firebase", "writeToFile", "upload"
-	].map(n=> `./lib/dependencies/${n}.${type}.js`)
+	].map(n=> ({find: n, replacement: `./lib/dependencies/${n}.${type}.js`}));
 }
 
-console.log("Upload : ", replacements("native"));
 export default [
 	{
 		input: "lib/index.js",

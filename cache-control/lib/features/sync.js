@@ -69,7 +69,7 @@ export function* synchronizeProduct(){
     });
     playlist = yield call([res, res.json]);
     if(!res.ok){
-      let err = new Error(`Failed to fetch playlist (${playlist.message ||res.statusCode})`);
+      let err = new Error(`Failed to fetch playlist (${playlist.message})`);
       throw err;
     }else{
       /* istanbul ignore next */
