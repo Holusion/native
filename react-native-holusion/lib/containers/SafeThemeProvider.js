@@ -16,7 +16,8 @@ import { RequiredLoadWrapper } from "./LoadWrapper";
 
 
 export function ThemeProvider({
-  children
+  children,
+  wrapper: Wrapper = React.Fragment
 }){
   const [loadedFonts, setLoadedFonts] = useState([]);
   const {fonts=[], theme} = useSelector(state=>state.data.config);
@@ -62,8 +63,12 @@ export function ThemeProvider({
   }, [fonts, loadedFonts, cachedFiles, dispatch]);
 
   return (<StyleProvider style={getTheme(Object.assign({}, default_vars, allFontsLoaded?theme: {}))}>
-    <RequiredLoadWrapper>
+    <Wrapper>
         {children}
-    </RequiredLoadWrapper>
+    </Wrapper>
     </StyleProvider>)
+}
+
+export function SafeThemeProvider(props){
+  return <ThemeProvider wrapper={RequiredLoadWrapper} {...props}/>
 }

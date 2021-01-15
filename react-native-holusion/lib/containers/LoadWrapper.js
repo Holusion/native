@@ -108,6 +108,18 @@ export function RequiredLoadWrapper({children}){
 }
 
 /**
+ * Hoc for <RequiredLoadWrapper/>
+ * @param {*} param0 
+ */
+export function ifRequiredLoaded(Component){
+  return function RequiredLoaded(props){
+    return<RequiredLoadWrapper>
+      <Component {...props}/>
+    </RequiredLoadWrapper>
+  }
+}
+
+/**
  * Like <RequiredLoadWrapper/> but won't trigger again on  future store updates
  * @param {*} param0 
  * @see RequiredLoadWrapper
