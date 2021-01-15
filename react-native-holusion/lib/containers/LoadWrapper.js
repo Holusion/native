@@ -15,15 +15,6 @@ export function LoadInfo(){
   const connected = useSelector(isConnected);
   const signedIn = useSelector(isSignedIn);
   return <Container>
-    <Header>
-      <Left/>
-      <Body/>
-      <Right>
-        <Link to="/Settings">
-          <NetworkIcon/>
-        </Link>
-      </Right>
-    </Header>
     <Content contentContainerStyle={loadStyles.container}>
       <H1 style={loadStyles.title}>Du contenu requis n'a pas encore été chargé</H1>
       <Spinner color="#007aff"/>
