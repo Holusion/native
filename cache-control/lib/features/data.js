@@ -1,13 +1,13 @@
 'use strict';
 import { eventChannel } from '@redux-saga/core';
-import { select, take, call, put, cancelled } from "redux-saga/effects";
+import { select, take, call, put } from "redux-saga/effects";
 import {createSelector} from "reselect";
 
 
 import {WatchChanges} from "../WatchChanges";
-import { getWatch } from './conf';
+import { getProjectName, getWatch } from './conf';
 import { handleSetData } from './files';
-import { INITIAL_LOAD } from './status';
+import { INITIAL_LOAD, SET_SIGNEDIN } from './status';
 
 export const SET_DATA = "SET_DATA";
 
@@ -74,8 +74,11 @@ export function createWatchChannel(wc, watch=true) {
     wc.on("error", (err)=> emit({error: err}) );
     wc.on("dispatch", (data)=> emit(data) );
     
-    if(watch) wc.watch();
-    else wc.getOnce();
+    if(watch) {
+      wc.watch();
+    }else {
+      wc.getOnce();
+    }
     return ()=> {
       wc.close();
       wc.removeAllListeners();
@@ -84,9 +87,10 @@ export function createWatchChannel(wc, watch=true) {
 }
 
 export function* watchChanges(action) {
-  const projectName = action.value;
-  if(!projectName || action.error) return;
+  if(action.error) return;
+  const projectName = action.type === SET_SIGNEDIN? action.value : yield select(getProjectName);
   const doWatch = yield select(getWatch);
+  if(!projectName) return;
   const wc = yield call(createWatcher, projectName);
   const watchChannel = yield call(createWatchChannel, wc, doWatch);
   try{

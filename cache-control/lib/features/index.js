@@ -78,7 +78,7 @@ export function* rootSaga(){
   yield all([
     takeLatest(conf_actions.SET_PROJECTNAME, signIn),
     takeLatest(SET_DEPENDENCIES, handleDownloads),
-    takeLatest(SET_SIGNEDIN, watchChanges),
+    takeLatest([SET_SIGNEDIN, conf_actions.SET_WATCH], watchChanges),
     takeLatest([SET_ACTIVE_PRODUCT, SET_CACHED_FILE, conf_actions.SET_PURGE], synchronizeProduct),
     debounce(500, [
       SET_DATA, 

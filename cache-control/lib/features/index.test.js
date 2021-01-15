@@ -9,15 +9,14 @@ import {app as appMock, auth as autoMock} from "firebase";
 
 import {loadLocalSaga, reducers, rootSaga, sagaStore, saveCache, dataFile, getPersistentState} from ".";
 import {SET_DATA, watchChanges, createWatcher} from "./data";
-import {setConf, actions, action_strings as conf_actions_names, getProjectName} from "./conf";
+import {setConf, actions, action_strings as conf_actions_names, getProjectName, getWatch, setProjectName} from "./conf";
 
 import { signIn, doSignIn } from "./signIn";
 import { storagePath } from "../path";
-import { handleSetData, SET_CACHED_FILE, SET_DEPENDENCIES, SET_FILES } from "./files";
+
 import {makeFileRef} from "./files/_mock_fileRef";
-import { INITIAL_LOAD, isLoaded, setSignedIn, SET_SIGNEDIN } from "./status";
+import { INITIAL_LOAD, isLoaded, setSignedIn } from "./status";
 import { saveFile } from "../readWrite";
-import { warn } from "./logs";
 
 afterEach(()=>{
   fsMock._reset();
@@ -38,7 +37,7 @@ describe("rootSaga", ()=>{
 
   test("will reset change listeners on re-auth", ()=>{
     return expectSaga(rootSaga)
-    .withReducer(reducers)
+    .withReducer(reducers, )
     .provide([
       [matchers.call.fn(loadLocalSaga), undefined],
     ])

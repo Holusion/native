@@ -218,6 +218,7 @@ describe("WatchChanges", function(){
     })
     it("will warn if called multiple times without resolving", ()=>{
       const warnMock = jest.spyOn(global.console, "warn");
+      warnMock.mockImplementationOnce(()=>{});
       const wf = new WatchChanges({projectName: "foo"});
       wf.getOnce();
       expect(warnMock).not.toHaveBeenCalled();

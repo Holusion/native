@@ -15,7 +15,7 @@ import {reducers} from ".";
 
 import { getError } from "./logs";
 import { setSignedIn } from "./status";
-import { getWatch, setWatch } from "./conf";
+import { getProjectName, getWatch, setProjectName, setWatch } from "./conf";
 
 
 
@@ -90,7 +90,7 @@ describe("setData()", ()=>{
 })
 
 describe("watchChanges", ()=>{
-  const initialState = reducers(undefined, {});
+  const initialState = reducers(undefined, setProjectName("foo"));
 
   test("WatchChanges mock is an EventEmitter", (done)=>{
     //Requirement for other tests
@@ -105,6 +105,13 @@ describe("watchChanges", ()=>{
   test("uses action from setSignedIn", ()=>{
     testSaga(watchChanges, setSignedIn("foo")).next()
     .select(getWatch).next(true)
+    .call(createWatcher, "foo")
+    .finish();
+  })
+  test("can be triggered by other actions", ()=>{
+    testSaga(watchChanges, setWatch(false)).next()
+    .select(getProjectName).next("foo")
+    .select(getWatch).next(true)
     .call(createWatcher, "foo");
   })
 
@@ -114,7 +121,7 @@ describe("watchChanges", ()=>{
     .provide([
       [matchers.call.fn(createWatcher), wc]
     ])
-    .withReducer(reducers)
+    .withReducer(reducers, initialState)
     .silentRun() //It should not stop before wc emits an error so it will timeout
     .then(result=>{
       expect(wc.watch).toHaveBeenCalledTimes(1);
@@ -185,7 +192,7 @@ describe("watchChanges", ()=>{
     .provide([
       [matchers.call.fn(createWatcher), wc]
     ])
-    .withReducer(reducers)
+    .withReducer(reducers, initialState)
     .silentRun(10) //Will cancel the saga after 1ms
     return saga
     .then(result=>{
