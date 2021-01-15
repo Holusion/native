@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
 import { Link } from "@react-navigation/native";
 import {BgIcon, Bytes} from "../../components";
-import { AppConfiguration, DownloadState } from "../../containers";
+import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
 import { useLocalFiles, useLocalSize } from "./CacheScreen";
 
