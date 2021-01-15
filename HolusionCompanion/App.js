@@ -15,7 +15,6 @@ import {sagaStore} from "@holusion/cache-control";
 import { screens, NetworkIcon, netScan, ThemeProvider, RequiredLoadWrapper } from '@holusion/react-native-holusion';
 
 
-
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -35,7 +34,6 @@ export default class App extends React.Component{
       appState: AppState.currentState,
     }
   }
-
 
 
   componentDidMount(){
@@ -78,9 +76,7 @@ export default class App extends React.Component{
                 <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
                   <Stack.Screen name="Home" component={screens.HomeScreen}/>
                   <Stack.Screen name="List" component={screens.ListScreen}/>
-                  <Stack.Screen name="Connect" component={screens.ConnectScreen}/>
                   <Stack.Screen name="Object" options={{ headerShown: false }} component={screens.ObjectScreen}/>
-                  <Stack.Screen name="Synchronize" component={screens.SynchronizeScreen}/>
                   <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
                   <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={screens.ContactScreen} />
                   <Stack.Screen name="404" component={screens.NotFoundScreen}/>
@@ -90,11 +86,4 @@ export default class App extends React.Component{
         </Provider> : <Container><Content><Spinner/></Content></Container>}
     </Root>
   }
-}
-
-function Home(){
-  return (<RequiredLoadWrapper>
-    <Stack.Navigator mode="card" screenOptions={screenOptions} >
-    </Stack.Navigator>
-  </RequiredLoadWrapper>);
 }
