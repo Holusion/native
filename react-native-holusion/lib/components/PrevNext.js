@@ -17,13 +17,13 @@ class PrevNext extends React.Component{
     render(){
         return (<View style={this.props.style.view} pointerEvents="box-none">
             <View style={{opacity: this.props.prev? 1 : 0}} pointerEvents={this.props.prev?"auto":"none"}>
-                <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev}  onPress={this.props.prev}>
+                <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} disabled={!this.props.prev} onPress={this.props.prev}>
                     <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-back"/>
                 </TouchableOpacity>
             </View>
             {this.props.children}
             <View style={{opacity: this.props.next? 1 : 0, zIndex:this.props.next? 1:-1}} pointerEvents={this.props.next?"auto":"none"}>
-                <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} onPress={this.props.next}>
+                <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} disabled={!this.props.next} onPress={this.props.next}>
                     <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-forward"/>
                 </TouchableOpacity>
             </View>
