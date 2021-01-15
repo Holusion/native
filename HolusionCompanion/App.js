@@ -12,7 +12,7 @@ import { AppState, StatusBar } from "react-native"
 
 import {sagaStore} from "@holusion/cache-control";
 
-import { screens, NetworkIcon, netScan, ThemeProvider, RequiredLoadWrapper } from '@holusion/react-native-holusion';
+import { screens, NetworkIcon, netScan, ThemeProvider, ifRequiredLoaded } from '@holusion/react-native-holusion';
 
 
 enableScreens();
@@ -25,6 +25,11 @@ const screenOptions = ({navigation})=>{
     headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
   };
 }
+
+
+const HomeScreen = ifRequiredLoaded(screens.HomeScreen);
+const ListScreen = ifRequiredLoaded(screens.ListScreen);
+const ObjectScreen = ifRequiredLoaded(screens.ObjectScreen);
 
 export default class App extends React.Component{
   constructor(props){
@@ -74,15 +79,15 @@ export default class App extends React.Component{
             <ThemeProvider>
               <NavigationContainer>
                 <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
-                  <Stack.Screen name="Home" component={screens.HomeScreen}/>
-                  <Stack.Screen name="List" component={screens.ListScreen}/>
-                  <Stack.Screen name="Object" options={{ headerShown: false }} component={screens.ObjectScreen}/>
+                  <Stack.Screen name="Home" component={HomeScreen}/>
+                  <Stack.Screen name="List" component={ListScreen}/>
+                  <Stack.Screen name="Object" options={{ headerShown: false }} component={ObjectScreen}/>
                   <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
                   <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={screens.ContactScreen} />
                   <Stack.Screen name="404" component={screens.NotFoundScreen}/>
                 </Stack.Navigator>
               </NavigationContainer>
-            </ThemeProvider> 
+            </ThemeProvider>
         </Provider> : <Container><Content><Spinner/></Content></Container>}
     </Root>
   }
