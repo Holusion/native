@@ -13,7 +13,6 @@ function AppConfiguration(props){
     const [name, setName] = useState(props.projectName);
     const [passcode, setPasscode] = useState(props.passcode);
 
-    console.log("watch : ", props.watch)
     return (<React.Fragment>
 
         <ListItem icon>

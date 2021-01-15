@@ -17,10 +17,21 @@ export function LinkPath({to, style={}, ...rest}){
   return <Path onPress={onPress} style={{zIndex:2, ...style}} {...rest} />
 }
 
+function LinkBtn({to, style={}, children}){
+  const navigation = useNavigation();
+  const {screen, params} = useParsedLink({to});
+  const onPress = ()=>{
+    navigation.navigate(screen, params)
+  }
+  return (<TouchableOpacity style={style} onPress={onPress}>
+    {children}
+  </TouchableOpacity>)
+}
+
 export function LinksView(props){
   const navigation = useNavigation();
     const buttons = (props.items || [])
-    .filter(item => item.title && typeof item.x !== "undefined" && typeof item.y !== "undefined")
+    .filter(item => !item.d && typeof item.x !== "undefined" && typeof item.y !== "undefined")
     .map((item, index)=>{
         const color = item.color || "#00000000";
         const borders = {
@@ -44,9 +55,9 @@ export function LinksView(props){
             left: (typeof item.x == "number")? item.x : parseInt(item.x),
             top: (typeof item.y == "number")? item.y : parseInt(item.y)
         }
-        return (<TouchableOpacity key={index} style={style} onPress={()=> navigation.navigate(name)}>
-          <Text style={{color}}>{item.title}</Text>
-        </TouchableOpacity>)
+        return <LinkBtn key={index} style={style} to={item.name}>
+          <Text style={{color}}>{item.title || item.name}</Text>
+        </LinkBtn>
     })
 
     const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
