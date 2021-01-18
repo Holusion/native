@@ -12,3 +12,16 @@ export class FileError extends Error {
     return `Error from ${this.sourceFile} : ${this.message}`
   }
 }
+
+/**
+ * A reasonable AbortError mock (which is normally constryucted from DOMException an thrown by `fetch`)
+ */
+export class AbortError extends Error {
+  constructor(message="The operation was aborted."){
+    super(message);
+    this.name = "AbortError";
+  }
+  toString(){
+    return `${this.name}: ${this.message}`;
+  }
+}

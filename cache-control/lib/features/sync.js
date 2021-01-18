@@ -1,7 +1,7 @@
 import {call, cancelled, put, select} from "redux-saga/effects";
 import {CANCEL} from '@redux-saga/symbols';
 
-import { uploadFile } from "upload";
+import { uploadFile } from "../upload";
 
 import { getConfig, getItemsArray } from "./data";
 

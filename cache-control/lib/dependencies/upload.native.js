@@ -1,6 +1,7 @@
 import RNFS from "react-native-fs";
-import {FileError} from "../errors";
+import {FileError, AbortError} from "../errors";
 /**
+ * @deprecated see universal "upload" module : RNFS.uploadFiles() doesn't seem to work better (or at all)
  * uses `uploadFiles()` from react-native-fs because the `fetch()` polyfill tends to use a lot of RAM.
  * @param {string} url - target url (eg. http://192.168.1.10) 
  * @param {object} file - a file reference
@@ -17,15 +18,14 @@ export async function uploadFile(url, file, signal) {
       method: "POST",
       files: [{
         filename: file.name,
-        filepath: file.uri,
+        filepath: file.uri
       }],
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data',
       },
     })
 
-    //This is some crazy-ass workflow but oculdn't find a better way to set up cancellation
+    //This is some crazy-ass workflow but couldn't find a better way to set up cancellation
     let result, isPending = true;
     try{
       result = await Promise.race([
@@ -34,8 +34,8 @@ export async function uploadFile(url, file, signal) {
           (function waitFor(){
             if(!isPending) return;
             else if(signal && signal.aborted) {
-              RNFS.stopUpload(jobId)
-              .finally(()=> { reject(new DOMException("The operation was aborted.", "AbortError")) });
+              RNFS.stopUpload(jobId);
+              reject(new AbortError());
             }
             else if(signal) setTimeout(waitFor, 50);
           })()
@@ -49,11 +49,11 @@ export async function uploadFile(url, file, signal) {
       try{
         body = JSON.parse(result.body);
       }catch(e){
-        body = {};
+        body = result.body;
       }
       let msg;
       if(body && body.message) msg = ((typeof body.message == 'object') ? JSON.stringify(body.message) : body.message)
-      else msg = `Upload failed with code ${result.statusCode}`
+      else msg = `Upload failed (${result.statusCode}) : ${body}`
       throw new FileError(file.uri, msg);
     }
     if (file.hash) {

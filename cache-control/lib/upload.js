@@ -1,4 +1,4 @@
-import {FileError} from "../errors";
+import {FileError} from "./errors";
 
 /**
  * 

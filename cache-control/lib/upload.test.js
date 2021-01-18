@@ -1,7 +1,7 @@
 'use strict';
 
 import fsMock from "filesystem";
-import { uploadFile } from "./upload.node";
+import { uploadFile } from "./upload";
 
 beforeEach(()=>{
   fetch.resetMocks();

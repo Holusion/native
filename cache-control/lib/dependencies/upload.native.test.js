@@ -2,6 +2,7 @@
 
 jest.mock("react-native-fs");
 import RNFS from "react-native-fs";
+import { AbortError } from "../errors";
 import { uploadFile } from "./upload.native";
 
 beforeEach(()=>{
@@ -16,7 +17,7 @@ describe("files uploadFile() - native", ()=>{
     it("handles abort errors", async ()=>{
       const a = new AbortController();
       RNFS.uploadFiles.mockImplementationOnce(()=>  ({jobId:10, promise: new Promise(()=>{})}));
-      let r = expect( uploadFile("http://example.com", {uri:"/path/to/file"}, a.signal)).rejects.toThrow(DOMException);
+      let r = expect( uploadFile("http://example.com", {uri:"/path/to/file"}, a.signal)).rejects.toThrow(AbortError);
       a.abort();
       await r;
       expect(RNFS.stopUpload).toHaveBeenCalledTimes(1);
@@ -32,7 +33,7 @@ describe("files uploadFile() - native", ()=>{
     })
     it("throw an error on HTTP 400 response with invalid body", async ()=>{
       RNFS.uploadFiles.mockImplementationOnce(()=>({jobId:0, promise: Promise.resolve({statusCode: 400})}))
-      await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("Upload failed with code 400");
+      await expect( uploadFile("http://example.com", {uri:"/path/to/file"})).rejects.toThrow("Upload failed (400) : undefined");
     })
   })
 
