@@ -1,6 +1,6 @@
 {
   "name": "@holusion/react-native-holusion",
-  "version": "3.9.4",
+  "version": "3.9.5",
   "description": "react native api for holusion app",
   "license": "ISC",
   "main": "index.js",
@@ -26,7 +26,7 @@
     ]
   },
   "dependencies": {
-    "@holusion/cache-control": "^3.1.0",
+    "@holusion/cache-control": "^3.1.1",
     "Base64": "^1.0.2",
     "prop-types": "^15.7.2",
     "react-native-markdown-display": "^6.1.6",

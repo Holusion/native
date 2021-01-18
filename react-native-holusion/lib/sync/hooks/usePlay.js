@@ -27,7 +27,7 @@ export function usePlay(video, targetUrl){
           try{
             let d = await r.json();
             console.log("Request body : ", d);
-            msg = `Request failed with status ${r.status} : ${d.message || r.statusText}`;
+            msg = `Request failed with status ${r.status} : ${typeof d.message == "string"? d.message : r.statusText}`;
           }catch(e){
             msg = `Request failed with status ${r.status} : ${r.statusText}`
           }finally{

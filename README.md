@@ -62,6 +62,23 @@ au début de la méthode `didFinishLaunchingWithOptions` :
     [FIRApp configure];
 ```
 
+### Mettre en place les "background download" de RNFS
+
+> Depuis [react-native-fs README](https://github.com/itinance/react-native-fs#background-downloads-tutorial-ios)
+Dans`ios/<nom_du_projet>/AppDelegate.m` :
+
+```
+#import <RNFSManager.h>
+
+...
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+{
+  [RNFSManager setCompletionHandlerForIdentifier:identifier completionHandler:completionHandler];
+}
+```
+
+### Accélérer cocoapods
 
 Juste en dessous de la première ligne `platform :ios, '9.0'`, on peut ajouter : 
 
