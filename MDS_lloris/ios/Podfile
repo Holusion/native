@@ -47,13 +47,3 @@ target 'MDS_lloris' do
 
   use_native_modules!
 end
-
-target 'MDS_lloris-tvOS' do
-  # Pods for MDS_lloris-tvOS
-
-  target 'MDS_lloris-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

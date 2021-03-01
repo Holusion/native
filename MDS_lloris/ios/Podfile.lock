@@ -403,7 +403,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - boost-for-react-native
     - BoringSSL-GRPC
     - Crashlytics
@@ -496,9 +496,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
-  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  Crashlytics: d3e5090419ddee1003192c98ac0e6dfdb1dba266
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
+  Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
   FBLazyVector: feb35a6b7f7b50f367be07f34012f34a79282fa3
   FBReactNativeSpec: 51477b84b1bf7ab6f9ef307c24e3dd675391be44
   Firebase: c35912a5c160193dc423f260dac3f167a1a795ab
@@ -532,8 +532,8 @@ SPEC CHECKSUMS:
   React-jsi: ca921f4041505f9d5197139b2d09eeb020bb12e8
   React-jsiexecutor: 8dfb73b987afa9324e4009bdce62a18ce23d983c
   React-jsinspector: d15478d0a8ada19864aa4d1cc1c697b41b3fa92f
-  react-native-netinfo: bd4c115afdf0821b8ddb6c59ef3ddc5f0a7e8ad0
-  react-native-zeroconf: 46f7a94057932275149ba0f28bb1efc7eeedbb90
+  react-native-netinfo: fa32a5bb986924e9be82a261c262039042dde81e
+  react-native-zeroconf: d6eb21d255e1b0f550bd4bd8b6b27b29a6bb7df0
   React-RCTActionSheet: 7369b7c85f99b6299491333affd9f01f5a130c22
   React-RCTAnimation: d07be15b2bd1d06d89417eb0343f98ffd2b099a7
   React-RCTBlob: 8e0b23d95c9baa98f6b0e127e07666aaafd96c34
@@ -550,6 +550,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: b242cc132ba96c257343d1a2ed3c072e94fc5560
+PODFILE CHECKSUM: c0c4dfd70371890801264519810b73213b755106
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.3
