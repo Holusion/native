@@ -12,7 +12,7 @@
     "build": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
   },
   "dependencies": {
-    "@holusion/react-native-holusion": "^3.9.5",
+    "@holusion/react-native-holusion": "^3.10.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",
