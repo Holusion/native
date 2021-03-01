@@ -10,6 +10,9 @@ export default (variables /* : * */ = variable) => {
           fontFamily: variables.titleFontfamily,
           fontSize: variables.titleFontSize,
         },
+        header: {
+          backgroundColor: variables.headerStyle,
+        },
         back: {
           fontFamily: variables.titleFontfamily,
           fontSize: variables.titleFontSize,
