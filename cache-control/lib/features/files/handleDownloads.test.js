@@ -5,10 +5,11 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 
 import writeToFile from "writeToFile";
 
-import {handleDownloads, schedule_downloads, REQUEST_DOWNLOAD, do_download} from "./handleDownloads";
+import {handleDownloads, schedule_downloads, REQUEST_DOWNLOAD, do_download, DO_DOWNLOAD} from "./handleDownloads";
 import { reducers } from "..";
 import { SET_DEPENDENCIES, setDependencies, SET_CACHED_FILE, isCached, getRequiredFiles, getOtherSize, getOtherFiles, getFiles, setHash} from "./actions";
 import { makeFileRef } from "./_mock_fileRef";
+import { info } from "../logs";
 
 let state, requests, dispatchs;
 
@@ -77,6 +78,7 @@ describe("do_download", ()=>{
     testSaga(do_download).next()
     .take(REQUEST_DOWNLOAD).next(requests[0])
     .select(isCached, requests[0].dest, requests[0].hash).next(false)
+    .put(info(DO_DOWNLOAD, `Téléchargement de foo.png`)).next()
     .call(writeToFile, requests[0].src, requests[0].dest).next()
     .put(dispatchs[0]).next()
     .finish()
@@ -86,10 +88,12 @@ describe("do_download", ()=>{
     testSaga(do_download).next()
     .take(REQUEST_DOWNLOAD).next(requests[0])
     .select(isCached, requests[0].dest, requests[0].hash).next(false)
+    .put(info(DO_DOWNLOAD, `Téléchargement de foo.png`)).next()
     .call(writeToFile, requests[0].src, requests[0].dest).next()
     .put(dispatchs[0]).next()
     .take(REQUEST_DOWNLOAD).next(requests[1])
     .select(isCached, requests[1].dest, requests[1].hash).next(false)
+    .put(info(DO_DOWNLOAD, `Téléchargement de bar.mp4`)).next()
     .call(writeToFile, requests[1].src, requests[1].dest).next()
     .put(dispatchs[1]).next()
     .finish()

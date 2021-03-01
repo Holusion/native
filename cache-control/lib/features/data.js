@@ -6,7 +6,7 @@ import {createSelector} from "reselect";
 
 import {WatchChanges} from "../WatchChanges";
 import { getProjectName, getWatch } from './conf';
-import { handleSetData } from './files';
+import { handleSetData } from './files/handleSetData';
 import { INITIAL_LOAD, SET_SIGNEDIN } from './status';
 
 export const SET_DATA = "SET_DATA";

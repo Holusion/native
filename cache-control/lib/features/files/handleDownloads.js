@@ -2,11 +2,14 @@
 import { put, takeLatest, take, takeEvery, cancelled, select, call, fork } from "redux-saga/effects";
 
 import writeToFile from "writeToFile";
+import { info } from "../logs";
 
 import {SET_DEPENDENCIES, getRequiredFiles, getOtherFiles, setHash, SET_CACHED_FILE, getFiles, isCached} from "./actions";
 
-export const REQUEST_DOWNLOAD = "REQUEST_DOWNLOAD";
 
+//Used only internally. Otherwise it would be defined in ./actions.js
+export const REQUEST_DOWNLOAD = "REQUEST_DOWNLOAD";
+export const DO_DOWNLOAD = "DO_DOWNLOAD";
 /**
  * Meant to be used with takeLatest(SET_DEPENDENCIES, handleDownload)
  * */
@@ -31,6 +34,7 @@ export function* do_download(){
     const {src, dest, hash} = yield take(REQUEST_DOWNLOAD);
     //Check if file was downloaded between the time request was issued and now
     if( !( yield select(isCached, dest, hash) )){
+      yield put(info(DO_DOWNLOAD, `Téléchargement de ${dest.split("/").slice(-1)[0]}`));
       yield call(writeToFile, src, dest);
     }
     yield put(setHash(dest, hash));
