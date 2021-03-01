@@ -1,29 +1,26 @@
 
-import React from "react";
+import React, {memo} from "react";
 import PropTypes from "prop-types";
 import {View} from "react-native";
 import {BaseView, WikiView} from "../../components";
+import { useDuration } from "../../sync/hooks";
 
-export default class ObjectView extends React.PureComponent {
-  static propTypes = {
-    item: PropTypes.object.isRequired,
-    views: PropTypes.object,
+
+function ObjectView({item, width="100%", views={Base: BaseView, Wiki: WikiView}}){
+  useDuration(item.duration);
+  let layout = item.layout || "Base";
+  let View_component = views[layout];
+  if(!View_component){
+      console.warn(`No view provided for layout ${layout}`);
+      View_component = views["Base"];
   }
-  static defaultProps = {
-    views: {
-      Base: BaseView,
-      Wiki: WikiView,
-    }
-  }
-  render(){
-      let layout = this.props.item.layout || "Base";
-      let View_component = this.props.views[layout];
-      if(!View_component){
-          console.warn(`No view provided for layout ${layout}`);
-          View_component = this.props.views["Base"];
-      }
-      return (<View style={{width:this.props.width}}>
-        <View_component active={true} {...this.props.item} />
-      </View>)
-  }
+  return (<View style={{width:width}}>
+    <View_component active={true} {...item} />
+  </View>)
 }
+ObjectView.propTypes = {
+  item: PropTypes.object.isRequired,
+  views: PropTypes.object,
+}
+
+export default memo(ObjectView);
