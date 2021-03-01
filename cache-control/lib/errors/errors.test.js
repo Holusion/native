@@ -1,5 +1,5 @@
 
-import {FileError} from ".";
+import {AbortError, FileError} from ".";
 
 describe("FileError", ()=>{
 
@@ -24,4 +24,16 @@ describe("FileError", ()=>{
     expect(e.toString()).toEqual(str);
     expect(`${e}`).toEqual(str);
   })
+})
+
+describe("AbortError", ()=>{
+  it("creates an acceptable AbortError", ()=>{
+    const e = new AbortError();
+    expect(e.name).toEqual("AbortError");
+    expect(e.toString()).toMatch(/AbortError: .+/);
+  });
+  it("picks up a custom message", ()=>{
+    const e = new AbortError("Fetch is aborted");
+    expect(e.toString()).toMatch("AbortError: Fetch is aborted");
+  });
 })
