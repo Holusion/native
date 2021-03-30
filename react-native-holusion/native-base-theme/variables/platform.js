@@ -334,5 +334,12 @@ export default {
   // Custom variables
   fontFamilyH1: this.titleFontfamily,
   fontFamilyH2: this.titleFontfamily,
-  cardTitleColor: "#FFFFFFFF"
+  cardTitleColor: "#FFFFFF",
+
+  descriptionBackground: "#f1f1f1",
+  descriptionWidth: 34,
+  descriptionHeight: 100,
+  descriptionRight: 0,
+  descriptionTop: 0,
+
 };

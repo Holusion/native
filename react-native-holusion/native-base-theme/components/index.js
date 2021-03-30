@@ -54,6 +54,7 @@ import playPauseTheme from "./PlayPause";
 import markdownTheme from "./Markdown";
 import progressTheme from "./Progress";
 import categoryNavigatorTheme from "./CategoryNavigator";
+import baseViewTheme from "./BaseView";
 export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
@@ -75,6 +76,9 @@ export default (variables /* : * */ = variable) => {
     },
     "Holusion.CategoryNavigator": {
       ...categoryNavigatorTheme(variables)
+    },
+    "Holusion.BaseView": {
+      ...baseViewTheme(variables)
     },
     /* Nativebase components */
     'NativeBase.Left': {
