@@ -22,7 +22,7 @@
       "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!react-native|@react-navigation/stack|@react-native-community/.*|@codler/react-native-keyboard-aware-scroll-view|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
+      "node_modules/(?!react-native|@react-navigation/stack|@react-native-community/.*|@codler/react-native-keyboard-aware-scroll-view|@react-native-picker/picker|native-base-shoutem-theme|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
     ]
   },
   "dependencies": {
