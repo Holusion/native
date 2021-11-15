@@ -1,4 +1,5 @@
 import React from "react";
+import {Text} from "native-base";
 import { ErrorHandler, withErrorHandler } from "./ErrorHandler";
 
 import { render, fireEvent, act } from '@testing-library/react-native'
@@ -6,6 +7,11 @@ import { render, fireEvent, act } from '@testing-library/react-native'
 function Err(props){
   throw new Error("Error message");
 }
+function Ok({message="OK"}){
+  return <Text testID="OK">{message}</Text>;
+}
+
+
 describe("Error Boundaries", function(){
   let consoleMock;
   beforeEach(()=>{
@@ -17,7 +23,17 @@ describe("Error Boundaries", function(){
   })
 
   describe("ErrorHandler", function(){
-  
+    test("renders child component", function(){
+      let res = render(<ErrorHandler><Ok/></ErrorHandler>);
+      expect(res.queryByTestId("OK")).toBeTruthy();
+    });
+    test("render children", function(){
+      let res = render(<ErrorHandler>
+        <Ok/>
+        <Ok/>
+      </ErrorHandler>);
+      expect(res.queryAllByTestId("OK")).toHaveProperty("length", 2);
+    });
     test("catch errors in children", function(){
       let res = render(<ErrorHandler>
         <Err></Err>
@@ -29,6 +45,13 @@ describe("Error Boundaries", function(){
   });
   
   describe("withErrorHandler", function(){
+    test("renders original component", function(){
+      let C = withErrorHandler(Ok);
+      let res = render(<C message="foo" />);
+      let comp = res.queryByTestId("OK");
+      expect(comp).toBeTruthy();
+      expect(comp).toHaveTextContent("foo");
+    });
     test("catch errors in children", function(){
       let C = withErrorHandler(Err);
       let res = render(<C/>);
@@ -36,6 +59,6 @@ describe("Error Boundaries", function(){
       expect(res.getByTestId("errorHandler-message")).toHaveTextContent("Error message");
       expect(res.getByTestId("errorHandler-stack")).toHaveTextContent("at Err");
     });
-  })
+  });
 
-})
+});

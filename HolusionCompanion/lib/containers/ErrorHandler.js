@@ -18,7 +18,7 @@ export class ErrorHandler extends React.Component {
         <Text style={{color:"#DC3545FF"}} testID="errorHandler-message">{this.state.message}</Text>
         <View style={{paddingLeft:8}}>
           <Text style={{fontSize:14}}>Origine de l'erreur :</Text>
-          <Text style={{fontSize:13, lineHeight: 13}} testID="errorHandler-stack">{this.state.stack || "Aucune information supplémentaire"}</Text>
+          <Text style={{fontSize:13, lineHeight: 13}} testID="errorHandler-stack">{this.state.stack}</Text>
         </View>
       </Content>
     </Container>
