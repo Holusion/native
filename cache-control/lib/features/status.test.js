@@ -24,9 +24,6 @@ describe("setNetInfo", ()=>{
 })
 
 describe("isSignedIn", ()=>{
-  test("setSignedIn can take a projectName", ()=>{
-    expect(setSignedIn("foo")).toEqual({type: SET_SIGNEDIN, value: "foo"})
-  })
   test("initialized to false", ()=>{
     expect(isSignedIn(reducers(undefined, {}))).toBe(false);
   })
@@ -41,6 +38,9 @@ describe("isSignedIn", ()=>{
 })
 
 describe("setSignedIn", ()=>{
+  test("setSignedIn can take a projectName", ()=>{
+    expect(setSignedIn("foo")).toEqual({type: SET_SIGNEDIN, value: "foo"})
+  })
   test("handle errors", ()=>{
     let e = new Error("Foo");
     expect(setSignedIn(e)).toEqual({

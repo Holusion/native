@@ -12,7 +12,7 @@ import { AppState, StatusBar } from "react-native"
 
 import {sagaStore} from "@holusion/cache-control";
 
-import { screens, NetworkIcon, netScan, ThemeProvider, ifRequiredLoaded } from '@holusion/react-native-holusion';
+import { screens, NetworkIcon, netScan, ThemeProvider, ifRequiredLoaded } from './lib';
 
 
 enableScreens();

@@ -1,6 +1,3 @@
-import {firebase} from "firebase";
-import {mediasPath} from "../path";
-
 import {parseLink} from "./filerefs";
 
 
@@ -8,7 +5,6 @@ export function _makeLocal(projectName, d) {
   let filelist = new Set();
   let res = Array.isArray(d)? []: {};
 
-  const storage = firebase.app().storage();
   for (let key in d) {
     if (typeof d[key] === "string" && /^(?:gs:)?\/\//.test(d[key]) && !d[key].endsWith("/") && key !== 'repo') {
       const [src, dest] = parseLink(d[key].replace(/^\/\//, ""), projectName);

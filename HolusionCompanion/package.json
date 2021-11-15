@@ -7,12 +7,33 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest ./lib",
     "lint": "eslint .",
     "build": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
   },
+  "engines": {
+    "npm": ">=7"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "./setupJest.js",
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|@react-navigation/stack|@react-native-community/.*|@codler/react-native-keyboard-aware-scroll-view|@react-native-picker/picker|native-base(?:-shoutem-theme)?|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
+    ]
+  },
   "dependencies": {
-    "@holusion/react-native-holusion": "^3.11.0",
+    "@holusion/cache-control": "^3.1.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",
@@ -21,13 +42,16 @@
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
     "@react-navigation/native": "^5.0.9",
+    "Base64": "^1.0.2",
     "native-base": "^2.13.12",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-device-info": "^5.5.3",
     "react-native-dynamic-fonts": "^0.3.2",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.0",
+    "react-native-markdown-display": "^6.1.6",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^2.0.0",
     "react-native-screens": "^2.2.0",
@@ -39,15 +63,18 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
+    "@react-navigation/stack": "^5.12.8",
+    "@testing-library/jest-native": "^3.4.3",
+    "@testing-library/react-native": "^7.0.2",
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
-    "jest": "^24.9.0",
+    "jest": "^26.1.0",
+    "jest-fetch-mock": "git://github.com:jefflau/jest-fetch-mock#fb4cb19",
     "metro-react-native-babel-preset": "^0.58.0",
     "react-test-renderer": "16.11.0"
-  },
-  "jest": {
-    "preset": "react-native"
   }
 }
