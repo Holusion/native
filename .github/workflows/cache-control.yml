@@ -1,0 +1,35 @@
+name: cache-control
+
+on:
+  push:
+    paths: [ 'cache-control/**', ".github/workflows/cache-control.yml" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cache-control
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      ### restore caches
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('cache-control/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install build dependencies
+        run: |
+          npm ci
+      - name: build library
+        run: |
+          npm run build
+      - name: Run tests
+        run: |
+          npm test
