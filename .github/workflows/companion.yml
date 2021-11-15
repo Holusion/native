@@ -46,6 +46,12 @@ jobs:
 
       - name: Import signing certificate
         env:
+          # dans xCode, préférences > certificats > exporter
+          # choisir un MDP sécurisé
+          #Puis dans un terminal : 
+          #   base64 moncertificat.p12 | pbcopy
+          # Mettre à jour aussi le "secrets.PROVISIONING_PROFILE_DATA"
+          # https://developer.apple.com/account/resources/profiles/list
           SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
         run: |
