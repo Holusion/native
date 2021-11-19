@@ -113,8 +113,8 @@ jobs:
           echo "Build number : $BUILD_NUM"
           cd HolusionCompanion/ios
           fastlane beta
-
-      - name: Upload build artifacts
+      - name: Upload build logs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: build.log
