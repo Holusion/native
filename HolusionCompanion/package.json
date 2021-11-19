@@ -29,7 +29,7 @@
       "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!@?react-native|@react-navigation/stack|@react-native-community/.*|@codler/react-native-keyboard-aware-scroll-view|@react-native-picker/picker|native-base(?:-shoutem-theme)?|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
+      "node_modules/(?!@?react-native|@react-navigation|@react-native-community/.*|@codler/react-native-keyboard-aware-scroll-view|@react-native-picker/picker|native-base(?:-shoutem-theme)?|@shoutem/animation|@shoutem/ui|tcomb-form-native|@holusion/cache-control)"
     ]
   },
   "dependencies": {
@@ -41,7 +41,8 @@
     "@react-native-firebase/firestore": "^6.3.4",
     "@react-native-firebase/functions": "^6.3.4",
     "@react-native-firebase/storage": "^6.3.4",
-    "@react-navigation/native": "^5.0.9",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/stack": "^6.0.11",
     "Base64": "^1.0.2",
     "native-base": "^2.13.12",
     "prop-types": "^15.7.2",
@@ -53,8 +54,9 @@
     "react-native-gesture-handler": "^1.6.0",
     "react-native-markdown-display": "^6.1.6",
     "react-native-reanimated": "^1.7.0",
-    "react-native-safe-area-context": "^2.0.0",
-    "react-native-screens": "^2.2.0",
+    "react-native-safe-area-context": "^3.0.0",
+    "react-native-screens": "^3.9.0",
+    "react-native-tab-view": "3.0.0",
     "react-native-svg": "^12.1.0",
     "react-native-user-inactivity": "^1.0.1",
     "react-native-vector-icons": "^6.6.0",
@@ -67,7 +69,6 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^0.0.5",
-    "@react-navigation/stack": "^5.12.8",
     "@testing-library/jest-native": "^3.4.3",
     "@testing-library/react-native": "^7.0.2",
     "babel-jest": "^26.6.3",
