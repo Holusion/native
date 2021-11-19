@@ -25,6 +25,7 @@ Array [
   "AppConfiguration",
   "AppState",
   "Controller",
+  "ErrorHandler",
   "InitialLoadWrapper",
   "ListObjects",
   "RequiredLoadOnceWrapper",
@@ -32,5 +33,6 @@ Array [
   "SafeThemeProvider",
   "ThemeProvider",
   "ifRequiredLoaded",
+  "withErrorHandler",
 ]
 `;
