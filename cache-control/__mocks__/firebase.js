@@ -51,6 +51,7 @@ export const storage = {
         storage.refFromURL.mockReset();
         storage.refFromURL.mockImplementation((url)=>{
             const u = new URL(url);
+            if(! u.pathname) throw new Error(`${url} has no valid pathname (this is a mock error, not a real one)`);
             return storage.ref(u.pathname.slice(1));
         });
     }

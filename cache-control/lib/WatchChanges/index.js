@@ -162,7 +162,7 @@ export class WatchChanges extends EventEmitter{
       //await this.handleFiles({files, name: "items", signal});
       if (signal && signal.aborted) return;
       this.emit("dispatch", { config, files } );
-    }, (e)=>{
+    }).catch((e)=>{
       this.makeError("data.config", e);
     });
   }
@@ -173,8 +173,7 @@ export class WatchChanges extends EventEmitter{
       return doc.data().active !== false
     })
     Promise.all(activeDocs.map(p => transformSnapshot(this.transforms, p)))
-    .then(async (projects)=>{
-
+    .then((projects)=>{
       let items = {};
       let files = projects.reduce((prev, [d, files])=> {
         return new Map([...prev, ...files])
@@ -183,11 +182,9 @@ export class WatchChanges extends EventEmitter{
       for (let [d] of projects) {
         items[d.id] = d;
       }
-      //await this.handleFiles({files, name: "items", signal});
-
       if (signal && signal.aborted) return;
       this.emit("dispatch", { items, files });
-    }, (e)=>{
+    }).catch((e)=>{
       this.makeError("data.items", e);
     });
   }

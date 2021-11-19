@@ -1,3 +1,4 @@
+import {once} from "events";
 
 import { setBasePath } from "../path";
 import { WatchChanges } from ".";
@@ -327,7 +328,7 @@ describe("WatchChanges", function(){
           done();
         });
 
-        it("can return transformed data and required files", function(done){
+        it("can return transformed data and required files", async function(){
           let file_deps = new Map([["/path/to/tmp/medias/bar.mp4", {
             src: "gs://example.com/bar.mp4",
             hash: "xxxxxx",
@@ -339,10 +340,12 @@ describe("WatchChanges", function(){
             "onConfigSnapshot": { config: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}, files: file_deps},
             "onProjectsSnapshot": { items: {alice: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}}, files: file_deps}
           }
-          firebase.app.mockImplementationOnce(()=>({
+          firebase.app.mockImplementation(()=>({
             storage: ()=>({
               refFromURL: ()=>({
                 name: "bar.mp4",
+                bucket: "example.com",
+                fullPath: "bar.mp4",
                 getMetadata: ()=>Promise.resolve({
                   md5Hash:"xxxxxx",
                   size: 24,
@@ -351,17 +354,17 @@ describe("WatchChanges", function(){
               })
             })
           }))
-          wf.on("error", function(e){
-            console.error(e);
-            throw new Error("error event should not be called");
-          });
+          setTimeout(()=>{
+            wf[fnName](fixture, {});
+          }, 1);
+          let [err, res] = await Promise.race([
+            once(wf, "error").then(e=>([e])),
+            once(wf, "dispatch").then((e)=>([null, e])),
+          ]);
+          expect(err).not.toBeTruthy();
+          expect(res[0]).toEqual(raw_results[fnName]);
+          expect(res[1]).toEqual(undefined);
 
-          wf.on("dispatch", function(d, files){
-            expect(d).toEqual(raw_results[fnName]);
-            expect(files).toEqual()
-            done()
-          });
-          wf[fnName](fixture, {});
         });
       })
     })

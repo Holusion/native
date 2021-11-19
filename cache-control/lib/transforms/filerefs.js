@@ -21,8 +21,9 @@ export async function getMetadata(src){
   const ref = storage.refFromURL(src);
   const name = ref.name;
   const dest = `${mediasPath()}/${name}`;
-  
+  if(!name) throw new Error(`Invalid ref name ${name} for source : ${src}`);
   let {md5Hash, size, contentType} = await ref.getMetadata();
+  
   return [dest, {
     src,
     dest: dest,
@@ -46,6 +47,7 @@ export function parseLink(src, project){
     if(!project) throw new Error("Unsupported call to parseLink with project not specified and a relative link : "+src);
     ref = storage.ref(`applications/${project}/${src}`)
   }
+  if(!ref || !ref.bucket || !ref.fullPath) throw new Error(`Invalid ref to ${src}. Maybe it is not a valid storage object`);
   const name = ref.name;
   const dest = `file://${mediasPath()}/${name}`;
   return [`gs://${ref.bucket}/${ref.fullPath}`, dest];
