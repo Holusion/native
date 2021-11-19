@@ -12,7 +12,7 @@ import { AppState, StatusBar } from "react-native"
 
 import {sagaStore} from "@holusion/cache-control";
 
-import { screens, NetworkIcon, netScan, ThemeProvider, ifRequiredLoaded } from '@holusion/react-native-holusion';
+import { screens, NetworkIcon, netScan, ThemeProvider, ifRequiredLoaded, ErrorHandler, withErrorHandler } from './lib';
 
 
 enableScreens();
@@ -26,10 +26,10 @@ const screenOptions = ({navigation})=>{
   };
 }
 
-
-const HomeScreen = ifRequiredLoaded(screens.HomeScreen);
-const ListScreen = ifRequiredLoaded(screens.ListScreen);
-const ObjectScreen = ifRequiredLoaded(screens.ObjectScreen);
+const wrapScreen = (C)=> withErrorHandler(ifRequiredLoaded(C));
+const HomeScreen = wrapScreen(screens.HomeScreen);
+const ListScreen = wrapScreen(screens.ListScreen);
+const ObjectScreen = wrapScreen(screens.ObjectScreen);
 
 export default class App extends React.Component{
   constructor(props){
@@ -75,7 +75,8 @@ export default class App extends React.Component{
   render(){
     return <Root>
        <StatusBar hidden={true} />
-        {this.state.store?<Provider store={this.state.store}>
+        <ErrorHandler>
+          {this.state.store?<Provider store={this.state.store}>
             <ThemeProvider>
               <NavigationContainer>
                 <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
@@ -88,7 +89,8 @@ export default class App extends React.Component{
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>
-        </Provider> : <Container><Content><Spinner/></Content></Container>}
+          </Provider> : <Container><Content><Spinner/></Content></Container>}
+        </ErrorHandler>
     </Root>
   }
 }
