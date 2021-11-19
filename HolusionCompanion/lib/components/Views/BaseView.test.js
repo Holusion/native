@@ -18,7 +18,12 @@ function doWrap(child){
     </Stack.Navigator>
   </NavigationContainer>)
 }
+
 describe("<BaseView/>", ()=>{
+  beforeEach(()=>{
+    //react-navigation otherwise creates an "import after tear-down" error
+    jest.useFakeTimers() 
+  });
   test("render a minimal item", function(){
     let d = {
       title: "foo",

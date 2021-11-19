@@ -1,9 +1,8 @@
 import React from 'react'
-import { useNavigation } from '@react-navigation/native';
 
 
-import { connectStyle, Container, Content, Footer, Body, Header, H1, H2, View, Text, Row, Icon, Toast, Button, Spinner } from 'native-base';
-import { Image, StyleSheet, ImageBackground } from 'react-native';
+import { connectStyle, Container, Content, H1, H2, View } from 'native-base';
+import { ImageBackground } from 'react-native';
 
 import Markdown from '../Markdown';
 import {LinksView} from './partials';
