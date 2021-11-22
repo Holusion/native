@@ -34,6 +34,7 @@ describe("useAutoPlay", ()=>{
   let onFetch;
   let store;
   beforeAll(()=>{
+    jest.useFakeTimers();
     onFetch = jest.fn(()=>Promise.resolve({code: 200, message: "OK"}));
     fetch.doMock((req)=>onFetch(req.url));
   })
