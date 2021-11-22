@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import "react-native-gesture-handler";
 import { enableScreens } from 'react-native-screens';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from "@react-navigation/native";
 
 
@@ -26,10 +26,13 @@ const screenOptions = ({navigation})=>{
   };
 }
 
-const wrapScreen = (C)=> withErrorHandler(ifRequiredLoaded(C));
-const HomeScreen = wrapScreen(screens.HomeScreen);
-const ListScreen = wrapScreen(screens.ListScreen);
-const ObjectScreen = wrapScreen(screens.ObjectScreen);
+const HomeScreen = withErrorHandler(ifRequiredLoaded(screens.HomeScreen));
+const ListScreen = withErrorHandler(ifRequiredLoaded(screens.ListScreen));
+const ObjectScreen = withErrorHandler(ifRequiredLoaded(screens.ObjectScreen));
+const SettingsScreen = withErrorHandler(screens.SettingsScreen);
+const NotFoundScreen = withErrorHandler(screens.NotFoundScreen);
+const ContactScreen = withErrorHandler(screens.ContactScreen);
+
 
 export default class App extends React.Component{
   constructor(props){
@@ -45,10 +48,13 @@ export default class App extends React.Component{
     const [store, task] = sagaStore({defaultProject:"holodemo"});
     this.setState({store, task});
     this.onFocus(store);
-    AppState.addEventListener('change', this.onChange);
+    this._changeListener = AppState.addEventListener('change', this.onChange);
   }
   componentWillUnmount(){
-    AppState.removeEventListener('change', this.onChange);
+    if(this._changeListener){
+      this._changeListener.remove();
+      this._changeListener = null;
+    }
     if(this.state.task) this.state.task.cancel();
     this.onDefocus();
   }
@@ -83,9 +89,9 @@ export default class App extends React.Component{
                   <Stack.Screen name="Home" component={HomeScreen}/>
                   <Stack.Screen name="List" component={ListScreen}/>
                   <Stack.Screen name="Object" options={{ headerShown: false }} component={ObjectScreen}/>
-                  <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={screens.SettingsScreen}/>
-                  <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={screens.ContactScreen} />
-                  <Stack.Screen name="404" component={screens.NotFoundScreen}/>
+                  <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={SettingsScreen}/>
+                  <Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={ContactScreen} />
+                  <Stack.Screen name="404" component={NotFoundScreen}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>

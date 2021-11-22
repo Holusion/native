@@ -3,14 +3,16 @@ import * as React from 'react';
 import { getConfig } from '@holusion/cache-control';
 import { connectStyle } from 'native-base';
 
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 
 import { connect, useSelector } from 'react-redux';
-import ObjectScreen from './ObjectScreen';
+import {default as RawObjectScreen} from './ObjectScreen';
 import { NetworkIcon } from '../../components';
+import { withErrorHandler } from '../../containers';
 
+const ObjectScreen = withErrorHandler(RawObjectScreen);
 
 //const Nav = createMaterialTopTabNavigator();
 const Nav = createNativeStackNavigator();

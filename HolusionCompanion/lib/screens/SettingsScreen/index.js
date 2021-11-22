@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {StyleSheet, TouchableWithoutFeedback} from "react-native";
 
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {Form, H1, Input, Item, StyleProvider, View} from "native-base";
 import getTheme from '../../../native-base-theme/components';
