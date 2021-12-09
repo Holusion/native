@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "@codler/react-native-keyboard-aware-scroll-view": "^2.0.0",
     "@holusion/cache-control": "^3.1.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.1",

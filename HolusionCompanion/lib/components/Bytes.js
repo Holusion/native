@@ -1,5 +1,5 @@
 import React from "react";
-import {Text} from "native-base";
+import {Text} from "react-native";
 
 export function formatBytes(bytes, si){
   var thresh = si ? 1000 : 1024;

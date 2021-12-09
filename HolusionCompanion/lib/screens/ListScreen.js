@@ -8,6 +8,7 @@ import {getActiveProduct} from "@holusion/cache-control";
 
 import ListObjects from "../containers/ListObjects";
 import { useAutoPlay } from '../sync/hooks';
+import { ScrollView } from 'react-native';
 
 
 function ListScreen (props) {
@@ -21,12 +22,12 @@ function ListScreen (props) {
     }
   }
   
-  return (<Container style={{flex: 1}}>
+  return (<ScrollView style={{flex: 1}}>
     <ListObjects
       selectedCategory={category}
       onNavigate={(id) => props.navigation.navigate("Object", {params: {id}, screen: category})}
     />
-  </Container>)
+  </ScrollView>)
 }
 
 export default connect(function(state){

@@ -1,12 +1,12 @@
 import React from "react";
-import {StyleSheet} from "react-native";
-import { Icon, Button } from "native-base";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function BgIcon({status="default", name}){
   let color = BgIcon.colors[status] || BgIcon.colors["default"];
-  return <Button style={[styles.button, {backgroundColor: color}]}>
+  return <TouchableOpacity style={[styles.button, {backgroundColor: color}]}>
     <Icon style={styles.icon} name={name}/>
-  </Button>
+  </TouchableOpacity>
 }
 
 BgIcon.colors = {

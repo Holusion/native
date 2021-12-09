@@ -4,7 +4,7 @@ import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
 import { Container, Toast, Content, Text, H2, View} from 'native-base';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
 
 
 import ImageCard from '../components/ImageCard';
@@ -31,14 +31,14 @@ function ListObjects(props){
         </View>)
     }
 
-    return(<Content contentContainerStyle={styles.container}>
+    return(<SafeAreaView>
         {title && <View style={styles.titleContainer}>
             {typeof title === "string" ?<H2 primary style={{ paddingTop:30 }}>{title}</H2> : title }
         </View>}
         <View style= {styles.cardContainer}>
             {cards}
         </View>
-    </Content> )
+    </SafeAreaView> )
 }
 
 ListObjects.propTypes = {
