@@ -23,7 +23,7 @@ export function CachedFile({name, size, type, cached, required}){
   }
   
   if(cached && required){
-    color = "primary";
+    color = "info";
   }else if(required){
     color = "warning";
   }else{

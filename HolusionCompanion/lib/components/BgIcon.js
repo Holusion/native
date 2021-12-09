@@ -1,22 +1,25 @@
 import React from "react";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet, View} from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
+import { theme } from "../style";
 
-export default function BgIcon({status="default", name}){
-  let color = BgIcon.colors[status] || BgIcon.colors["default"];
-  return <TouchableOpacity style={[styles.button, {backgroundColor: color}]}>
+export default function BgIcon({status="info", name}){
+  let color = BgIcon.colors[status] || BgIcon.colors["info"];
+  return <View style={[styles.button, {backgroundColor: color}]}>
     <Icon style={styles.icon} name={name}/>
-  </TouchableOpacity>
+  </View>
 }
 
 BgIcon.colors = {
-  success: "#5cb85c",
-  warning: "#f0ad4e",
-  danger: "#d9534f",
-  error: "#d9534f",
-  default: "#007aff",
-  muted: "#666666",
-  light: "#f4f4f4",
+  success: theme.SUCCESS_COLOR,
+  warning: theme.WARNING_COLOR,
+  danger: theme.DANGER_COLOR,
+  error: theme.ERROR_COLOR,
+  primary: theme.PRIMARY_COLOR,
+  info: theme.INFO_COLOR,
+  muted: theme.MUTED_COLOR,
+  light: theme.LIGHT_COLOR,
+  default: theme.INFO_COLOR
 }
 const styles = StyleSheet.create({
   button: {
@@ -28,8 +31,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   icon: {
-    fontSize: 17,
-    lineHeight: 17,
+    fontSize: theme.FONT_SIZE_LARGE,
+    textAlign: "center",
+    color: "white",
+    lineHeight: 20,
     margin: 0,
     marginRight: 0,
     marginLeft: 0

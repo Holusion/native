@@ -8,7 +8,7 @@ import SettingsHeader from "./SettingsHeader";
 export function Pick({label, help, active, onPress}){
   let iconColor;
   if(active){
-    iconColor = "primary";
+    iconColor = "info";
   }else{
     iconColor = "muted";
   }

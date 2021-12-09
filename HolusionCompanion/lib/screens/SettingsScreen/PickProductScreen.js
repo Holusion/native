@@ -12,7 +12,7 @@ export function ProductPick({name, address, active, online, onPress}){
   if(!online){
     iconColor = "warning"
   }else if(active){
-    iconColor = "primary";
+    iconColor = "info";
   }else{
     iconColor = "muted";
   }

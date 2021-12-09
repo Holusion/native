@@ -4,19 +4,20 @@ import { useSelector } from "react-redux";
 import { getErrors, getLogs } from "@holusion/cache-control";
 import SettingsHeader from "./SettingsHeader";
 import { FlatList } from "react-native";
+import { theme } from "../../style";
 
 
 export function Log({severity, name, message, context, timestamp, active, onPress}){
   let color = "yellow";
   switch(severity){
     case "error":
-      color = "#DC3545FF";
+      color = theme.ERROR_COLOR;
       break;
     case "warn":
-      color = "#FF9966FF";
+      color = theme.WARNING_COLOR;
       break;
     case "info":
-      color = "#103040FF";
+      color = theme.INFO_COLOR;
       break;
   }
 

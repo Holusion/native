@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
 import { Link } from "@react-navigation/native";
 import {BgIcon, Bytes} from "../../components";
+import {theme, H1} from "../../style"
 import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
 import { useLocalFiles, useLocalSize } from "./CacheScreen";
@@ -18,14 +19,14 @@ import { useLocalFiles, useLocalSize } from "./CacheScreen";
 export function ShowErrors(){
   const errors = useSelector(getErrors);
   return (<View style={style.listView}>
-    <View style={{paddingTop:4, }}>
+    <View>
       <View style={{width: 30, height: 30, borderRadius: 15, backgroundColor:errors.length ===0? BgIcon.colors["success"]: BgIcon.colors["warning"]}}>
-        <Text style={{fontSize: 14, lineHeight:14, height: 14, color:"white"}}>{errors.length}</Text>
+        <Text style={{fontSize: 14, lineHeight: 30, color:"white", textAlign: "center"}}>{errors.length}</Text>
       </View>
     </View>
-    <View><Link to="/Logs"><Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text></Link></View>
+    <View style={{flex:1, paddingLeft:10}}><Link to="/Logs"><Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text></Link></View>
     <View><Link to="/Logs">
-      <Icon name="chevron-forward-outline"/>
+      <Icon style={{fontSize: theme.FONT_SIZE_LARGE}} name="chevron-forward-outline"/>
     </Link></View>
   </View>);
 }
@@ -46,7 +47,7 @@ export function ShowFirestore(){
     <View>
       <BgIcon status={signedIn?"success": "muted"} name="ios-code-working"/>
     </View>
-    <View>
+    <View style={{flex:1, paddingLeft:10}}>
       <Text>Lien vers content.holusion.com</Text>
     </View>
     <View>
@@ -78,7 +79,7 @@ export function ShowCache(){
     <View>
     {(otherSize+requiredSize !=0)? <BgIcon status="warn" name="reload"/> : <BgIcon status="success" name="checkmark"/>}
     </View>
-    <View>
+    <View style={{flex:1, paddingLeft:10}}>
       <Text>{cachedFiles.length}/{cachedFiles.length+missingFiles} fichiers en cache</Text>
     </View>
     <View>
@@ -103,7 +104,7 @@ export function ShowTarget(){
     <View>
       <BgIcon status={color} name="wifi"/>
     </View>
-    <View><Text>
+    <View style={{flex:1, paddingLeft:10}}><Text>
       Produit connecté 
       {(target && target.name == default_target) && <Text note> (automatique)</Text>}
     </Text></View>
@@ -124,7 +125,6 @@ function A({to, children}){
   </Link>
 }
 
-
 export default function SettingsScreen(){
   const dispatch = useDispatch();
   const {default_target, purge_products} = useSelector(getConf);
@@ -132,7 +132,10 @@ export default function SettingsScreen(){
     <KeyboardAwareScrollView>
 
     <SettingsHeader>Settings</SettingsHeader>
-      <Text style={style.titleText}>etat</Text>
+
+      <View style={style.listHeader}>
+        <Text style={style.listTitle}>Etat</Text>
+      </View>
 
       <ShowTarget/>
 
@@ -142,12 +145,15 @@ export default function SettingsScreen(){
 
       <ShowErrors/>
 
-      <Text style={style.titleText}>hologramme</Text>
+      <View style={style.listHeader}>
+        <Text style={style.listTitle}>Hologramme</Text>
+      </View>
+      
       <View style={style.listView}>
         <View>
           <BgIcon name="link"/>
         </View>
-        <View>
+        <View style={{flex:1, paddingLeft:10}}>
           <Text>Produit cible par défaut</Text>
         </View>
         <View>
@@ -160,19 +166,23 @@ export default function SettingsScreen(){
         <View>
           <BgIcon name="trash"/>
         </View>
-        <View>
+        <View style={{flex:1, paddingLeft:10}}>
             <Text>Supprimer les vidéos inutiles sur l'hologramme</Text>
         </View>
         <View>
           <Switch value={purge_products} onValueChange={()=>dispatch(setPurge(!purge_products))} />
         </View>
       </View>
-      <Text style={style.titleText}>configuration</Text>
+
+      <View style={style.listHeader}>
+        <Text style={style.listTitle}>Configuration</Text>
+      </View>
+
       <View style={style.listView}>
         <View>
           <BgIcon name="construct"/>
         </View>
-        <View>
+        <View style={{flex:1, paddingLeft:10}}>
           <Text>Interactions</Text>
         </View>
         <View>
@@ -183,7 +193,7 @@ export default function SettingsScreen(){
       <AppConfiguration style={style}/>
       <View style={style.listView}>
         <View><BgIcon name="logo-apple-appstore"/></View>
-        <View><Text>Version</Text></View>
+        <View style={{flex:1, paddingLeft:10}}><Text>Version</Text></View>
         <View><Text>{getReadableVersion()}</Text></View>
       </View>
     </KeyboardAwareScrollView>
@@ -214,21 +224,21 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 10,
   },
   listHeader:{
-    paddingVertical: 10,
-    paddingLeft: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    padding: 10,
+    borderColor: theme.LIGHT_COLOR,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    backgroundColor: theme.LIGHT_COLOR
   },
-  headerDoneBtn: {
+  listTitle:{
+    fontWeight: "bold",
+  },
+  headerDoneBtn: { 
     color: '#007aff',
   },
-  titleText: {
-    fontSize: 20,
-    fontWeight: "bold"
-  }
 });

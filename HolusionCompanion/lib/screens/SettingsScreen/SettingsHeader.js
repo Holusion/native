@@ -10,7 +10,7 @@ export default function SettingsHeader({back, children}){
   return (<View style={styles.header}>
     <View style={styles.left}>
       {back ? <TouchableOpacity transparent onPress={onDismiss}>
-        <View><Icon style={{fontSize:17}} name="chevron-back-outline" /><Text>Retour</Text></View>
+        <View style={{diplay:"flex", flexDirection:"row"}}><Icon style={{fontSize:17}} name="chevron-back-outline" /><Text>Retour</Text></View>
       </TouchableOpacity>:<Text>&nbsp;</Text>}
     </View>
     <View style={styles.body}>{typeof children === "string"? <Text style={{fontWeight: "bold"}}>{children}</Text>: children}</View>
