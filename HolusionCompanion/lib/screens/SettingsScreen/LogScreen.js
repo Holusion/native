@@ -11,13 +11,13 @@ export function Log({severity, name, message, context, timestamp, active, onPres
   let color = "yellow";
   switch(severity){
     case "error":
-      color = theme.ERROR_COLOR;
+      color = theme.colors.error;
       break;
     case "warn":
-      color = theme.WARNING_COLOR;
+      color = theme.colors.warning;
       break;
     case "info":
-      color = theme.INFO_COLOR;
+      color = theme.colors.info;
       break;
   }
 

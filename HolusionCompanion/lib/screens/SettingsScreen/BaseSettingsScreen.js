@@ -26,7 +26,7 @@ export function ShowErrors(){
     </View>
     <View style={{flex:1, paddingLeft:10}}><Link to="/Logs"><Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text></Link></View>
     <View><Link to="/Logs">
-      <Icon style={{fontSize: theme.FONT_SIZE_LARGE}} name="chevron-forward-outline"/>
+      <Icon style={{fontSize: theme.fontSize.large}} name="chevron-forward-outline"/>
     </Link></View>
   </View>);
 }
@@ -230,10 +230,10 @@ const style = StyleSheet.create({
   },
   listHeader:{
     padding: 10,
-    borderColor: theme.LIGHT_COLOR,
+    borderColor: theme.colors.light,
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    backgroundColor: theme.LIGHT_COLOR
+    backgroundColor: theme.colors.light
   },
   listTitle:{
     fontWeight: "bold",

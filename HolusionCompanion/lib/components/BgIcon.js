@@ -11,15 +11,15 @@ export default function BgIcon({status="info", name}){
 }
 
 BgIcon.colors = {
-  success: theme.SUCCESS_COLOR,
-  warning: theme.WARNING_COLOR,
-  danger: theme.DANGER_COLOR,
-  error: theme.ERROR_COLOR,
-  primary: theme.PRIMARY_COLOR,
-  info: theme.INFO_COLOR,
-  muted: theme.MUTED_COLOR,
-  light: theme.LIGHT_COLOR,
-  default: theme.INFO_COLOR
+  success: theme.colors.success,
+  warning: theme.colors.warning,
+  danger: theme.colors.danger,
+  error: theme.colors.error,
+  primary: theme.colors.primary,
+  info: theme.colors.info,
+  muted: theme.colors.mutes,
+  light: theme.colors.light,
+  default: theme.colors.default
 }
 const styles = StyleSheet.create({
   button: {
