@@ -94,6 +94,8 @@ avec cocoapods (`gem install cocoapods` si absent) :
   (cd ios && pod install)
 ```
 
+Attention sur Mac avec puce M1 : installer cocoapods avec `brew install cocoapods`
+
 ### Configurer xcode
 
 Ouvrez XCode. Ouvrir le fichier `<nom_du_projet>.xcworkspace`, **PAS** le fichier `.xcodeproj`!
