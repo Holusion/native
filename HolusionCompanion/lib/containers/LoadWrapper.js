@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import AppState  from "./AppState";
 import {useSelector} from "react-redux";
 
-import { Content, H1, Spinner, View, Text, Icon, List, ListItem, Right, Left, Body, Header, Container, Button } from "native-base";
+import { Content, H1, Spinner, Text, Icon, List, ListItem, Right, Left, Body, Header, Container, Button } from "native-base";
 import { isLoaded, isBlocked, isSignedIn, isConnected } from "@holusion/cache-control";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 
 import DownloadState from "./DownloadState";
 import {NetworkIcon} from "../components";
@@ -14,8 +14,7 @@ import { Link } from "@react-navigation/native";
 export function LoadInfo(){
   const connected = useSelector(isConnected);
   const signedIn = useSelector(isSignedIn);
-  return <Container>
-    <Content contentContainerStyle={loadStyles.container}>
+  return <ScrollView contentContainerStyle={loadStyles.container}>
       <H1 style={loadStyles.title}>Du contenu requis n'a pas encore été chargé</H1>
       <Spinner color="#007aff"/>
       <List style={loadStyles.status}>
@@ -52,9 +51,7 @@ export function LoadInfo(){
           <DownloadState/>
         </View>
       </List>
-    </Content>
-    
-  </Container>
+    </ScrollView >
 }
 
 const loadStyles = StyleSheet.create({

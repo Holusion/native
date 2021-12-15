@@ -3,9 +3,10 @@ import React from 'react';
 import { setData, getItemsArray, isLoaded, getRequiredSize } from '@holusion/cache-control';
 import { connect } from 'react-redux';
 
-import { Container,  Content, Footer, Spinner, Text, H1, H2, View, Button } from 'native-base';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Container,  Content, Footer, Spinner, Text, H2, View, Button } from 'native-base';
+import { StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
 
+import { H1 } from "../style"
 import {ImageCard, Redirect} from "../components"
 import ListObjects from '../containers/ListObjects';
 import { useAutoPlay } from '../sync/hooks';
@@ -27,24 +28,20 @@ function HomeScreen (props) {
   if(props.config.defaultPage){
     const pageData = props.items.find(i => i.id == props.config.defaultPage)
     if(!pageData){
-      return (<Container>
-        <Content contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      return (<ScrollView  contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text>Page <Text style={{color:"orange"}}>{props.config.defaultPage}</Text> manquante</Text>
           <Text style={{ fontSize: 14 }}>Changer la page d'accueil ou créer une page correspondante</Text>
-        </Content>
-      </Container>)
+        </ScrollView >)
     }
     return (<Redirect to={props.config.defaultPage} prefix="Object" encoded={false}/>)
   }
   if(!props.categories || props.categories.length == 0){
-    return <Container>
-      <Content contentContainerStyle={styles.container}>
+    return <ScrollView  contentContainerStyle={styles.container}>
         <View style={styles.cardContainer}>
           <ListObjects title={props.config.header || "Découvrez  ces objets en hologramme :"} onNavigate={(id)=>props.navigation.navigate("Object", {id, category: null})}/>
         </View>
-      </Content>
-      {footer}
-    </Container>
+        {footer}
+      </ScrollView>
   }
 
   let cards = props.categories.map((category, index) => {
@@ -69,17 +66,15 @@ function HomeScreen (props) {
 
 
   return (
-    <Container>
-      <Content contentContainerStyle={styles.container}>
-        <H1 primary style={styles.titleContainer}>
-          Découvrez une collection :
-                  </H1>
-        <View style={styles.cardContainer}>
-          {cards}
-        </View>
-      </Content>
+    <ScrollView contentContainerStyle={styles.container}>
+      <H1 color="primary" style={styles.titleContainer}>
+        Découvrez une collection :
+      </H1>
+      <View style={styles.cardContainer}>
+        {cards}
+      </View>
       {footer}
-    </Container>
+    </ScrollView >
   )
 }
 
