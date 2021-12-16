@@ -1,10 +1,10 @@
 'use strict';
 import React, { useEffect, useState } from "react";
-import {StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View, TextInput, KeyboardAvoidingView } from "react-native";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import {Form, H1, Input, Item} from "native-base";
+import { H1 } from "../../components/style"
 
 import {getConf} from "@holusion/cache-control";
 import LogScreen from "./LogScreen";
@@ -20,16 +20,16 @@ export function Auth({passcode:ref, onSubmit}){
   useEffect(()=>{
     if(passcode === ref) onSubmit();
   }, [passcode]);
-  return <View style={{padding:10, display: "flex", flexDirection:"column", justifyContent:"center", alignItems:"center", height:"100%"}}>
+  return <KeyboardAvoidingView behavior="position" contentContainerStyle={{padding:10, display: "flex", flexDirection:"column", justifyContent:"center", alignItems:"center", height:"100%"}}>
     <H1 primary style={{paddingTop: 15, paddingBottom: 15}}>
       Mot de passe nécessaire
     </H1>
-    <Form style={{ flex: 0, flexDirection:"row", justifyContent:"center"}}>
-      <Item last style={{flex:0, width: "50%"}} >
-          <Input style={{textAlign:"center"}} placeholder="****" keyboardType="numeric" autoCapitalize="none" autoCompleteType="off" secureTextEntry={true} autoCorrect={false} onChangeText={setPasscode} value={passcode}/>
-      </Item>
-    </Form>
-  </View>
+    <View style={{ flex: 0, flexDirection:"row", justifyContent:"center"}}>
+      <View style={{flex:0, width: "50%"}} >
+          <TextInput style={{textAlign:"center", borderBottomWidth: 1, borderBottomColor: "#ccc"}} placeholder="****" keyboardType="numeric" autoCapitalize="none" autoCompleteType="off" secureTextEntry={true} autoCorrect={false} onChangeText={setPasscode} value={passcode}/>
+      </View>
+    </View>
+  </KeyboardAvoidingView>
 }
 
 const OptionsStack = createNativeStackNavigator();
@@ -64,8 +64,6 @@ export default function SettingsScreen({navigation}){
     </View>
 )
 }
-
-
 
 
 const style = StyleSheet.create({

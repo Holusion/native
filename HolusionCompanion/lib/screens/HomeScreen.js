@@ -3,8 +3,7 @@ import React from 'react';
 import { setData, getItemsArray, isLoaded, getRequiredSize } from '@holusion/cache-control';
 import { connect } from 'react-redux';
 
-import { Container,  Content, Footer, Spinner, Button } from 'native-base';
-import { StyleSheet, TouchableOpacity, ScrollView, View, Text  } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, View, Text } from 'react-native';
 
 import { H1, H2 } from "../components/style"
 import {ImageCard, Redirect} from "../components"
@@ -17,12 +16,12 @@ function HomeScreen (props) {
 
   let footer = null;
   if (props.config.about) {
-    footer = (<Footer >
-      <Button transparent onPress={() => props.navigation.navigate("About")}>
+    footer = (<View >
+      <TouchableOpacity transparent onPress={() => props.navigation.navigate("About")}>
         <H2 primary style={styles.footerButton}>A propos</H2>
-      </Button>
+      </TouchableOpacity>
 
-    </Footer>)
+    </View>)
   }
 
   if(props.config.defaultPage){

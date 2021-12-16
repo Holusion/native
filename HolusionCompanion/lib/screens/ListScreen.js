@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect} from 'react-redux';
 
-import { Container } from 'native-base';
-
 import {getActiveProduct} from "@holusion/cache-control";
 
 

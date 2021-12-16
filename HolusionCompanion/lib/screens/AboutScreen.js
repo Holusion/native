@@ -3,7 +3,6 @@ import React from 'react';
 import { connect} from 'react-redux';
 
 import { ScrollView } from 'react-native';
-import { Container, Content} from 'native-base';
 
 import Markdown from '../components/Markdown'
 

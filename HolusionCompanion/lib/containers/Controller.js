@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import { useRoute } from '@react-navigation/native';
 
 import { PrevNext, PlayPause, SpriteCube } from "../components";
-import {StyleSheet} from "react-native";
-import { View } from "native-base";
+import { StyleSheet, View } from "react-native";
 import { getActiveProduct } from "@holusion/cache-control";
 
 //{["default", "buttons"].indexOf(this.props.control_buttons) != -1 && <Controller multi={1 < this.props.items.length} target={this.props.target} prev={()=>this._carousel._animatePreviousPage()} next={()=>this._carousel._animateNextPage()}/>}

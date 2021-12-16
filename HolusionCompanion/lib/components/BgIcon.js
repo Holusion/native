@@ -23,15 +23,15 @@ BgIcon.colors = {
 }
 const styles = StyleSheet.create({
   button: {
-    height: 29,
-    width: 29,
+    height: 32,
+    width: 32,
     paddingTop: 0,
     paddingBottom: 0,
     justifyContent: "center",
     borderRadius: 6,
   },
   icon: {
-    fontSize: theme.FONT_SIZE_LARGE,
+    fontSize: 16,
     textAlign: "center",
     color: "white",
     lineHeight: 20,

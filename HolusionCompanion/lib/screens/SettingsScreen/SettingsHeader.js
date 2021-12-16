@@ -25,7 +25,7 @@ export default function SettingsHeader({back, children}){
 
 const styles = StyleSheet.create({
   header:{
-    padding: 10,
+    padding: 15,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",

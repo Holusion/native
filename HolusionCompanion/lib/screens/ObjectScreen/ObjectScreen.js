@@ -45,7 +45,7 @@ class ObjectScreen extends React.Component {
     render() {
         const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
         
-        return (<Container onLayout={this._onLayoutDidChange}>
+        return (<View onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
                 ref= {(ref)=>this._list = ref}
@@ -61,7 +61,7 @@ class ObjectScreen extends React.Component {
                     next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
                 />
             </Footer>
-        </Container>)
+        </View>)
     }
 
     onNextPage = ()=>{

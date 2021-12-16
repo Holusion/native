@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-
 import { SafeAreaView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { H2 } from "../components/style"
 
@@ -22,8 +21,8 @@ function ListObjects(props){
 
     if(cards.length === 0){
         title = "Aucun élément à afficher"
-        cards=(<View style={{flex:1}}>
-          <Text style={{paddingBottom:50}}>
+        cards=(<View style={{ width: "50%" }}>
+          <Text style={styles.titleContainer}>
             L'application n'a peut-être pas été synchronisée?
           </Text>
           <View>

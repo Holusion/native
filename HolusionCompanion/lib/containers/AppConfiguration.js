@@ -1,11 +1,12 @@
 'use strict';
 import React, {useState} from 'react';
 import { connect} from 'react-redux'
-import {Keyboard, Text, Switch, View} from "react-native";
+import { Text, View } from "react-native";
 
 import {setPurge, setSlidesControl, setProjectName, setPlayControl, setPasscode, setWatch} from "@holusion/cache-control";
 import { BgIcon } from '../components';
 import { TextInput } from 'react-native-gesture-handler';
+import CheckBox from '@react-native-community/checkbox';
 
 function AppConfiguration(props){
     const [watch, setWatch] = useState(props.watch);
@@ -47,7 +48,7 @@ function AppConfiguration(props){
             <Text style={{fontSize:14}} >{props.watch?"en permanence": "au démarrage"}</Text>
           </View>
           <View>
-            <Switch value={watch} onValueChange={()=>{setWatch(!watch);props.setWatch(!watch)}}/>
+            <CheckBox lineWidth={1} animationDuration={0} value={watch} onValueChange={()=>{setWatch(!watch);props.setWatch(!watch)}}/>
           </View>
         </View>
     </React.Fragment>)

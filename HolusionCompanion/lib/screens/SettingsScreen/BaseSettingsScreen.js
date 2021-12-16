@@ -1,16 +1,16 @@
 'use strict';
 import React, { useState } from "react";
-import {ScrollView, StyleSheet, TouchableWithoutFeedback,TouchableOpacity, Text, View, Switch, ActivityIndicator} from "react-native";
-import {getReadableVersion} from "react-native-device-info";
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View, ActivityIndicator, KeyboardAvoidingView } from "react-native";
+import { getReadableVersion } from "react-native-device-info";
 import { createStackNavigator } from '@react-navigation/stack';
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
 import { Link } from "@react-navigation/native";
-import {BgIcon, Bytes} from "../../components";
-import {theme, H1} from "../../components/style"
+import CheckBox from "@react-native-community/checkbox";
+import { BgIcon, Bytes} from "../../components";
+import { theme, H1 } from "../../components/style"
 import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
 import { useLocalFiles, useLocalSize } from "./CacheScreen";
@@ -119,9 +119,9 @@ export function ShowTarget(){
 }
 
 function A({to, children}){
-  return <Link  to={to}>
+  return <Link  to={to} style={{minWidth:50, height:30}}>
     <Text style={{color: "#666666", minWidth:40 }}>{children}</Text>
-    <Icon style={{fontSize: 16, lineHeight: 17}}name="chevron-forward-outline"/>
+    <Icon style={{fontSize: 16, lineHeight: 17, textAlign:"right"}}name="chevron-forward-outline"/>
   </Link>
 }
 
@@ -129,7 +129,8 @@ export default function SettingsScreen(){
   const dispatch = useDispatch();
   const {default_target, purge_products} = useSelector(getConf);
   return (
-    <KeyboardAwareScrollView>
+    <ScrollView>
+    <KeyboardAvoidingView behavior={"position"}>
 
     <SettingsHeader>Settings</SettingsHeader>
 
@@ -170,7 +171,7 @@ export default function SettingsScreen(){
             <Text>Supprimer les vidéos inutiles sur l'hologramme</Text>
         </View>
         <View>
-          <Switch value={purge_products} onValueChange={()=>dispatch(setPurge(!purge_products))} />
+          <CheckBox lineWidth={1} animationDuration={0} value={purge_products} onValueChange={()=>dispatch(setPurge(!purge_products))} />
         </View>
       </View>
 
@@ -186,7 +187,7 @@ export default function SettingsScreen(){
           <Text>Interactions</Text>
         </View>
         <View>
-          <A to="/Interactions">
+          <A to="/Interactions" >
           </A>
         </View>
       </View>
@@ -196,7 +197,10 @@ export default function SettingsScreen(){
         <View style={{flex:1, paddingLeft:10}}><Text>Version</Text></View>
         <View><Text>{getReadableVersion()}</Text></View>
       </View>
-    </KeyboardAwareScrollView>
+    </KeyboardAvoidingView>
+
+    </ScrollView>
+
 );
 }
 
@@ -220,13 +224,11 @@ const style = StyleSheet.create({
   },
 
   listView: {
-    backgroundColor: "transparent",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    padding: 10,
   },
   listHeader:{
     padding: 10,
@@ -237,8 +239,5 @@ const style = StyleSheet.create({
   },
   listTitle:{
     fontWeight: "bold",
-  },
-  headerDoneBtn: { 
-    color: '#007aff',
-  },
+  }
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import { Container, Content, Header, Title, Text, Separator, Body, Input, ListItem, Right, Form, Item, Label, Icon, Button, View, Left, Toast, Spinner } from "native-base";
+import { Container, Content, Header, Title, Text, Separator, Body, Input, ListItem, Right, Form, Item, Label, Icon, Button, View, Left, Spinner } from "native-base";
 import { Keyboard } from "react-native";
 
 import {firebase} from "@react-native-firebase/app";
