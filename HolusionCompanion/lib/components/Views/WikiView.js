@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { Content, H1, H2, View, Spinner } from 'native-base';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, View, ScrollView } from 'react-native';
+
+import { H1, H2, ThemeContext } from '../style'
 
 import Markdown from '../Markdown'
 
@@ -10,7 +11,7 @@ export default function WikiView(d){
     if(d["abstract"]){
         abstract = (<Markdown style={{body:{fontSize:26}}}>{d['abstract']}</Markdown>)
     }
-    return(<Content contentContainerStyle={styles.content}>
+    return(<ScrollView contentContainerStyle={styles.content}>
         <View style={styles.headerStyles}>
             <View style={styles.titleContainer}>
                 <View style={styles.titles}>
@@ -30,7 +31,7 @@ export default function WikiView(d){
                 {d['mainText']}
             </Markdown>
         </View>}
-    </Content>)
+    </ScrollView>)
 }
 
 const styles = StyleSheet.create({

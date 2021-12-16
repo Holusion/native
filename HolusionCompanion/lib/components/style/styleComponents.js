@@ -4,7 +4,7 @@ import { default as defaultTheme } from "./theme.style.js";
 
 
 
-const ThemeContext = React.createContext(defaultTheme);
+export const ThemeContext = React.createContext(defaultTheme);
 
 export function ThemeProvider({children}){
   //get custom theme */
@@ -17,4 +17,9 @@ export function ThemeProvider({children}){
 export function H1({style ,color="primary",children}){
   const theme = useContext(ThemeContext);
   return <Text style={[style,{color: theme.colors[color], fontSize: theme.fontSize.h1}]}>{children}</Text>
+}
+
+export function H2({style ,color="secondary",children}){
+  const theme = useContext(ThemeContext);
+  return <Text style={[style,{color: theme.colors[color], fontSize: theme.fontSize.h2}]}>{children}</Text>
 }

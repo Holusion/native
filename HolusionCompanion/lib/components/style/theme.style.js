@@ -11,9 +11,16 @@ export default {
     light: "#ddd",
   },
   fontSize: {
-    small: 12,
-    medium: 14,
-    large: 16,
+    default: 16,
     h1: 32,
+    h2: 24,
+  },
+  baseDescription:{
+    position: "relative",
+    backgroundColor: "#f1f1f1",
+    width: "33%",
+    height: "100%",
+    top: "0%",
+    right: "O%"
   }
 };

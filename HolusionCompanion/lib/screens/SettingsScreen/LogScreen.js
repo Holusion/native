@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { getErrors, getLogs } from "@holusion/cache-control";
 import SettingsHeader from "./SettingsHeader";
 import { FlatList } from "react-native";
-import { theme } from "../../style";
+import { theme } from "../../components/style";
 
 
 export function Log({severity, name, message, context, timestamp, active, onPress}){

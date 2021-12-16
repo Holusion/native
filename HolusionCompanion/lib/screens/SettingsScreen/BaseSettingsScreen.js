@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
 import { Link } from "@react-navigation/native";
 import {BgIcon, Bytes} from "../../components";
-import {theme, H1} from "../../style"
+import {theme, H1} from "../../components/style"
 import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
 import { useLocalFiles, useLocalSize } from "./CacheScreen";

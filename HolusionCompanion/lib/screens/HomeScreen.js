@@ -3,10 +3,10 @@ import React from 'react';
 import { setData, getItemsArray, isLoaded, getRequiredSize } from '@holusion/cache-control';
 import { connect } from 'react-redux';
 
-import { Container,  Content, Footer, Spinner, Text, H2, View, Button } from 'native-base';
-import { StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
+import { Container,  Content, Footer, Spinner, Button } from 'native-base';
+import { StyleSheet, TouchableOpacity, ScrollView, View, Text  } from 'react-native';
 
-import { H1 } from "../style"
+import { H1, H2 } from "../components/style"
 import {ImageCard, Redirect} from "../components"
 import ListObjects from '../containers/ListObjects';
 import { useAutoPlay } from '../sync/hooks';

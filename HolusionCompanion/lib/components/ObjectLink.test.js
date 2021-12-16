@@ -1,8 +1,7 @@
 import React from "react";
 import {createStore} from "redux";
 import { Provider } from "react-redux";
-import { render, fireEvent, act } from '@testing-library/react-native'
-import { Text } from "native-base";
+import { render, fireEvent, act, Text } from '@testing-library/react-native'
 
 import {reducers, setData} from "@holusion/cache-control"
 

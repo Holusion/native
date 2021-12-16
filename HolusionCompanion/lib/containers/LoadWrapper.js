@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import AppState  from "./AppState";
 import {useSelector} from "react-redux";
 
-import { Content, H1, Spinner, Text, Icon, List, ListItem, Right, Left, Body, Header, Container, Button } from "native-base";
 import { isLoaded, isBlocked, isSignedIn, isConnected } from "@holusion/cache-control";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView, View, Text, ActivityIndicator } from "react-native";
+import { H1 } from "../components/style"
 
 import DownloadState from "./DownloadState";
-import {NetworkIcon} from "../components";
+import { BgIcon } from "../components";
 import { Link } from "@react-navigation/native";
 
 
@@ -15,42 +15,38 @@ export function LoadInfo(){
   const connected = useSelector(isConnected);
   const signedIn = useSelector(isSignedIn);
   return <ScrollView contentContainerStyle={loadStyles.container}>
-      <H1 style={loadStyles.title}>Du contenu requis n'a pas encore été chargé</H1>
-      <Spinner color="#007aff"/>
-      <List style={loadStyles.status}>
-        <ListItem icon>
-          <Left>
-            <Button style={{backgroundColor:connected?"#5cb85c":"#f0ad4e"}} >
-              <Icon active name={connected?"flash":"flash-off"}/>
-            </Button>
-          </Left>
-          <Body><Text>Connexion à internet : </Text></Body>
-          <Right><Text>{connected?"ok":"connectez votre ipad"}</Text></Right>
-        </ListItem>
-        <ListItem icon>
-          <Left>
-            <Button style={{backgroundColor:connected?"#5cb85c":"#f0ad4e"}} >
-              <Icon active name="file-tray-stacked"/>
-            </Button>
-          </Left>
-          <Body><Text>Authentification : </Text></Body>
-          <Right><Text>{signedIn?"ok":"déconnecté"}</Text></Right>
-        </ListItem>
-        <ListItem last>
-          <Left/>
-          <Body>
+      <H1>Du contenu requis n'a pas encore été chargé</H1>
+      <ActivityIndicator color="#007aff"/>
+      <View style={loadStyles.status}>
+        <View style={loadStyles.listView}>
+          <View>
+            <BgIcon status={connected?"success":"warning"} name={connected?"flash":"flash-off"}/>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}><Text>Connexion à internet : </Text></View>
+          <View><Text>{connected?"ok":"connectez votre ipad"}</Text></View>
+        </View>
+        <View style={loadStyles.listView}>
+          <View>
+            <BgIcon status={connected?"success":"warning"} name="file-tray-stacked"/>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}><Text>Authentification : </Text></View>
+          <View><Text>{signedIn?"ok":"déconnecté"}</Text></View>
+        </View>
+        <View style={loadStyles.listView}>
+          <View/>
+          <View>
             <Link to="/Settings" >
               <View style={loadStyles.settingsBtn}>
                 <Text style={loadStyles.settingsText}>Paramètres</Text>
               </View>
             </Link>
-          </Body>
-          <Right/>
-        </ListItem>
+          </View>
+          <View/>
+        </View>
         <View>
           <DownloadState/>
         </View>
-      </List>
+      </View>
     </ScrollView >
 }
 
@@ -60,11 +56,6 @@ const loadStyles = StyleSheet.create({
     flexDirection:"column",
     alignItems: "center",
     paddingTop: 150,
-  },
-  title: {
-    fontSize: 21,
-    lineHeight: 21,
-    color: "#007aff"
   },
   download: {
     width: "50%",
@@ -82,7 +73,16 @@ const loadStyles = StyleSheet.create({
   settingsText: {
     color: "#007aff",
     fontSize: 17,
-  }
+  },
+  listView: {
+    backgroundColor: "transparent",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
 })
 
 export function RequiredLoadWrapper({children}){

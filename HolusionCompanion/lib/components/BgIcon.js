@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { theme } from "../style";
+import { theme } from "./style";
 
 export default function BgIcon({status="info", name}){
   let color = BgIcon.colors[status] || BgIcon.colors["info"];
