@@ -1,8 +1,7 @@
 'use strict'
 import React from 'react'
-import { Container, Content, Footer, H1, Header, Text, Title } from 'native-base';
 
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
 
 
 import PropTypes from "prop-types";
@@ -55,12 +54,12 @@ class ObjectScreen extends React.Component {
                 views={this.props.views}
                 onChange={ canSwipe ? this.setIdForIndex: null}
             />
-            <Footer style={styles.footer} pointerEvents="box-none">
+            <View style={styles.footer} pointerEvents="box-none">
                 <Controller 
                     prev={this.props.index !== 0? this.onPrevPage : null} 
                     next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
                 />
-            </Footer>
+            </View>
         </View>)
     }
 

@@ -10,6 +10,11 @@ export default {
     muted: "#666666",
     light: "#ddd",
   },
+  fontFamily:{
+    default: 'System',
+    h1: 'System',
+    h2: 'System',
+  },
   fontSize: {
     default: 16,
     h1: 32,
@@ -22,5 +27,5 @@ export default {
     height: "100%",
     top: "0%",
     right: "O%"
-  }
+  },
 };

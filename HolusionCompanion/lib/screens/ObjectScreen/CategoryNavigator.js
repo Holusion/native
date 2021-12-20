@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { getConfig } from '@holusion/cache-control';
-import { connectStyle } from 'native-base';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -24,8 +23,6 @@ class CategoryNavigator extends React.Component {
     return {
       headerShown: true,
       title: params.title || name,
-      headerStyle: this.props.style.header,
-      headerTitleStyle: this.props.style.title,
       headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
@@ -37,5 +34,7 @@ class CategoryNavigator extends React.Component {
     </Nav.Navigator>)
   }
 }
-const StyledCategoryNavigator = connectStyle('Holusion.CategoryNavigator', {})(CategoryNavigator);
-export default connect((state)=>({categories: getConfig(state).categories}))(StyledCategoryNavigator);
+
+
+
+export default connect((state)=>({categories: getConfig(state).categories}))(CategoryNavigator);

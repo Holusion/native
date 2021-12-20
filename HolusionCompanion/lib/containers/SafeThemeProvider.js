@@ -4,7 +4,9 @@ import {useSelector, useDispatch} from "react-redux";
 import {filename, info, error as logError, getCachedFiles} from "@holusion/cache-control";
 
 import {loadFonts} from 'react-native-dynamic-fonts';
-import { StyleProvider, Content, Spinner, Text } from 'native-base';
+
+
+import { StyleProvider } from 'native-base';
 import { clearThemeCache } from 'native-base-shoutem-theme';
 
 import getTheme from '../../native-base-theme/components';
@@ -14,7 +16,10 @@ import { readFile } from "react-native-fs";
 import { RequiredLoadWrapper } from "./LoadWrapper";
 
 
-
+/**
+ * 
+ * @deprecated Uses removed native-base dependency
+ */
 export function ThemeProvider({
   children,
   wrapper: Wrapper = React.Fragment

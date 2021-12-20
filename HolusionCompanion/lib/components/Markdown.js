@@ -12,9 +12,9 @@ const GOOD_DATA_RE = /^data:image\/(gif|png|jpeg|webp);/;
 
 function useTheme(){
   const theme = useContext(ThemeContext);
-  return {mdTheme: {
+  return {
     heading1:{
-      fontSize: theme.fontSize.h1,
+      fontSize: 64,
       //fontFamily: theme.fontFamily.h2,
       color: theme.colors.primary,
     },
@@ -26,7 +26,7 @@ function useTheme(){
     text: {
       fontSize: theme.fontSize.default,
     },
-  }}
+  }
 }
 
 export default function Markdown(props){

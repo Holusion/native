@@ -1,84 +1,74 @@
 'use strict';
-import React from 'react';
-import {connectStyle, Button, Icon} from "native-base";
-import {StyleSheet, Animated, Easing} from "react-native"
+import React, {useContext} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, Animated, Easing, TouchableOpacity } from "react-native"
 
-import PropTypes from "prop-types";
+import { ThemeContext } from './style';
+
 
 import {delay} from "../time";
 
-const AnimatedButton = Animated.createAnimatedComponent(Button);
+const AnimatedButton = Animated.createAnimatedComponent(TouchableOpacity);
 
-class PlayPause extends React.Component {
-    static propTypes = {
-        children: PropTypes.node,
-        target: PropTypes.object,
-        next: PropTypes.func,
-        prev: PropTypes.func,
-    }
+function useThemedPlayPause(){
+    const theme = useContext(ThemeContext);
 
-    constructor(props){
-        super(props);
-        this.grow = new Animated.Value(0);
-        this.last_request = Promise.resolve();
-        this._onPressIn = ()=>{
-            this.pause();
-            this.grow.setValue(0)
-            Animated.timing(
-                this.grow,
-                {
-                  toValue: 1,
-                  duration: 100,
-                  easing: Easing.linear,
-                  useNativeDriver: true,
-                }
-              ).start()
-        }
-        this._onPressOut = ()=>{
-            this.pause();
-            this.grow.setValue(1);
-            Animated.timing(
-                this.grow,
-                {
-                  toValue: 0,
-                  duration: 100,
-                  easing: Easing.linear,
-                  useNativeDriver: true,
-                }
-              ).start()
-        }
-    }
-    render(){
-        const styles = this.props.style;
-        const size = this.grow.interpolate({
-          inputRange: [0, 1],
-          outputRange: [1, 2]
-        });
+    return{icon: {
+      color: theme.colors.primary,
+    }}
+}
 
-       return (<AnimatedButton key="ctrl" onPressIn={this._onPressIn} onPressOut={this._onPressOut} large style={{
-            transform:[{scale: size}],
-            zIndex:2,
-            padding:5, 
-            borderRadius:45,
-        }} >
-            <Icon large primary type="Ionicons" name="pause" style={styles.icon} />
-        </AnimatedButton>)
+export default function PlayPause(props){
+    const themeStyle = useThemedPlayPause();
+
+    const grow = new Animated.Value(0);
+    const last_request = Promise.resolve();
+
+    function onPressIn(){
+        pause();
+        grow.setValue(0)
+        Animated.timing(
+            grow,
+            {
+              toValue: 1,
+              duration: 100,
+              easing: Easing.linear,
+              useNativeDriver: true,
+            }
+          ).start()
     }
-    pause(){
-        this.last_request = this.last_request
-        .then(()=> fetch(`http://${this.props.target.url}/control/pause`, {method:"POST"}))
+    function onPressOut(){
+        pause();
+        grow.setValue(1);
+        Animated.timing(
+            grow,
+            {
+              toValue: 0,
+              duration: 100,
+              easing: Easing.linear,
+              useNativeDriver: true,
+            }
+          ).start()
+    }
+    function pause(){
+        last_request = last_request
+        .then(()=> fetch(`http://${props.target.url}/control/pause`, {method:"POST"}))
         .then(()=>delay(120))
         .catch((e)=>{/*Completely ignore Pause errors */});
     }
+
+    return (<AnimatedButton key="ctrl" onPressIn={onPressIn} onPressOut={onPressOut} large style={{
+        transform:[{scale: size}],
+        zIndex:2,
+        padding:5, 
+        borderRadius:45,
+    }} >
+        <Icon large primary type="Ionicons" name="pause" style={[controllerTheme.icon, themeStyle.icon]} />
+    </AnimatedButton>)
 }
 
-
-const controllerTheme = {
-
+const controllerTheme = StyleSheet.create({
     icon:{
         fontSize: 40,
     },
-
-}
-
-export default connectStyle('Holusion.PlayPause', controllerTheme)(PlayPause);
+})
