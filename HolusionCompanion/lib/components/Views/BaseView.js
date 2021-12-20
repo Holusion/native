@@ -33,7 +33,7 @@ export default function BaseView(props){
 
   return(<View style={{flex:1,display:"flex", flexDirection:"row", justifyContent:"space-evenly", paddingBottom:headerHeight}}>
       <View testID="image-content" style={baseStyles.image}>
-          <ImageBackground resizeMode= 'contain' source={source} style={{flex:1, backgroundColor:"red"}} >
+          <ImageBackground resizeMode= 'contain' source={source} style={{flex:1}} >
               <H1 color="primary" style={baseStyles.title}>{d["title"]}</H1>
               <H2 color="secondary" style={baseStyles.subtitle}>{d["subtitle"]}</H2>
               <LinksView style={baseStyles.link} items={d["links"] || []}/>
@@ -46,34 +46,32 @@ export default function BaseView(props){
           </ScrollView>
         </View>
       }
-      <View style={{position:"absolute",top:0,left:0,width:10, height:10, borderWidth:1, borderColor:"blue"}}/>
-      <View style={{position:"absolute",bottom:50,left:0,width:10, height:10, borderWidth:1, borderColor:"blue"}}/>
   </View>)
 }
 
 const baseStyles = StyleSheet.create({
-    image:{      
-      flex:1
-
-    },
-    contentView:{
-        position:"relative",
-        right:"0%",
-        top:"0%",
-        zIndex: 1,
-        padding: 20,
-        paddingBottom: 40,
-        backgroundColor: "#f1f1f1",
-    },
-    title:{
-        paddingTop: 30,
-        paddingLeft: 10,
-        width:"100%",
-    },
-    subtitle:{
-        paddingLeft: 10,
-    },
-    link: {
-      zIndex: 1
-    }
+  image:{      
+    flex:1,
+    backgroundColor:"#fff"
+  },
+  contentView:{
+      position:"relative",
+      right:"0%",
+      top:"0%",
+      zIndex: 1,
+      padding: 20,
+      paddingBottom: 40,
+      backgroundColor: "#f1f1f1",
+  },
+  title:{
+      paddingTop: 30,
+      paddingLeft: 10,
+      width:"100%",
+  },
+  subtitle:{
+      paddingLeft: 10,
+  },
+  link: {
+    zIndex: 1
+  }
 });
