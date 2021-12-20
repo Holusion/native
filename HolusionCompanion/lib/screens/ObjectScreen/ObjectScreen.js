@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
     },
     footer:{
         position:"absolute",
-        bottom:15,
+        bottom:100,
+        width:"100%",
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',

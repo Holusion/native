@@ -18,7 +18,7 @@ export default function PrevNext(props, {children}){
     return (<View style={prevNextTheme.view} pointerEvents="box-none">
         <View style={{opacity: props.prev? 1 : 0}} pointerEvents={props.prev?"auto":"none"}>
             <TouchableOpacity key="prev" testID="button-prev" style={prevNextTheme.controlPrev} disabled={!props.prev} onPress={props.prev}>
-                <Icon primary large style={prevNextTheme.controlIcons} type="Ionicons" name="chevron-back"/>
+                <Icon primary large style={[prevNextTheme.controlIcons, themeStyle.controlIcons]} type="Ionicons" name="chevron-back"/>
             </TouchableOpacity>
         </View>
         {children}

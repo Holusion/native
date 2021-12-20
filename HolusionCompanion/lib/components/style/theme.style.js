@@ -26,6 +26,6 @@ export default {
     width: "33%",
     height: "100%",
     top: "0%",
-    right: "O%"
+    right: "0%"
   },
 };

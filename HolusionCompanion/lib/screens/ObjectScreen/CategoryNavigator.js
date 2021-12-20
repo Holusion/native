@@ -23,6 +23,7 @@ class CategoryNavigator extends React.Component {
     return {
       headerShown: true,
       title: params.title || name,
+      
       headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }

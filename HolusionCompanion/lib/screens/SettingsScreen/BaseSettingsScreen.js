@@ -10,7 +10,7 @@ import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, ge
 import { Link } from "@react-navigation/native";
 import CheckBox from "@react-native-community/checkbox";
 import { BgIcon, Bytes} from "../../components";
-import { theme, H1 } from "../../components/style"
+import { theme } from "../../components/style"
 import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
 import { useLocalFiles, useLocalSize } from "./CacheScreen";
