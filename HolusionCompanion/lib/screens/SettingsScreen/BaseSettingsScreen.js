@@ -20,7 +20,7 @@ export function ShowErrors(){
   const errors = useSelector(getErrors);
   return (<View style={style.listView}>
     <View>
-      <View style={{width: 30, height: 30, borderRadius: 15, backgroundColor:errors.length ===0? BgIcon.colors["success"]: BgIcon.colors["warning"]}}>
+      <View style={{width: 30, height: 30, borderRadius: 15, backgroundColor:errors.length ===0? BgIcon.color["success"]: BgIcon.color["warning"]}}>
         <Text style={{fontSize: 14, lineHeight: 30, color:"white", textAlign: "center"}}>{errors.length}</Text>
       </View>
     </View>

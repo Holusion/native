@@ -21,8 +21,8 @@ export function ProductPick({name, address, active, online, onPress}){
     <View>
       <BgIcon status={iconColor} name="link"/>
     </View>
-    <View style={{flex:1, paddingHorizontal:10}}><Text style={{color: BgIcon.colors[active?"default": "muted"] }}>{name}{address && ` (${address})`}</Text></View>
-    <View><Icon style={{color: BgIcon.colors[active?"default": "muted"], fontSize:18}} name="checkmark"/></View>
+    <View style={{flex:1, paddingHorizontal:10}}><Text style={{color: BgIcon.color[active?"default": "muted"] }}>{name}{address && ` (${address})`}</Text></View>
+    <View><Icon style={{color: BgIcon.color[active?"default": "muted"], fontSize:18}} name="checkmark"/></View>
   </TouchableOpacity>)
 }
 

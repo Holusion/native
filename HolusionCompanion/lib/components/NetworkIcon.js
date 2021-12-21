@@ -14,9 +14,9 @@ class NetworkIcon extends React.Component{
     render(){
       let color;
       if(this.props.connectedToProduct){
-        color = (this.props.colors)? this.props.colors.on: "green";
+        color = (this.props.color)? this.props.color.on: "green";
       }else{
-        color= (this.props.colors)? this.props.colors.off: "red";
+        color= (this.props.color)? this.props.color.off: "red";
       }
       let content = <View style={{display:"flex", flexDirection:"row"}}>
         {/*offline status is purposefully ignored */}

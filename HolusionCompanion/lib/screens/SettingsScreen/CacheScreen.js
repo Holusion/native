@@ -97,7 +97,7 @@ export function useLocalSize(){
 }
 export function CachePartSize({name, color, size}){
   return       <View style={{display: "flex", flexDirection: "row"}}>
-  <Icon name="ellipse" style={{color: BgIcon.colors[color], fontSize: 13, lineHeight: 13}}/>
+  <Icon name="ellipse" style={{color: BgIcon.color[color], fontSize: 13, lineHeight: 13}}/>
   <Bytes style={{fontSize:13, lineHeight: 13}}>{size}</Bytes>
   <Text style={{fontSize:13, lineHeight: 13}}> {name}</Text>
 </View>

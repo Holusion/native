@@ -11,10 +11,10 @@ export function Pick({label, help, active, onPress}){
 
   return ( <TouchableOpacity style={style.listView} onPress={onPress}>
     <View style={{flex:1}}>
-      <Text style={{color: BgIcon.colors[active?"info": "muted"]}}>{label}</Text>
+      <Text style={{color: BgIcon.color[active?"info": "muted"]}}>{label}</Text>
     </View>
     <View style={{flex:1}}>
-      <Text style={{color: BgIcon.colors[active?"info": "muted"], fontSize: 14 }}>{help}</Text>
+      <Text style={{color: BgIcon.color[active?"info": "muted"], fontSize: 14 }}>{help}</Text>
     </View>
     <CheckBox lineWidth={1} animationDuration={0} value={active}/>
   </TouchableOpacity>)
