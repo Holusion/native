@@ -15,7 +15,7 @@ function ListObjects(props){
         //Ugly hack because Images with a file:/// uri are not rendered when updated unless we restart the app
         const thumbSource = item['thumb']? {uri: item['thumb'].replace(/file:\/\/\/.*\/Documents/,"~/Documents"), scale: 1} : require("../../assets/icons/catalogue.png");
         return (<TouchableOpacity key={item['id']} onPress={()=>props.onNavigate(item['id'])}>
-                <ImageCard source={thumbSource} title={item.title} />
+                <ImageCard source={thumbSource} title={item.title? item.title : item['id']} />
         </TouchableOpacity>)
     })
 
