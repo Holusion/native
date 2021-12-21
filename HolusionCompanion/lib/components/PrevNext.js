@@ -12,7 +12,7 @@ function useThemedPrevNext(){
     }};
 }
 
-export default function PrevNext(props, {children}){
+export default function PrevNext(props){
     const themeStyle = useThemedPrevNext();
 
     return (<View style={prevNextTheme.view} pointerEvents="box-none">
@@ -21,7 +21,7 @@ export default function PrevNext(props, {children}){
                 <Icon primary large style={[prevNextTheme.controlIcons, themeStyle.controlIcons]} type="Ionicons" name="chevron-back"/>
             </TouchableOpacity>
         </View>
-        {children}
+        {props.children}
         <View style={{opacity: props.next? 1 : 0, zIndex:props.next? 1:-1}} pointerEvents={props.next?"auto":"none"}>
             <TouchableOpacity key="next" testID="button-next" style={prevNextTheme.controlNext} disabled={!props.next} onPress={props.next}>
                 <Icon primary large style={[prevNextTheme.controlIcons, themeStyle.controlIcons]} type="Ionicons" name="chevron-forward"/>

@@ -1,5 +1,5 @@
 import React, {useContext, useMemo, useState} from "react";
-import {StyleSheet} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import ObjectLink from "./ObjectLink";
 

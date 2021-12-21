@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     subTitle: {
         color: "#bbbbbb",
         fontStyle: "italic",
-        paddingTop: 12,
+        paddingVertical: 12,
     },    
 })

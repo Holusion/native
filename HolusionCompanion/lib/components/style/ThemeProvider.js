@@ -8,7 +8,7 @@ import useFonts from "./useFonts";
 export const ThemeContext = React.createContext(defaultTheme);
 
 
-function deepMerge(a,b){
+export function deepMerge(a,b){
   if(typeof a !== "object" || typeof b !== "object") return b || a;
   const result = {};
   Object.keys(a).forEach(key=>{
