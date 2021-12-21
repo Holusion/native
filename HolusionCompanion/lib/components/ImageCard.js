@@ -7,10 +7,10 @@ function useThemedImageCard(){
 
     return{
         container: {
-            borderColor: theme.colors.primary,
+            borderColor: theme.color.primary,
         },
         titleContainer: {
-            backgroundColor: theme.colors.primary,
+            backgroundColor: theme.color.primary,
         },
         titleText:{
 

@@ -11,13 +11,13 @@ export function Log({severity, name, message, context, timestamp, active, onPres
   let color = "yellow";
   switch(severity){
     case "error":
-      color = theme.colors.error;
+      color = theme.color.error;
       break;
     case "warn":
-      color = theme.colors.warning;
+      color = theme.color.warning;
       break;
     case "info":
-      color = theme.colors.info;
+      color = theme.color.info;
       break;
   }
 
@@ -53,10 +53,10 @@ export default function LogScreen({navigation}){
     </SettingsHeader>
       <View style={style.nav}>
         <TouchableOpacity style={[style.btn, type === "errors" && style.active]} active={type === "errors"} onPress={()=>setType("errors")}>
-          <Text style={[{fontWeight:"bold"},type === "errors" && {color: theme.colors.info}]}>Erreurs</Text>
+          <Text style={[{fontWeight:"bold"},type === "errors" && {color: theme.color.info}]}>Erreurs</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[style.btn, type === "messages" && style.active]} onPress={()=>setType("messages")}>
-          <Text style={[{fontWeight:"bold"},type === "messages" && {color: theme.colors.info}]}>Messages</Text>
+          <Text style={[{fontWeight:"bold"},type === "messages" && {color: theme.color.info}]}>Messages</Text>
         </TouchableOpacity>
       </View>    
     <FlatList
@@ -85,8 +85,8 @@ const style = StyleSheet.create(
     },
     active:{
       borderBottomWidth: 1.5,
-      borderBottomColor: theme.colors.info,
-      color: theme.colors.info,
+      borderBottomColor: theme.color.info,
+      color: theme.color.info,
     }
   }
 )

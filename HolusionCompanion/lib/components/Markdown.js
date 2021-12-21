@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useMemo, useState} from "react";
 import {StyleSheet} from 'react-native';
 
 import ObjectLink from "./ObjectLink";
@@ -12,21 +12,21 @@ const GOOD_DATA_RE = /^data:image\/(gif|png|jpeg|webp);/;
 
 function useTheme(){
   const theme = useContext(ThemeContext);
-  return {
+  return useMemo(()=>StyleSheet.create({
+    body: {
+      fontSize: theme.fontSize.default,
+    },
     heading1:{
-      fontSize: 64,
-      //fontFamily: theme.fontFamily.h2,
-      color: theme.colors.primary,
+      fontSize: theme.fontSize.h1,
+      fontFamily: theme.fontFamily.h1,
+      color: theme.color.primary,
     },
     heading2:{
       fontSize: theme.fontSize.h2,
-      //fontFamily: theme.fontFamily.h2,
-      color: theme.colors.secondary,
+      fontFamily: theme.fontFamily.h2,
+      color: theme.color.secondary,
     },
-    text: {
-      fontSize: theme.fontSize.default,
-    },
-  }
+  }), [theme]);
 }
 
 export default function Markdown(props){
@@ -55,8 +55,6 @@ export default function Markdown(props){
       </ObjectLink>
     ),
   }
-
-  const styles = Array.isArray(props.style)? props.style.reduce((acc, v)=>{return {...acc, ...v}}, {}): props.style;
   return <Renderer 
     rules={rules}
     markdownit={parser}
@@ -68,7 +66,3 @@ export default function Markdown(props){
   </Renderer>
   
 }
-
-
-
-//export default connectStyle('Holusion.Markdown', mdTheme)(Markdown);

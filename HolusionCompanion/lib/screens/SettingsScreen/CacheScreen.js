@@ -146,7 +146,7 @@ export default function CacheScreen(){
           <CachePartSize name="Obsolète" color="muted" size={size -requiredSize}/> 
         </View>}
         <View style={{display:"flex", flexDirection: "row", justifyContent:"flex-end"}}>
-          <TouchableOpacity style={{backgroundColor: theme.colors.info, padding:10 , borderRadius:10, display:"flex", flexDirection:"row"}} disabled={loading || cleaning}  bordered iconLeft small onPress={()=>setCleaning(true)}>
+          <TouchableOpacity style={{backgroundColor: theme.color.info, padding:10 , borderRadius:10, display:"flex", flexDirection:"row"}} disabled={loading || cleaning}  bordered iconLeft small onPress={()=>setCleaning(true)}>
             <Icon style={{color:"white"}} name="trash"/>
             <Text style={{color:"white", paddingLeft:5}} >Nettoyer</Text>
           </TouchableOpacity>

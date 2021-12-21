@@ -8,7 +8,7 @@ function useThemedPrevNext(){
     const theme = useContext(ThemeContext);
 
     return {controlIcons: {
-      color: theme.colors.primary
+      color: theme.color.primary
     }};
 }
 

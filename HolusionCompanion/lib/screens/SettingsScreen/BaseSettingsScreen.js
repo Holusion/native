@@ -232,10 +232,10 @@ const style = StyleSheet.create({
   },
   listHeader:{
     padding: 10,
-    borderColor: theme.colors.light,
+    borderColor: theme.color.light,
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    backgroundColor: theme.colors.light
+    backgroundColor: theme.color.light
   },
   listTitle:{
     fontWeight: "bold",

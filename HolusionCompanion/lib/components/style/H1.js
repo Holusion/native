@@ -4,5 +4,5 @@ import { ThemeContext } from "./ThemeProvider";
 
 export function H1({style ,color="primary",children}){
     const theme = useContext(ThemeContext);
-    return <Text style={[style,{color: theme.colors[color], fontSize: theme.fontSize.h1}]}>{children}</Text>
+    return <Text style={[style,{color: theme.color[color], fontSize: theme.fontSize.h1}]}>{children}</Text>
   }

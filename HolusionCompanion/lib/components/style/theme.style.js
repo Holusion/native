@@ -1,5 +1,5 @@
 export default {
-  colors: {
+  color: {
     success:"#28a745",
     warning: "#ffc107",
     danger: "#dc3545",
@@ -20,7 +20,7 @@ export default {
     h1: 32,
     h2: 24,
   },
-  baseDescription:{
+  baseDescription: {
     position: "relative",
     backgroundColor: "#f1f1f1",
     width: "33%",

@@ -14,7 +14,7 @@ function useThemedPlayPause(){
     const theme = useContext(ThemeContext);
 
     return{icon: {
-      color: theme.colors.primary,
+      color: theme.color.primary,
     }}
 }
 
