@@ -1,7 +1,7 @@
 'use strict'
 import React from 'react'
 
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View, SafeAreaView } from 'react-native';
 
 
 import PropTypes from "prop-types";
@@ -44,7 +44,7 @@ class ObjectScreen extends React.Component {
     render() {
         const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
         
-        return (<View onLayout={this._onLayoutDidChange}>
+        return (<SafeAreaView style={{flex:1}} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
                 ref= {(ref)=>this._list = ref}
@@ -60,7 +60,7 @@ class ObjectScreen extends React.Component {
                     next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
                 />
             </View>
-        </View>)
+        </SafeAreaView>)
     }
 
     onNextPage = ()=>{
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     },
     footer:{
         position:"absolute",
-        bottom:100,
+        bottom:40,
         width:"100%",
         flex:1,
         justifyContent: 'center',

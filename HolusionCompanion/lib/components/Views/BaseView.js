@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { useHeaderHeight } from '@react-navigation/elements';
 
 
 import { ImageBackground, ScrollView, View, StyleSheet } from 'react-native';
@@ -25,13 +24,12 @@ function useThemedBaseView(){
 
 
 export default function BaseView(props){
-  const headerHeight = useHeaderHeight();
   const themeStyle = useThemedBaseView();
   const d = props;
   const source = ((d && d.image)?{uri: d.image}: require("../../../assets/missing-image.png"));
   const withDescription = typeof d['description']=== "string" && d['description'].length ? true:false;
 
-  return(<View style={{flex:1,display:"flex", flexDirection:"row", justifyContent:"space-evenly", paddingBottom:headerHeight}}>
+  return(<View style={{flex:1,display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
       <View testID="image-content" style={baseStyles.image}>
           <ImageBackground resizeMode= 'contain' source={source} style={{flex:1}} >
               <H1 color="primary" style={baseStyles.title}>{d["title"]}</H1>
