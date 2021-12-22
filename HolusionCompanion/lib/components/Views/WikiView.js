@@ -15,7 +15,7 @@ export default function WikiView(d){
         <View style={styles.headerStyles}>
             <View style={styles.titleContainer}>
                 <View style={styles.titles}>
-                    <H1 primary style={styles.title}>{d['title']}</H1>
+                    <H1 style={styles.title}>{d['title']}</H1>
                     <H2 style={styles.subTitle}>{d['subtitle']}</H2>
                     {abstract}
                 </View>
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
         lineHeight: 40,
     },
     subTitle: {
-        color: "#bbbbbb",
         fontStyle: "italic",
         paddingVertical: 12,
     },    

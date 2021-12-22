@@ -53,7 +53,7 @@ function HomeScreen (props) {
         <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
       </TouchableOpacity>)
     } else if (category_items.length == 1) {
-      return (<TouchableOpacity key={index} onPress={() => props.navigation.navigate("Object", { id: category_items[0].id, category: category.name })}>
+      return (<TouchableOpacity key={index} onPress={() => props.navigation.navigate("Object", { id: category_items[0].id, screen: category.name })}>
         <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
       </TouchableOpacity>)
     }

@@ -70,11 +70,11 @@ class ObjectScreen extends React.Component {
         this.setIdForIndex(this.props.index-1)
     }
     componentDidMount(){
-      this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
+      this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title || this.props.id })
     }
     componentDidUpdate(prevProps){
       if(prevProps.id !== this.props.id){
-        this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
+        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title|| this.props.id })
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
           if(this._list){
