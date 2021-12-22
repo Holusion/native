@@ -47,7 +47,7 @@ exports[`<Markdown> handle images 1`] = `
         onLoadStart={[Function]}
         source={
           Object {
-            "uri": "file://example.com/foo.png",
+            "uri": "file://path/to/foo.png",
           }
         }
         style={
