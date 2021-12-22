@@ -84,20 +84,18 @@ export default class App extends React.Component{
        <StatusBar hidden={true} />
         <ErrorHandler>
           {this.state.store?<Provider store={this.state.store}>
-
-              <ThemeProvider>
-                <NavigationContainer>
-                  <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
-                    <Stack.Screen name="Home" component={HomeScreen}/>
-                    <Stack.Screen name="List" component={ListScreen}/>
-                    <Stack.Screen name="Object" options={{ headerShown: false }} component={ObjectScreen}/>
-                    <Stack.Screen name="Settings" options={{stackPresentation:"transparentModal"}} component={SettingsScreen}/>
-                    {/*<Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={ContactScreen} />*/}
-                    <Stack.Screen name="404" component={NotFoundScreen}/>
-                  </Stack.Navigator>
-                </NavigationContainer>
-              </ThemeProvider>
-
+            <ThemeProvider>
+              <NavigationContainer>
+                <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
+                  <Stack.Screen name="Home" component={HomeScreen}/>
+                  <Stack.Screen name="List" component={ListScreen}/>
+                  <Stack.Screen name="Object" options={{ headerShown: false }} component={ObjectScreen}/>
+                  <Stack.Screen name="Settings" options={{presentation:"transparentModal", headerShown: false}} component={SettingsScreen}/>
+                  {/*<Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={ContactScreen} />*/}
+                  <Stack.Screen name="404" component={NotFoundScreen}/>
+                </Stack.Navigator>
+              </NavigationContainer>
+            </ThemeProvider>
           </Provider> : <ActivityIndicator/>}
         </ErrorHandler>
     </React.Fragment>
