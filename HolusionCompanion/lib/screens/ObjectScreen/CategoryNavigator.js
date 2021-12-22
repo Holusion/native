@@ -7,33 +7,34 @@ import { HeaderBackButton } from '@react-navigation/elements';
 
 
 import { connect, useSelector } from 'react-redux';
-import {default as RawObjectScreen} from './ObjectScreen';
+import {default as RawCategoryScreen} from './CategoryScreen';
 import { NetworkIcon } from '../../components';
 import { withErrorHandler } from '../../containers';
+import { getItemsArray } from '@holusion/cache-control';
 
-const ObjectScreen = withErrorHandler(RawObjectScreen);
+const CategoryScreen = withErrorHandler(RawCategoryScreen);
 
 //const Nav = createMaterialTopTabNavigator();
 const Nav = createNativeStackNavigator();
 //const Nav = createStackNavigator();
 
 
-class CategoryNavigator extends React.Component {
-  screenOptions = ({ navigation, route:{name, params={}}})=>{
+function CategoryNavigator(props){
+  const screenOptions = ({ navigation, route:{name, params={}}})=>{
     return {
+      headerBackTitle: "Retour",
       headerShown: true,
       title: params.title || name,
-      
+
       headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
-  render(){
-    let categories = this.props.categories || [];
-    return (<Nav.Navigator screenOptions={this.screenOptions}>
-      {[...categories, {name: "Undefined"}].map(({ name }, index) => (<Nav.Screen key={index} name={name} component={ObjectScreen} />))}
-    </Nav.Navigator>)
-  }
+  let categories = props.categories || [];
+
+  return (<Nav.Navigator screenOptions={screenOptions}>
+    {[...categories, {name: "Undefined"}].map(({ name }, index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
+  </Nav.Navigator>)
 }
 
 
