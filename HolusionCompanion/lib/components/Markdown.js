@@ -32,13 +32,14 @@ function useTheme(){
 export default function Markdown(props){
   const mdTheme = useTheme();
   const parser = MarkdownIt({
-    typographer: true,
-    validateLink: (url)=> {
-      str = url.trim().toLowerCase();
-      return BAD_PROTO_RE.test(str) ? (GOOD_DATA_RE.test(str) ? true : false) : true;
-    }
+    typographer: true
   });
-
+  parser. validateLink = (url)=> {
+    console.warn("Validate Link : ", url);
+    str = url.trim().toLowerCase();
+    return BAD_PROTO_RE.test(str) ? (GOOD_DATA_RE.test(str) ? true : false) : true;
+  }
+  
   const rules = {
     link: (node, children, parent, styles) => (
       <ObjectLink to={node.attributes.href}
