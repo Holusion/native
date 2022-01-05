@@ -20,11 +20,10 @@ function HomeScreen (props) {
       <TouchableOpacity transparent onPress={() => props.navigation.navigate("About")}>
         <H2 primary style={styles.footerButton}>A propos</H2>
       </TouchableOpacity>
-
     </View>)
   }
 
-  if(props.config.defaultPage){
+  if(props.config.defaultPage && props.config.defaultPage != ""){
     const pageData = props.items.find(i => i.id == props.config.defaultPage)
     if(!pageData){
       return (<ScrollView  contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -61,7 +60,6 @@ function HomeScreen (props) {
       <ImageCard title={category.name} source={category.thumb ? { uri: category.thumb } : null} />
     </TouchableOpacity>)
   })
-
 
 
   return (

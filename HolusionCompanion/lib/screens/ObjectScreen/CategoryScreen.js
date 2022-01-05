@@ -43,7 +43,6 @@ class CategoryScreen extends React.Component {
     }
     render() {
         const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
-        
         return (<SafeAreaView style={{flex:1}} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
@@ -70,7 +69,10 @@ class CategoryScreen extends React.Component {
         this.setIdForIndex(this.props.index-1)
     }
     componentDidMount(){
-      this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title || ""})
+        if(!this.props.id){
+            return console.warn("Object not found");
+        }
+        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title || ""})
     }
     componentDidUpdate(prevProps){
       if(prevProps.id !== this.props.id){
@@ -103,7 +105,7 @@ function mapStateToProps(state, {route}){
   const selectedCategory = route.name === "Undefined"? undefined : route.name;
   const items = getItems(state);
   const activeItems = getActiveItems(state, {selectedCategory});
-  const id = route.params? route.params.id : activeItems[0].id;
+  const id = route.params? route.params.id : undefined;
   const item = items[id];
   const index = Array.isArray(activeItems)? activeItems.findIndex((item)=> (item.id == id)) : -1;
 

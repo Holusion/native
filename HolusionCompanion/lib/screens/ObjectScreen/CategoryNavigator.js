@@ -32,14 +32,13 @@ function CategoryNavigator(props){
   }
   let categories = props.categories.map(c => c.name) || [];
 
-  //item with undefined category have his own category. 
+  //item with undefined category have his own category added in the cache control
   let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
 
   return (<Nav.Navigator screenOptions={screenOptions}>
     {[...categories, ...undefinedCategories].map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
   </Nav.Navigator>)
 }
-
 
 
 export default connect((state)=>({
