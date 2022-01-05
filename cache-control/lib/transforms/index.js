@@ -29,5 +29,10 @@ export function defaultTransformsFactory(projecName){
   return [
     makeLocalFactory(projecName),
     transformMarkdownFactory(projecName),
+    (d)=>{
+      if(typeof d.category === "undefined") d.category = d.id;
+      console.log("Category for %s : %s", d.id, d.category);
+      return [d, new Set()];
+    },
   ];
 }

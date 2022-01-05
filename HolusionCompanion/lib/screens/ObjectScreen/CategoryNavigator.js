@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getConfig } from '@holusion/cache-control';
+import { getConfig, getItems } from '@holusion/cache-control';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -30,13 +30,19 @@ function CategoryNavigator(props){
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
-  let categories = props.categories || [];
+  let categories = props.categories.map(c => c.name) || [];
+
+  //item with undefined category have his own category. 
+  let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
 
   return (<Nav.Navigator screenOptions={screenOptions}>
-    {[...categories, {name: "Undefined"}].map(({ name }, index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
+    {[...categories, ...undefinedCategories].map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
   </Nav.Navigator>)
 }
 
 
 
-export default connect((state)=>({categories: getConfig(state).categories}))(CategoryNavigator);
+export default connect((state)=>({
+  categories: getConfig(state).categories,
+  items: getItems(state)
+}))(CategoryNavigator);
