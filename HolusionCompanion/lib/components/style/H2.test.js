@@ -62,4 +62,10 @@ describe("H2", () => {
             },
         ]);
     });
+    test("Forwards additional props", ()=>{
+      const res = render(<ThemeContext.Provider value={themeStyle}>
+          <H2 testID="foo">Foo</H2>
+      </ThemeContext.Provider>);
+      expect(res.getByTestId("foo")).toBeTruthy();
+  })
 })

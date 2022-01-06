@@ -2,7 +2,7 @@ import React, { useContext} from "react";
 import { Text } from "react-native";
 import { ThemeContext } from "./ThemeProvider";
 
-export function H2({style={} ,color="secondary",children}){
+export function H2({style={} ,color="secondary",children, ...props}){
     const theme = useContext(ThemeContext);
     return <Text style={[
       {
@@ -11,5 +11,5 @@ export function H2({style={} ,color="secondary",children}){
         fontFamily: theme.fontFamily.h2
       },
       style
-    ]}>{children}</Text>
+    ]} {...props}>{children}</Text>
   }
