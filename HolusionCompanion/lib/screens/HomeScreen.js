@@ -13,7 +13,6 @@ import { useAutoPlay } from '../sync/hooks';
 function HomeScreen (props) {
   useAutoPlay();
   //First handle cases where application is not ready
-
   let footer = null;
   if (props.config.about) {
     footer = (<View >

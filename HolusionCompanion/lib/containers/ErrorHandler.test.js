@@ -4,8 +4,8 @@ import { ErrorHandler, withErrorHandler } from "./ErrorHandler";
 
 import { render, fireEvent, act } from '@testing-library/react-native'
 
-function Err(props){
-  throw new Error("Error message");
+function Err({e=new Error("Error message")}){
+  throw e;
 }
 function Ok({message="OK"}){
   return <Text testID="OK">{message}</Text>;
@@ -40,8 +40,16 @@ describe("Error Boundaries", function(){
       </ErrorHandler>);
       expect(res.queryByTestId("errorHandler-title")).toBeTruthy();
       expect(res.getByTestId("errorHandler-message")).toHaveTextContent("Error message");
-      expect(res.getByTestId("errorHandler-stack")).toHaveTextContent("at Err");
+      expect(res.getByTestId("errorHandler-stack")).toHaveTextContent("in Err");
     });
+    test("provides componentStack if possible", function(){
+      let e = new Error("Error message");
+      e.componentStack = "componentStack";
+      let res = render(<ErrorHandler>
+        <Err e={e}></Err>
+      </ErrorHandler>);
+      expect(res.getByTestId("errorHandler-componentStack")).toHaveTextContent("componentStack");
+    })
   });
   
   describe("withErrorHandler", function(){
@@ -57,7 +65,7 @@ describe("Error Boundaries", function(){
       let res = render(<C/>);
       expect(res.queryByTestId("errorHandler-title")).toBeTruthy();
       expect(res.getByTestId("errorHandler-message")).toHaveTextContent("Error message");
-      expect(res.getByTestId("errorHandler-stack")).toHaveTextContent("at Err");
+      expect(res.getByTestId("errorHandler-stack")).toHaveTextContent("in Err");
     });
   });
 
