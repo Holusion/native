@@ -12,9 +12,10 @@ import {LinksView} from './partials';
 function useThemedBaseView(){
   const theme = useContext(ThemeContext);
   return {contentView: {
-    position: theme.baseDescription.position,
+    position: theme.baseDescription.backgroundColor === "transparent" ? "absolute" : "relative",
     backgroundColor: theme.baseDescription.backgroundColor,
     width: theme.baseDescription.width,
+    height: theme.baseDescription.height,
     top: theme.baseDescription.top,
     right: theme.baseDescription.right,
   },
@@ -53,9 +54,6 @@ const baseStyles = StyleSheet.create({
     backgroundColor:"#fff"
   },
   contentView:{
-      position:"relative",
-      right:"0%",
-      top:"0%",
       zIndex: 1,
       padding: 20,
       paddingBottom: 40,

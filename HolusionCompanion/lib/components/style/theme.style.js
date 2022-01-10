@@ -21,7 +21,6 @@ export default {
     h2: 24,
   },
   baseDescription: {
-    position: "relative",
     backgroundColor: "#f1f1f1",
     width: "33%",
     height: "100%",

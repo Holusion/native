@@ -35,7 +35,6 @@ export default function Markdown(props){
     typographer: true
   });
   parser. validateLink = (url)=> {
-    console.warn("Validate Link : ", url);
     str = url.trim().toLowerCase();
     return BAD_PROTO_RE.test(str) ? (GOOD_DATA_RE.test(str) ? true : false) : true;
   }
