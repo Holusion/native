@@ -1,39 +1,47 @@
-import React from 'react';
-import PropTypes from "prop-types";
-import { Image } from "react-native";
-import { connectStyle, Text, Icon, View } from 'native-base'
+import React, { useContext } from 'react';
+import { StyleSheet, Image, Text, View } from "react-native";
+import { ThemeContext } from "./style"
 
+function useThemedImageCard(){
+    const theme = useContext(ThemeContext)
 
-class ImageCard extends React.Component{
-    static propTypes = {
-        image: PropTypes.any,
-        source: PropTypes.oneOfType([PropTypes.shape({uri: PropTypes.string.isRequired}),PropTypes.number]),
-        title: PropTypes.string,
-        style: PropTypes.object,
-    }
-    render() {
-        const props = this.props;
-        const styles = props.style;
-        let img;
-        if(props.image) img = props.image;
-        else { 
-            let src = (props.source)?props.source: require("../../assets/default_image.png");
-            img = (<Image key={src.uri} style={styles.image} source={src} resizeMode="cover"/>);
+    return{
+        container: {
+            borderColor: theme.color.primary,
+        },
+        titleContainer: {
+            backgroundColor: theme.color.primary,
+        },
+        titleText:{
+
         }
-        (typeof props.title == "string") || console.warn("Invalid title :", props.title);
-        const title = (typeof props.title == "string")? props.title : "--";
-        return (
-            <View style={styles.container}>
-                {img}
-                <View style={styles.titleContainer}>
-                    <Text ellipsizeMode="tail" numberOfLines={1} style={styles.titleText}>{title}</Text>
-                </View>
-            </View>
-        );
     }
 }
 
-const cardTheme = {
+export default function ImageCard(props){
+    const themeStyle = useThemedImageCard()
+
+    let img;
+    if(props.image) img = props.image;
+    else { 
+        let src = (props.source)?props.source: require("../../assets/default_image.png");
+        img = (<Image key={src.uri} style={cardStyle.image} source={src} resizeMode="cover"/>);
+    }
+    (typeof props.title == "string") || console.warn("Invalid title :", props.title);
+    const title = (typeof props.title == "string")? props.title : "--";
+
+    return (
+        <View style={[cardStyle.container, themeStyle.container]}>
+            {img}
+            <View style={[cardStyle.titleContainer, themeStyle.titleContainer]}>
+                <Text ellipsizeMode="tail" numberOfLines={1} style={[cardStyle.titleText, themeStyle.titleText]}>{title}</Text>
+            </View>
+        </View>
+    );
+}
+
+
+const cardStyle = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -54,11 +62,12 @@ const cardTheme = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
+        width: 230,
     },
 
     image: {
-        alignSelf: 'center', 
-        width: 200, 
+        alignSelf: 'center',
+        width: 230,
         height: 200, 
     },
     icon: {
@@ -68,12 +77,10 @@ const cardTheme = {
         height:200,
     },
     titleText: {
-        width: 200,
         textAlign: 'center',
         fontSize: 26,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: '#fff'
     }
-}
+})
 
-
-export default connectStyle('Holusion.ImageCard', cardTheme)(ImageCard);

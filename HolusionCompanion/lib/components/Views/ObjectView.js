@@ -2,7 +2,7 @@
 import React, {memo} from "react";
 import PropTypes from "prop-types";
 import {View} from "react-native";
-import {BaseView, WikiView} from "../../components";
+import {BaseView, WikiView} from "..";
 import { useDuration } from "../../sync/hooks";
 
 

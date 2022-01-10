@@ -1,42 +1,43 @@
 import React, { useState } from "react";
-import {Button, ListItem, Segment, Text, View, Left, Right, Body, Icon, Header} from "native-base";
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";
 import { getErrors, getLogs } from "@holusion/cache-control";
 import SettingsHeader from "./SettingsHeader";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { theme } from "../../components/style";
 
 
 export function Log({severity, name, message, context, timestamp, active, onPress}){
   let color = "yellow";
   switch(severity){
     case "error":
-      color = "#DC3545FF";
+      color = theme.color.error;
       break;
     case "warn":
-      color = "#FF9966FF";
+      color = theme.color.warning;
       break;
     case "info":
-      color = "#103040FF";
+      color = theme.color.info;
       break;
   }
 
-  return (<ListItem onPress={onPress} selected={active} style={{flexDirection: "column", alignItems: "flex-start"}}>
+  return (<TouchableOpacity onPress={onPress} selected={active} style={{flexDirection: "column", alignItems: "flex-start", padding:10}}>
       <View style={{display: "flex", flexDirection: "row", alignItems:"stretch", justifyContent:"flex-start"}}>
-        <Left style={{flex:0, flexDirection:"row", alignItems:"baseline"}}>
+        <View style={{flex:0, flexDirection:"row", alignItems:"baseline"}}>
           <Text style={{ fontSize: 12, width:75, color:"#666666FF"}}>{timestamp.toLocaleTimeString()}</Text>
           <Text style={{fontSize: 14, color: color}}>[{name}] </Text>
-        </Left>
-        <Body style={{flex: 1, alignItems: "flex-start", flexDirection: "row"}}>
+        </View>
+        <View style={{flex: 1, alignItems: "flex-start", flexDirection: "row"}}>
           <Text style={{fontSize: 14, lineHeight: 14}} >{message}</Text>
-        </Body>
-        <Right style={{flex:0}}>
+        </View>
+        <View style={{flex:0}}>
           {context && (<Icon type="Ionicons" name={(active)? "chevron-up-outline": "chevron-down-outline"}/>)}
-        </Right>
+        </View>
       </View>
     {active && <View style={{flex:1}}>
       <Text style={{fontSize: 13, paddingLeft: 2, color:"#666666FF", paddingTop: 8, paddingLeft: 8}}>{context}</Text>
     </View>}
-    </ListItem>)
+    </TouchableOpacity>)
 }
 
 export default function LogScreen({navigation}){
@@ -48,17 +49,16 @@ export default function LogScreen({navigation}){
   data.reverse();
   return <View style={{backgroundColor:"white", minHeight: "100%"}}>
     <SettingsHeader back>
-      <Segment>
-        <Button  iconLeft first active={type === "errors"} onPress={()=>setType("errors")}>
-          <Icon name="information-circle-outline"/>
-          <Text>Erreurs</Text>
-        </Button>
-        <Button iconRight last active= {type === "messages"} onPress={()=>setType("messages")}>
-          <Text>Messages</Text>
-          <Icon name="bug-outline"/>
-        </Button>
-      </Segment>
+
     </SettingsHeader>
+      <View style={style.nav}>
+        <TouchableOpacity style={[style.btn, type === "errors" && style.active]} active={type === "errors"} onPress={()=>setType("errors")}>
+          <Text style={[{fontWeight:"bold"},type === "errors" && {color: theme.color.info}]}>Erreurs</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[style.btn, type === "messages" && style.active]} onPress={()=>setType("messages")}>
+          <Text style={[{fontWeight:"bold"},type === "messages" && {color: theme.color.info}]}>Messages</Text>
+        </TouchableOpacity>
+      </View>    
     <FlatList
       ListEmptyComponent={<Text>{type == "errors"? "Aucune erreur" : "Aucun message"}</Text>}
       data={data}
@@ -70,3 +70,23 @@ export default function LogScreen({navigation}){
     />
   </View>
 }
+
+const style = StyleSheet.create(
+  {
+    nav:{
+      display: "flex",
+      flexDirection: "row",
+      paddingBottom: 10
+    },
+    btn:{
+      paddingVertical: 10,
+      alignItems: "center",
+      flex: 1,
+    },
+    active:{
+      borderBottomWidth: 1.5,
+      borderBottomColor: theme.color.info,
+      color: theme.color.info,
+    }
+  }
+)

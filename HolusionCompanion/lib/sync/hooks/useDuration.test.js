@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {createStore} from "redux";
 import {reducers} from "@holusion/cache-control";
 import { useDuration } from "./useDuration";
-import { View, Text } from "native-base";
+import { View, Text } from "react-native";
 
 const Stack = createStackNavigator();
 

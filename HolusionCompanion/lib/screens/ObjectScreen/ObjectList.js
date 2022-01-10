@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 
 import { FlatList } from 'react-native';
 
-import ObjectView from "./ObjectView";
+import ObjectView from "../../components/Views/ObjectView";
 
 
 const viewabilityConfig = {

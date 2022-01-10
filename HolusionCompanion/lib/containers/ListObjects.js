@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {getActiveItems} from "../selectors";
 import { connect} from 'react-redux';
 
-import { Container, Toast, Content, Text, H2, View} from 'native-base';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { H2 } from "../components/style"
 
 
 import ImageCard from '../components/ImageCard';
@@ -15,14 +15,14 @@ function ListObjects(props){
         //Ugly hack because Images with a file:/// uri are not rendered when updated unless we restart the app
         const thumbSource = item['thumb']? {uri: item['thumb'].replace(/file:\/\/\/.*\/Documents/,"~/Documents"), scale: 1} : require("../../assets/icons/catalogue.png");
         return (<TouchableOpacity key={item['id']} onPress={()=>props.onNavigate(item['id'])}>
-                <ImageCard source={thumbSource} title={item.title} />
+                <ImageCard source={thumbSource} title={item.title? item.title : item['id']} />
         </TouchableOpacity>)
     })
 
     if(cards.length === 0){
         title = "Aucun élément à afficher"
-        cards=(<View style={{flex:1}}>
-          <Text style={{paddingBottom:50}}>
+        cards=(<View style={{ width: "50%" }}>
+          <Text style={styles.titleContainer}>
             L'application n'a peut-être pas été synchronisée?
           </Text>
           <View>
@@ -31,14 +31,14 @@ function ListObjects(props){
         </View>)
     }
 
-    return(<Content contentContainerStyle={styles.container}>
+    return(<SafeAreaView>
         {title && <View style={styles.titleContainer}>
-            {typeof title === "string" ?<H2 primary style={{ paddingTop:30 }}>{title}</H2> : title }
+            {typeof title === "string" ?<H2 color="primary" style={{ paddingTop:30 }}>{title}</H2> : title }
         </View>}
         <View style= {styles.cardContainer}>
             {cards}
         </View>
-    </Content> )
+    </SafeAreaView> )
 }
 
 ListObjects.propTypes = {

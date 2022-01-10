@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect} from 'react-redux';
 
-import { Container, Content} from 'native-base';
+import { ScrollView } from 'react-native';
 
 import Markdown from '../components/Markdown'
 
@@ -11,20 +11,14 @@ import Markdown from '../components/Markdown'
 
 class AboutScreen extends React.Component {
     render() {
-        return(<Container>
-            <Content>
-            <Container>
-                <Content>
-                    <Markdown style={{text: {
-                        fontSize: 24,
-                        textAlign: "justify"
-                    }}}>
-                        {this.props.config.about}
-                    </Markdown>
-                </Content>
-            </Container>
-            </Content>
-        </Container>)
+        return(<ScrollView >
+            <Markdown style={{text: {
+                fontSize: 24,
+                textAlign: "justify"
+            }}}>
+                {this.props.config.about}
+            </Markdown>
+        </ScrollView >)
     }
 
     constructor(props) {

@@ -1,35 +1,30 @@
 import React from "react";
-import {StyleSheet} from "react-native";
-import { Icon, Button } from "native-base";
+import {StyleSheet, View} from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
+import { theme } from "./style";
 
-export default function BgIcon({status="default", name}){
-  let color = BgIcon.colors[status] || BgIcon.colors["default"];
-  return <Button style={[styles.button, {backgroundColor: color}]}>
+export default function BgIcon({status="info", name}){
+  let color = BgIcon.color[status] || BgIcon.color["info"];
+  return <View style={[styles.button, {backgroundColor: color}]}>
     <Icon style={styles.icon} name={name}/>
-  </Button>
+  </View>
 }
 
-BgIcon.colors = {
-  success: "#5cb85c",
-  warning: "#f0ad4e",
-  danger: "#d9534f",
-  error: "#d9534f",
-  default: "#007aff",
-  muted: "#666666",
-  light: "#f4f4f4",
-}
+BgIcon.color = {...theme.color}
 const styles = StyleSheet.create({
   button: {
-    height: 29,
-    width: 29,
+    height: 32,
+    width: 32,
     paddingTop: 0,
     paddingBottom: 0,
     justifyContent: "center",
     borderRadius: 6,
   },
   icon: {
-    fontSize: 17,
-    lineHeight: 17,
+    fontSize: 16,
+    textAlign: "center",
+    color: "white",
+    lineHeight: 20,
     margin: 0,
     marginRight: 0,
     marginLeft: 0

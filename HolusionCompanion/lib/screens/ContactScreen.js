@@ -1,29 +1,27 @@
 import React from "react";
 import {connect} from "react-redux";
-import { Container, Content, Header, Title, Text, Separator, Body, Input, ListItem, Right, Form, Item, Label, Icon, Button, View, Left, Toast, Spinner } from "native-base";
-import { Keyboard } from "react-native";
+import { Header, Title, Separator, Body, Input, Right, Form, Item, Label, Icon, Left} from 'native-base';
+import { Keyboard, ScrollView, Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import {firebase} from "@react-native-firebase/app";
 import { getDeviceName } from "react-native-device-info";
 
 import {getConfig} from "@holusion/cache-control";
 
-class ButtonPicker extends React.PureComponent {
-  onPress(v){
-    Keyboard.dismiss();
-    this.props.onChange(this.props.name, v);
-  }
-  render() {
-    const { onChange, name, value, items = [], children } = this.props;
-    return <View style={{ paddingTop: 10, alignItems: "center" }}>
-      <Text muted>{children}</Text>
-      <View style={{ flex: 1, width: "100%", flexDirection: "row", justifyContent: "space-evenly" }}>
-        {items.map((v) => (<Button key={v} light={value != v} onPress={this.onPress.bind(this, v)}><Text>{v}</Text></Button>))}
-      </View>
-    </View>;
-  }
-}
 
+function ButtonPicker(props){
+  function onPress(v){
+    Keyboard.dismiss();
+    props.onChange(props.name, v);
+  }
+  const { onChange, name, value, items = [], children } = props;
+  return <View style={{ paddingTop: 10, alignItems: "center" }}>
+    <Text muted>{children}</Text>
+    <View style={{ flex: 1, width: "100%", flexDirection: "row", justifyContent: "space-evenly" }}>
+      {items.map((v) => (<TouchableOpacity key={v} light={value != v} onPress={onPress.bind(this, v)}><Text>{v}</Text></TouchableOpacity>))}
+    </View>
+  </View>;
+}
 
 class FormInput extends React.PureComponent {
   state = {
@@ -52,7 +50,9 @@ class FormInput extends React.PureComponent {
   }
 }
 
-
+/**
+ * @deprecated uses native-base removed dependency
+ */
 class ContactScreen extends React.Component {
 
   state = {
@@ -107,7 +107,7 @@ class ContactScreen extends React.Component {
     if(this.state.submitting){
       content = (<View style={{flex: 1, justifyContent: "center", flexDirection: "column"}}>
         <Text style={{textAlign:"center"}}>Envoi en cours...</Text>
-        <Spinner/>
+        <ActivityIndicator/>
       </View>)
     }else if(this.state.error){
       content = (<View style={{flex: 1, justifyContent: "center", flexDirection: "column"}}>
@@ -147,34 +147,34 @@ class ContactScreen extends React.Component {
           }
         })}
         <View style={{ padding: 4, paddingVertical: 40, alignSelf: "center" }}>
-          <Button style={{ width: 300, justifyContent: "center" }} disabled={!canSubmit} onPress={this.submit}><Text>Envoyer</Text></Button>
+          <TouchableOpacity style={{ width: 300, justifyContent: "center" }} disabled={!canSubmit} onPress={this.submit}><Text>Envoyer</Text></TouchableOpacity>
         </View>
       </Form>)
     }
 
-    return <Container>
+    return <ScrollView>
       <Header>
         <Left >
-          <Button transparent onPress={() => this.props.navigation.goBack()}>
+          <TouchableOpacity transparent onPress={() => this.props.navigation.goBack()}>
             <Icon style={{ fontSize: 17 }} name="chevron-back-outline" /><Text>Retour</Text>
-          </Button>
+          </TouchableOpacity>
         </Left>
         <Body>
           <Title>Contactez-nous</Title>
         </Body>
         <Right>
-          {canSubmit ? <Button transparent onPress={()=>{
+          {canSubmit ? <TouchableOpacity transparent onPress={()=>{
             if(this.state.error || this.state.status =="sent") this.props.navigation.goBack();
             else this.submit()
           }}>
             <Text>ok</Text>
-          </Button> : <Text>&nbsp;</Text>}
+          </TouchableOpacity> : <Text>&nbsp;</Text>}
         </Right>
       </Header>
-      <Content>
+      <View>
         {content}
-      </Content>
-    </Container>
+      </View>
+    </ScrollView>
   }
 }
 

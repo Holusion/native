@@ -1,37 +1,36 @@
 'use strict';
-import React from 'react';
-import {connectStyle, View, Icon} from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native"
-import PropTypes from "prop-types";
+import React, {useContext} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { ThemeContext } from "./style"
 
+function useThemedPrevNext(){
+    const theme = useContext(ThemeContext);
 
-
-class PrevNext extends React.Component{
-    static propTypes = {
-        children: PropTypes.node,
-        target: PropTypes.object,
-        next: PropTypes.func,
-        prev: PropTypes.func,
-    }
-
-    render(){
-        return (<View style={this.props.style.view} pointerEvents="box-none">
-            <View style={{opacity: this.props.prev? 1 : 0}} pointerEvents={this.props.prev?"auto":"none"}>
-                <TouchableOpacity key="prev" testID="button-prev" style={this.props.style.controlPrev} disabled={!this.props.prev} onPress={this.props.prev}>
-                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-back"/>
-                </TouchableOpacity>
-            </View>
-            {this.props.children}
-            <View style={{opacity: this.props.next? 1 : 0, zIndex:this.props.next? 1:-1}} pointerEvents={this.props.next?"auto":"none"}>
-                <TouchableOpacity key="next" testID="button-next" style={this.props.style.controlNext} disabled={!this.props.next} onPress={this.props.next}>
-                    <Icon primary large style={this.props.style.controlIcons} type="Ionicons" name="chevron-forward"/>
-                </TouchableOpacity>
-            </View>
-        </View>)
-    }
+    return {controlIcons: {
+      color: theme.color.primary
+    }};
 }
 
-const prevNextTheme = {
+export default function PrevNext(props){
+    const themeStyle = useThemedPrevNext();
+
+    return (<View style={prevNextTheme.view} pointerEvents="box-none">
+        <View style={{opacity: props.prev? 1 : 0}} pointerEvents={props.prev?"auto":"none"}>
+            <TouchableOpacity key="prev" testID="button-prev" style={prevNextTheme.controlPrev} disabled={!props.prev} onPress={props.prev}>
+                <Icon primary large style={[prevNextTheme.controlIcons, themeStyle.controlIcons]} type="Ionicons" name="chevron-back"/>
+            </TouchableOpacity>
+        </View>
+        {props.children}
+        <View style={{opacity: props.next? 1 : 0, zIndex:props.next? 1:-1}} pointerEvents={props.next?"auto":"none"}>
+            <TouchableOpacity key="next" testID="button-next" style={prevNextTheme.controlNext} disabled={!props.next} onPress={props.next}>
+                <Icon primary large style={[prevNextTheme.controlIcons, themeStyle.controlIcons]} type="Ionicons" name="chevron-forward"/>
+            </TouchableOpacity>
+        </View>
+    </View>)
+}
+
+const prevNextTheme = StyleSheet.create({
     view: {
         flex: 0,
         flexDirection: "row",
@@ -53,6 +52,4 @@ const prevNextTheme = {
         padding: 5,
         fontWeight: "bold"
     },
-}
-
-export default connectStyle('Holusion.PrevNext', prevNextTheme)(PrevNext);
+})

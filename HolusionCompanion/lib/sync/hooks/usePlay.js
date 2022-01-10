@@ -1,7 +1,6 @@
 'use strict';
 import {useEffect} from "react";
 
-import {Toast} from "native-base";
 import { filename } from "@holusion/cache-control";
 
 /**
@@ -39,10 +38,10 @@ export function usePlay(video, targetUrl){
         return;
       }
       console.warn(`Failed to PUT ${req} : `, e);
-      Toast.show({
+      /*Toast.show({
           text: "Failed to set video : "+e.message,
           duration: 2000
-      })
+      })*/
     })
     return ()=> controller.abort();
   }, [video, targetUrl]);

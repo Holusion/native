@@ -1,6 +1,7 @@
 import React from "react";
 import { isRequired, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize } from "@holusion/cache-control";
-import { View, Text } from "native-base";
+
+import { Text } from "react-native"
 import { useSelector } from "react-redux";
 import Progress from "../components/Progress";
 

@@ -1,44 +1,19 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 
 import {filename, info, error as logError, getCachedFiles} from "@holusion/cache-control";
 
 import {loadFonts} from 'react-native-dynamic-fonts';
 
-
-import { StyleProvider } from 'native-base';
-import { clearThemeCache } from 'native-base-shoutem-theme';
-
-import getTheme from '../../native-base-theme/components';
-import default_vars from "../../native-base-theme/variables/platform";
-
 import { readFile } from "react-native-fs";
-import { RequiredLoadWrapper } from "./LoadWrapper";
 
-
-/**
- * 
- * @deprecated Uses removed native-base dependency
- */
-export function ThemeProvider({
-  children,
-  wrapper: Wrapper = React.Fragment
-}){
+export default function useFonts(){
   const [loadedFonts, setLoadedFonts] = useState([]);
-  const {fonts=[], theme} = useSelector(state=>state.data.config);
+  const {fonts=[]} = useSelector(state=>state.data.config);
   const cachedFiles = useSelector(getCachedFiles);
   const dispatch = useDispatch();
+
   const allFontsLoaded = fonts.filter(font=> loadedFonts.indexOf(font) === -1).length === 0;
-  //console.log("Theme : ",theme, "Load : ", allFontsLoaded, "Fonts : " , fonts, "Loaded fonts : ", loadedFonts);
-  //Reset theme on each change
-  useEffect(()=>{
-    if(allFontsLoaded){
-      //console.log("clearing theme cache");
-      requestAnimationFrame(()=>{
-        clearThemeCache();
-      });
-    }
-  }, [theme, allFontsLoaded]);
 
   useEffect(()=>{
     if(!Array.isArray(fonts)) return;
@@ -67,13 +42,5 @@ export function ThemeProvider({
     return ()=> aborted = true;
   }, [fonts, loadedFonts, cachedFiles, dispatch]);
 
-  return (<StyleProvider style={getTheme(Object.assign({}, default_vars, allFontsLoaded?theme: {}))}>
-    <Wrapper>
-        {children}
-    </Wrapper>
-    </StyleProvider>)
-}
-
-export function SafeThemeProvider(props){
-  return <ThemeProvider wrapper={RequiredLoadWrapper} {...props}/>
+  return allFontsLoaded;
 }

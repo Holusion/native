@@ -1,23 +1,20 @@
 'use strict';
 import React from "react";
-import { connectStyle, View } from 'native-base'
-import {StyleSheet} from "react-native"
+import { StyleSheet, View } from "react-native"
 
 
 
-class Progress extends React.Component{
-  render(){
-    return <View style={this.props.style.bar}>
-    <View style={[this.props.style.progress, {width: `${this.props.value}%`}]}>
+export default function Progress(props){
+    return <View style={progressTheme.bar}>
+    <View style={[progressTheme.progress, {width: `${props.value}%`}]}>
     </View>
     <View style={{position: "absolute", left: 0, right: 0, top:0, bottom:0, alignItems: "center"}}>
-      {this.props.children}
+      {props.children}
     </View>
-  </View>
-  }
+  </View>  
 }
 
-const progressTheme = {
+const progressTheme = StyleSheet.create({
   bar: {
     display: "flex", 
     width: "100%",
@@ -32,6 +29,23 @@ const progressTheme = {
     minWidth: 1,
     backgroundColor: "gray",
   },
-}
 
-export default connectStyle('Holusion.Progress', progressTheme)(Progress);
+})
+
+/*const progressTheme = {
+  ".pending": {
+    progress: {
+      backgroundColor: "#00A5E8ff",
+    }
+  },
+  ".blocked": {
+    progress: {
+      backgroundColor: "#FF9966FF",
+    }
+  },
+  ".complete": {
+    progress: {
+      backgroundColor: "#28A745FF",
+    },
+  }
+}*/

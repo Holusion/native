@@ -1,39 +1,46 @@
 import * as React from 'react';
 
-import { getConfig } from '@holusion/cache-control';
-import { connectStyle } from 'native-base';
+import { getConfig, getItems } from '@holusion/cache-control';
 
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 
 import { connect, useSelector } from 'react-redux';
-import ObjectScreen from './ObjectScreen';
+import {default as RawCategoryScreen} from './CategoryScreen';
 import { NetworkIcon } from '../../components';
+import { withErrorHandler } from '../../containers';
+import { getItemsArray } from '@holusion/cache-control';
 
+const CategoryScreen = withErrorHandler(RawCategoryScreen);
 
 //const Nav = createMaterialTopTabNavigator();
 const Nav = createNativeStackNavigator();
 //const Nav = createStackNavigator();
 
 
-class CategoryNavigator extends React.Component {
-  screenOptions = ({ navigation, route:{name, params={}}})=>{
+function CategoryNavigator(props){
+  const screenOptions = ({ navigation, route:{name, params={}}})=>{
     return {
       headerShown: true,
       title: params.title || name,
-      headerStyle: this.props.style.header,
-      headerTitleStyle: this.props.style.title,
-      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
+
+      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" labelVisible="true" onPress={() => navigation.goBack()} />) : null),
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
-  render(){
-    let categories = this.props.categories || [];
-    return (<Nav.Navigator screenOptions={this.screenOptions}>
-      {[...categories, {name: "Undefined"}].map(({ name }, index) => (<Nav.Screen key={index} name={name} component={ObjectScreen} />))}
-    </Nav.Navigator>)
-  }
+  let categories = props.categories.map(c => c.name) || [];
+
+  //item with undefined category have his own category added in the cache control
+  let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
+
+  return (<Nav.Navigator screenOptions={screenOptions}>
+    {[...categories, ...undefinedCategories].map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
+  </Nav.Navigator>)
 }
-const StyledCategoryNavigator = connectStyle('Holusion.CategoryNavigator', {})(CategoryNavigator);
-export default connect((state)=>({categories: getConfig(state).categories}))(StyledCategoryNavigator);
+
+
+export default connect((state)=>({
+  categories: getConfig(state).categories,
+  items: getItems(state)
+}))(CategoryNavigator);

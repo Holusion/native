@@ -1,12 +1,13 @@
 'use strict';
 import React from 'react';
 
-import {Spinner, Icon} from "native-base";
+import { ActivityIndicator } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function StatusIcon(props){
     switch(props.status){
         case "loading":
-            return <Spinner/>
+            return <ActivityIndicator/>
         case "error":
             return <Icon name="ios-bug"/>;
         case "idle":

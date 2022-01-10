@@ -1,12 +1,12 @@
 'use strict';
 import React, {useState} from 'react';
 import { connect} from 'react-redux'
-import {Keyboard} from "react-native";
-
-import { ListItem, Icon, Button, Content, Text, Form, Item, Input, CheckBox, Picker, Body, Left, Right, Switch} from 'native-base';
+import { Text, View } from "react-native";
 
 import {setPurge, setSlidesControl, setProjectName, setPlayControl, setPasscode, setWatch} from "@holusion/cache-control";
 import { BgIcon } from '../components';
+import { TextInput } from 'react-native-gesture-handler';
+import CheckBox from '@react-native-community/checkbox';
 
 function AppConfiguration(props){
     const [watch, setWatch] = useState(props.watch);
@@ -15,51 +15,42 @@ function AppConfiguration(props){
 
     return (<React.Fragment>
 
-        <ListItem icon>
-          <Left>
+        <View style={props.style.listView}>
+          <View>
             <BgIcon name="film-outline"/>
-          </Left>
-          <Body style={{flex:1}}>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}>
               <Text>Application cible</Text>
               <Text style={{fontSize:14}} >sur content.holusion.com</Text>
-          </Body>
-          <Right style={{flex:1}}>
-            <Form style={{ flex: 1, flexDirection:"row"}}>
-                <Item style={{flex:1}} >
-                    <Input style={{height:40}} bordered rounded placeholder="application" editable={props.configurableProjectName} blurOnSubmit returnKeyType="next" autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={(v)=>setName(v)} onSubmitEditing={()=>props.setProjectName(name)} value={name}/>
-                </Item>
-            </Form>
-          </Right>
-        </ListItem>
-        <ListItem icon>
-          <Left>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}>
+            <TextInput style={{padding:5, borderBottomWidth:1}} placeholder="application" editable={props.configurableProjectName} blurOnSubmit returnKeyType="next" autoCapitalize="none" autoCompleteType="off" autoCorrect={false} onChangeText={(v)=>setName(v)} onSubmitEditing={()=>props.setProjectName(name)} value={name}/>
+          </View>
+        </View>
+        <View style={props.style.listView}>
+          <View>
             <BgIcon name="key-outline"/>
-          </Left>
-          <Body style={{flex:1}}>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}>
               <Text>Passcode</Text>
               <Text style={{fontSize:14}} >Code pin d'accès à cet écran</Text>
-          </Body>
-          <Right style={{flex:1}}>
-          <Form style={{ flex: 1, flexDirection:"row"}}>
-              <Item style={{flex:1}} >
-                  <Input style={{height:40}} placeholder="aucun" keyboardType="numeric" blurOnSubmit returnKeyType="next" autoCapitalize="none" autoCompleteType="off" secureTextEntry={true} autoCorrect={false} onChangeText={(v)=>setPasscode(v)} onSubmitEditing={()=>props.setPasscode(passcode)} value={passcode}/>
-              </Item>
-          </Form>
-
-          </Right>
-        </ListItem>
-        <ListItem icon >
-          <Left>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}>
+            <TextInput style={{padding:5, borderBottomWidth:1}} placeholder="aucun" keyboardType="numeric" blurOnSubmit returnKeyType="next" autoCapitalize="none" autoCompleteType="off" secureTextEntry={true} autoCorrect={false} onChangeText={(v)=>setPasscode(v)} onSubmitEditing={()=>props.setPasscode(passcode)} value={passcode}/>
+          </View>
+        </View>
+        <View style={props.style.listView}>
+          <View>
             <BgIcon name="globe-outline"/>
-          </Left>
-          <Body style={{flex:1}}>
+          </View>
+          <View style={{flex:1, paddingLeft:10}}>
             <Text>Mise à jour auto</Text>
             <Text style={{fontSize:14}} >{props.watch?"en permanence": "au démarrage"}</Text>
-          </Body>
-          <Right>
-            <Switch value={watch} onValueChange={()=>{setWatch(!watch);props.setWatch(!watch)}}/>
-          </Right>
-        </ListItem>
+          </View>
+          <View>
+            <CheckBox lineWidth={1} animationDuration={0} value={watch} onValueChange={()=>{setWatch(!watch);props.setWatch(!watch)}}/>
+          </View>
+        </View>
     </React.Fragment>)
 }
 

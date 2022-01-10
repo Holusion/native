@@ -1,8 +1,7 @@
 'use strict';
 import React from "react";
 import PropTypes from "prop-types"
-import {Icon, Text, View} from "native-base";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import {Svg, Path, Rect, Text as SvgText} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";

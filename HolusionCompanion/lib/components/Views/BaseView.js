@@ -1,65 +1,73 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 
-import { connectStyle, Container, Content, H1, H2, View } from 'native-base';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, ScrollView, View, StyleSheet } from 'react-native';
+
+import { H1, H2, ThemeContext } from "../style";
 
 import Markdown from '../Markdown';
 import {LinksView} from './partials';
 
-class BaseView extends React.Component{
-  render(){
-    const {style, ...d} = this.props;
-    const source = ((d && d.image)?{uri: d.image}: require("../../../assets/missing-image.png"));
-    const withDescription = typeof d['description']=== "string" && d['description'].length ? true:false;
-    return(<Container style={{flex:1, display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
-        <View testID="image-content" style={style.image}>
-            <ImageBackground resizeMode= 'contain' source={source} style={{width: '100%', height: '100%'}} >
-                <H1 primary style={style.title}>{d["title"]}</H1>
-                <H2 secondary style={style.subtitle}>{d["subtitle"]}</H2>
-                <LinksView style={style.link} items={d["links"] || []}/>
-            </ImageBackground>
+
+function useThemedBaseView(){
+  const theme = useContext(ThemeContext);
+  return {contentView: {
+    position: theme.baseDescription.backgroundColor === "transparent" ? "absolute" : "relative",
+    backgroundColor: theme.baseDescription.backgroundColor,
+    width: theme.baseDescription.width,
+    height: theme.baseDescription.height,
+    top: theme.baseDescription.top,
+    right: theme.baseDescription.right,
+  },
+  image:{
+  }};
+}
+
+
+export default function BaseView(props){
+  const themeStyle = useThemedBaseView();
+  const d = props;
+  const source = ((d && d.image)?{uri: d.image}: require("../../../assets/missing-image.png"));
+  const withDescription = typeof d['description']=== "string" && d['description'].length ? true:false;
+
+  return(<View style={{flex:1,display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
+      <View testID="image-content" style={baseStyles.image}>
+          <ImageBackground resizeMode= 'contain' source={source} style={{flex:1}} >
+              <H1 color="primary" style={baseStyles.title}>{d["title"]}</H1>
+              <H2 color="secondary" style={baseStyles.subtitle}>{d["subtitle"]}</H2>
+              <LinksView style={baseStyles.link} items={d["links"] || []}/>
+          </ImageBackground>
+      </View>
+      {withDescription && 
+        <View testID="description-content" style={[baseStyles.contentView, themeStyle.contentView ]}>
+          <ScrollView contentContainerStyle={{}}>
+            <Markdown style={baseStyles.markdown}>{d['description']}</Markdown>
+          </ScrollView>
         </View>
-        {withDescription && 
-            <View testID="description-content" style={style.contentView}>
-              <Content contentContainerStyle={{}}>
-                <Markdown style={style.markdown}>{d['description']}</Markdown>
-              </Content> 
-            </View>
-          }
-    </Container>)
+      }
+  </View>)
+}
+
+const baseStyles = StyleSheet.create({
+  image:{      
+    flex:1,
+    backgroundColor:"#fff"
+  },
+  contentView:{
+      zIndex: 1,
+      padding: 20,
+      paddingBottom: 40,
+      backgroundColor: "#f1f1f1",
+  },
+  title:{
+      paddingTop: 30,
+      paddingLeft: 10,
+      width:"100%",
+  },
+  subtitle:{
+      paddingLeft: 10,
+  },
+  link: {
+    zIndex: 1
   }
-}
-
-const baseStyles = {
-    image:{      
-      flex: 1,
-    },
-    contentView:{
-        position:"absolute",
-        right:"0%",
-        top:"0%",
-        zIndex: 1,
-        padding: 10,
-        paddingBottom: 40,
-        backgroundColor: "#f1f1f1",
-        height:"100%",
-        width:"100%",
-    },
-    title:{
-        paddingTop: 30,
-        paddingLeft: 10,
-        width:"100%",
-    },
-    subtitle:{
-        paddingLeft: 10,
-    },
-    link: {
-      zIndex: 1
-    }
-};
-
-const BaseViewClass =  connectStyle('Holusion.BaseView', baseStyles)(BaseView);
-export default function BaseView_(props){
-  return <BaseViewClass {...props}/>
-}
+});

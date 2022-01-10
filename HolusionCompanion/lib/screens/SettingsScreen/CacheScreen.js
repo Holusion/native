@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {ListItem, Text, View, Left, Right, Body, Icon, Button} from "native-base";
+
 import { useDispatch, useSelector } from "react-redux";
 import { error, getFiles, getUncachedFiles, mediasPath } from "@holusion/cache-control";
-
 import RNFS, { unlink } from "react-native-fs";
 
 import SettingsHeader from "./SettingsHeader";
 import { BgIcon, Bytes } from "../../components";
-import { FlatList } from "react-native";
+import { FlatList, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { theme } from "../../components/style";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export function CachedFile({name, size, type, cached, required}){
   let icon, color, status;
@@ -23,23 +25,23 @@ export function CachedFile({name, size, type, cached, required}){
   }
   
   if(cached && required){
-    color = "primary";
+    color = "info";
   }else if(required){
     color = "warning";
   }else{
     color = "light";
   }
-  return <ListItem icon>
-    <Left>
-      <BgIcon status={color} name={icon}/>
-    </Left>
-    <Body>
+  return <View style={{ display:"flex", flexDirection:"row", justifyContent: "space-between", alignItems: "center", padding:10 }}>
+    <View>
+      <BgIcon status={color} name={icon}/>   
+    </View>
+    <View style={{ flex:1, paddingHorizontal:10 }}>
       <Text>{name.slice(mediasPath().length+1)}</Text>
-    </Body>
-    <Right>
+    </View>
+    <View>
       <Bytes>{size}</Bytes>
-    </Right>
-  </ListItem>;
+    </View>
+  </View>;
 }
 
 export function useLocalFiles(refresh){
@@ -95,7 +97,7 @@ export function useLocalSize(){
 }
 export function CachePartSize({name, color, size}){
   return       <View style={{display: "flex", flexDirection: "row"}}>
-  <Icon name="ellipse" style={{color: BgIcon.colors[color], fontSize: 13, lineHeight: 13}}/>
+  <Icon name="ellipse" style={{color: BgIcon.color[color], fontSize: 13, lineHeight: 13}}/>
   <Bytes style={{fontSize:13, lineHeight: 13}}>{size}</Bytes>
   <Text style={{fontSize:13, lineHeight: 13}}> {name}</Text>
 </View>
@@ -144,10 +146,10 @@ export default function CacheScreen(){
           <CachePartSize name="Obsolète" color="muted" size={size -requiredSize}/> 
         </View>}
         <View style={{display:"flex", flexDirection: "row", justifyContent:"flex-end"}}>
-          <Button style={{borderColor:"#666666"}} disabled={loading || cleaning}  bordered iconLeft small onPress={()=>setCleaning(true)}>
-            <Icon style={{color:"#666666"}} name="trash"/>
-            <Text style={{color:"#666666"}} >Nettoyer</Text>
-          </Button>
+          <TouchableOpacity style={{backgroundColor: theme.color.info, padding:10 , borderRadius:10, display:"flex", flexDirection:"row"}} disabled={loading || cleaning}  bordered iconLeft small onPress={()=>setCleaning(true)}>
+            <Icon style={{color:"white"}} name="trash"/>
+            <Text style={{color:"white", paddingLeft:5}} >Nettoyer</Text>
+          </TouchableOpacity>
         </View>
       </View>)}
       data={data}

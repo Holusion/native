@@ -1,8 +1,7 @@
 'use strict';
 import React from "react";
 import PropTypes from "prop-types";
-import { View } from 'native-base';
-import { StyleSheet, Animated, Easing, PanResponder, Dimensions } from 'react-native';
+import { StyleSheet, Animated, Easing, PanResponder, Dimensions, View } from 'react-native';
 
 import * as convert from "../convert";
 import * as time from "../time";

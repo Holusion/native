@@ -1,9 +1,10 @@
-import { getActiveProduct, setActive, setDefaultTarget, warn } from "@holusion/cache-control";
-import { Body, Container, Content, Icon, Item, Left, List, ListItem, Picker, Right, Text } from "native-base";
 import React from "react"
+import { getActiveProduct, setActive, setDefaultTarget, warn } from "@holusion/cache-control";
+import { ScrollView, Text, View, TouchableOpacity } from "react-native"
 import { useDispatch, useSelector } from "react-redux";
 import { BgIcon } from "../../components";
 import SettingsHeader from "./SettingsHeader";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -12,24 +13,24 @@ export function ProductPick({name, address, active, online, onPress}){
   if(!online){
     iconColor = "warning"
   }else if(active){
-    iconColor = "primary";
+    iconColor = "info";
   }else{
     iconColor = "muted";
   }
-  return ( <ListItem icon onPress={onPress}>
-    <Left>
+  return ( <TouchableOpacity onPress={onPress} style={{display:"flex", flexDirection: "row", padding:10}}>
+    <View>
       <BgIcon status={iconColor} name="link"/>
-    </Left>
-    <Body><Text style={{color: BgIcon.colors[active?"default": "muted"] }}>{name}{address && ` (${address})`}</Text></Body>
-    <Right><Icon style={{color: BgIcon.colors[active?"default": "muted"]}} name="checkmark"/></Right>
-  </ListItem>)
+    </View>
+    <View style={{flex:1, paddingHorizontal:10}}><Text style={{color: BgIcon.color[active?"default": "muted"] }}>{name}{address && ` (${address})`}</Text></View>
+    <View><Icon style={{color: BgIcon.color[active?"default": "muted"], fontSize:18}} name="checkmark"/></View>
+  </TouchableOpacity>)
 }
 
 export function ProductPicker({currentName, products, title="Choix de la cible", onChange}){
-  return (<Container>
+  return (<ScrollView>
     <SettingsHeader back>{title}</SettingsHeader>
-    <Content settings>
-      <List>
+
+      <View>
         <ProductPick name="Aucun" active={!currentName} online onPress={()=>onChange("")}/>
         {(currentName && (products.findIndex(p=> p.name === currentName) === -1))? <ProductPick name={currentName} address={"déconnecté"} online={false} active/> : null}
         {products.map(p=>(<ProductPick
@@ -40,9 +41,9 @@ export function ProductPicker({currentName, products, title="Choix de la cible",
           online
           onPress={()=>onChange(p.name)}
         />))}
-      </List>
-    </Content>
-  </Container>)
+      </View>
+
+  </ScrollView>)
 }
 
 export default function PickProductScreen({route}){

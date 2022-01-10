@@ -1,8 +1,7 @@
 'use strict'
 import React from 'react'
-import { Container, Content, Footer, H1, Header, Text, Title } from 'native-base';
 
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, View, SafeAreaView } from 'react-native';
 
 
 import PropTypes from "prop-types";
@@ -22,13 +21,13 @@ import ObjectList from "./ObjectList"
 import { getItems } from '@holusion/cache-control';
 
 /**
- * Object screen is the screen that render a FlatList of the current collection. 
+ * Category screen is the screen that render a FlatList of the current collection. 
  * You can swipe to change the current object or touch the next or previous button (depending on configured controls)
  * It does some sort of strange circular update between itself, holding the route param and ObjectList which holds the VirtualizedList
  * it *works* but should be improved
  */
 
-class ObjectScreen extends React.Component {
+class CategoryScreen extends React.Component {
 
     static propTypes = {
         views: PropTypes.object
@@ -44,8 +43,7 @@ class ObjectScreen extends React.Component {
     }
     render() {
         const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
-        
-        return (<Container onLayout={this._onLayoutDidChange}>
+        return (<SafeAreaView style={{flex:1}} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
                 ref= {(ref)=>this._list = ref}
@@ -55,13 +53,13 @@ class ObjectScreen extends React.Component {
                 views={this.props.views}
                 onChange={ canSwipe ? this.setIdForIndex: null}
             />
-            <Footer style={styles.footer} pointerEvents="box-none">
+            <View style={styles.footer} pointerEvents="box-none">
                 <Controller 
                     prev={this.props.index !== 0? this.onPrevPage : null} 
                     next={(this.props.index < this.props.items.length -1 )?this.onNextPage : null}
                 />
-            </Footer>
-        </Container>)
+            </View>
+        </SafeAreaView>)
     }
 
     onNextPage = ()=>{
@@ -71,11 +69,14 @@ class ObjectScreen extends React.Component {
         this.setIdForIndex(this.props.index-1)
     }
     componentDidMount(){
-      this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
+        if(!this.props.id){
+            return console.warn("Object not found");
+        }
+        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title || ""})
     }
     componentDidUpdate(prevProps){
       if(prevProps.id !== this.props.id){
-        this.props.navigation.setOptions({title: this.props.item.header || this.props.route.name})
+        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title|| ""})
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
           if(this._list){
@@ -104,7 +105,7 @@ function mapStateToProps(state, {route}){
   const selectedCategory = route.name === "Undefined"? undefined : route.name;
   const items = getItems(state);
   const activeItems = getActiveItems(state, {selectedCategory});
-  const id = route.params? route.params.id : activeItems[0].id;
+  const id = route.params? route.params.id : undefined;
   const item = items[id];
   const index = Array.isArray(activeItems)? activeItems.findIndex((item)=> (item.id == id)) : -1;
 
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
     },
     footer:{
         position:"absolute",
-        bottom:15,
+        bottom:40,
+        width:"100%",
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -136,12 +138,6 @@ const styles = StyleSheet.create({
     },
     
 })
-const ObjectScreenConnected = connect(mapStateToProps)(ObjectScreen);
+const CategoryScreenConnected = connect(mapStateToProps)(CategoryScreen);
 
-export default ObjectScreenConnected;
-
-export function objectScreenWithViews(views){
-    return function ObjectScreenWithViews(props){
-        return (<ObjectScreenConnected views={views} {...props}/>);
-    }
-}
+export default CategoryScreenConnected;

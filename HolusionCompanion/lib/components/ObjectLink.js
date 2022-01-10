@@ -27,7 +27,7 @@ export function useParsedLink({to, encoded=true}){
 
 export default function ObjectLink({to:name, encoded=true, ...rest}){
   const {screen, params} = useParsedLink({to: name, encoded});
-  return (<Link action={CommonActions.navigate(screen, params)} {...rest} />);
+  return (<Link to={screen, params} action={CommonActions.navigate(screen, params)} {...rest} />);
 }
 
 export function Redirect({to, encoded=true, action="replace"}){
