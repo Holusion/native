@@ -62,11 +62,12 @@ const cardStyle = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
+        width: 230,
     },
 
     image: {
-        alignSelf: 'center', 
-        width: 200, 
+        alignSelf: 'center',
+        width: 230,
         height: 200, 
     },
     icon: {
@@ -76,7 +77,6 @@ const cardStyle = StyleSheet.create({
         height:200,
     },
     titleText: {
-        width: 200,
         textAlign: 'center',
         fontSize: 26,
         alignSelf: 'center',
