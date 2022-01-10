@@ -22,11 +22,10 @@ const Nav = createNativeStackNavigator();
 function CategoryNavigator(props){
   const screenOptions = ({ navigation, route:{name, params={}}})=>{
     return {
-      headerBackTitle: "Retour",
       headerShown: true,
       title: params.title || name,
 
-      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" onPress={() => navigation.goBack()} />) : null),
+      headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" labelVisible="true" onPress={() => navigation.goBack()} />) : null),
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }

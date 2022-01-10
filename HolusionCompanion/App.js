@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import "react-native-gesture-handler";
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 
 
@@ -85,7 +85,7 @@ export default class App extends React.Component{
         <ErrorHandler>
           {this.state.store?<Provider store={this.state.store}>
             <ThemeProvider>
-              <NavigationContainer>
+              <NavigationContainer theme={{...DefaultTheme,colors: {...DefaultTheme.colors, background : 'white'}}}>
                 <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
                   <Stack.Screen name="Home" component={HomeScreen}/>
                   <Stack.Screen name="List" component={ListScreen}/>
