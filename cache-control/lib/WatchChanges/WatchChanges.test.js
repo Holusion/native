@@ -286,7 +286,7 @@ describe("WatchChanges", function(){
           wf.transforms = [];
           let raw_results = {
             "onConfigSnapshot": {config: {foo:"bar", file:"gs://foo.appspot.com/bar.mp4", id:"alice"}, files: new Map()},
-            "onProjectsSnapshot": {items: {alice: {foo:"bar", file:"gs://foo.appspot.com/bar.mp4", id:"alice", category:"alice"}}, files: new Map()}
+            "onProjectsSnapshot": {items: {alice: {foo:"bar", file:"gs://foo.appspot.com/bar.mp4", id:"alice"}}, files: new Map()}
           }
           wf.on("error", done);
           wf.on("dispatch", function(d){
@@ -338,7 +338,7 @@ describe("WatchChanges", function(){
           }]])
           let raw_results = {
             "onConfigSnapshot": { config: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}, files: file_deps},
-            "onProjectsSnapshot": { items: {alice: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice", category:"alice"}}, files: file_deps}
+            "onProjectsSnapshot": { items: {alice: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}}, files: file_deps}
           }
           firebase.app.mockImplementation(()=>({
             storage: ()=>({
