@@ -13,26 +13,8 @@
 
 
 export {makeLocalFactory} from "./makeLocal";
-import {makeLocalFactory} from "./makeLocal";
+export {defaultCategoryFactory} from "./defaultCategory";
 
 export {transformMarkdownFactory} from "./transformMarkdown";
-import {transformMarkdownFactory} from "./transformMarkdown";
 
 export {getMetadata} from "./filerefs";
-
-/**
- * 
- * @param {string} projecName 
- * @returns {Array<Transform>} - an array of default (supposed safe) transforms
- */
-export function defaultTransformsFactory(projecName){
-  return [
-    makeLocalFactory(projecName),
-    transformMarkdownFactory(projecName),
-    (d)=>{
-      if(typeof d.category === "undefined") d.category = d.id;
-      console.log("Category for %s : %s", d.id, d.category);
-      return [d, new Set()];
-    },
-  ];
-}

@@ -2,7 +2,7 @@ import {EventEmitter} from "events";
 import {firebase} from "firebase";
 import AsyncLock from 'async-lock';
 
-import {defaultTransformsFactory} from "../transforms";
+import {makeLocalFactory, transformMarkdownFactory, defaultCategoryFactory} from "../transforms";
 
 export {transformSnapshot} from "./transformSnapshot";
 import {transformSnapshot} from "./transformSnapshot";
@@ -52,12 +52,24 @@ export class WatchChanges extends EventEmitter{
   /**
    * @param {object} param0
    * @param {string} param0.projectName - the application to bind to
-   * @param {function[]} [param0.transforms] - an array of transforms to make over incoming data
+   * @param {function[]} [param0.configTransforms] - an array of transforms to make over incoming data
+   * @param {function[]} [param0.projectsTransforms] - an array of transforms to make over incoming data
    */
-  constructor({projectName, transforms=defaultTransformsFactory(projectName)}){
+  constructor({
+    projectName, 
+    configTransforms=[
+      makeLocalFactory(projectName),
+    ],
+    projectsTransforms=[
+      makeLocalFactory(projectName),
+      transformMarkdownFactory(projectName),
+      defaultCategoryFactory(projectName)
+    ]
+  }){
     super();
     this.projectName = projectName;
-    this.transforms = transforms;
+    this.configTransforms = configTransforms;
+    this.projectsTransforms = projectsTransforms;
 
     this.lock = new AsyncLock({ });
 
@@ -157,7 +169,7 @@ export class WatchChanges extends EventEmitter{
 
   onConfigSnapshot(configSnapshot, {signal}={}){
     this.emit("start", "config");
-    transformSnapshot(this.transforms, configSnapshot)
+    transformSnapshot(this.configTransforms, configSnapshot)
     .then(async ([config, files])=>{
       //await this.handleFiles({files, name: "items", signal});
       if (signal && signal.aborted) return;
@@ -172,7 +184,7 @@ export class WatchChanges extends EventEmitter{
     let activeDocs = projectsSnapshot.docs.filter((doc)=>{
       return doc.data().active !== false
     })
-    Promise.all(activeDocs.map(p => transformSnapshot(this.transforms, p)))
+    Promise.all(activeDocs.map(p => transformSnapshot(this.projectsTransforms, p)))
     .then((projects)=>{
       let items = {};
       let files = projects.reduce((prev, [d, files])=> {

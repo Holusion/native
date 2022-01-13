@@ -283,7 +283,8 @@ describe("WatchChanges", function(){
     ].forEach(([fnName, fixture])=>{
       describe(`${fnName}`, ()=>{
         it("no transforms", function(done){
-          wf.transforms = [];
+          wf.configTransforms = [];
+          wf.projectsTransforms = [];
           let raw_results = {
             "onConfigSnapshot": {config: {foo:"bar", file:"gs://foo.appspot.com/bar.mp4", id:"alice"}, files: new Map()},
             "onProjectsSnapshot": {items: {alice: {foo:"bar", file:"gs://foo.appspot.com/bar.mp4", id:"alice"}}, files: new Map()}
@@ -297,7 +298,7 @@ describe("WatchChanges", function(){
         });
 
         it("transforms errors will be caught properly", function(done){
-          wf.transforms = [
+          wf.configTransforms = wf.projectsTransforms = [
             ()=>Promise.reject(new Error("Transform error"))
           ];
           wf.on("error", (e)=>{
@@ -312,7 +313,7 @@ describe("WatchChanges", function(){
 
         it("can be cancelled immediately", function(done){
           const a = new AbortController();
-          wf.transforms= [
+          wf.configTransforms = wf.projectsTransforms = [
             ()=>Promise.resolve([{}, new Map()]) //always async
           ];
   
@@ -328,7 +329,7 @@ describe("WatchChanges", function(){
           done();
         });
 
-        it("can return transformed data and required files", async function(){
+        it("can return transformed data and required files (default transforms)", async function(){
           let file_deps = new Map([["/path/to/tmp/medias/bar.mp4", {
             src: "gs://example.com/bar.mp4",
             hash: "xxxxxx",
@@ -338,7 +339,7 @@ describe("WatchChanges", function(){
           }]])
           let raw_results = {
             "onConfigSnapshot": { config: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}, files: file_deps},
-            "onProjectsSnapshot": { items: {alice: {foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}}, files: file_deps}
+            "onProjectsSnapshot": { items: {alice: {category: "alice", foo:"bar", file:"file:///path/to/tmp/medias/bar.mp4", id:"alice"}}, files: file_deps}
           }
           firebase.app.mockImplementation(()=>({
             storage: ()=>({
