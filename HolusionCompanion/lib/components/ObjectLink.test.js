@@ -14,7 +14,7 @@ describe("parseItem()", ()=>{
     expect(parseItem({id: "foo", category: "bar"})).toEqual({screen: "bar", params: {id: "foo"}});
   })
   test("fill in  default category", ()=>{
-    expect(parseItem({id: "foo"})).toEqual({screen: "Undefined", params: {id: "foo"}});
+    expect(parseItem({id: "foo"})).toEqual({screen: "foo", params: {id: "foo"}});
   })
 })
 
@@ -35,8 +35,8 @@ describe("useParsedLink", ()=>{
     const res = render(<Provider store={store}>
       <Dummy to="foo"/>
     </Provider>);
-    expect(res.getByTestId("dummy")).toHaveTextContent(`{"screen":"Undefined","params":{"id":"foo"}}`)
-  })
+    expect(res.getByTestId("dummy")).toHaveTextContent(`{"screen":"foo","params":{"id":"foo"}}`)
+  });
   test("links to 404 page when ID is not found", ()=>{
     const res = render(<Provider store={store}>
       <Dummy to="bar"/>
@@ -54,6 +54,6 @@ describe("useParsedLink", ()=>{
     const res = render(<Provider store={store}>
       <Dummy to="Settings"/>
     </Provider>);
-    expect(res.getByTestId("dummy")).toHaveTextContent(`{"screen":"Undefined","params":{"id":"Settings"}}`)
+    expect(res.getByTestId("dummy")).toHaveTextContent(`{"screen":"Settings","params":{"id":"Settings"}}`)
   })
 })

@@ -35,7 +35,7 @@ function CategoryNavigator(props){
   let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
 
   return (<Nav.Navigator screenOptions={screenOptions}>
-    {[...categories, ...undefinedCategories].map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
+    {Array.from(new Set(categories, undefinedCategories)).map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
   </Nav.Navigator>)
 }
 

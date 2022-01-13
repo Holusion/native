@@ -8,12 +8,12 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 
 
 
-import { AppState, StatusBar, ActivityIndicator, View } from "react-native"
+import { AppState, StatusBar, ActivityIndicator, View, Button, StyleSheet, Text } from "react-native"
 
 import {sagaStore} from "@holusion/cache-control";
 
 import { screens, NetworkIcon, netScan, ifRequiredLoaded, ErrorHandler, withErrorHandler } from './lib';
-import {ThemeProvider} from "./lib/components/style"
+import {H1, H2, ThemeProvider} from "./lib/components/style"
 
 
 enableScreens();
@@ -41,6 +41,7 @@ export default class App extends React.Component{
     this.state = {
       showOptions: true,
       appState: AppState.currentState,
+      notFound: null
     }
   }
 
@@ -78,26 +79,67 @@ export default class App extends React.Component{
     }
     this.setState({appState: nextAppState});
   }
+  handle404 = ({payload, type})=>{
+    let message = `The action '${type}'${
+      payload ? ` with payload ${JSON.stringify(payload)}` : ''
+    } was not handled by any navigator.`;
+    console.warn(message);
+    switch(type){
+      case "NAVIGATE":
+        message = `Pas de page nommée '${payload.name}${payload?.params?.id?"/"+payload.params.id:""}'`;
+        break;
+    }
+    this.setState({notFound: {type, message}});
+  }
 
   render(){
+    //ObjectLink is supposed to handle this. However we still want eventual errors to bubble up.
+    let notFoundModal = this.state.notFound?(<View style={styles.modalView}>
+      <H1 style={{padding: 15}}>Page non trouvée</H1>
+      <H2>Action : {this.state.notFound.type}</H2>
+      <Text style={{fontSize: 22, padding: 10}}>{this.state.notFound.message}</Text>
+      <Button title="Retour" style={{padding: 15}}onPress={()=>this.setState({notFound: null})}/>
+    </View>): null;
     return <React.Fragment>
        <StatusBar hidden={true} />
         <ErrorHandler>
           {this.state.store?<Provider store={this.state.store}>
             <ThemeProvider>
-              <NavigationContainer theme={{...DefaultTheme,colors: {...DefaultTheme.colors, background : 'white'}}}>
+              <NavigationContainer onUnhandledAction={this.handle404} theme={{...DefaultTheme,colors: {...DefaultTheme.colors, background : 'white'}}}>
                 <Stack.Navigator screenOptions={screenOptions}  initialRouteName="Home">
                   <Stack.Screen name="Home" component={HomeScreen}/>
                   <Stack.Screen name="List" component={ListScreen}/>
                   <Stack.Screen name="Object" options={{ headerShown: false }} component={ObjectScreen}/>
                   <Stack.Screen name="Settings" options={{presentation:"transparentModal", headerShown: false}} component={SettingsScreen}/>
                   {/*<Stack.Screen name="Contact" options={{stackPresentation:"formSheet"}} component={ContactScreen} />*/}
-                  <Stack.Screen name="404" component={NotFoundScreen}/>
                 </Stack.Navigator>
               </NavigationContainer>
+              {notFoundModal}
             </ThemeProvider>
           </Provider> : <ActivityIndicator/>}
         </ErrorHandler>
     </React.Fragment>
   }
 }
+
+const styles = StyleSheet.create({
+  modalView: {
+    position: "absolute",
+    flex: 0,
+    width: "50%",
+    top: 100,
+    left: "25%",
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 8,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+})
