@@ -33,9 +33,8 @@ function CategoryNavigator(props){
 
   //item with undefined category have his own category added in the cache control
   let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
-
   return (<Nav.Navigator screenOptions={screenOptions}>
-    {Array.from(new Set(categories, undefinedCategories)).map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
+    {Array.from(new Set([...categories, ...undefinedCategories])).map(( name , index) => (<Nav.Screen key={index} name={name} component={CategoryScreen} />))}
   </Nav.Navigator>)
 }
 
