@@ -1,5 +1,6 @@
 export default {
   color: {
+    default:"#000",
     success:"#28a745",
     warning: "#ffc107",
     danger: "#dc3545",
