@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Configuration</string>
+			<key>New item</key>
+			<string>Test</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Application cible</string>
+			<key>DefaultValue</key>
+			<string>holodemo</string>
+			<key>KeyboardType</key>
+			<string>Alphabet</string>
+			<key>Key</key>
+			<string>target_app</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Mode administration</string>
+			<key>Key</key>
+			<string>admin_mode</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Mise à jour automatique</string>
+			<key>Key</key>
+			<string>auto_update</string>
+			<key>DefaultValue</key>
+			<true/>
+			<key>TrueValue</key>
+			<string></string>
+		</dict>
+	</array>
+</dict>
+</plist>

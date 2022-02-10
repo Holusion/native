@@ -7,3 +7,4 @@ export {useAutoPlay, wrapAutoPlay } from "./useAutoPlay";
 export {useDownload} from "./useDownload";
 export {useCleanup} from "./useCleanup";
 export {useDuration} from "./useDuration";
+export {useSettings} from "./useSettings";
