@@ -1,7 +1,6 @@
 'use strict';
 
 
-export {default as netScan} from "./netScan";
 
 import * as _convert from "./convert";
 export const convert=_convert;
@@ -16,7 +15,7 @@ export const screens = _screens;
 import * as _selectors from "./selectors";
 export const selectors = _selectors;
 
-export {useWatch, useAutoPlay, wrapAutoPlay} from "./sync/hooks";
+export {useWatch, useAutoPlay, wrapAutoPlay, useNetScan} from "./sync/hooks";
 
 export * from "./components";
 export * from "./containers";
