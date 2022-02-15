@@ -10,7 +10,6 @@ import { connect, useSelector } from 'react-redux';
 import {default as RawCategoryScreen} from './CategoryScreen';
 import { NetworkIcon } from '../../components';
 import { withErrorHandler } from '../../containers';
-import { useSettings } from '../../sync/hooks';
 
 const CategoryScreen = withErrorHandler(RawCategoryScreen);
 
@@ -20,14 +19,13 @@ const Nav = createNativeStackNavigator();
 
 
 function CategoryNavigator(props){
-  const adminMode = useSettings('admin_mode')
   const screenOptions = ({ navigation, route:{name, params={}}})=>{
     return {
       headerShown: true,
       title: params.title || name,
 
       headerLeft: () => ((navigation.canGoBack())?(<HeaderBackButton key="headerLeft" label="Retour" labelVisible="true" onPress={() => navigation.goBack()} />) : null),
-      headerRight: ()=>(adminMode && <NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
+      headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
   let categories = props.categories.map(c => c.name) || [];

@@ -1,6 +1,6 @@
 'use strict';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, View, TextInput, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View, TextInput, KeyboardAvoidingView, Text } from "react-native";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -13,8 +13,10 @@ import PickProductScreen  from "./PickProductScreen";
 import CacheScreen from "./CacheScreen";
 import InteractionsScreen from "./InteractionsScreen";
 import { useSelector } from "react-redux";
+import { useSettings } from "../../sync/hooks";
 
-
+//replace by ios setting admin mode
+/*
 export function Auth({passcode:ref, onSubmit}){
   const [passcode, setPasscode] = useState();
   useEffect(()=>{
@@ -31,17 +33,17 @@ export function Auth({passcode:ref, onSubmit}){
     </View>
   </KeyboardAvoidingView>
 }
+*/
 
 const OptionsStack = createNativeStackNavigator();
 
 export default function SettingsScreen({navigation}){
-  const {passcode} = useSelector(getConf);
-  const [authorized, setAuthorized] = useState(!passcode);
+  const adminMode = useSettings('admin_mode');
   const onDismiss = ()=>navigation.goBack();
 
   let content;
-  if(!authorized){
-    content = <Auth passcode={passcode} onSubmit={()=>setAuthorized(true)}/>
+  if(!adminMode){
+    content = <View style={{padding:20, display: "flex", flexDirection:"column", justifyContent:"center", alignItems:"center", height:"100%"}}><Text>Veuillez activer le mode administrateur dans les paramètres pour accéder à cette interface</Text></View>
   }else{
     content = (<OptionsStack.Navigator initialRouteName="BaseSettings" headerMode= 'none' screenOptions={{headerShown: false, cardStyle: { backgroundColor: 'transparent' },}}>
       <OptionsStack.Screen name="BaseSettings" component={BaseSettingsScreen}/>

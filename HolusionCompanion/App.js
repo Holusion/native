@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 
 import "react-native-gesture-handler";
@@ -33,11 +33,10 @@ const NotFoundScreen = withErrorHandler(screens.NotFoundScreen);
  */
 function MainContent(){
   const [notFound, setNotFound] = useState(null);
-  const adminMode = useSettings('admin_mode');
   const screenOptions = ({navigation})=>{
     return {
       headerBackTitle: "Retour",
-      headerRight: ()=>(adminMode && <NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
+      headerRight: ()=>(<NetworkIcon onPress={() => navigation.navigate("Settings")}/>),
     };
   }
 
@@ -82,7 +81,6 @@ function NetAwareContent(){
 
 export default function App(){
   const [store, task] = sagaStore({defaultProject:"holodemo"});
-
 
 
   return <React.Fragment>

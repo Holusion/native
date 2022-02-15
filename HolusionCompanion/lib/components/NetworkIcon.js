@@ -25,7 +25,6 @@ class NetworkIcon extends React.Component{
           <Text style={{color:"white", fontSize: 14, lineHeight:30, textAlign:"center"}}>{this.props.errors.length}</Text>
         </View>: null}
         {this.props.isWorking  && <ActivityIndicator size="small" color='orange'/>}
-        {this.props.signedIn && <Icon style={{marginRight: 16, color: "blue", fontSize:24}} name="ios-code-working" />}
         <Icon style={{marginRight: 16, color, fontSize:24}} name="ios-wifi" />
       </View>
       if(this.props.onPress){
