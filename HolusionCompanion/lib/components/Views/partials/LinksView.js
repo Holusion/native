@@ -1,19 +1,26 @@
 'use strict';
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types"
 import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import {Svg, Path, Rect, Text as SvgText} from "react-native-svg";
+import {Svg, Path} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
 export function LinkPath({to, style={}, ...rest}){
+  const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
   const onPress = ()=>{
+    setPressed(false)
     navigation.navigate(screen, params)
   }
-  return <Path onPress={onPress} style={{zIndex:2, ...style}} {...rest} />
+  return <Path 
+  onPressIn={()=> setPressed(true)}
+  onPressOut={onPress} 
+  fill={isPressed ? 'rgba(255, 255, 255, 0.5)' : "none"} 
+  style={{zIndex:2, ...style}} 
+  {...rest} />
 }
 
 function LinkBtn({to, style={}, children}){
@@ -59,12 +66,12 @@ export function LinksView(props){
         </LinkBtn>
     })
 
-    const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
+    const paths = (props.items|| []).filter(item=> item.d).map(({name, d, stroke="none", strokeWidth="1"}, index)=>{
       const key = index + buttons.length;
       return <LinkPath key={key}
         to={name}
         d={d} 
-        fill={fill} stroke={stroke} strokeWidth={strokeWidth}
+         stroke={stroke} strokeWidth={strokeWidth}
       />
     })
     return (<View style={styles.overlay}>
