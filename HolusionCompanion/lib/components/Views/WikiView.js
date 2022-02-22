@@ -52,9 +52,6 @@ const styles = StyleSheet.create({
     textContent: {
         paddingTop: 0,
         marginTop: -40,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
     },
     titleContainer: {
         flex:2,
