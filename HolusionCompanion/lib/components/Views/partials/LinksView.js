@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types"
 import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import {Svg, Path} from "react-native-svg";
+import {Svg, Path, Rect, Text as SvgText, G} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, style={}, ...rest}){
+export function LinkPath({to, fill, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
@@ -15,12 +15,32 @@ export function LinkPath({to, style={}, ...rest}){
     setPressed(false)
     navigation.navigate(screen, params)
   }
-  return <Path 
+  const textX = parseFloat(x)+ parseFloat(width)/2
+  const textY = parseFloat(y)+ parseFloat(height)/2 + parseFloat(textStyle.fontSize)/4
+
+  const isTransparent = /^#.{6}00$/.test(fill) || fill === "none";
+
+  const s = shape === "rect" ?
+  <G onPressIn={()=> to && setPressed(true)} onPressOut={ to && onPress} opacity={isPressed ? 0.7 : 1}>
+    <Rect
+    fill={ isTransparent && isPressed ? "#ffffff80" : fill }
+    x={x} y={y} 
+    width={width} height={height} 
+    rx={borderRadius} ry={borderRadius} 
+    {...rest}/>
+    <SvgText style={textStyle} x={textX} y={textY} textAnchor="middle">{text}</SvgText>
+  </G>
+  :
+  <Path 
+  fill={ isTransparent && isPressed ? "#ffffff80" : fill }
+  opacity={isPressed ? 0.5 : 1}
   onPressIn={()=> setPressed(true)}
   onPressOut={onPress} 
-  fill={isPressed ? 'rgba(255, 255, 255, 0.5)' : "none"} 
-  style={{zIndex:2, ...style}} 
+  d={d}
+  style={{zIndex:2, ...style}}
   {...rest} />
+
+  return s
 }
 
 function LinkBtn({to, style={}, children}){
@@ -37,7 +57,7 @@ function LinkBtn({to, style={}, children}){
 export function LinksView(props){
   const navigation = useNavigation();
     const buttons = (props.items || [])
-    .filter(item => !item.d && typeof item.x !== "undefined" && typeof item.y !== "undefined")
+    .filter(item => !item.shape && typeof item.x !== "undefined" && typeof item.y !== "undefined")
     .map((item, index)=>{
         const color = item.color || "#00000000";
         const borders = {
@@ -66,12 +86,22 @@ export function LinksView(props){
         </LinkBtn>
     })
 
-    const paths = (props.items|| []).filter(item=> item.d).map(({name, d, stroke="none", strokeWidth="1"}, index)=>{
+    const paths = (props.items|| []).filter(item => item.d || item.shape).map((p, index)=>{
       const key = index + buttons.length;
       return <LinkPath key={key}
-        to={name}
-        d={d} 
-         stroke={stroke} strokeWidth={strokeWidth}
+        to={p.name}
+        shape={p.shape}
+        x={p.x || 0}
+        y={p.y || 0}
+        width={p.width || 0}
+        height={p.height || 0}
+        borderRadius={p.borderRadius}
+        d={p.d}
+        fill={p.fill}
+        stroke={p.stroke} 
+        strokeWidth={p.strokeWidth}
+        text={p.text}
+        textStyle={{fill:p.textColor, fontSize:p.fontSize || 14 }}
       />
     })
     return (<View style={styles.overlay}>
