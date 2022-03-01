@@ -7,12 +7,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, fill, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
+export function LinkPath({to, fill, strokeWidth, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
   const onPress = ()=>{
-    setPressed(false)
     navigation.navigate(screen, params)
   }
   const textX = parseFloat(x)+ parseFloat(width)/2
@@ -21,9 +20,13 @@ export function LinkPath({to, fill, shape, d, x, y, height, width, borderRadius,
   const isTransparent = /^#.{6}00$/.test(fill) || fill === "none";
 
   const s = shape === "rect" ?
-  <G onPressIn={()=> to && setPressed(true)} onPressOut={ to && onPress} opacity={isPressed ? 0.7 : 1}>
+  <G onPressIn={()=> to && setPressed(true)} 
+  onPressOut={() => to && setPressed(false)} 
+  onPress={ to && onPress} 
+  opacity={isPressed ? 0.7 : 1}>
     <Rect
     fill={ isTransparent && isPressed ? "#ffffff80" : fill }
+    strokeWidth={strokeWidth}
     x={x} y={y} 
     width={width} height={height} 
     rx={borderRadius} ry={borderRadius} 
@@ -32,10 +35,12 @@ export function LinkPath({to, fill, shape, d, x, y, height, width, borderRadius,
   </G>
   :
   <Path 
-  fill={ isTransparent && isPressed ? "#ffffff80" : fill }
+  fill={ isTransparent && strokeWidth > 0 && isPressed ? "#ffffff80" : fill }
+  strokeWidth={strokeWidth}
   opacity={isPressed ? 0.5 : 1}
-  onPressIn={()=> setPressed(true)}
-  onPressOut={onPress} 
+  onPressIn={()=> to && setPressed(true)} 
+  onPressOut={() => to && setPressed(false)} 
+  onPress={ to && onPress}
   d={d}
   style={{zIndex:2, ...style}}
   {...rest} />
