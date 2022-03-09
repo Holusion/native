@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, fill, strokeWidth, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
+export function LinkPath({to, fill, stroke, strokeWidth, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
@@ -20,32 +20,50 @@ export function LinkPath({to, fill, strokeWidth, shape, d, x, y, height, width, 
   const isTransparent = /^#.{6}00$/.test(fill) || fill === "none";
 
   const s = shape === "rect" ?
-  <G onPressIn={()=> to && setPressed(true)} 
-  onPressOut={() => to && setPressed(false)} 
-  onPress={ to && onPress} 
-  opacity={isPressed ? 0.7 : 1}>
+  <>
     <Rect
-    fill={ isTransparent && isPressed ? "#ffffff80" : fill }
+    fill={ fill}
     strokeWidth={strokeWidth}
     x={x} y={y} 
     width={width} height={height} 
     rx={borderRadius} ry={borderRadius} 
+    stroke={stroke}
     {...rest}/>
     <SvgText style={textStyle} x={textX} y={textY} textAnchor="middle">{text}</SvgText>
-  </G>
+    <Rect
+    fill="#ffffff"
+    opacity={ isPressed ? 0.3 : 0}
+    strokeWidth={strokeWidth}
+    x={x} y={y} 
+    width={width} height={height} 
+    rx={borderRadius} ry={borderRadius} 
+    stroke="#ffffff"
+    {...rest}/>    
+  </>
   :
-  <Path 
-  fill={ isTransparent && strokeWidth > 0 && isPressed ? "#ffffff80" : fill }
-  strokeWidth={strokeWidth}
-  opacity={isPressed ? 0.5 : 1}
-  onPressIn={()=> to && setPressed(true)} 
-  onPressOut={() => to && setPressed(false)} 
-  onPress={ to && onPress}
-  d={d}
-  style={{zIndex:2, ...style}}
-  {...rest} />
+  <>
+    <Path 
+    fill={ fill }
+    strokeWidth={strokeWidth}
+    stroke={stroke}
+    d={d}
+    style={{zIndex:2, ...style}}
+    {...rest} />
+    <Path
+    fill={ "#ffffff" }
+    opacity={(!isTransparent || strokeWidth > 0) && isPressed ? 0.3 : 0}
+    stroke="#ffffff"
+    strokeWidth={strokeWidth}
+    d={d}
+    style={{zIndex:2, ...style}}
+    {...rest} />    
+  </>
 
-  return s
+  return <G onPressIn={()=> to && setPressed(true)} 
+  onPressOut={() => to && setPressed(false)} 
+  onPress={ to && onPress}>
+    {s}
+  </G>
 }
 
 function LinkBtn({to, style={}, children}){
