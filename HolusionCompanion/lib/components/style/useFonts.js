@@ -9,11 +9,15 @@ import { readFile } from "react-native-fs";
 
 export default function useFonts(){
   const [loadedFonts, setLoadedFonts] = useState([]);
-  const {fonts=[]} = useSelector(state=>state.data.config);
+  const themeFonts = useSelector(state=>state.data.config.themeVariables?.fonts) || {};
+  const oldFonts = useSelector(state => state.data.config.fonts) || [] //prevent old apps from crash
   const cachedFiles = useSelector(getCachedFiles);
   const dispatch = useDispatch();
 
+  const fonts = [...Object.values(themeFonts), ...oldFonts]
+
   const allFontsLoaded = fonts.filter(font=> loadedFonts.indexOf(font) === -1).length === 0;
+
 
   useEffect(()=>{
     if(!Array.isArray(fonts)) return;
