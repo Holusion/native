@@ -35,7 +35,6 @@ export default function BaseView(props){
           <ImageBackground resizeMode= 'contain' source={source} style={{flex:1}} >
               <H1 color="primary" style={baseStyles.title}>{d["title"]}</H1>
               <H2 color="secondary" style={baseStyles.subtitle}>{d["subtitle"]}</H2>
-              <LinksView style={baseStyles.link} items={d["links"] || []}/>
           </ImageBackground>
       </View>
       {withDescription && 
@@ -45,6 +44,7 @@ export default function BaseView(props){
           </ScrollView>
         </View>
       }
+      <LinksView style={baseStyles.link} items={d["links"] || []}/>
   </View>)
 }
 
@@ -54,7 +54,6 @@ const baseStyles = StyleSheet.create({
     backgroundColor:"#fff"
   },
   contentView:{
-      zIndex: 1,
       padding: 20,
       paddingBottom: 40,
       backgroundColor: "#f1f1f1",
@@ -68,6 +67,7 @@ const baseStyles = StyleSheet.create({
       paddingLeft: 10,
   },
   link: {
-    zIndex: 1
+    position:'absolute',
+    zIndex: 2
   }
 });

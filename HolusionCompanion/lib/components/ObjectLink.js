@@ -6,7 +6,7 @@ import { getItems } from "@holusion/cache-control";
 
 
 export function parseItem({id, category}){
-  return {screen: category, params:{id}};
+  return {screen: category? category : id, params:{id}};
 }
 
 export function useParsedLink({to, encoded=true}){

@@ -1,19 +1,69 @@
 'use strict';
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types"
 import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import {Svg, Path, Rect, Text as SvgText} from "react-native-svg";
+import {Svg, Path, Rect, Text as SvgText, G} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, style={}, ...rest}){
+export function LinkPath({to, fill, stroke, strokeWidth, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
+  const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
   const onPress = ()=>{
     navigation.navigate(screen, params)
   }
-  return <Path onPress={onPress} style={{zIndex:2, ...style}} {...rest} />
+  const textX = parseFloat(x)+ parseFloat(width)/2
+  const textY = parseFloat(y)+ parseFloat(height)/2 + parseFloat(textStyle.fontSize)/4
+
+  const isTransparent = /^#.{6}00$/.test(fill) || fill === "none";
+
+  const s = shape === "rect" ?
+  <>
+    <Rect
+    fill={ fill}
+    strokeWidth={strokeWidth}
+    x={x} y={y} 
+    width={width} height={height} 
+    rx={borderRadius} ry={borderRadius} 
+    stroke={stroke}
+    {...rest}/>
+    <SvgText style={textStyle} x={textX} y={textY} textAnchor="middle">{text}</SvgText>
+    <Rect
+    fill="#ffffff"
+    opacity={ isPressed ? 0.3 : 0}
+    strokeWidth={strokeWidth}
+    x={x} y={y} 
+    width={width} height={height} 
+    rx={borderRadius} ry={borderRadius} 
+    stroke="#ffffff"
+    {...rest}/>    
+  </>
+  :
+  <>
+    <Path 
+    fill={ fill }
+    strokeWidth={strokeWidth}
+    stroke={stroke}
+    d={d}
+    style={{zIndex:2, ...style}}
+    {...rest} />
+    <Path
+    fill={ "#ffffff" }
+    opacity={(!isTransparent || strokeWidth > 0) && isPressed ? 0.3 : 0}
+    stroke="#ffffff"
+    strokeWidth={strokeWidth}
+    d={d}
+    style={{zIndex:2, ...style}}
+    {...rest} />    
+  </>
+
+  return <G onPressIn={()=> to && setPressed(true)} 
+  onPressOut={() => to && setPressed(false)} 
+  onPress={ to && onPress}>
+    {s}
+  </G>
 }
 
 function LinkBtn({to, style={}, children}){
@@ -30,7 +80,7 @@ function LinkBtn({to, style={}, children}){
 export function LinksView(props){
   const navigation = useNavigation();
     const buttons = (props.items || [])
-    .filter(item => !item.d && typeof item.x !== "undefined" && typeof item.y !== "undefined")
+    .filter(item => !item.shape && typeof item.x !== "undefined" && typeof item.y !== "undefined")
     .map((item, index)=>{
         const color = item.color || "#00000000";
         const borders = {
@@ -59,12 +109,22 @@ export function LinksView(props){
         </LinkBtn>
     })
 
-    const paths = (props.items|| []).filter(item=> item.d).map(({name, d, fill="none", stroke="none", strokeWidth="1"}, index)=>{
+    const paths = (props.items|| []).filter(item => item.d || item.shape).map((p, index)=>{
       const key = index + buttons.length;
       return <LinkPath key={key}
-        to={name}
-        d={d} 
-        fill={fill} stroke={stroke} strokeWidth={strokeWidth}
+        to={p.name}
+        shape={p.shape}
+        x={p.x || 0}
+        y={p.y || 0}
+        width={p.width || 0}
+        height={p.height || 0}
+        borderRadius={p.borderRadius}
+        d={p.d}
+        fill={p.fill}
+        stroke={p.stroke} 
+        strokeWidth={p.strokeWidth}
+        text={p.text}
+        textStyle={{fill:p.textColor, fontSize:p.fontSize || 14 }}
       />
     })
     return (<View style={styles.overlay}>
