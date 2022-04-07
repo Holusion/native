@@ -22,7 +22,7 @@ export default function PlayPause(props){
     const themeStyle = useThemedPlayPause();
 
     const grow = new Animated.Value(0);
-    const last_request = Promise.resolve();
+    let last_request = Promise.resolve();
 
     function onPressIn(){
         pause();
@@ -58,9 +58,9 @@ export default function PlayPause(props){
     }
 
     return (<AnimatedButton key="ctrl" onPressIn={onPressIn} onPressOut={onPressOut} large style={{
-        transform:[{scale: size}],
+        transform:[{scale: 1}],
         zIndex:2,
-        padding:5, 
+        padding:5,
         borderRadius:45,
     }} >
         <Icon large primary type="Ionicons" name="pause" style={[controllerTheme.icon, themeStyle.icon]} />
