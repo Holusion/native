@@ -54,7 +54,7 @@ export default function PlayPause(props){
         last_request = last_request
         .then(()=> fetch(`http://${props.target.url}/control/pause`, {method:"POST"}))
         .then(()=>delay(120))
-        .catch((e)=>{/*Completely ignore Pause errors */});
+        .catch((e)=>{console.log("Pause error : ", e)});
     }
 
     return (<AnimatedButton key="ctrl" onPressIn={onPressIn} onPressOut={onPressOut} large style={{

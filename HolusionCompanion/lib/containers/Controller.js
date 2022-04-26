@@ -20,7 +20,7 @@ function Controller({
   let content, wrap;
   switch(play_control){
     case "button":
-      content= <PlayPause/>;
+      content= <PlayPause target={target}/>;
       break;
     case "rotate":
       content = <SpriteCube target={target}/>;
