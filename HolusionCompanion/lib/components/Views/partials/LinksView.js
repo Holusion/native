@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types"
 import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import {Svg, Path, Rect, Text as SvgText, G} from "react-native-svg";
+import {Svg, Path, Rect, Text as SvgText, G, Image as SvgImage} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
 
 
-export function LinkPath({to, fill, stroke, strokeWidth, shape, d, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
+export function LinkPath({to, fill, stroke, strokeWidth, shape, d, image, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
@@ -17,47 +17,55 @@ export function LinkPath({to, fill, stroke, strokeWidth, shape, d, x, y, height,
   const textX = parseFloat(x)+ parseFloat(width)/2
   const textY = parseFloat(y)+ parseFloat(height)/2 + parseFloat(textStyle.fontSize)/4
 
+  const source = (image?{uri: image}: require("../../../../assets/missing-image.png"));
+
   const isTransparent = /^#.{6}00$/.test(fill) || fill === "none";
 
-  const s = shape === "rect" ?
-  <>
-    <Rect
-    fill={ fill}
-    strokeWidth={strokeWidth}
-    x={x} y={y} 
-    width={width} height={height} 
-    rx={borderRadius} ry={borderRadius} 
-    stroke={stroke}
-    {...rest}/>
-    <SvgText style={textStyle} x={textX} y={textY} textAnchor="middle">{text}</SvgText>
-    <Rect
-    fill="#ffffff"
-    opacity={ isPressed ? 0.3 : 0}
-    strokeWidth={strokeWidth}
-    x={x} y={y} 
-    width={width} height={height} 
-    rx={borderRadius} ry={borderRadius} 
-    stroke="#ffffff"
-    {...rest}/>    
-  </>
-  :
-  <>
-    <Path 
-    fill={ fill }
-    strokeWidth={strokeWidth}
-    stroke={stroke}
-    d={d}
-    style={{zIndex:2, ...style}}
-    {...rest} />
-    <Path
-    fill={ "#ffffff" }
-    opacity={(!isTransparent || strokeWidth > 0) && isPressed ? 0.3 : 0}
-    stroke="#ffffff"
-    strokeWidth={strokeWidth}
-    d={d}
-    style={{zIndex:2, ...style}}
-    {...rest} />    
-  </>
+  let s
+  if(shape === "rect"){
+    s = <>
+      <Rect
+      fill={ fill}
+      strokeWidth={strokeWidth}
+      x={x} y={y} 
+      width={width} height={height} 
+      rx={borderRadius} ry={borderRadius} 
+      stroke={stroke}
+      {...rest}/>
+      <SvgText style={textStyle} x={textX} y={textY} textAnchor="middle">{text}</SvgText>
+      <Rect
+      fill="#ffffff"
+      opacity={ isPressed ? 0.3 : 0}
+      strokeWidth={strokeWidth}
+      x={x} y={y} 
+      width={width} height={height} 
+      rx={borderRadius} ry={borderRadius} 
+      stroke="#ffffff"
+      {...rest}/>    
+    </>
+  }else if(shape === "image"){
+    s = <>
+      <SvgImage x={x} y={y} width={width} height={height} href={source} opacity={ isPressed ? 0.5 : 1}/>
+    </>
+  }else{
+    s = <>
+      <Path 
+      fill={ fill }
+      strokeWidth={strokeWidth}
+      stroke={stroke}
+      d={d}
+      style={{zIndex:2, ...style}}
+      {...rest} />
+      <Path
+      fill={ "#ffffff" }
+      opacity={(!isTransparent || strokeWidth > 0) && isPressed ? 0.3 : 0}
+      stroke="#ffffff"
+      strokeWidth={strokeWidth}
+      d={d}
+      style={{zIndex:2, ...style}}
+      {...rest} />    
+    </>
+  }
 
   return <G onPressIn={()=> to && setPressed(true)} 
   onPressOut={() => to && setPressed(false)} 
@@ -120,6 +128,7 @@ export function LinksView(props){
         height={p.height || 0}
         borderRadius={p.borderRadius}
         d={p.d}
+        image={p.image}
         fill={p.fill}
         stroke={p.stroke} 
         strokeWidth={p.strokeWidth}
