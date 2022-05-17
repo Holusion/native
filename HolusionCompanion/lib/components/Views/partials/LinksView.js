@@ -136,7 +136,7 @@ export function LinksView(props){
         textStyle={{fill:p.textColor, fontSize:p.fontSize || 14 }}
       />
     })
-    return (<View style={styles.overlay}>
+    return (<View style={styles.overlay} pointerEvents="box-none" >
       {(paths.length !==0) && <Svg width="100%" height="100%" viewBox={`0 0 1024 724`}>
         {paths}
       </Svg>}

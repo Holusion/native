@@ -37,7 +37,6 @@ export default function BaseView(props){
               <H2 color="secondary" style={baseStyles.subtitle}>{d["subtitle"]}</H2>
           </ImageBackground>
       </View>
-      <LinksView style={baseStyles.link} items={d["links"] || []}/>
       {withDescription && 
         <View testID="description-content" style={[baseStyles.contentView, themeStyle.contentView ]}>
           <ScrollView contentContainerStyle={{}}>
@@ -45,6 +44,7 @@ export default function BaseView(props){
           </ScrollView>
         </View>
       }
+      <LinksView style={baseStyles.link} items={d["links"] || []}/>
   </View>)
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Image, StyleSheet, View, ScrollView } from 'react-native';
 
-import { H1, H2, ThemeContext } from '../style'
+import { H1, H2 } from '../style'
 
 import Markdown from '../Markdown'
 
