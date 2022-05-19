@@ -79,9 +79,10 @@ class CategoryScreen extends React.Component {
         this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title|| ""})
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
+        const canSwipe = ["swipe","default", "buttons"].indexOf(this.props.control_buttons)!== -1 ;
           if(this._list){
             this._list.scrollToIndex({
-              animated: Math.abs(this.props.index-prevProps.index) === 1, 
+              animated: canSwipe ? Math.abs(this.props.index-prevProps.index) === 1 : false, 
               index: this.props.index
             });
           }
