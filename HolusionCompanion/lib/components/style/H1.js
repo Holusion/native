@@ -7,7 +7,7 @@ export function H1({style={} ,color="primary",children, ...props}){
     return <Text style={[
       {
         color: theme.color[color], 
-        fontSize: theme.fontSize.h1, 
+        fontSize: parseInt(theme.fontSize.h1), 
         fontFamily: theme.fontFamily.h1
       }, style
     ]} {...props}>{children}</Text>

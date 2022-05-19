@@ -7,7 +7,7 @@ export function H2({style={} ,color="secondary",children, ...props}){
     return <Text style={[
       {
         color: theme.color[color], 
-        fontSize: theme.fontSize.h2, 
+        fontSize: parseInt(theme.fontSize.h2), 
         fontFamily: theme.fontFamily.h2
       },
       style

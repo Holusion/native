@@ -14,16 +14,16 @@ function useTheme(){
   const theme = useContext(ThemeContext);
   return useMemo(()=>StyleSheet.create({
     body: {
-      fontSize: theme.fontSize.default,
+      fontSize: parseInt(theme.fontSize.default),
       color: theme.color.default,
     },
     heading1:{
-      fontSize: theme.fontSize.h1,
+      fontSize: parseInt(theme.fontSize.h1),
       fontFamily: theme.fontFamily.h1,
       color: theme.color.primary,
     },
     heading2:{
-      fontSize: theme.fontSize.h2,
+      fontSize: parseInt(theme.fontSize.h2),
       fontFamily: theme.fontFamily.h2,
       color: theme.color.secondary,
     },

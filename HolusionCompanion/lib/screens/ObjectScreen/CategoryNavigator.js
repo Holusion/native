@@ -29,7 +29,7 @@ function CategoryNavigator(props){
       headerRight: ()=>(<NetworkIcon key="headerRight" onPress={() => navigation.navigate("Settings")}/>),
     }
   }
-  let categories = props.categories.map(c => c.name) || [];
+  let categories = props.categories?.map(c => c.name) || [];
 
   //item with undefined category have his own category added in the cache control
   let undefinedCategories = Object.values(props.items).filter(c => c.id == c.category).map(c => c.category)
