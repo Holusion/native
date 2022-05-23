@@ -16,7 +16,7 @@ export function Pick({label, help, active, onPress}){
     <View style={{flex:1}}>
       <Text style={{color: BgIcon.color[active?"info": "muted"], fontSize: 14 }}>{help}</Text>
     </View>
-    <CheckBox lineWidth={1} animationDuration={0} value={active}/>
+    <CheckBox lineWidth={1} animationDuration={0} value={active} disabled={true}/>
   </TouchableOpacity>)
 }
 

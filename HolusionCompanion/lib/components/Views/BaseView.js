@@ -31,12 +31,13 @@ export default function BaseView(props){
   const withDescription = typeof d['description']=== "string" && d['description'].length ? true:false;
 
   return(<View style={{flex:1,display:"flex", flexDirection:"row", justifyContent:"space-evenly"}}>
-      <View testID="image-content" style={baseStyles.image}>
+
+      {(d && d.image) && <View testID="image-content" style={baseStyles.image}>
           <ImageBackground resizeMode= 'contain' source={source} style={{flex:1}} >
               <H1 color="primary" style={baseStyles.title}>{d["title"]}</H1>
               <H2 color="secondary" style={baseStyles.subtitle}>{d["subtitle"]}</H2>
           </ImageBackground>
-      </View>
+      </View>}
       {withDescription && 
         <View testID="description-content" style={[baseStyles.contentView, themeStyle.contentView ]}>
           <ScrollView contentContainerStyle={{}}>
