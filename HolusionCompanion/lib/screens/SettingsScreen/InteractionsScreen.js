@@ -37,7 +37,7 @@ export default function InteractionsScreen(){
       <View>
         <SettingPicker title="Changement de page"
           subtitle="Comment passer directement d'un objet à l'autre"
-          onChange={(v)=> dispatch(setSlidesControl(v))}
+          onChange={(v)=> dispatch(setSlidesControl({...v,[n]:v}))}
           value={slides_control}
           items={[
             {label: "Swipe et boutons", help:"Activer tout", value:"default"},

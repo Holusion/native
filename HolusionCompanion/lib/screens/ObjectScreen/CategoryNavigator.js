@@ -22,6 +22,7 @@ const Nav = createNativeStackNavigator();
 function CategoryNavigator(props){
   const screenOptions = ({ navigation, route:{name, params={}}})=>{
     return {
+      animation: 'none',
       headerShown: true,
       title: params.title || name,
 
