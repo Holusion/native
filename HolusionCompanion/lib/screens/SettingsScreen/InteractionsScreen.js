@@ -25,7 +25,7 @@ export function SettingPicker({items, value, onChange, title}){
     <View style={style.listHeader}>
       <Text style={style.listTitle}>{title}</Text>
     </View>
-    {items.map((item)=>(<Pick key={item.value} active={item.value ===value} label={item.label} help={item.help} onPress={()=>onChange(item.value)}/>))}
+    {items.map((item)=>(<Pick key={item.value} active={value[item.value]} label={item.label} help={item.help} onPress={()=>onChange(item.value, value[item.value] === false ? true : false)}/>))}
   </React.Fragment>
 }
 
@@ -37,20 +37,18 @@ export default function InteractionsScreen(){
       <View>
         <SettingPicker title="Changement de page"
           subtitle="Comment passer directement d'un objet à l'autre"
-          onChange={(v)=> dispatch(setSlidesControl({...v,[n]:v}))}
+          onChange={(v, a)=> dispatch(setSlidesControl({...slides_control,[v]:a}))}
           value={slides_control}
           items={[
-            {label: "Swipe et boutons", help:"Activer tout", value:"default"},
             {label: "Boutons", help:"Flèches directionelles", value: "buttons"},
             {label: "Swipe", help: `Changer d'objet avec un "swipe"`, value: "swipe"},
-            {label: "Aucun", help:"aucune navigation d'objet à objet", value: "none"},
+            {label: "Animations", help:"Effet de slide lors d'un changement de page", value: "animation"},
           ]}
         />
         <SettingPicker title="Commande du lecteur vidéo"
-          onChange={(v)=>dispatch(setPlayControl(v))}
+          onChange={(v)=>dispatch(setPlayControl({[v]:true}))}
           value={play_control}
           items={[
-            {label: "Aucun", help: "Aucun contrôle de la lecture vidéo", value: "none"},
             {label: "Bouton", help: "Bouton pause", value: "button"},
             {label: "Rotation", help: "Rotation temps réel (pour les produits supportés)", value: "rotate"}
           ]}

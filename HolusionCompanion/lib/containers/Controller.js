@@ -18,18 +18,18 @@ function Controller({
 }){
   const {params:{ id }={}} = route = useRoute();
   let content, wrap;
-  switch(play_control){
-    case "button":
+
+  switch(true){
+    case play_control.button === true:
       content= <PlayPause target={target}/>;
       break;
-    case "rotate":
+    case play_control.rotate === true:
       content = <SpriteCube target={target}/>;
       break;
-    case "none":
     default:
       content = null;
   }
-  if((prev || next) && ["default", "buttons"].indexOf(slides_control) !== -1){
+  if((prev || next) && slides_control.buttons === true ){
     wrap = (<PrevNext prev={prev} next={next}>{content}</PrevNext>);
   }else{
     wrap = content;

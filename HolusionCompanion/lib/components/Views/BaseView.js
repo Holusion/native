@@ -60,12 +60,14 @@ const baseStyles = StyleSheet.create({
       backgroundColor: "#f1f1f1",
   },
   title:{
-      paddingTop: 30,
-      paddingLeft: 10,
+      paddingLeft: 50,
+      paddingTop: 50,
+      paddingRight: 50,
       width:"100%",
   },
   subtitle:{
-      paddingLeft: 10,
+      paddingLeft: 50,
+      paddingRight: 50,
   },
   link: {
     position:'absolute',

@@ -42,7 +42,7 @@ class CategoryScreen extends React.Component {
         this.props.navigation.setParams({id: object.id});
     }
     render() {
-        const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
+        const canSwipe = this.props.control_buttons.buttons === true || this.props.control_buttons.swipe === true ;
         return (<SafeAreaView style={{flex:1}} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
             <ObjectList 
@@ -79,10 +79,9 @@ class CategoryScreen extends React.Component {
         this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title|| ""})
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
-        const canSwipe = ["swipe","default", "buttons"].indexOf(this.props.control_buttons)!== -1 ;
           if(this._list){
             this._list.scrollToIndex({
-              animated: canSwipe ? Math.abs(this.props.index-prevProps.index) === 1 : false, 
+              animated:  this.props.control_buttons.animation === true ? Math.abs(this.props.index-prevProps.index) === 1 : false, 
               index: this.props.index
             });
           }
