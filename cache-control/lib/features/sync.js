@@ -78,7 +78,7 @@ export function* synchronizeProduct(){
     }
   }catch(e){
     let wrap = new Error(`Echec de la récupération de la playlist`);
-    wrap.context = e.message;
+    wrap.context = `GET ${url}/playlist : ${e.message}`;
     yield put(setSynchronized(wrap));
     return; //There is no point in trying to do more
   }
