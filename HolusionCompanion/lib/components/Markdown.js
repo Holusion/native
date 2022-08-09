@@ -15,6 +15,7 @@ function useTheme(){
   return useMemo(()=>StyleSheet.create({
     body: {
       fontSize: parseInt(theme.fontSize.default),
+      fontFamily: theme.fontFamily.default,
       color: theme.color.default,
     },
     heading1:{

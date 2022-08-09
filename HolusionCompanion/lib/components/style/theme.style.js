@@ -15,6 +15,7 @@ export default {
     default: 'System',
     h1: 'System',
     h2: 'System',
+    btn: 'System'
   },
   fontSize: {
     default: 16,

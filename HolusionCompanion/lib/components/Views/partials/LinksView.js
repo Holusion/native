@@ -1,10 +1,11 @@
 'use strict';
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types"
 import {StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import {Svg, Path, Rect, Text as SvgText, G, Image as SvgImage} from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useParsedLink } from "../../ObjectLink";
+import { ThemeContext } from "../../style/ThemeProvider";
 
 
 export function LinkPath({to, fill, stroke, strokeWidth, shape, d, image, x, y, height, width, borderRadius, text, textStyle, style={}, ...rest}){
@@ -77,6 +78,7 @@ export function LinkPath({to, fill, stroke, strokeWidth, shape, d, image, x, y, 
 function LinkBtn({to, style={}, children}){
   const navigation = useNavigation();
   const {screen, params} = useParsedLink({to});
+
   const onPress = ()=>{
     navigation.navigate(screen, params)
   }
@@ -86,7 +88,8 @@ function LinkBtn({to, style={}, children}){
 }
 
 export function LinksView(props){
-  const navigation = useNavigation();
+  const theme = useContext(ThemeContext);
+
     const buttons = (props.items || [])
     .filter(item => !item.shape && typeof item.x !== "undefined" && typeof item.y !== "undefined")
     .map((item, index)=>{
@@ -130,10 +133,10 @@ export function LinksView(props){
         d={p.d}
         image={p.image}
         fill={p.fill}
-        stroke={p.stroke} 
+        stroke={p.stroke}
         strokeWidth={p.strokeWidth}
         text={p.text}
-        textStyle={{fill:p.textColor, fontSize:p.fontSize || 14 }}
+        textStyle={{fill: p.textColor, fontSize: p.fontSize || 14, fontFamily: theme.fontFamily.btn}}
       />
     })
     return (<View style={styles.overlay} pointerEvents="box-none" >
