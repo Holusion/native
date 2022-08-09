@@ -26,7 +26,7 @@ export function ShowErrors(){
     </View>
     <View style={{flex:1, paddingLeft:10}}><Link to="/Logs"><Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text></Link></View>
     <View><Link to="/Logs">
-      <Icon style={{fontSize: theme.fontSize.large}} name="chevron-forward-outline"/>
+      <Icon style={{fontSize: 20}} name="chevron-forward-outline"/>
     </Link></View>
   </View>);
 }
@@ -120,8 +120,8 @@ export function ShowTarget(){
 
 function A({to, children}){
   return <Link  to={to} style={{minWidth:50, height:30}}>
-    <Text style={{color: "#666666", minWidth:40 }}>{children}</Text>
-    <Icon style={{fontSize: 16, lineHeight: 17, textAlign:"right"}}name="chevron-forward-outline"/>
+    <Text style={{color: "#666666", minWidth:40, lineHeight:21 }}>{children}</Text>
+    <Icon style={{fontSize: 20, lineHeight: 21, textAlign:"right"}}name="chevron-forward-outline"/>
   </Link>
 }
 
