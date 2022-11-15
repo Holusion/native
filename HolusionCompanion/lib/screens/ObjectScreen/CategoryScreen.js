@@ -18,6 +18,7 @@ const {width, height} = Dimensions.get('window');
 import { VideoPlayer } from '../../sync/VideoPlayer';
 
 import ObjectList from "./ObjectList"
+import ObjectView from '../../components/Views/ObjectView';
 import { getItems } from '@holusion/cache-control';
 
 /**
@@ -45,14 +46,16 @@ class CategoryScreen extends React.Component {
         const canSwipe = ["swipe","default"].indexOf(this.props.control_buttons)!== -1 ;
         return (<SafeAreaView style={{flex:1}} onLayout={this._onLayoutDidChange}>
             <VideoPlayer/>
-            <ObjectList 
+            {(canSwipe)?<ObjectList 
                 ref= {(ref)=>this._list = ref}
                 initialItem={this.props.index}
                 items={this.props.items}
                 size={this.state.size}
                 views={this.props.views}
                 onChange={ canSwipe ? this.setIdForIndex: null}
-            />
+            /> : <View style={{...this.props.size, display:"flex", flex: 1, backgroundColor:"black" }}>
+              <ObjectView views={this.props.views} width={this.state.size.width} item={this.props.items[this.props.index]}/>
+            </View>}
             <View style={styles.footer} pointerEvents="box-none">
                 <Controller 
                     prev={this.props.index !== 0? this.onPrevPage : null} 

@@ -14,7 +14,7 @@ function ObjectView({item, width="100%", views={Base: BaseView, Wiki: WikiView}}
       console.warn(`No view provided for layout ${layout}`);
       View_component = views["Base"];
   }
-  return (<View style={{width:width}}>
+  return (<View style={{width:width, flex: 1}}>
     <View_component active={true} {...item} />
   </View>)
 }
