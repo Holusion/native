@@ -75,11 +75,11 @@ class CategoryScreen extends React.Component {
         if(!this.props.id){
             return console.warn("Object not found");
         }
-        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title || ""})
+        this.props.navigation.setOptions({title: this.props.item?.header || this.props.item?.title || ""})
     }
     componentDidUpdate(prevProps){
       if(prevProps.id !== this.props.id){
-        this.props.navigation.setOptions({title: this.props.item.header || this.props.item.title|| ""})
+        this.props.navigation.setOptions({title: this.props.item?.header || this.props.item?.title|| ""})
         //Index might not change if we navigate to another ID with the same in-category index
         requestAnimationFrame(()=>{ 
         const canSwipe = ["swipe","default", "buttons"].indexOf(this.props.control_buttons)!== -1 ;
