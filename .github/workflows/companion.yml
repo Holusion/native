@@ -100,7 +100,7 @@ jobs:
       - name: Install build dependencies
         run: |
           cd HolusionCompanion
-          npm ci
+          npm ci --legacy-peer-deps
           (cd ios && pod install --verbose)
       - name: Build JS package
         run: |
