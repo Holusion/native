@@ -12,13 +12,13 @@ jobs:
         working-directory: cache-control
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       ### restore caches
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('cache-control/package-lock.json') }}

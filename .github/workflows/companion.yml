@@ -12,13 +12,13 @@ jobs:
         working-directory: HolusionCompanion
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       ### restore caches
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('HolusionCompanion/package-lock.json') }}
@@ -26,7 +26,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install build dependencies
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
       - name: Run tests
         run: |
           npm test
@@ -35,20 +35,20 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       ### restore caches
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: CocoaPods cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: HolusionCompanion/ios/Pods
           key: ${{ runner.os }}-HolusionCompanion-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-HolusionCompanion-pods-
       - name: npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -115,7 +115,7 @@ jobs:
           fastlane beta
       - name: Upload build logs
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build.log
           path: ~/Library/Logs/gym/*.log
