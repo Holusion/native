@@ -1,7 +1,80 @@
-import RNFS from "react-native-fs";
-import {FileError, AbortError} from "../errors";
+'use strict';
+import Upload from 'react-native-background-upload'
+import {AbortError, FileError, HTTPError} from "../errors";
+
 /**
- * @deprecated see universal "upload" module : RNFS.uploadFiles() doesn't seem to work better (or at all)
+ * 
+ * @param {string} file 
+ */
+function getMime(file){
+  file = file.toLowerCase();
+  if(file.endsWith(".mp4")) return "video/mp4";
+  if(file.endsWith(".mov")) return "video/quicktime";
+  if(file.endsWith(".wmv")) return "video/x-ms-wmv";
+  if(file.endsWith(".flv")) return "video/x-flv";
+  if(file.endsWith(".png")) return "image/png";
+  if(file.endsWith(".jpeg")) return "image/jpeg";
+  return "application/octet-stream";
+}
+/**
+ * @param {object} p
+ * @param {AbortSignal} [p.signal]
+ * @param {string} p.url
+ * @param {"raw"|"multipart"} p.type 
+ * @param {{uri:string, name: string, hash?:string}} p.file
+ * @return {Promise<void>}
+ */
+async function post({url, type, file, signal}){
+  let pathname = type === "raw" ? `${url}/medias/${encodeURIComponent(file.name)}`:`${url}/medias`;
+  let id = await Upload.startUpload({
+    url: pathname,
+    path: encodeURI(file.uri),
+    method: 'POST',
+    type,
+    field: (type === "raw")? undefined : "files",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": type==="raw"?getMime(file.name):"multipart/form-data"
+    }
+  });
+  let cancelFn = ()=>{
+    Upload.cancelUpload(id);
+  };
+  signal?.addEventListener("abort", cancelFn);
+  let res = await new Promise((resolve, reject)=>{
+    let subs = [];
+    function complete(err, res){
+      subs.forEach(sub=>sub.remove());
+      if(err) reject(err);
+      else resolve(res);
+    }
+    subs.push(Upload.addListener("error", id, (err)=>complete(err)));
+    subs.push(Upload.addListener("cancelled", id, ()=>complete(new AbortError("Upload was aborted"))));
+    subs.push(Upload.addListener("completed", id, (res)=>complete(null, res)));
+    let progress =0;
+    subs.push(Upload.addListener("progress", id, (p)=>{
+      if(progress+10 < p.progress){
+        progress = Math.floor(p.progress);
+        console.log("Progress : %d%", progress);
+      }
+    }));
+  });
+  signal?.removeEventListener("abort", cancelFn);
+  if(res.responseCode !== 200){
+    let body;
+    try{
+      body = JSON.parse(res.responseBody);
+    }catch(e){
+      body = res.responseBody;
+    }
+    let msg;
+    if(body && body.message) msg = ((typeof body.message == 'object') ? JSON.stringify(body.message) : body.message)
+    else msg = `Upload failed (${res.responseCode}) : ${res.responseBody}`
+    throw new HTTPError(res.responseCode, msg);
+  }
+}
+
+/**
  * uses `uploadFiles()` from react-native-fs because the `fetch()` polyfill tends to use a lot of RAM.
  * @param {string} url - target url (eg. http://192.168.1.10) 
  * @param {object} file - a file reference
@@ -11,51 +84,16 @@ import {FileError, AbortError} from "../errors";
  * @param {AbortSignal} [signal] - an AbortController's signal to give to fetch() 
  */
 export async function uploadFile(url, file, signal) {
-  let body;
   try {
-    const {promise:result_p, jobId} = RNFS.uploadFiles({
-      toUrl: `${url}/medias`,
-      method: "POST",
-      files: [{
-        filename: file.name,
-        filepath: file.uri
-      }],
-      headers: {
-        'Accept': 'application/json',
-      },
-    })
-
-    //This is some crazy-ass workflow but couldn't find a better way to set up cancellation
-    let result, isPending = true;
     try{
-      result = await Promise.race([
-        result_p,
-        new Promise((_, reject)=>{
-          (function waitFor(){
-            if(!isPending) return;
-            else if(signal && signal.aborted) {
-              RNFS.stopUpload(jobId);
-              reject(new AbortError());
-            }
-            else if(signal) setTimeout(waitFor, 50);
-          })()
-        }),
-      ]);
-    }finally{
-      isPending = false;
+      await post({url, type: "raw", file, signal});
+    }catch(e){
+      if(e.name === "AbortError") throw e;
+      else if(e.code === 404) console.warn("Raw upload not supported on this product");
+      else console.log("Failed to upload raw :", e);
+      await post({url, type: "multipart", file, signal});
     }
-    
-    if(result.statusCode !== 200){
-      try{
-        body = JSON.parse(result.body);
-      }catch(e){
-        body = result.body;
-      }
-      let msg;
-      if(body && body.message) msg = ((typeof body.message == 'object') ? JSON.stringify(body.message) : body.message)
-      else msg = `Upload failed (${result.statusCode}) : ${body}`
-      throw new FileError(file.uri, msg);
-    }
+
     if (file.hash) {
       let response = await fetch(`${url}/playlist`, {
         method: "PUT",
@@ -74,6 +112,7 @@ export async function uploadFile(url, file, signal) {
         })
       });
       if (!response.ok) {
+        let body;
         try{
           body = await response.json();
         }catch(e){
@@ -81,14 +120,14 @@ export async function uploadFile(url, file, signal) {
           body = {};
         }
         if (body.message) {
-          throw new FileError(file.uri, (typeof body.message == 'object') ? JSON.stringify(body.message) : body.message);
+          throw new Error((typeof body.message == 'object') ? JSON.stringify(body.message) : body.message);
         } else {
-          throw new FileError(file.uri, `Failed to get ${url}/playlist : ${response.statusText}`);
+          throw new Error(`Failed to get ${url}/playlist : ${response.statusText}`);
         }
       }
     }
   } catch (e) {
     if (e.name === "AbortError") throw e;
-    throw new FileError(file.uri, e.message);
+    throw new FileError(file.uri, e);
   }
 }

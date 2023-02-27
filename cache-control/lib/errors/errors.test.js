@@ -1,5 +1,5 @@
 
-import {AbortError, FileError} from ".";
+import {AbortError, HTTPError, FileError} from ".";
 
 describe("FileError", ()=>{
 
@@ -25,6 +25,22 @@ describe("FileError", ()=>{
     expect(`${e}`).toEqual(str);
   })
 })
+
+describe("HTTPError", ()=>{
+
+  it("create new HTTPError()", function(){
+    const e = new HTTPError(404, "Not Found");
+    expect(e).toHaveProperty("code", 404);
+    expect(e).toHaveProperty("message", "Not Found");
+  });
+  it("can be wrapped in FileError()", function(){
+    const e = new FileError("foo.js", new HTTPError(404, 'Not Found'));
+    expect(e).toHaveProperty("sourceFile", "foo.js");
+    expect(e).toHaveProperty("code", 404);
+    expect(e).toHaveProperty("message", "Not Found");
+  })
+})
+
 
 describe("AbortError", ()=>{
   it("creates an acceptable AbortError", ()=>{

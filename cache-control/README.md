@@ -30,7 +30,7 @@ etc...
 react-native :
 
 ```
-    react-native-fs @react-native-firebase/app @react-native-firebase/storage @react-native-firebase/firestore
+    react-native-fs @react-native-firebase/app @react-native-firebase/storage @react-native-firebase/firestore react-native-background-upload
 ```
 
 The caller is responsible to call `firebase.initializeApp()` and to set the module's base path using `setBasePath()` before use.

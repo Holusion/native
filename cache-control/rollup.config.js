@@ -6,7 +6,7 @@ import requireJSON from "@rollup/plugin-json";
 
 function replacements (type){
 	return [
-		"deviceInfo", "filesystem", "firebase", "writeToFile"
+		"deviceInfo", "filesystem", "firebase", "writeToFile", "upload",
 	].map(n=> ({find: n, replacement: `./lib/dependencies/${n}.${type}.js`}));
 }
 
@@ -40,6 +40,7 @@ export default [
       "@react-native-firebase/functions", "@react-native-firebase/auth",
       "@react-native-firebase/firestore",
 			"react-native-fs", 
+      "react-native-background-upload",
 			"events" // react-native provides this module
 		],
 		plugins: [

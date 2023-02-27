@@ -13,6 +13,18 @@ export class FileError extends Error {
   }
 }
 
+export class HTTPError extends Error{
+  /**
+   * @param {number} code 
+   * @param {string|Error} messageOrError 
+   */
+  constructor(code, messageOrError){
+    const message = typeof messageOrError === "string"? messageOrError: messageOrError.message;
+    super(message);
+    this.code = code;
+  }
+}
+
 /**
  * A reasonable AbortError mock (which is normally constryucted from DOMException an thrown by `fetch`)
  */

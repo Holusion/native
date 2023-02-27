@@ -67,7 +67,7 @@ export const getLogs = (state)=> state.logs.lines;
 
 export const getErrors = (state)=> {
   let lines = getLogs(state);
-  return Object.keys(state.logs.errors).map(name => lines.find(l=>l.id === state.logs.errors[name]));
+  return Object.keys(state.logs.errors).map(name => lines.filter(l=>l.id === state.logs.errors[name])).flat();
 }
 
 export const getError = (state, name)=>{

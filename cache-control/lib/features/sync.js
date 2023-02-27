@@ -1,7 +1,7 @@
-import {call, cancelled, put, select} from "redux-saga/effects";
+import {call, cancelled, put, retry, select} from "redux-saga/effects";
 import {CANCEL} from '@redux-saga/symbols';
 
-import { uploadFile } from "../upload";
+import { uploadFile } from "upload";
 
 import { getConfig, getItemsArray } from "./data";
 
@@ -64,7 +64,7 @@ export function* synchronizeProduct(){
   ].filter(i=>i));
 
   try{
-    const res = yield call(abortableFetch, `${url}/playlist`, {
+    const res = yield retry(3, 5*1000, abortableFetch, `${url}/playlist`, {
       method: "GET",
     });
     playlist = yield call([res, res.json]);
@@ -96,16 +96,20 @@ export function* synchronizeProduct(){
         yield put(info("SYNC", "Suppression de la vidéo dupliquée "+name));
         yield call(abortableFetch, `${url}/medias/${name}`, { method: "DELETE" });
       }
+
+      yield put(info("SYNC", "Upload de " + name));
       yield call(abortableUpload, url, {
         uri: video,
         name,
         hash,
       })
+      yield put(info("SYNC", name + " envoyé"));
+
       count++;
     }catch(e){
       hasError = true;
       let wrap = new Error(`Failed to upload ${name}`);
-      wrap.context = e.message+ "\n"+ e.stack;
+      wrap.context = e.message+ "\n"+ e.stack|| wrap.stack || "-no stack data-";
       yield put(setSynchronized(wrap));
     }
   }

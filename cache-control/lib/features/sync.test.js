@@ -60,7 +60,7 @@ describe("synchronizeProduct", ()=>{
     .select(getItemsArray).next([])
     .select(getConfig).next({})
     .call(newSet, []).next(new Set())
-    .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
+    .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
     .call([res, res.json]).next(res.json())
     .put(setSynchronized(wrap)).next()
     .isDone();
@@ -85,7 +85,7 @@ describe("synchronizeProduct", ()=>{
     test("empty case", ()=>{
       saga
       .call(newSet, []).next(new Set())
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
       .call([res, res.json]).next(res.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
@@ -102,18 +102,20 @@ describe("synchronizeProduct", ()=>{
     test("on empty product", ()=>{
       saga
       .call(newSet, []).next(newSet(["file:///applications/foo/foo.mp4"]))
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
       .call([res, res.json]).next(res.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
         message: '0 vidéo trouvée sur iris32-21',
         context: undefined }).next()
       .select(getHash, "file:///applications/foo/foo.mp4").next("xxxxxx")
+      .put({type:"LOG_INFO", name:"SYNC", message:"Upload de foo.mp4", context: undefined}).next()
       .call(abortableUpload, 'http://192.168.1.4', {
         uri: "file:///applications/foo/foo.mp4",
         name: "foo.mp4",
         hash: "xxxxxx",
       }).next(res)
+      .put({type:"LOG_INFO", name:"SYNC", message:"foo.mp4 envoyé", context: undefined}).next()
       .put({ 
         type: 'LOG_INFO',
         name: 'SYNC',
@@ -131,7 +133,7 @@ describe("synchronizeProduct", ()=>{
       }
       saga
       .call(newSet, []).next(newSet(["file:///applications/foo/foo.mp4"]))
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(response)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(response)
       .call([response, response.json]).next(response.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
@@ -145,6 +147,7 @@ describe("synchronizeProduct", ()=>{
         context: undefined 
       }).next()
       .call(abortableFetch, 'http://192.168.1.4/medias/foo.mp4', {method: "DELETE"}).next(res)
+      .put({type:"LOG_INFO", name:"SYNC", message:"Upload de foo.mp4", context: undefined}).next()
       .call(abortableUpload, 'http://192.168.1.4', {
         uri: "file:///applications/foo/foo.mp4",
         name: "foo.mp4",
@@ -160,7 +163,7 @@ describe("synchronizeProduct", ()=>{
       }
       saga
       .call(newSet, []).next(newSet(["file:///applications/foo/foo.mp4"]))
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(response)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(response)
       .call([response, response.json]).next(response.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
@@ -183,13 +186,14 @@ describe("synchronizeProduct", ()=>{
   
       saga
       .call(newSet, []).next(newSet(videos))
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
       .call([res, res.json]).next(res.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
         message: '0 vidéo trouvée sur iris32-21',
         context: undefined }).next()
       .select(getHash, "file:///applications/foo/foo.mp4").next("xxxxxx")
+      .put({type:"LOG_INFO", name:"SYNC", message:"Upload de foo.mp4", context: undefined}).next()
       .call(abortableUpload, 'http://192.168.1.4', {
         uri: "file:///applications/foo/foo.mp4",
         name: "foo.mp4",
@@ -222,7 +226,7 @@ describe("synchronizeProduct", ()=>{
       .select(getItemsArray).next([])
       .select(getConfig).next({})
       .call(newSet, []).next(videos)
-      .call(abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
+      .retry(3, 5*1000, abortableFetch, 'http://192.168.1.4/playlist', { method: 'GET' }).next(res)
       .call([res, res.json]).next(res.json())
       .put({ type: 'LOG_INFO',
         name: 'SYNC',
