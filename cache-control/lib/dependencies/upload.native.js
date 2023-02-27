@@ -1,7 +1,6 @@
 import RNFS from "react-native-fs";
 import {FileError, AbortError} from "../errors";
 /**
- * @deprecated see universal "upload" module : RNFS.uploadFiles() doesn't seem to work better (or at all)
  * uses `uploadFiles()` from react-native-fs because the `fetch()` polyfill tends to use a lot of RAM.
  * @param {string} url - target url (eg. http://192.168.1.10) 
  * @param {object} file - a file reference
@@ -17,13 +16,14 @@ export async function uploadFile(url, file, signal) {
       toUrl: `${url}/medias`,
       method: "POST",
       files: [{
+        name: "files",
         filename: file.name,
         filepath: file.uri
       }],
       headers: {
         'Accept': 'application/json',
       },
-    })
+    });
 
     //This is some crazy-ass workflow but couldn't find a better way to set up cancellation
     let result, isPending = true;

@@ -1,7 +1,7 @@
-import {FileError} from "./errors";
+import {FileError} from "../errors";
 
 /**
- * 
+ * uses native fetch API. Good for platforms where fetch isn't polyfilled
  * @param {string} url - target url (eg. http://192.168.1.10) 
  * @param {object} file - a file reference
  * @param {string} file.uri - path to file on local filesystem
