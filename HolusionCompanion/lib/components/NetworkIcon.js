@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, Text, TouchableOpacity, ActivityIndicator} from 'react-native'
-import {getActiveProduct, isSynchronized, getRequiredFiles, getOtherFiles, isLoaded, isSignedIn, getErrors } from "@holusion/cache-control";
+import {getActiveProduct, isSynchronized, getRequiredFiles, getOtherFiles, isLoaded, isSignedIn, getErrors, getError, SET_SYNCHRONIZED } from "@holusion/cache-control";
 
 
 class NetworkIcon extends React.Component{
@@ -41,7 +41,7 @@ class NetworkIcon extends React.Component{
     const isWorking = getRequiredFiles(state).length !== 0 
       || getOtherFiles(state).length !== 0 
       || !isLoaded(state)
-      || (connectedToProduct &&!isSynchronized(state));
+      || (connectedToProduct &&!isSynchronized(state) && !getError(state, SET_SYNCHRONIZED));
     return {
       signedIn: isSignedIn(state),
       isWorking,
