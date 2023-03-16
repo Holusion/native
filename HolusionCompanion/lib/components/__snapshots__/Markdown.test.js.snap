@@ -2,11 +2,11 @@
 
 exports[`<Markdown> handle images 1`] = `
 <View
-  style={Object {}}
+  style={{}}
 >
   <View
     style={
-      Object {
+      {
         "alignItems": "flex-start",
         "flexDirection": "row",
         "flexWrap": "wrap",
@@ -20,17 +20,17 @@ exports[`<Markdown> handle images 1`] = `
     <View
       accessibilityIgnoresInvertColors={true}
       style={
-        Array [
-          Object {
+        [
+          {
             "flex": 1,
           },
-          Object {
+          {
             "flexGrow": 1,
           },
-          Object {
+          {
             "height": 0,
           },
-          Object {
+          {
             "alignItems": "center",
             "justifyContent": "center",
           },
@@ -46,21 +46,21 @@ exports[`<Markdown> handle images 1`] = `
         onLoad={[Function]}
         onLoadStart={[Function]}
         source={
-          Object {
+          {
             "uri": "file://path/to/foo.png",
           }
         }
         style={
-          Array [
-            Object {
+          [
+            {
               "bottom": 0,
               "left": 0,
               "position": "absolute",
               "right": 0,
               "top": 0,
             },
-            Object {
-              "height": undefined,
+            {
+              "height": 0,
               "width": undefined,
             },
             undefined,
@@ -74,11 +74,11 @@ exports[`<Markdown> handle images 1`] = `
 
 exports[`<Markdown> handle links 1`] = `
 <View
-  style={Object {}}
+  style={{}}
 >
   <View
     style={
-      Object {
+      {
         "alignItems": "flex-start",
         "flexDirection": "row",
         "flexWrap": "wrap",
@@ -90,7 +90,7 @@ exports[`<Markdown> handle links 1`] = `
     }
   >
     <Text
-      style={Object {}}
+      style={{}}
     />
   </View>
 </View>
