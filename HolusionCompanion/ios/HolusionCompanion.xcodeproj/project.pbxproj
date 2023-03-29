@@ -617,6 +617,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 3235X6LFMC;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3235X6LFMC;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = HolusionCompanion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -629,7 +630,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.holusion.native.holomouseio;
 				PRODUCT_NAME = HolusionCompanion;
-				PROVISIONING_PROFILE_SPECIFIER = "iOS app distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS distribution Holusion Companion";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
