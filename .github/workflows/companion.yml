@@ -63,9 +63,6 @@ jobs:
         run: |
           sudo chown -R 501:20 "$HOME/.npm"
           npm install -g react-native-cli
-      - name: Install fastlane
-        run: |
-          sudo gem install fastlane
           
       - name: Set environment variables from project settings
         run: |
@@ -74,12 +71,21 @@ jobs:
 
       - name: Import signing certificate
         env:
-          # dans xCode, préférences > certificats > exporter
+          # dans xCode, préférences > accounts
+          # Cliquer sur "manage certificates"
+          # selectionner le certificat de distribution Holusion (créer si nécessaire)
+          # ctrl+click > "exporter"
           # choisir un MDP sécurisé
+          # Copier le MDP dans "secrets.SIGNING_CERTIFICATE_PASSWORD"
           #Puis dans un terminal : 
-          #   base64 moncertificat.p12 | pbcopy
-          # Mettre à jour aussi le "secrets.PROVISIONING_PROFILE_DATA"
-          # https://developer.apple.com/account/resources/profiles/list
+          #   base64 -i moncertificat.p12 | pbcopy
+          # Mettre à jour aussi le "secrets.PROVISIONING_PROFILE_DATA".
+          # Créer, télécharger ou mettre à jour un provisioning profile sur :
+          #   https://developer.apple.com/account/resources/profiles/list
+          # Puis télécharger sous la forme d'un fichier "mobileprovision"
+          # ensuite :
+          #   base64 -i profile.mobileprovision | pbcopy
+          # mettre à jour le secret correspondant sur GitHub
           SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
         run: |
