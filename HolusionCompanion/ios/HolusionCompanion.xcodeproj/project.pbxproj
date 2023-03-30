@@ -40,17 +40,13 @@
 		178C8102E8C2004A620B453C /* Pods-HolusionCompanion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion.debug.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion/Pods-HolusionCompanion.debug.xcconfig"; sourceTree = "<group>"; };
 		1E11F752C2F55AFA0E504D46 /* libPods-HolusionCompanion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B1D1873DC98289AF1241E2 /* Pods-HolusionCompanion-HolusionCompanionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-HolusionCompanionTests.debug.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-HolusionCompanionTests/Pods-HolusionCompanion-HolusionCompanionTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3D59EB179AFDD54215A598C4 /* Pods-HolusionCompanion-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOSTests/Pods-HolusionCompanion-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4DFDA424A94200A8B356CF6F /* libPods-HolusionCompanion-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		51C00DEAE506AB453F9D8FF5 /* Pods-HolusionCompanion-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOS/Pods-HolusionCompanion-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6A949F40A8344DC759302E23 /* Pods-HolusionCompanion-HolusionCompanionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-HolusionCompanionTests.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-HolusionCompanionTests/Pods-HolusionCompanion-HolusionCompanionTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = HolusionCompanion/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1DC763B2BC225932464B203 /* libPods-HolusionCompanion-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B32FEF15C7E2BEB157E45859 /* Pods-HolusionCompanion-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOS/Pods-HolusionCompanion-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		BE6EBDBD29C0755D00600990 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = HolusionCompanion/AppDelegate.mm; sourceTree = "<group>"; };
 		BE727545250B6D4500A3ECA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D607D39C19D3FDFBDBAE2AD8 /* libPods-HolusionCompanion-HolusionCompanionTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HolusionCompanion-HolusionCompanionTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D817263C57303DA7DB6E80A8 /* Pods-HolusionCompanion-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion-tvOSTests/Pods-HolusionCompanion-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		E341F9D93EE25ECA87107892 /* Pods-HolusionCompanion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HolusionCompanion.release.xcconfig"; path = "Target Support Files/Pods-HolusionCompanion/Pods-HolusionCompanion.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -128,10 +124,6 @@
 				E341F9D93EE25ECA87107892 /* Pods-HolusionCompanion.release.xcconfig */,
 				27B1D1873DC98289AF1241E2 /* Pods-HolusionCompanion-HolusionCompanionTests.debug.xcconfig */,
 				6A949F40A8344DC759302E23 /* Pods-HolusionCompanion-HolusionCompanionTests.release.xcconfig */,
-				51C00DEAE506AB453F9D8FF5 /* Pods-HolusionCompanion-tvOS.debug.xcconfig */,
-				B32FEF15C7E2BEB157E45859 /* Pods-HolusionCompanion-tvOS.release.xcconfig */,
-				3D59EB179AFDD54215A598C4 /* Pods-HolusionCompanion-tvOSTests.debug.xcconfig */,
-				D817263C57303DA7DB6E80A8 /* Pods-HolusionCompanion-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -685,7 +677,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -740,7 +732,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
