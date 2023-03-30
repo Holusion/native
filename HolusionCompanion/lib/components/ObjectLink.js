@@ -4,11 +4,24 @@ import { useSelector } from "react-redux";
 import { getItems } from "@holusion/cache-control";
 
 
-
+/**
+ * 
+ * @param {object} param0 
+ * @param {string} param0.id the page ID
+ * @param {string} [param0.category] the page's category
+ * @returns {{screen:string, params:{id:string}}}
+ */
 export function parseItem({id, category}){
-  return {screen: category? category : id, params:{id}};
+  return {screen: (category? category : id), params:{id}};
 }
-
+/**
+ * 
+ * @param {object} param0 
+ * @param {string} param0.to link string
+ * @param {boolean} param0.encoded whether or not the string has been urlencoded
+ * @see parseItem
+ * @returns {ReturnType<parseItem>}
+ */
 export function useParsedLink({to, encoded=true}){
   const id = encoded?decodeURIComponent(to): to;
   const targetItem = useSelector((state)=>getItems(state)[id]);
@@ -27,7 +40,7 @@ export function useParsedLink({to, encoded=true}){
 
 export default function ObjectLink({to:name, encoded=true, ...rest}){
   const {screen, params} = useParsedLink({to: name, encoded});
-  return (<Link to={screen, params} action={CommonActions.navigate(screen, params)} {...rest} />);
+  return (<Link to={screen} action={CommonActions.navigate(screen, params)} {...rest} />);
 }
 
 export function Redirect({to, encoded=true, action="replace"}){

@@ -2,33 +2,50 @@
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import { getReadableVersion } from "react-native-device-info";
-import { createStackNavigator } from '@react-navigation/stack';
+import { useLinkProps } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveProduct, getErrors, isSignedIn, isRequired, isSynchronized, getOtherSize, getRequiredSize, getOtherFiles, getTotalSize, getRequiredFiles, getCachedFiles, setPurge, getConf, setProjectName } from "@holusion/cache-control";
-import { Link } from "@react-navigation/native";
+
 import CheckBox from "@react-native-community/checkbox";
 import { BgIcon, Bytes} from "../../components";
 import { theme } from "../../components/style"
 import { AppConfiguration } from "../../containers";
 import SettingsHeader from "./SettingsHeader";
-import { useLocalFiles, useLocalSize } from "./CacheScreen";
+import { useLocalSize } from "./CacheScreen";
 
+
+function LinkLine({to, action, children, style:forcedStyle, ...props}){
+  const { onPress, ...linkProps } = useLinkProps({ to, action });
+
+  return (<TouchableOpacity {...linkProps} {...props} style={forcedStyle ?? style.listView} onPress={onPress} >
+    {children}
+  </TouchableOpacity>);
+}
+
+function Carret({children}){
+  return <View style={{minWidth:50, height:30, flex: 1, flexDirection:"row"}}>
+    <Text style={{color: "#666666", minWidth:40 }}>{children}</Text>
+    <Icon style={{fontSize: 16, lineHeight: 17, textAlign:"right"}}name="chevron-forward-outline"/>
+  </View>
+}
 
 export function ShowErrors(){
   const errors = useSelector(getErrors);
-  return (<View style={style.listView}>
+  return (<LinkLine to="/Logs">
     <View>
       <View style={{width: 30, height: 30, borderRadius: 15, backgroundColor:errors.length ===0? BgIcon.color["success"]: BgIcon.color["warning"]}}>
         <Text style={{fontSize: 14, lineHeight: 30, color:"white", textAlign: "center"}}>{errors.length}</Text>
       </View>
     </View>
-    <View style={{flex:1, paddingLeft:10}}><Link to="/Logs"><Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text></Link></View>
-    <View><Link to="/Logs">
-      <Icon style={{fontSize: theme.fontSize.large}} name="chevron-forward-outline"/>
-    </Link></View>
-  </View>);
+    <View style={{flex:1, paddingLeft:10}}>
+      <Text>{errors.length? errors.length: "Aucune"} erreur{1 < errors.length?"s":""} </Text>
+    </View>
+    <View>
+      <Carret/>
+    </View>
+  </LinkLine>);
 }
 
 export function ShowFirestore(){
@@ -75,7 +92,7 @@ export function ShowCache(){
   }else if(otherSize !== 0){
     color = "#00a5e8"
   }
-  return (<View style={style.listView}>
+  return (<LinkLine to="/Cache">
     <View>
     {(otherSize+requiredSize !=0)? <BgIcon status="warn" name="reload"/> : <BgIcon status="success" name="checkmark"/>}
     </View>
@@ -83,11 +100,11 @@ export function ShowCache(){
       <Text>{cachedFiles.length}/{cachedFiles.length+missingFiles} fichiers en cache</Text>
     </View>
     <View>
-      <A to="/Cache">
+      <Carret>
       {(otherSize+requiredSize !=0) ? <ActivityIndicator style={{height:17}} size="small" color={color}/> : <Bytes style={{color:"#666666"}}>{localSize}</Bytes>}
-      </A>
+      </Carret>
     </View>
-  </View>)
+  </LinkLine>)
 }
 
 export function ShowTarget(){
@@ -100,7 +117,7 @@ export function ShowTarget(){
   }else if(target){
     color = "warning";
   }
-  return (<View style={style.listView}>
+  return (<LinkLine to="/PickProduct?t=target">
     <View>
       <BgIcon status={color} name="wifi"/>
     </View>
@@ -110,20 +127,14 @@ export function ShowTarget(){
     </Text></View>
     
     <View>
-      <A to="/PickProduct?t=target">
+      <Carret>
         {(target && !synchronized)? <ActivityIndicator style={{height:17}} size="small" color="#FF9966"/>: null}
         {target? target.name : "aucun"}
-      </A>
+      </Carret>
     </View>
-  </View>)
+  </LinkLine>)
 }
 
-function A({to, children}){
-  return <Link  to={to} style={{minWidth:50, height:30}}>
-    <Text style={{color: "#666666", minWidth:40 }}>{children}</Text>
-    <Icon style={{fontSize: 16, lineHeight: 17, textAlign:"right"}}name="chevron-forward-outline"/>
-  </Link>
-}
 
 export default function SettingsScreen(){
   const dispatch = useDispatch();
@@ -150,7 +161,7 @@ export default function SettingsScreen(){
         <Text style={style.listTitle}>Hologramme</Text>
       </View>
       
-      <View style={style.listView}>
+      <LinkLine to="/PickProduct?t=default">
         <View>
           <BgIcon name="link"/>
         </View>
@@ -158,11 +169,11 @@ export default function SettingsScreen(){
           <Text>Produit cible par défaut</Text>
         </View>
         <View>
-          <A to="/PickProduct?t=default">
+          <Carret>
             {default_target||"aucun"}
-          </A>
+          </Carret>
         </View>
-      </View>
+      </LinkLine>
       <View style={style.listView}>
         <View>
           <BgIcon name="trash"/>
@@ -179,7 +190,7 @@ export default function SettingsScreen(){
         <Text style={style.listTitle}>Configuration</Text>
       </View>
 
-      <View style={style.listView}>
+      <LinkLine to="/Interactions">
         <View>
           <BgIcon name="construct"/>
         </View>
@@ -187,10 +198,9 @@ export default function SettingsScreen(){
           <Text>Interactions</Text>
         </View>
         <View>
-          <A to="/Interactions" >
-          </A>
+          <Carret/>
         </View>
-      </View>
+      </LinkLine>
       <AppConfiguration style={style}/>
       <View style={style.listView}>
         <View><BgIcon name="logo-apple-appstore"/></View>
@@ -224,6 +234,7 @@ const style = StyleSheet.create({
   },
 
   listView: {
+    flex: 1,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
