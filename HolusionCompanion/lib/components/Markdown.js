@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import ObjectLink from "./ObjectLink";
 
-import Renderer, { MarkdownIt } from 'react-native-markdown-display';
+import Renderer, { MarkdownIt } from '@ronradtke/react-native-markdown-display';
 
 import { ThemeContext } from "./style";
 

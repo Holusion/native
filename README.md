@@ -36,7 +36,7 @@ Ils sont disponibles dans `_template/`
 npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
       "@react-native-firebase/app" "@react-native-firebase/auth" "@react-native-firebase/firestore" \
       "@react-native-firebase/functions" "@react-native-firebase/storage" \
-      "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons" "react-native-user-inactivity"\
+      "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons"
     "react-native-zeroconf" "react-native-device-info" \
     "@react-navigation/core" "@react-navigation/native" "@react-navigation/stack" \
     "react-native-screens" "@react-native-community/masked-view" "react-native-safe-area-context" "react-native-reanimated" \
