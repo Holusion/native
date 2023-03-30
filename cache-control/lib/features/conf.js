@@ -9,6 +9,7 @@ export const actions = {
     SET_PURGE: "SET_PURGE",
     SET_PASSCODE: "SET_PASSCODE",
     SET_PROJECTNAME: "SET_PROJECTNAME",
+    SET_TIMEOUT: "SET_TIMEOUT",
     SET_WATCH: "SET_WATCH",
 }
 export const action_strings = Object.keys(actions).reduce((res, k)=>([...res, actions[k]]),[]);
@@ -28,6 +29,7 @@ export default function conf(state = {
     slides_control: "default",
     play_control: "none",
     watch: true,
+    timeout: 0,
 }, action) {
     if(action.error){
         return state;
@@ -53,6 +55,8 @@ export default function conf(state = {
         return Object.assign({}, state, {passcode: action.passcode});
       case actions.SET_WATCH:
         return Object.assign({}, state, {watch: action.watch});
+      case actions.SET_TIMEOUT:
+        return Object.assign({}, state, {timeout: action.timeout});
       default:
         return state;
     }
@@ -93,10 +97,17 @@ export const setWatch = (watch)=>{
   return {type: actions.SET_WATCH, watch: !!watch};
 }
 
+export const setTimeout = (timeout)=>{
+  return {type: actions.SET_TIMEOUT, timeout};
+}
+
 export const getConf = (state)=>{
     return state.conf;
 }
 
+/**
+ * Completely overwrite conf. Only for initial load.
+ */
 export const setConf = ({error, ...conf})=>{
     if(error){
         return {type: INITIAL_LOAD, error};

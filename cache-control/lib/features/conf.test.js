@@ -3,7 +3,7 @@ jest.mock("../path");
 import fsMock from "filesystem";
 import { testSaga, expectSaga } from 'redux-saga-test-plan';
 
-import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile, getWatch, setWatch, getProjectName } from "./conf";
+import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile, getWatch, setWatch, getProjectName, setTimeout } from "./conf";
 import {reducers} from ".";
 import { select } from "redux-saga/effects";
 import { saveFile } from "../readWrite";
@@ -98,4 +98,13 @@ describe("conf reducer", function () {
     let state = reducers(initialState, setWatch(false));
     expect(getWatch(state)).toBe(false);
   })
+
+  test("timeout defaults to 0", ()=>{
+    expect(initialState.conf.timeout).toBe(0);
+  });
+
+  test("can change timeout", ()=>{
+    let state = reducers(initialState, setTimeout(1000));
+    expect(state.conf).toHaveProperty("timeout", 1000);
+  });
 });
