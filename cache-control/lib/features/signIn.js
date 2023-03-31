@@ -11,12 +11,15 @@ import {warn} from "./logs";
 
 export async function doSignIn(projectName){
   const hostname = await getDeviceName();
+  const uuid = await getUniqueId(); //Unique and reasonably persistent
+  //Ridiculously low entropy but we just need to avoid possible hostname collision
+  const shortId = Buffer.from(uuid.slice(0,8), "hex").toString("base64url").replace(/[_-]/g, "x");
   try{
     const func = firebase.app().functions("europe-west1").httpsCallable("https_authDeviceCall")
     let { data: token } = await func({ 
-      uuid: getUniqueId(), 
+      uuid, //Used as a "password"
       applications: [projectName], 
-      meta: { publicName: `${getApplicationName()}.${hostname}`} 
+      meta: { publicName: `${getApplicationName()}.${hostname}#${shortId}`} 
     });
     await auth().signInWithCustomToken(token);
     return null

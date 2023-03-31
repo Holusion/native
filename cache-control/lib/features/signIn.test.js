@@ -5,9 +5,6 @@ import {app as appMock, auth as autoMock} from "firebase";
 
 import {SET_SIGNEDIN} from "./status";
 import {signIn, doSignIn} from "./signIn";
-import * as matchers from 'redux-saga-test-plan/matchers';
-import {throwError, dynamic} from "redux-saga-test-plan/providers"
-import { delay } from 'redux-saga/effects';
 import { setProjectName } from './conf';
 import {warn} from "./logs";
 
@@ -75,11 +72,24 @@ describe("doSignIn()", ()=>{
         httpsCallable: jest.fn(()=>func)
       }))
     }));
+    func.mockReset();
   });
   test("call firebase function", async()=>{
     let e = new Error("Internal error");
     func.mockImplementationOnce(()=>Promise.resolve({data: "xxxxxxxxxx"}));
     await expect(doSignIn("foo")).resolves.toBe(null);
+  })
+
+  test("uses proper parameters", async()=>{
+    let e = new Error("Internal error");
+    func.mockImplementationOnce(()=>Promise.resolve({data: "xxxxxxxxxx"}));
+    await expect(doSignIn("foo")).resolves.toBe(null);
+    expect(func).toHaveBeenCalledTimes(1);
+    expect(func).toHaveBeenCalledWith({ 
+      uuid: "FCDBD8EF-62FC-4ECB-B2F5-92C9E79AC7F9",
+      applications: ["foo"], 
+      meta: { publicName: `HolusionCompanion.example#xNvY7w`} 
+    });
   })
   test("returns an error on failure", async()=>{
     let e = new Error("Internal error");
