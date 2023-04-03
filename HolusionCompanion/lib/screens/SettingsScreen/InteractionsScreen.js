@@ -32,9 +32,10 @@ export function SettingPicker({items, value, onChange, title}){
 export default function InteractionsScreen(){
   const dispatch = useDispatch();
   const {slides_control, play_control, timeout} = useSelector(getConf);
-  return (<ScrollView>
+  return (<View style={{flex: 1, flexDirection: 'column'}}>
     <SettingsHeader back>Interactions</SettingsHeader>
-    <KeyboardAvoidingView behavior={"position"}>
+    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled keyboardVerticalOffset={100}>
+      <ScrollView>
         <SettingPicker title="Changement de page"
           subtitle="Comment passer directement d'un objet à l'autre"
           onChange={(v)=> dispatch(setSlidesControl(v))}
@@ -81,8 +82,9 @@ export default function InteractionsScreen(){
               }} value={timeout < 0? "": (timeout/1000).toString(10)}/>
           </View>
         </View>
-      </KeyboardAvoidingView>
-  </ScrollView>)
+      </ScrollView>
+    </KeyboardAvoidingView>
+  </View>)
 }
 
 const style = StyleSheet.create({

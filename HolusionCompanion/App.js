@@ -37,6 +37,7 @@ const NotFoundScreen = withErrorHandler(screens.NotFoundScreen);
 //const ContactScreen = withErrorHandler(screens.ContactScreen);
 
 
+
 class ConfiguredApp extends React.Component{
   #navRef;
   #timeout;
@@ -76,9 +77,17 @@ class ConfiguredApp extends React.Component{
       if(! this.#navRef.current.canGoBack()) return;
       let current = this.#navRef.current.getState().routes;
       if(current.slice(-1)[0].name == "Settings") return;
+      console.log("Route : ", current[0].state.routes);
+      let route = (current[0].name === "Object"? {
+        ...current[0],
+        stale: true,
+        state: {
+          routes: [current[0].state.routes[0]]
+        }
+      }: current[0]);
       this.#navRef.current.resetRoot({
         index: 0,
-        routes: [{name: "Home"}],
+        routes: [route],
       });
     }, this.props.conf.timeout);
   }
@@ -104,8 +113,8 @@ class ConfiguredApp extends React.Component{
       <Button title="Retour" style={{padding: 15}}onPress={()=>setNotFound(null)}/>
     </View>): null);
   
-    console.log("re-render root component", this.props.conf);
     if(!this.props.conf){
+      //Don't try to render if state is not yet initialized
       return null;
     }
     return (<View {...this.panResponder.panHandlers} style={{flex: 1}}>

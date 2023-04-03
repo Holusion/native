@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 
 import {filename, info, error as logError, getCachedFiles} from "@holusion/cache-control";
@@ -11,10 +11,10 @@ export default function useFonts(){
   const [loadedFonts, setLoadedFonts] = useState([]);
   const themeFonts = useSelector(state=>state.data.config.themeVariables?.fonts) || {};
   const oldFonts = useSelector(state => state.data.config.fonts) || [] //prevent old apps from crash
+  const fonts = useMemo(()=>[...Object.values(themeFonts), ...oldFonts], [themeFonts, oldFonts]);
+
   const cachedFiles = useSelector(getCachedFiles);
   const dispatch = useDispatch();
-
-  const fonts = [...Object.values(themeFonts), ...oldFonts]
 
   const allFontsLoaded = fonts.filter(font=> loadedFonts.indexOf(font) === -1).length === 0;
 
@@ -38,7 +38,7 @@ export default function useFonts(){
       if(aborted) return;
       //DISPATCH FONTS SUCCESS
       dispatch(info("FONTS", `Police${ 1< names.length?"s":""} chargée${ 1< names.length?"s":""} : ${names.join(", ")}`));
-      setLoadedFonts([...loadedFonts,...fontsWithAFile]);
+      setLoadedFonts([...loadedFonts, ...fontsWithAFile]);
     }).catch( (e)=>{
       if(aborted) return;
       dispatch(logError("FONTS", "Error loading fonts : "+e.message));
