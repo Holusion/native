@@ -1,5 +1,5 @@
 
-import {reducers} from ".";
+import {getLogs, reducers} from ".";
 
 import {INITIAL_LOAD, isLoaded, isConnected, setNetInfo, isSignedIn, SET_SIGNEDIN, setSignedIn, setSynchronized, SET_SYNCHRONIZED, isSynchronized} from "./status";
 describe("status reducer", ()=>{
@@ -48,6 +48,12 @@ describe("setSignedIn", ()=>{
       error: e,
     })
   })
+
+  test("sign-in errors are reported in the logs", async function(){
+    let state = reducers(undefined, setSignedIn(new Error("foo")));
+    let logs = getLogs(state);
+    expect(logs).toHaveProperty("length", 1);
+  });
 
   test("handle signed-in result", ()=>{
     expect(setSignedIn(true)).toEqual({

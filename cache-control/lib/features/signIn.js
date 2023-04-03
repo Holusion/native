@@ -13,7 +13,7 @@ export async function doSignIn(projectName){
   const hostname = await getDeviceName();
   const uuid = await getUniqueId(); //Unique and reasonably persistent
   //Ridiculously low entropy but we just need to avoid possible hostname collision
-  const shortId = Buffer.from(uuid.slice(0,8), "hex").toString("base64url").replace(/[_-]/g, "x");
+  const shortId = uuid.slice(0, 8);
   try{
     const func = firebase.app().functions("europe-west1").httpsCallable("https_authDeviceCall")
     let { data: token } = await func({ 
@@ -22,7 +22,7 @@ export async function doSignIn(projectName){
       meta: { publicName: `${getApplicationName()}.${hostname}#${shortId}`} 
     });
     await auth().signInWithCustomToken(token);
-    return null
+    return null;
   }catch(e){
     return e;
   }
@@ -30,11 +30,11 @@ export async function doSignIn(projectName){
 
 
 export function* signIn({projectName}){
-  let d = 512, error = true;
+  let d = 512;
   if(!projectName) return;
   yield put(setSignedIn(false));
   while(true){
-    error = yield call(doSignIn, projectName);
+    let error = yield call(doSignIn, projectName);
     if(!error) break;
     if(/internet.*offline/i.test(error.message)){
       //httpsCallable error from firebase iOS SDK has no code for "offline"

@@ -88,7 +88,7 @@ describe("doSignIn()", ()=>{
     expect(func).toHaveBeenCalledWith({ 
       uuid: "FCDBD8EF-62FC-4ECB-B2F5-92C9E79AC7F9",
       applications: ["foo"], 
-      meta: { publicName: `HolusionCompanion.example#xNvY7w`} 
+      meta: { publicName: `HolusionCompanion.example#FCDBD8EF`} 
     });
   })
   test("returns an error on failure", async()=>{
