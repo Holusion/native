@@ -2,9 +2,8 @@ import https from "https";
 import {promises as fs, createWriteStream} from "fs";
 
 import {basename, join, dirname} from "path";
-import {firebase} from "@firebase/app";
-import "@firebase/storage";
-
+import firebase from "firebase/compat/app";
+import 'firebase/compat/storage';
 
 import {FileError} from "../errors";
 

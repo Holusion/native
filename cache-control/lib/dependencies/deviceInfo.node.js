@@ -1,13 +1,12 @@
-import {promises as fs} from "fs";
-import os from "os";
-import {version, name} from "../../package.json" 
+import {hostname} from "os";
+import {basename} from "path"
+import {readFile} from "fs/promises";
 
-
-export const getDeviceName = ()=>Promise.resolve(os.hostname());
-
-export const getApplicationName = ()=> name;
-
-export const getUniqueId = async ()=> {
-  if (os.platform() != "linux") throw new Error("Getting machine-id is only supported on linux");
-  return (await fs.readFile("/etc/machine-id", {encoding:"utf-8"})).replace(/\n/g, "");
+export const getUniqueId = async ()=>{
+  let id = await readFile("/etc/machine-id", {encoding:"utf-8"})
+  return Buffer.from(id, "hex").toString("base64url");
 };
+
+export const getDeviceName = ()=>Promise.resolve(hostname());
+
+export const getApplicationName = ()=> basename(process.title);

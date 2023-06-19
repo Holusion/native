@@ -14,8 +14,8 @@ export default [
 	{
 		input: "lib/index.js",
 		external: [
-			"@firebase/app", "@firebase/storage", 
-			"fs", "path", "https", "events"
+			"firebase/compat/app", "firebase/compat/storage", "firebase/compat/auth", "firebase/compat/firestore", "firebase/compat/functions",
+			"fs", "fs/promises", "path", "https", "events"
 		],
 		plugins: [
 			alias({entries: replacements("node")}),
