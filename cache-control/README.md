@@ -11,13 +11,13 @@ platform-specific dependencies are not provided as npmjs doesn't provide a mecha
 Electron :
 
 ```
-    @firebase/app @firebase/storage
+    firebase
 ```
 Node : 
 ```
-    @firebase/app @firebase/storage
-    #Those ones only if upload is used
-    node-fetch
+    firebase
+    #fetch is required only if upload to the controller is used
+    node-fetch # or use --experimental-fetch flag
     abort-controller
     formdata-node
 ```
@@ -33,40 +33,18 @@ react-native :
     react-native-fs @react-native-firebase/app @react-native-firebase/storage @react-native-firebase/firestore react-native-background-upload
 ```
 
+## Usage
+
 The caller is responsible to call `firebase.initializeApp()` and to set the module's base path using `setBasePath()` before use.
 
 ```
-    import {setBasePath} from "@holusion/cache-control";
+    import {setBasePath, sagaStore} from "@holusion/cache-control";
 
     setBasePath("/path/to/wherever");
+    const [store, task] = sagaStore({defaultProject});
+    #store is a redux store, which can be subscribed to.
+    # use task.cancel() to abort operations on exit
+    task.cancel();
 ```
 
-
-## Interface
-
-This module mainly exposes a `WatchFiles` EventEmitter
-
-### WatchFiles
-
-#### Methods
-
-##### watch()
-
-start listening for snapshot changes
-
-##### close()
-
-stop listening for snapshot changes
-
-#### Events
-
-##### error (Error)
-
-when any error happens during snapshots processing. No error is fatal but `dispatch`events will not fire if there was failures
-
-##### start ("config"|"item")
-
-
-##### dispatch (object {config?:{}, items?:{}})
-
-exports an object with updated key `config`or `items` to be consumed by the state manager (redux or react context).
+The module also exports a _lot_ of useful actions/reducers to modify its behaviour.

@@ -1,12 +1,12 @@
 {
   "name": "@holusion/cache-control",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "private": false,
   "description": "cache control algorithm for content.holusion.net applications",
-  "main": "dist/cache-control.mjs",
+  "main": "dist/cache-control.js",
   "browser": "dist/cache-control-native.js",
-  "type": "module",
   "react-native": "dist/cache-control-native.js",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
