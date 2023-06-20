@@ -1,6 +1,6 @@
 {
   "name": "@holusion/cache-control",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "private": false,
   "description": "cache control algorithm for content.holusion.net applications",
   "main": "dist/cache-control.js",

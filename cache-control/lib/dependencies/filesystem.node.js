@@ -1,6 +1,6 @@
 
 import {promises as fs, constants} from "fs";
-import {dirname, basename} from "path";
+import {dirname, basename, join} from "path";
 
 export default {
   readdir: (path)=>fs.readdir(path, {withFileTypes: true}),
@@ -13,8 +13,8 @@ export default {
   atomicWrite: async (path, str)=>{
     const dir = dirname(path);
     const name = basename(path);
-    await fs.writeFile(`${dir}/~${name}`, str, 'utf8');
-    await fs.rename(`${dir}/~${name}`, `${dir}/${name}`);
+    await fs.writeFile(join(dir, `~${name}`), str, 'utf8');
+    await fs.rename(join(dir, `~${name}`), join(dir, name));
   },
   stat: fs.stat,
   rename: fs.rename,

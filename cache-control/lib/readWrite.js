@@ -1,4 +1,5 @@
 import fs from "filesystem";
+import {join} from "filepaths";
 
 import AsyncLock from 'async-lock';
 
@@ -9,16 +10,16 @@ import {storagePath} from "./path";
 import {FileError} from "./errors";
 
 export async function loadFile(name) {
-  return await lock.acquire(`${name}-rw`, () => fs.readFile(`${storagePath()}/${name}`, 'utf8'))
+  return await lock.acquire(`${name}-rw`, () => fs.readFile(join(storagePath(), name), 'utf8'))
 }
 
 export async function saveFile(name, data) {
   await lock.acquire(`${name}-rw`, async () => {
     try {
       //console.log("write ", data, "to", `${storagePath()}/${name}`);
-      await fs.atomicWrite(`${storagePath()}/${name}`, data);
+      await fs.atomicWrite(join(storagePath(), name), data);
     } catch (e) {
-      throw new FileError(`${storagePath()}/${name}`, e.message);
+      throw new FileError(join(storagePath(), name), e.message);
     }
   });
 }

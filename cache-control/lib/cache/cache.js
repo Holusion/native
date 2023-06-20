@@ -1,5 +1,6 @@
 
 import AsyncLock from 'async-lock';
+import {join} from "filepaths";
 
 import {storagePath} from "../path";
 import {loadFile, saveFile} from "../readWrite";
@@ -9,9 +10,9 @@ const lock = new AsyncLock({ });
 
 
 export const localFiles = ()=> new Map([
-  `${storagePath()}/cache.json`,
-  `${storagePath()}/data.json`,
-  `${storagePath()}/conf.json`,
+  join(storagePath(), `cache.json`),
+  join(storagePath(), `data.json`),
+  join(storagePath(), `conf.json`),
 ].map(f => ([f, true])));
 
 

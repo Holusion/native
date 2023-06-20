@@ -1,4 +1,5 @@
 import fs from "filesystem";
+import {join} from "filepaths";
 
 import { mediasPath} from "../path";
 import { FileError} from "../errors";
@@ -19,7 +20,7 @@ async function doClean(flatList, dir){
     throw e;
   }
   for (let file of localFiles) {
-    const filepath = file.path? file.path : `${dir}/${file.name}`;
+    const filepath = file.path? file.path : join(dir, file.name);
     //console.log("Checking local file : ", file);
     if (file.isDirectory()) {
       if (flatList.filter(path => path.indexOf(filepath) === 0).length == 0) {

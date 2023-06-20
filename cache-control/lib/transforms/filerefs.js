@@ -1,5 +1,6 @@
 'use strict';
 import {firebase} from "firebase";
+import {join} from "filepaths";
 import {mediasPath} from "../path";
 
 /**
@@ -20,8 +21,8 @@ export async function getMetadata(src){
   const storage = firebase.app().storage();
   const ref = storage.refFromURL(src);
   const name = ref.name;
-  const dest = `${mediasPath()}/${name}`;
   if(!name) throw new Error(`Invalid ref name ${name} for source : ${src}`);
+  const dest = join(mediasPath(), name);
   let {md5Hash, size, contentType} = await ref.getMetadata();
   
   return [dest, {

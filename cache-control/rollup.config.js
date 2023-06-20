@@ -6,7 +6,7 @@ import requireJSON from "@rollup/plugin-json";
 
 function replacements (type){
 	return [
-		"deviceInfo", "filesystem", "firebase", "writeToFile", "upload",
+		"deviceInfo", "filesystem", "filepaths", "firebase", "writeToFile", "upload",
 	].map(n=> ({find: n, replacement: `./lib/dependencies/${n}.${type}.js`}));
 }
 

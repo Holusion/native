@@ -1,5 +1,7 @@
 import {EventEmitter} from "events";
 import fs from "filesystem";
+import {basename} from "filepaths";
+
 import writeToFile from "writeToFile";
 
 import {getCachedHash, saveCache} from "./cache";
@@ -90,7 +92,7 @@ export async function sortFiles(files, {getHash:_getHash=getHash}={}){
   let cached = [];
   for (let [dest, file] of files){
     const {hash, size, contentType} = file;
-    const name = dest.split("/").slice(-1)[0];
+    const name = basename(dest);
     const localHash = await _getHash(dest);
     if(!localHash || localHash !== hash){
       if(/^video\//.test(contentType)){

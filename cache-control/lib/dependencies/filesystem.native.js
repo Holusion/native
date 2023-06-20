@@ -1,6 +1,5 @@
 
 import RNFS from "react-native-fs";
-
 async function readWithFallback(path ){
   let txt;
   try{
