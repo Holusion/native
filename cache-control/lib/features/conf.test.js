@@ -1,12 +1,8 @@
 'use strict';
 jest.mock("../path");
-import fsMock from "filesystem";
-import { testSaga, expectSaga } from 'redux-saga-test-plan';
 
-import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile, getWatch, setWatch, getProjectName, setTimeout } from "./conf";
+import { setDefaultTarget, setPlayControl, setProjectName, setPurge, setSlidesControl, setPasscode, setConf, actions, action_strings, getConf, confFile, getWatch, setWatch, getProjectName, setTimeout, setAutoClean } from "./conf";
 import {reducers} from ".";
-import { select } from "redux-saga/effects";
-import { saveFile } from "../readWrite";
 
 describe("actions", ()=>{
   test("exports an object of actions", ()=>{
@@ -107,4 +103,13 @@ describe("conf reducer", function () {
     let state = reducers(initialState, setTimeout(1000));
     expect(state.conf).toHaveProperty("timeout", 1000);
   });
+
+  test("autoClean defaults to true", ()=>{
+    expect(initialState.conf.autoClean).toBe(false);
+  });
+
+  test("can change autoClean", ()=>{
+    let state = reducers(initialState, setAutoClean(true));
+    expect(state.conf).toHaveProperty("autoClean", true);
+  })
 });

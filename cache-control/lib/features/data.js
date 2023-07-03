@@ -9,6 +9,8 @@ import { getProjectName, getWatch } from './conf';
 import { handleSetData } from './files/handleSetData';
 import { INITIAL_LOAD, SET_SIGNEDIN } from './status';
 
+
+export const GET_DATA = "GET_DATA";
 export const SET_DATA = "SET_DATA";
 
 export default function data(state = {

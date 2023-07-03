@@ -7,7 +7,7 @@ import {
 } from ".";
 
 import {makeFileRef} from "./_mock_fileRef";
-import { getRequiredSize, getOtherSize, SET_CACHED_FILE, isCached, getCachedFiles, getHash } from './actions';
+import { getRequiredSize, getOtherSize, SET_CACHED_FILE, isCached, getCachedFiles, getHash, setHash, unsetHash } from './actions';
 import { getError } from '../logs';
 
 
@@ -99,17 +99,38 @@ describe("files reducer", function () {
         severity: "error"
       }));
     })
-    describe("getHash()", ()=>{
-      test("uses cached files list", ()=>{
-        expect(getHash(initialState, "/tmp/foofoo.png")).toEqual("xxxxxx");
-      })
-      test("returns undefined for uncached files", ()=>{
-        expect(getHash(initialState, "/tmp/foo.png")).toBeUndefined();
-      })
-      test("also match file:// prefix", ()=>{
-        expect(getHash(initialState, "file:///tmp/foofoo.png")).toEqual("xxxxxx");
-      })
+  })
+
+  describe("setHash() / getHash()", ()=>{
+    test("uses cached files list", ()=>{
+      expect(getHash(initialState, "/tmp/foofoo.png")).toEqual("xxxxxx");
     })
+    test("returns undefined for uncached files", ()=>{
+      expect(getHash(initialState, "/tmp/foo.png")).toBeUndefined();
+    })
+    test("also match file:// prefix", ()=>{
+      expect(getHash(initialState, "file:///tmp/foofoo.png")).toEqual("xxxxxx");
+    })
+
+    test("set a file's hash", ()=>{
+      let s = reducers(initialState, setHash("/tmp/foo/bar.mp4", "spYioUcdUZuOcP2/N8eCkQ=="));
+      expect(getHash(s, "/tmp/foo/bar.mp4")).toEqual("spYioUcdUZuOcP2/N8eCkQ==");
+    });
+  })
+
+  describe("unsetHash()", ()=>{
+    test("removes a file from cache", ()=>{
+      expect(getHash(initialState, "/tmp/foofoo.png")).toEqual("xxxxxx");
+      let s = reducers(initialState, unsetHash("/tmp/foofoo.png"));
+      expect(s.files.cache).not.toEqual(initialState.files.cache);
+      expect(getHash(s, "/tmp/foofoo.png")).toBeUndefined();
+    });
+
+    test("don't throw if file is absent", ()=>{
+      let cache = initialState.files.cache;
+      let s = reducers(initialState, unsetHash("/tmp/absent-file.png"));
+      expect(s.files.cache).toEqual(cache);
+    });
   })
 
 

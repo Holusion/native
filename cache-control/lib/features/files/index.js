@@ -1,11 +1,14 @@
 'use strict';
-import { put } from "redux-saga/effects";
 
+
+import {SET_DEPENDENCIES, SET_CACHED_FILE, UNSET_CACHED_FILE} from "./actions";
+import {INITIAL_LOAD} from "../status";
+
+export * from "./actions";
+export {CLEAN_CACHE, cleanCache} from "./clean";
 export {handleDownloads} from "./handleDownloads";
 export {handleSetData} from "./handleSetData";
-import {SET_DEPENDENCIES, SET_CACHED_FILE} from "./actions";
-import {INITIAL_LOAD} from "../status";
-export * from "./actions";
+
 
 export default function files(state = {
   list:{
@@ -43,6 +46,10 @@ export default function files(state = {
       }
     case SET_CACHED_FILE:
       return {...state, cache:{...state.cache,[action.file]: action.hash}}
+    case UNSET_CACHED_FILE:
+      const {[action.file]:removed_file, ...files} = state.cache
+      return {...state, cache: files}
+
     default:
       return state;
   }

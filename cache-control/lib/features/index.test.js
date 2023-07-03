@@ -7,9 +7,9 @@ jest.mock("../path");
 import fsMock from "filesystem";
 import {app as appMock, auth as autoMock} from "firebase";
 
-import {loadLocalSaga, reducers, rootSaga, sagaStore, saveCache, dataFile, getPersistentState} from ".";
+import {loadLocalSaga, reducers, rootSaga, sagaStore, saveCache, dataFile, getPersistentState, info, getUncachedFiles, CLEAN_CACHE} from ".";
 import {SET_DATA, watchChanges, createWatcher} from "./data";
-import {setConf, actions, action_strings as conf_actions_names, getProjectName, getWatch, setProjectName} from "./conf";
+import {setConf, actions, action_strings as conf_actions_names, getProjectName, getWatch, setProjectName, getAutoClean} from "./conf";
 
 import { signIn, doSignIn } from "./signIn";
 import { storagePath } from "../path";
@@ -83,6 +83,39 @@ describe("saveCache()", ()=>{
     .put({type:"SAVE_CACHE", error: e}).next()
     .isDone();
   });
+
+  test("can save data file", ()=>{
+
+    testSaga(saveCache, {type: SET_DATA}).next()
+    .select(getPersistentState).next({})
+    .call(JSON.stringify, {}).next("stringified_state")
+    .call(saveFile, dataFile, "stringified_state").next()
+    .put(info("SAVE_CACHE", `Données locales sauvegardées`, `Déclenché par ${SET_DATA}`)).next()
+    .select(getAutoClean).next(false)
+    .isDone();
+  });
+  describe("cache cleanup", ()=>{
+    let saga;
+    beforeEach(()=>{
+      saga = testSaga(saveCache, {type: SET_DATA}).next()
+      .select(getPersistentState).next({})
+      .call(JSON.stringify, {}).next("stringified_state")
+      .call(saveFile, dataFile, "stringified_state").next()
+      .put(info("SAVE_CACHE", `Données locales sauvegardées`, `Déclenché par ${SET_DATA}`)).next()
+      .select(getAutoClean).next(true)
+      .delay(5000).next();
+    });
+
+    test("won't trigger cleanup if some files are not cached", ()=>{
+      saga.select(getUncachedFiles).next(["/tmp/uncached.txt"])
+      .isDone();
+    });
+    test("will trigger cleanup", ()=>{
+      saga.select(getUncachedFiles).next([])
+      .put({type: CLEAN_CACHE}).next()
+      .isDone();
+    });
+  })
 })
 
 describe("loadLocalSaga", function(){

@@ -11,17 +11,19 @@ platform-specific dependencies are not provided as npmjs doesn't provide a mecha
 Electron :
 
 ```
-    firebase
+    npm i firebase
 ```
+ > it's best to use it in the main thread, then dispatch state changes through [ipcRenderer](https://www.electronjs.org/fr/docs/latest/api/ipc-renderer#ipcrenderersendchannel-args)
+
 Node : 
 ```
-    firebase
-    #fetch is required only if upload to the controller is used
-    node-fetch # or use --experimental-fetch flag
-    abort-controller
-    formdata-node
+    npm i firebase
+    #fetch is required only if upload to the controller is used (the `sync` module)
+    npm i node-fetch abort-controller formdata-node
 ```
-node users should also define fetch, AbortController and FormData into the global scope :
+
+when using node-fetch, define AbortController and FormData into the global scope :
+
 ```
 global.fetch = require("node-fetch");
 etc...

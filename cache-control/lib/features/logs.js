@@ -74,6 +74,18 @@ export const getError = (state, name)=>{
   return getErrors(state).find(e=> e.name === name);
 }
 
+/**
+ * @typedef {object} LogAction
+ * @property {typeof LOG_INFO|typeof LOG_WARN|typeof LOG_ERROR} type
+ * @property {string} name generally the type of the action that called the event is used
+ * @property {string} message
+ * @property {string} [context]
+ */
+
+/**
+ * 
+ * @returns {LogAction}
+ */
 export const log = (severity, nameOrMessage, message, context)=>{
   return {type:severity, name: message?nameOrMessage: severity.split("_").slice(-1)[0].toUpperCase(), message:message? message:nameOrMessage, context};
 }

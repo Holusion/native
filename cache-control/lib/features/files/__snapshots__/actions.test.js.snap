@@ -186,6 +186,7 @@ Object {
 exports[`files reducer setFiles() initial state shape 1`] = `
 Object {
   "conf": Object {
+    "autoClean": false,
     "configurableProjectName": true,
     "default_target": null,
     "play_control": "none",

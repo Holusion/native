@@ -11,6 +11,7 @@ export const actions = {
     SET_PROJECTNAME: "SET_PROJECTNAME",
     SET_TIMEOUT: "SET_TIMEOUT",
     SET_WATCH: "SET_WATCH",
+    SET_AUTOCLEAN: "SET_AUTOCLEAN",
 }
 export const action_strings = Object.keys(actions).reduce((res, k)=>([...res, actions[k]]),[]);
 
@@ -30,6 +31,7 @@ export default function conf(state = {
     play_control: "none",
     watch: true,
     timeout: 0,
+    autoClean: false,
 }, action) {
     if(action.error){
         return state;
@@ -57,6 +59,8 @@ export default function conf(state = {
         return Object.assign({}, state, {watch: action.watch});
       case actions.SET_TIMEOUT:
         return Object.assign({}, state, {timeout: action.timeout});
+      case actions.SET_AUTOCLEAN:
+        return Object.assign({}, state, {autoClean: action.autoClean})
       default:
         return state;
     }
@@ -100,6 +104,16 @@ export const setWatch = (watch)=>{
 export const setTimeout = (timeout)=>{
   return {type: actions.SET_TIMEOUT, timeout};
 }
+/**
+ * Automatically clean cache's unused files
+ * @param {boolean} autoClean 
+ * @returns 
+ */
+export const setAutoClean = (autoClean)=>{
+  return {type: actions.SET_AUTOCLEAN, autoClean};
+}
+
+export const getAutoClean = (state)=> state.conf.autoClean;
 
 export const getConf = (state)=>{
     return state.conf;
