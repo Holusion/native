@@ -83,7 +83,8 @@ test("Cap logs at 100 lines", ()=>{
   let lines = getLogs(s);
   expect(lines).toHaveLength(100);
   expect(lines[0]).toHaveProperty("message", `Hello 10`);
-})
+});
+
 test("keeps referenced errors when it overflows", ()=>{
   let s = initialState;
   s = reducers(s, {type: SET_DATA, error: new Error(`Something Wrong`)});
@@ -93,6 +94,21 @@ test("keeps referenced errors when it overflows", ()=>{
   let lines = getLogs(s);
   expect(lines).toHaveLength(101);
   expect(lines[0]).toHaveProperty("message", `Something Wrong`);
+})
+
+test("removes unreferenced errors when it overflows", ()=>{
+  let s = initialState;
+  s = reducers(s, {type: SET_DATA, error: new Error(`Something was Wrong`)});
+
+  for (let i=0; i <110; i++){
+    s = reducers(s, info(`Hello ${i}`));
+  }
+
+  s = reducers(s, {type: SET_DATA, error: new Error(`Something is Wrong`)});
+  let lines = getLogs(s);
+  expect(lines).toContainEqual(expect.objectContaining({message:`Something is Wrong`}));
+  //old log line is no longer retained
+  expect(lines).not.toContainEqual(expect.objectContaining({message:`Something was Wrong`}));
 })
 
 test("can provide just a message to info()", ()=>{

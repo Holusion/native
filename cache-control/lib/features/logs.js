@@ -62,9 +62,17 @@ export default function logs(state = {
   }
 }
 
-
+/**
+ * Get all log lines as an array
+ * Logs are auto-trimmed to 100 lines max
+ * @param {*} state 
+ * @returns {{id: number, severity:"info"|"warn"|"error", name: string, message: string, context :string, timestamp: Date}[]}
+ */
 export const getLogs = (state)=> state.logs.lines;
-
+/**
+ * Get all "active" errors. ie. if multiple errors happened with the same name, only the last one will be returned
+ * To get all errors, use `getLogs`and filter by severity
+ */
 export const getErrors = (state)=> {
   let lines = getLogs(state);
   return Object.keys(state.logs.errors).map(name => lines.filter(l=>l.id === state.logs.errors[name])).flat();

@@ -8,8 +8,8 @@ import {createStorage} from "../path";
 
 import files, { SET_CACHED_FILE , SET_DEPENDENCIES, handleDownloads,  cleanCache, CLEAN_CACHE, getUncachedFiles } from "./files";
 import data, { SET_DATA, watchChanges } from "./data";
-import conf, { getProjectName, action_strings as conf_actions_names, actions as conf_actions, setProjectName, getAutoClean }  from "./conf";
-import {signIn} from "./signIn";
+import conf, { getProjectName, action_strings as conf_actions_names, actions as conf_actions, getAutoClean, setConf }  from "./conf";
+import {signIn, DO_SIGNIN} from "./signIn";
 import products, { SET_ACTIVE_PRODUCT } from "./products"
 import logs, { info } from "./logs";
 import status, { INITIAL_LOAD, SET_SIGNEDIN } from "./status";
@@ -102,7 +102,7 @@ export function* rootSaga(){
   // run everything in parallel
   // those tasks won't ever return unless cancelled
   yield all([
-    takeLatest(conf_actions.SET_PROJECTNAME, signIn),
+    takeLatest([DO_SIGNIN, conf_actions.SET_PROJECTNAME], signIn),
     takeLatest(SET_DEPENDENCIES, handleDownloads),
     takeLatest([SET_SIGNEDIN, conf_actions.SET_WATCH], watchChanges),
     takeLatest([SET_ACTIVE_PRODUCT, SET_CACHED_FILE, conf_actions.SET_PURGE], synchronizeProduct),
@@ -120,17 +120,14 @@ export function* rootSaga(){
  * Create and start data-sync routine
  * @see rootSaga
  * @bug Does not natively support hot-reload. See : https://github.com/redux-saga/redux-saga/issues/1961
- * @param {object} param0 initial data
- * @param {string} [param0.defaultProject] optional default project to initialize with 
+ * @param {Partial<import('./conf').AppConf>} [overrides] override data
  * @returns {[import('redux').Store, import("redux-saga").Task]}
  */
-export function sagaStore({defaultProject}={}){
+export function sagaStore(overrides){
   const sagaMiddleware = createSagaMiddleware();
-  let initialState = reducers(undefined, {});
   //Apply initial setup
-  if(defaultProject){
-    initialState = reducers(initialState, setProjectName(defaultProject));
-  }
+  let initialState = reducers(undefined, (overrides? setConf(overrides): {}));
+
   const store = createStore(
     reducers,
     initialState,

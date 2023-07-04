@@ -3,11 +3,14 @@ import {firebase, auth} from "firebase";
 
 import { getUniqueId, getApplicationName, getDeviceName } from "deviceInfo";
 
-import { put, delay, call, cancelled } from 'redux-saga/effects'
+import { put, delay, call, select } from 'redux-saga/effects'
 
 import {setSignedIn, SET_SIGNEDIN} from "./status";
 
 import {warn} from "./logs";
+import { getProjectName } from "./conf";
+
+export const DO_SIGNIN = "DO_SIGNIN";
 
 export async function doSignIn(projectName){
   const hostname = await getDeviceName();
@@ -29,8 +32,9 @@ export async function doSignIn(projectName){
 }
 
 
-export function* signIn({projectName}){
+export function* signIn(){
   let d = 512;
+  const projectName = yield select(getProjectName);
   if(!projectName) return;
   yield put(setSignedIn(false));
   while(true){
@@ -52,4 +56,8 @@ export function* signIn({projectName}){
     }
   }
   yield put(setSignedIn(projectName));
+}
+
+export function trySignIn(){
+  return {type: DO_SIGNIN};
 }

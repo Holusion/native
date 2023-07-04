@@ -1,23 +1,28 @@
 
 import {testSaga, expectSaga} from 'redux-saga-test-plan';
+import * as matchers from 'redux-saga-test-plan/matchers';
+import { delay, select } from 'redux-saga/effects'
 
 import {app as appMock, auth as autoMock} from "firebase";
 
 import {SET_SIGNEDIN} from "./status";
 import {signIn, doSignIn} from "./signIn";
-import { setProjectName } from './conf';
+import { getProjectName, setProjectName } from './conf';
 import {warn} from "./logs";
+import { dynamic, throwError } from 'redux-saga-test-plan/providers';
 
-describe("signIn", ()=>{
+describe("signIn()", ()=>{
 
   test("ignore invalid projectName", ()=>{
-    testSaga(signIn, {projectName: undefined}).next()
+    testSaga(signIn).next()
+    .select(getProjectName).next(undefined)
     .returns(undefined).next()
     .isDone();
   })
 
   test("sign in for projectName", ()=>{
-    testSaga(signIn, setProjectName("foo")).next()
+    testSaga(signIn).next()
+    .select(getProjectName).next("foo")
     .put({type: SET_SIGNEDIN, value: false}).next()
     .call(doSignIn, "foo").next()
     .put({type:SET_SIGNEDIN, value: "foo"}).next()
@@ -27,16 +32,22 @@ describe("signIn", ()=>{
   test("Retry after an error", ()=>{
     let e = new Error("Internal error");
     let count = 0;
+    
     return expectSaga(signIn, setProjectName("foo"))
     .provide({
       call(effect, next){
-        if(effect.fn === doSignIn) return [e, e][count++];
-        else if (effect.args.length === 1 && Number.isInteger(effect.args[0])){
+        if(effect.fn === doSignIn){
+          return ((count++ < 2)? e:undefined);
+        } else if (effect.args.length === 1 && Number.isInteger(effect.args[0])){
           //No way to properly match delay() !
           return undefined;
         }
         next();
       },
+      select({selector}, next){
+        if(selector === getProjectName) return "foo";
+        else next();
+      }
     })
     .call(doSignIn, "foo")
     .put({type: SET_SIGNEDIN, error: e})
@@ -46,11 +57,12 @@ describe("signIn", ()=>{
     .call.like({args:[1024]})
     .call(doSignIn, "foo")
     .put({type: SET_SIGNEDIN, value:"foo"})
-    .run(256);
+    .run();
   })
 
   test("handle offline errors", ()=>{
-    testSaga(signIn, setProjectName("foo")).next()
+    testSaga(signIn).next()
+    .select( getProjectName).next("foo")
     .put({type: SET_SIGNEDIN, value: false}).next()
     .call(doSignIn, "foo").next(new Error("The Internet connection appears to be offline."))
     .put(warn(SET_SIGNEDIN, "Impossible de se connecter", "la tablette n'est probablement pas reliée à internet")).next()

@@ -19,7 +19,7 @@ export function join(...args) {
   }
   if (joined === undefined)
     return '.';
-  return joined.replace(/\/\//g,"/");
+  return joined.replace(/\/\/+/g,"/");
 }
 export function basename(file){
   return file.split(sep).slice(-1)[0];

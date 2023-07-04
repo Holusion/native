@@ -14,6 +14,18 @@ export const actions = {
     SET_AUTOCLEAN: "SET_AUTOCLEAN",
 }
 export const action_strings = Object.keys(actions).reduce((res, k)=>([...res, actions[k]]),[]);
+/**
+ * @typedef {object} AppConf
+ * @property {string} [projectName] 
+ * @property {boolean} configurableProjectName: true, // This is read-only from initialization
+ * @property {string|null} default_target: null,
+ * @property {boolean} purge_products: false,
+ * @property {"default"|"buttons"|"swipe"|"none"} slides_control: "default",
+ * @property {"button"|"rotate"|"none"} play_control: "none",
+ * @property {boolean} watch: true,
+ * @property {number} timeout: 0,
+ * @property {boolean} autoClean: false,
+ */
 
 /**
  * Local app configuration.
@@ -38,6 +50,7 @@ export default function conf(state = {
     }
     switch(action.type) {
       case INITIAL_LOAD:
+      case actions.SET_CONF:
         return Object.assign({}, state, action.conf);
       case actions.SET_DEFAULT_TARGET:
         return Object.assign({}, state, {default_target: action.target});
@@ -68,18 +81,19 @@ export default function conf(state = {
 
 /**
  * 
- * @param {(default|buttons|swipe|none)} control - one of default, buttons, none
+ * @param {AppConf["slides_control"]} control - one of default, buttons, none
  */
 export const setSlidesControl = (control) =>{
     return {type : actions.SET_SLIDES_CONTROL, control}
 }
 /**
  * 
- * @param {(button|rotate|none)} control - one of button, rotate, none
+ * @param {AppConf["play_control"]} control - one of button, rotate, none
  */
 export const setPlayControl = (control) =>{
     return {type : actions.SET_PLAY_CONTROL, control}
 }
+
 export const setDefaultTarget = (name)=>{
     return {type: actions.SET_DEFAULT_TARGET, target: name};
 }
@@ -124,7 +138,7 @@ export const getConf = (state)=>{
  */
 export const setConf = ({error, ...conf})=>{
     if(error){
-        return {type: INITIAL_LOAD, error};
+        return {type: actions.SET_CONF, error};
     }
-    return {type: INITIAL_LOAD, conf};
+    return {type: actions.SET_CONF, conf};
 }

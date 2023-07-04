@@ -22,13 +22,16 @@ describe("conf reducer", function () {
     //Be sure state is never mutated, because const doesn't ensure this.
     expect(initialState).toEqual(initialStateCopy);
   })
-  test("setConf() / getConf()", ()=>{
-    let c = {projectName: "foo", slides_control: "none"};
-    const s = reducers(initialState, setConf(c));
-    expect(getConf(s)).toEqual(expect.objectContaining(c));
-  })
-  test("setConf() ignore errors", ()=>{
-    expect(reducers(initialState, setConf({error: new Error("Booh")}))).toHaveProperty("conf", initialState.conf);
+
+  describe("setConf() / getConf()", ()=>{
+    test("set/get", ()=>{
+      let c = {projectName: "bar", slides_control: "none"};
+      const s = reducers(initialState, setConf(c));
+      expect(getConf(s)).toEqual(expect.objectContaining(c));
+    })
+    test("setConf() ignore errors", ()=>{
+      expect(reducers(initialState, setConf({error: new Error("Booh")}))).toHaveProperty("conf", initialState.conf);
+    })
   })
   test('conf default', function () {
     expect(initialState).toHaveProperty("conf");

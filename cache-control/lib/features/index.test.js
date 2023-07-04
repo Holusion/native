@@ -201,10 +201,16 @@ describe("sagaStore()", ()=>{
   });
 
   test("can set a pre-defined default project name", ()=>{
-    const [store, task] =sagaStore({defaultProject: "holodemo"});
+    const [store, task] = sagaStore({projectName: "holodemo"});
     expect(getProjectName(store.getState())).toEqual("holodemo");
     task.cancel();
-  })
+  });
+  
+  test("can change autoClean value", ()=>{
+    const [store, task] = sagaStore({autoClean: true});
+    expect(getAutoClean(store.getState())).toEqual(true);
+    task.cancel();
+  });
 
   describe("after INITIAL_LOAD", ()=>{
     //Some smoke test to check if store properly initializes
@@ -236,11 +242,18 @@ describe("sagaStore()", ()=>{
       await doDebounce();
       expect(fsMock.contents).toMatchSnapshot();
     });
+
     test("save conf changes to disk", async ()=>{
-      store.dispatch({type:actions.SET_CONF, conf:{projectName: "foo"}});
+      store.dispatch(setConf({projectName: "foo", autoClean: true}));
       await doDebounce();
+      expect(store.getState()).toHaveProperty("conf", expect.objectContaining({
+        projectName:"foo",
+        autoClean: true,
+        slides_control: "default",
+      }))
       expect(fsMock.contents).toMatchSnapshot();
     });
+
     test('save required files list to disk', async ()=>{
       store.dispatch({
         type:SET_DATA, 

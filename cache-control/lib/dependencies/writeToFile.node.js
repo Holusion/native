@@ -16,8 +16,8 @@ export function fetchFile(src, {dest,signal={}}={}){
   f.on("error", (e)=> console.warn("WriteStream internal error : ", e));
   return new Promise((resolve, reject)=>{
     https.get(src, function(response){
-      response.on("error",(e)=>{
-        console.warn("Response error");
+      response.on("error", (e)=>{
+        console.warn(`fetchFile ${src} Response error`);
         f.close();
         fs.unlink(tmp_dest)
         .catch(()=>{})
@@ -32,11 +32,11 @@ export function fetchFile(src, {dest,signal={}}={}){
         }
       });
 
-      response.on("end",()=>{
+      response.on("end", ()=>{
         f.close();
         if(!signal.aborted){
             fs.rename(tmp_dest, dest)
-            .then(()=>resolve(dest));
+            .then(()=>resolve(dest), reject);
         }
       });
     });
