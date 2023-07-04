@@ -1,2 +1,2 @@
 
-export {join, basename, sep} from "node:path";
+export {join, basename, sep} from "path";
