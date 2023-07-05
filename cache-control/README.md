@@ -56,6 +56,21 @@ See `features/conf` for all local-stored properties to configure
 
 It can also be useful to dispatch some user-events, to trigger the eventLoop. See `lib/features/index.js:rootSaga()`.
 
+## Tips
+
+### Readiness
+
+readiness checks (ie. "can I display my pages") is left for the client to implement because it's context-dependant.
+
+Typically something like : 
+```
+    (state)=> {
+    return getItemsIds(state).length !=0      //at least one page
+        && getUncachedFiles(state).length == 0; //no uncached file
+    }
+```
+
+
 ## Changelog
 
 ### 3.5.0

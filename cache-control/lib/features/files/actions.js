@@ -82,7 +82,15 @@ export const getUncachedFiles = (state) => Object.keys(state.files.list).filter(
  */
 export const isRequired = (f)=> !/^video\//.test(f.contentType)
 
+/**
+ * Get all files uncached and excluding videos
+ * @returns {string[]}
+ */
 export const getRequiredFiles = (state) => getUncachedFiles(state).filter(f => isRequired(state.files.list[f]));
+/**
+ * Get all files uncached optional files (videos)
+ * @returns {string[]}
+ */
 export const getOtherFiles = (state) => getUncachedFiles(state).filter(f=> !isRequired(state.files.list[f]));
 
 export const getTotalSize = (state) => Object.keys(state.files.list).reduce((size, file) => (size + (state.files.list[file].size)), 0);

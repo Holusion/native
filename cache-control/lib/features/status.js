@@ -1,4 +1,8 @@
 
+import {createSelector} from "reselect";
+import { getItemsIds } from "./data";
+import { getUncachedFiles } from "./files";
+
 
 export const INITIAL_LOAD = "INITIAL_LOAD";
 export const SET_NETINFO = 'SET_NETINFO';
@@ -20,7 +24,7 @@ export default function status(state = {
     case SET_SIGNEDIN:
       return {...state, signedIn: error? false : !!value};
     case SET_SYNCHRONIZED:
-      return {...state, synchronized: error? false : !!value}
+      return {...state, synchronized: error? false : !!value};
     default:
       return state;
   }
@@ -46,6 +50,11 @@ export const setSignedIn = (value)=>{
   return {type: SET_SIGNEDIN, value};
 }
 
+/**
+ * 
+ * @param {boolean|Error} value 
+ * @return {import("redux").Action}
+ */
 export const setSynchronized = (value) =>{
   if(value instanceof Error) {
     return {type: SET_SYNCHRONIZED, error: value};
