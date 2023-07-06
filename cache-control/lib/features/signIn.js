@@ -40,9 +40,10 @@ export function* signIn(){
   while(true){
     let error = yield call(doSignIn, projectName);
     if(!error) break;
-    if(/internet.*offline/i.test(error.message)){
+    if(/internet.*offline/i.test(error.message) || error.message == "internal"){
       //httpsCallable error from firebase iOS SDK has no code for "offline"
       //It yield an useless error with code unknown
+      //the JS sdk throws an unhelpful "internal" error.
       yield put(warn(SET_SIGNEDIN, "Impossible de se connecter", "la tablette n'est probablement pas reliée à internet"))
     }else{
       yield put(setSignedIn(error));

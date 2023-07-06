@@ -3,6 +3,7 @@ import alias from '@rollup/plugin-alias';
 import commonjs from "@rollup/plugin-commonjs";
 import babel from '@rollup/plugin-babel';
 import requireJSON from "@rollup/plugin-json";
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
 function replacements (type){
 	return [
@@ -22,15 +23,18 @@ export default [
 			resolve({mainFields:["main", "module"]}),
 			commonjs(),
 			requireJSON(),
+			sourcemaps(),
 			babel({
 				babelrc: true, // use the same babel transform as in tests
 				babelHelpers: 'bundled',
+				inputSourceMap: false
 			})
 		],
 		output: {
 			file: "dist/cache-control.js",
 			exports: "named",
 			name: "cache-control",
+			sourcemap: true,
 		}
 	},{
 		input: "lib/index.js",

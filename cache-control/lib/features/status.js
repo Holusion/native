@@ -1,8 +1,4 @@
 
-import {createSelector} from "reselect";
-import { getItemsIds } from "./data";
-import { getUncachedFiles } from "./files";
-
 
 export const INITIAL_LOAD = "INITIAL_LOAD";
 export const SET_NETINFO = 'SET_NETINFO';

@@ -132,7 +132,7 @@ describe("loadLocalSaga", function(){
       }
     }));
 
-    await expectSaga(loadLocalSaga)
+    const result = await expectSaga(loadLocalSaga)
     .put({
       type: INITIAL_LOAD, 
       data: {config: {foo: "bar"}},
@@ -140,9 +140,7 @@ describe("loadLocalSaga", function(){
       files: { list:{}, cache: {"/tmp/list.png":"xxxxxx"}}
     })
     .run()
-    .then((result)=>{
-      expect(result.storeState).toMatchSnapshot();
-    })
+    expect(result.storeState).toMatchSnapshot();
   });
   
   test("Handle local files absence", async ()=>{

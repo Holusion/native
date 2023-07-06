@@ -67,8 +67,8 @@ export function* loadLocalSaga(){
   yield call(createStorage);
   try{
     let str = yield call(loadFile, dataFile);
-    let data = yield call(JSON.parse, str);
-    yield put({type: INITIAL_LOAD, ...data});
+    let persistedState = yield call(JSON.parse, str);
+    yield put({type: INITIAL_LOAD, ...persistedState});
   }catch(e){
     if(e.code == "ENOENT"){
       yield put(info(INITIAL_LOAD, `${dataFile} n'existait pas`, "Soit c'est une nouvelle installation soit le fichier a été perdu"))
