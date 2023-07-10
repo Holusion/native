@@ -53,7 +53,7 @@ export default function logs(state = {
       if(action.data["items"]){
         return addLine(clean_state, "info", {message: "Mise à jour des pages", name: SET_DATA, context: `Réception de ${Object.keys(action.data["items"]).length} pages` })
       }else{
-        return addLine(clean_state, "info", {message: "Mise à jour du projet", name: SET_DATA, context: `Configuration : ${JSON.stringify(action.data, null, 2)}` })
+        return addLine(clean_state, "info", {message: "Mise à jour du projet", name: SET_DATA, context: `Configuration` })
       }
     case SET_ACTIVE_PRODUCT:
       return addLine(clean_state, "info", {message: `Connexion à ${action.name}`, name:SET_ACTIVE_PRODUCT});
