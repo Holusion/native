@@ -35,7 +35,12 @@ export function* do_download(){
     //Check if file was downloaded between the time request was issued and now
     if( !( yield select(isCached, dest, hash) )){
       yield put(info(DO_DOWNLOAD, `Téléchargement de ${dest.split("/").slice(-1)[0]}`));
-      yield call(writeToFile, src, dest);
+      try{
+        yield call(writeToFile, src, dest);
+      }catch(e){
+        yield put({type:DO_DOWNLOAD, error: e});
+        return;
+      }
     }
     yield put(setHash(dest, hash));
   }

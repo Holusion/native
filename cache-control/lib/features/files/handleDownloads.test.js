@@ -107,6 +107,17 @@ describe("do_download", ()=>{
     .put(dispatchs[0]).next()
     .finish()
     .isDone()
+  });
+
+  test("handles errors", ()=>{
+    const e = new Error("Unsupported response : foo");
+    testSaga(do_download).next()
+    .take(REQUEST_DOWNLOAD).next(requests[0])
+    .select(isCached, requests[0].dest, requests[0].hash).next(false)
+    .put(info(DO_DOWNLOAD, `Téléchargement de foo.png`)).next()
+    .call(writeToFile, requests[0].src, requests[0].dest).throw(e)
+    .put({type: DO_DOWNLOAD, error: e}).next()
+    .isDone()
   })
 })
 

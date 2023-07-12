@@ -1,5 +1,6 @@
 import https from "https";
 import {promises as fs} from "fs";
+import {once} from "events";
 
 import {basename, join, dirname} from "path";
 import firebase from "firebase/compat/app";
@@ -8,7 +9,11 @@ import 'firebase/compat/storage';
 import {CANCEL} from '@redux-saga/symbols';
 
 import {FileError} from "../errors";
-
+/**
+ * 
+ * @param {string|URL} src 
+ * @returns 
+ */
 function _fetch(src){
   return new Promise((resolve, reject)=>{
     https.get(src, resolve).on("error", reject);
@@ -21,8 +26,16 @@ export async function fetchFile(src, {dest, signal={}}={}){
     dest = dest.slice(7);
   }
   const tmp_dest = join(dirname(dest), `~${basename(dest)}`);
+  
+  let request =  https.get(src);
+  let [response] = await once(request, "response");
 
-  const response = await _fetch(src);
+  if(response.statusCode == 301 || response.statusCode === 302){
+    request =  https.get(response.headers["location"]);
+    response.destroy();
+    [response] = await once(request, "response");
+  }
+
   if(response.statusCode != 200){
     throw new Error(`Unsupported status code : ${response.statusCode}`);
   }
@@ -54,29 +67,21 @@ export async function fetchFile(src, {dest, signal={}}={}){
 
 
 
-export default function writeToFile(src, dest){
+export default async function writeToFile(src, dest){
   const ref = firebase.storage().refFromURL(src);
   const fullPath = ref.fullPath;
   const name = basename(fullPath);
   const p = Promise.resolve();
-  const signal = {aborted: false};
-  p[CANCEL]= ()=>{
-    signal.aborted = true;
+  try{
+    const src = await ref.getDownloadURL();
+    await fetchFile(src, { dest });
+  }catch(e){
+    console.warn("Download error on %s : ", fullPath, e.message);
+    if(e.code == "storage/object-not-found"){
+      throw new FileError(name, `${name} could not be found at ${ref.fullPath}`)
+    }else{
+      throw new FileError(name, e);
+    }
   }
 
-  p.then(async ()=>{
-    try{
-      const src = await ref.getDownloadURL();
-      await fetchFile(src, { dest, signal });
-    }catch(e){
-      console.warn("Download error on %s : ", fullPath, e.message);
-      if(e.code == "storage/object-not-found"){
-        throw new FileError(name, `${name} could not be found at ${ref.fullPath}`)
-      }else{
-        throw new FileError(name, e);
-      }
-    }
-
-  })
-  return p;
 }
