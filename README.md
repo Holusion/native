@@ -1,48 +1,23 @@
 # Usage
 
-## Créer un nouveau projet
+Voir `cache-control/` pour le code de synchronisation
 
-Lancez la commande suivante :
+Voir `HolusionCompanion/` pour le code react-native
 
-```
-npx react-native init <nom_du_projet>
-cd <nom_du_projet>
-```
+## Integration continue
 
-Editer `package.json`. Dans le champ **name**, donner un nom en minuscules, pouvant comporter des tirets. Utiliser le nom de l'application dans `projectName`. Example : 
+Modifier la version de l'application dans Xcode:
 
-```
-  {
-    "name": "egger",
-    "projectName":"Egger",
-    [...]
-  }
-```
+    (TARGET: HolusionCompanion)
+    Général > Identity > Version
 
-Ils faut copier ces fichiers au travers des différents projets :
+Pas la peine de toucher au build number.
 
-- App.js
-- index.js
-- theme.js
+ commit. fastlane s'occupera d'upload le build sur [Appstore Connect](https://appstoreconnect.apple.com).
 
-Ils sont disponibles dans `_template/`
+Puis utiliser l'interface pour migrer le build sur 
 
-
-### Installer les dépendances npm
-
-**WARNING** : Installer les dépendances en `latest` avec NPM préente un risque d'incompatibilité. ça permet d'être à jour au moment de la création de l'app mais par sécurité, on peut aussi copier-coller les versions d'une dernière version fonctionelle connue.
-
-```
-npm i "@holusion/react-native-holusion" "@react-native-community/netinfo" "native-base" \
-      "@react-native-firebase/app" "@react-native-firebase/auth" "@react-native-firebase/firestore" \
-      "@react-native-firebase/functions" "@react-native-firebase/storage" \
-      "react-native-fs" "react-native-gesture-handler" "react-native-vector-icons"
-    "react-native-zeroconf" "react-native-device-info" \
-    "@react-navigation/core" "@react-navigation/native" "@react-navigation/stack" \
-    "react-native-screens" "@react-native-community/masked-view" "react-native-safe-area-context" "react-native-reanimated" \
-    "react-redux"
-```
-
+## Notes
 
 ### Initialiser Firebase
 

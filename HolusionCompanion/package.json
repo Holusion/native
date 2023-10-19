@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^2.0.0",
-    "@holusion/cache-control": "^3.3.2",
+    "@holusion/cache-control": "^3.5.2",
     "@react-native-community/checkbox": "^0.5.15",
     "@react-native-community/netinfo": "^5.9.1",
     "@react-native-firebase/app": "^6.3.4",

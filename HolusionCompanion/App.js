@@ -166,7 +166,7 @@ export default class App extends React.Component{
 
 
   componentDidMount(){
-    const [store, task] = sagaStore({defaultProject:"holodemo"});
+    const [store, task] = sagaStore({projectName: "holodemo"});
     this.setState({store, task});
     this.onFocus(store);
     this.#listeners.push(
